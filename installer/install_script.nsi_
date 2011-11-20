@@ -1,0 +1,96 @@
+	!include "MUI2.nsh" 
+	!include "FileAssociation.nsh"
+
+	Name "KBE"
+	
+	; set the name of the installer
+	OutFile "kbe-win32-0.2.0.exe"
+
+	;Default installation folder
+	InstallDir $PROGRAMFILES32\KBE
+
+	;Get installation folder from registry if available
+	InstallDirRegKey HKCU "Software\KBE" ""
+	;Request application privileges for Windows Vista
+	RequestExecutionLevel user
+
+;--------------------------------
+;Interface Settings
+
+  !define MUI_ABORTWARNING
+
+;--------------------------------
+;Pages
+
+  !insertmacro MUI_PAGE_LICENSE "sources\COPYING"
+  !insertmacro MUI_PAGE_COMPONENTS
+  !insertmacro MUI_PAGE_DIRECTORY
+  
+  ;Start Menu Folder Page Configuration
+  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU" 
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\KBE" 
+  !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "KBE"
+  var StartMenuFolder
+  !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
+  
+  !insertmacro MUI_PAGE_INSTFILES
+  
+  !insertmacro MUI_UNPAGE_CONFIRM
+  !insertmacro MUI_UNPAGE_INSTFILES
+;Languages
+ 
+!insertmacro MUI_LANGUAGE "English"
+
+;--------------------------------
+
+# create an install section.
+Section ;"Editor"
+ 
+%INST_FILES%
+	
+	;Store installation folder
+  WriteRegStr HKCU "Software\KBE" "" $INSTDIR
+  
+  ;Create uninstaller
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
+  
+  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
+    
+    ;Create shortcuts
+	CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\KBE.lnk" "$INSTDIR\kbe.exe"
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual\User Guide.pdf"
+    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
+	
+	; associate files
+	${registerExtension} "$INSTDIR\kbe.exe" ".gwf" "GWF File"
+  
+  !insertmacro MUI_STARTMENU_WRITE_END
+
+SectionEnd
+
+Section "Uninstall"
+	Delete "$INSTDIR\Uninstall.exe"
+	
+%UNINST_FILES%
+
+%UNINST_EXAMPLE%
+	
+  !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
+    
+  Delete "$SMPROGRAMS\$StartMenuFolder\examples.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\KBE.lnk"
+  Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk"
+  RMDir "$SMPROGRAMS\$StartMenuFolder"
+
+  RMDir "$INSTDIR"
+  DeleteRegKey /ifempty HKCU "Software\KBE"
+  
+  ${unregisterExtension} ".gwf" "GWF File"
+SectionEnd
+
+Section "Examples"
+%INST_EXAMPLE%
+	
+	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\examples.lnk" "$INSTDIR\example"
+SectionEnd
