@@ -29,10 +29,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 //#include "scgcontentfactory.h"
 //#include "scgcontentviewer.h"
 #include "scgcontentstring.h"
+#include <QValidator>
 
 class SCgNode;
 class QLabel;
 class QLineEdit;
+class QDoubleValidator;
 
 // ---------------------------------------------------
 class SCgContentNumericDialog : public SCgContentDialog
@@ -49,9 +51,21 @@ protected:
     //! @see    SCgContentDialog::contentInfo()
     void contentInfo(SCgContent::ContInfo &info);
 
+signals:
+    /*! Signal keeps line edit text validity
+      */
+    void enableApplyButton(QValidator::State);
+
+private slots:
+    /*! Slot keeps line edit text changes
+      */
+    void slotEnableApplyButton(QString);
+
 private:
     //! Numeric edit area
     QLineEdit* mNumericLineEdit;
+    //! Validator for edit area
+    QDoubleValidator *mNumericValidator;
 };
 
 // ---------------------------------------------------

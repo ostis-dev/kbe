@@ -47,7 +47,7 @@ SCgContentChangeDialog::SCgContentChangeDialog(SCgNode *node, QWidget *parent) :
 
     QHBoxLayout *bottomLayout = new QHBoxLayout;
 
-    QPushButton *buttonApply = new QPushButton(tr("Apply"), this);
+    buttonApply = new QPushButton(tr("Apply"), this);
     connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
     bottomLayout->addWidget(buttonApply, 1, Qt::AlignRight);
 
@@ -87,6 +87,15 @@ void SCgContentChangeDialog::changeFromat(QString format)
 
     mDialog = SCgContentFactory::createDialog(format, mNode);
     mDialog->setParent(this);
+    if (format == "numeric")
+    {
+        buttonApply->setEnabled(false);
+        connect(mDialog, SIGNAL(enableApplyButton(QValidator::State)), this, SLOT(slotEnableApplyButton(QValidator::State)));
+    }
+    else
+    {
+        buttonApply->setEnabled(true);
+    }
     mCenterLayout->addWidget(mDialog);
     setFixedSize(mDialog->sizeHint() + QSize(40, 70));//resize(mDialog->sizeHint());
 }
@@ -101,4 +110,16 @@ void SCgContentChangeDialog::apply()
 void SCgContentChangeDialog::contentInfo(SCgContent::ContInfo &info)
 {
     return mDialog->contentInfo(info);
+}
+
+void SCgContentChangeDialog::slotEnableApplyButton(QValidator::State state)
+{
+    if (state == QValidator::Acceptable)
+    {
+        buttonApply->setEnabled(true);
+    }
+    else
+    {
+        buttonApply->setEnabled(false);
+    }
 }

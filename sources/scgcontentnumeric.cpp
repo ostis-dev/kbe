@@ -38,7 +38,10 @@ SCgContentNumericDialog::SCgContentNumericDialog(SCgNode *node, QWidget *parent)
 	mNumericLineEdit->setEnabled(true);
 	mNumericLineEdit->setMinimumWidth(150);
 	mNumericLineEdit->setFixedHeight(22);
-	mNumericLineEdit->setValidator(new QDoubleValidator(mNumericLineEdit));
+        mNumericValidator = new QDoubleValidator(mNumericLineEdit);
+        mNumericValidator->setBottom(-1e308);
+        mNumericValidator->setTop(1e308);
+        mNumericLineEdit->setValidator(mNumericValidator);
 	mNumericLineEdit->setFocus();
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -49,6 +52,7 @@ SCgContentNumericDialog::SCgContentNumericDialog(SCgNode *node, QWidget *parent)
     if (mNode->isContentData() && mNode->contentFormat() == "numeric")
     	mNumericLineEdit->setText(mNode->contentData().toString());
     else mNumericLineEdit->setText("");
+    connect(mNumericLineEdit, SIGNAL(textChanged(QString)), this, SLOT(slotEnableApplyButton(QString)));
 }
 
 void SCgContentNumericDialog::apply()
@@ -67,6 +71,12 @@ void SCgContentNumericDialog::contentInfo(SCgContent::ContInfo &info)
         info.type = SCgContent::Real;
     }
     else info.setEmpty();
+}
+
+void SCgContentNumericDialog::slotEnableApplyButton(QString changes)
+{
+    int i = 0;
+    emit enableApplyButton(mNumericValidator->validate(changes, i));
 }
 
 // ------------------------------

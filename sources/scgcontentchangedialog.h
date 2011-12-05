@@ -26,10 +26,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDialog>
 
 #include "scgcontent.h"
+#include <QValidator>
 
 class SCgContentDialog;
 class SCgNode;
 class QHBoxLayout;
+class QPushButton;
 
 class SCgContentChangeDialog : public QDialog
 {
@@ -50,6 +52,8 @@ private:
 
     //! Central widget that contains content dialog
     QHBoxLayout *mCenterLayout;
+    //! Apply button on dialog
+    QPushButton *buttonApply;
 
 signals:
 
@@ -62,6 +66,11 @@ private slots:
     /*! Slot to apply content to node
       */
     void apply();
+
+private slots:
+    /*! Slot to change apply button state in dependence of content value
+      */
+    void slotEnableApplyButton(QValidator::State);
 
 };
 
