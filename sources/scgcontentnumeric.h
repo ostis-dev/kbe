@@ -32,9 +32,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QValidator>
 
 class SCgNode;
-class QLabel;
 class QLineEdit;
 class QDoubleValidator;
+class QLabel;
 
 // ---------------------------------------------------
 class SCgContentNumericDialog : public SCgContentDialog
@@ -66,6 +66,8 @@ private:
     QLineEdit* mNumericLineEdit;
     //! Validator for edit area
     QDoubleValidator *mNumericValidator;
+    //! Layout for borders of numeric dialog value
+    QLabel *mLabel;
 };
 
 // ---------------------------------------------------

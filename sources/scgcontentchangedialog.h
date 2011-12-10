@@ -37,6 +37,17 @@ class SCgContentChangeDialog : public QDialog
 {
 Q_OBJECT
 public:
+    static SCgContentChangeDialog* getInstance();
+    static void Destroy()
+    {
+        if(mInstance)
+            delete mInstance;
+        mInstance = 0;
+    }
+private:
+    static SCgContentChangeDialog *mInstance;
+
+public:
     explicit SCgContentChangeDialog(SCgNode *node, QWidget *parent = 0);
     virtual ~SCgContentChangeDialog();
 
@@ -53,7 +64,7 @@ private:
     //! Central widget that contains content dialog
     QHBoxLayout *mCenterLayout;
     //! Apply button on dialog
-    QPushButton *buttonApply;
+    QPushButton *mButtonApply;
 
 signals:
 
