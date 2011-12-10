@@ -99,15 +99,7 @@ void SCgContentChangeDialog::changeFromat(QString format)
 
     mDialog = SCgContentFactory::createDialog(format, mNode);
     mDialog->setParent(this);
-//    if (format == "numeric")
-//    {
-//        buttonApply->setEnabled(false);
-//        connect(mDialog, SIGNAL(enableApplyButton(QValidator::State)), this, SLOT(slotEnableApplyButton(QValidator::State)));
-//    }
-//    else
-//    {
-        mButtonApply->setEnabled(true);
-//    }
+    mButtonApply->setEnabled(true);
     mCenterLayout->addWidget(mDialog);
     setFixedSize(mDialog->sizeHint() + QSize(40, 70));//resize(mDialog->sizeHint());
 }
