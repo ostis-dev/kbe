@@ -31,6 +31,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
+#include <QLabel>
+
+SCgContentChangeDialog* SCgContentChangeDialog::mInstance = 0;
+
+SCgContentChangeDialog* SCgContentChangeDialog::getInstance()
+{
+    Q_ASSERT(mInstance != 0);
+    return mInstance;
+}
 
 SCgContentChangeDialog::SCgContentChangeDialog(SCgNode *node, QWidget *parent) :
     QDialog(parent),
@@ -38,18 +47,19 @@ SCgContentChangeDialog::SCgContentChangeDialog(SCgNode *node, QWidget *parent) :
     mDialog(0),
     mCenterLayout(0)
 {
+    Q_ASSERT(mInstance == 0);
+    mInstance = this;
 
     QHBoxLayout *topLayout = new QHBoxLayout;
-
     QComboBox *comboFormats = new QComboBox(this);
     connect(comboFormats, SIGNAL(currentIndexChanged(QString)), this, SLOT(changeFromat(QString)));
     topLayout->addWidget(comboFormats, 0, Qt::AlignLeft);
 
     QHBoxLayout *bottomLayout = new QHBoxLayout;
 
-    QPushButton *buttonApply = new QPushButton(tr("Apply"), this);
-    connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
-    bottomLayout->addWidget(buttonApply, 1, Qt::AlignRight);
+    mButtonApply = new QPushButton(tr("Apply"), this);
+    connect(mButtonApply, SIGNAL(clicked()), this, SLOT(apply()));
+    bottomLayout->addWidget(mButtonApply, 1, Qt::AlignRight);
 
     mCenterLayout = new QHBoxLayout;
 
@@ -75,6 +85,8 @@ SCgContentChangeDialog::~SCgContentChangeDialog()
         delete mDialog;
         mDialog = 0;
     }
+
+    mInstance = 0;
 }
 
 void SCgContentChangeDialog::changeFromat(QString format)
@@ -87,6 +99,7 @@ void SCgContentChangeDialog::changeFromat(QString format)
 
     mDialog = SCgContentFactory::createDialog(format, mNode);
     mDialog->setParent(this);
+    mButtonApply->setEnabled(true);
     mCenterLayout->addWidget(mDialog);
     setFixedSize(mDialog->sizeHint() + QSize(40, 70));//resize(mDialog->sizeHint());
 }
@@ -101,4 +114,16 @@ void SCgContentChangeDialog::apply()
 void SCgContentChangeDialog::contentInfo(SCgContent::ContInfo &info)
 {
     return mDialog->contentInfo(info);
+}
+
+void SCgContentChangeDialog::slotEnableApplyButton(QValidator::State state)
+{
+    if (state == QValidator::Acceptable)
+    {
+        mButtonApply->setEnabled(true);
+    }
+    else
+    {
+        mButtonApply->setEnabled(false);
+    }
 }

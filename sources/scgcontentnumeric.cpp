@@ -21,12 +21,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcontentnumeric.h"
+#include "scgcontentchangedialog.h"
 
 #include "scgnode.h"
 
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QDoubleValidator>
+#include <QLabel>
 
 // ------------------------------
 SCgContentNumericDialog::SCgContentNumericDialog(SCgNode *node, QWidget *parent) :
@@ -34,14 +36,19 @@ SCgContentNumericDialog::SCgContentNumericDialog(SCgNode *node, QWidget *parent)
         mNumericLineEdit(0)
 {
 	mNumericLineEdit = new QLineEdit(this);
+        mLabel = new QLabel("Input value in borders (-1e308, 1e308):");
 
 	mNumericLineEdit->setEnabled(true);
 	mNumericLineEdit->setMinimumWidth(150);
 	mNumericLineEdit->setFixedHeight(22);
-	mNumericLineEdit->setValidator(new QDoubleValidator(mNumericLineEdit));
+        mNumericValidator = new QDoubleValidator(mNumericLineEdit);
+        mNumericValidator->setBottom(-1e308);
+        mNumericValidator->setTop(1e308);
+        mNumericLineEdit->setValidator(mNumericValidator);
 	mNumericLineEdit->setFocus();
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(mLabel);
     mainLayout->addWidget(mNumericLineEdit);
     mainLayout->addStretch();
     setLayout(mainLayout);
@@ -49,6 +56,11 @@ SCgContentNumericDialog::SCgContentNumericDialog(SCgNode *node, QWidget *parent)
     if (mNode->isContentData() && mNode->contentFormat() == "numeric")
     	mNumericLineEdit->setText(mNode->contentData().toString());
     else mNumericLineEdit->setText("");
+    connect(mNumericLineEdit, SIGNAL(textChanged(QString)), this,
+            SLOT(slotEnableApplyButton(QString)));
+    connect(this, SIGNAL(enableApplyButton(QValidator::State)),
+            SCgContentChangeDialog::getInstance(),
+            SLOT(slotEnableApplyButton(QValidator::State)));
 }
 
 void SCgContentNumericDialog::apply()
@@ -67,6 +79,20 @@ void SCgContentNumericDialog::contentInfo(SCgContent::ContInfo &info)
         info.type = SCgContent::Real;
     }
     else info.setEmpty();
+}
+
+void SCgContentNumericDialog::slotEnableApplyButton(QString changes)
+{
+    int i = 0;
+    emit enableApplyButton(mNumericValidator->validate(changes, i));
+    if (mNumericValidator->validate(changes, i) != 2)
+    {
+        mNumericLineEdit->setStyleSheet("QLineEdit{color:red}");
+    }
+    else
+    {
+        mNumericLineEdit->setStyleSheet("QLineEdit{color:black}");
+    }
 }
 
 // ------------------------------
