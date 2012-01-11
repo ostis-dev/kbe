@@ -75,9 +75,11 @@ void SCgContentImageDialog::chooseSource()
 void SCgContentImageDialog::chooseImage(const QString &title, QImage *image,
                                         QToolButton *button)
 {
-    QString filters("Windows Bitmap(*.bmp)\n"
+    QString filters("All suported (*.bmp *gif *.jpg *.jpeg *.mng *.png *.pbm"
+                    "*.pgm *.ppm *.tiff *.xbm *.xpm *.svg)\n"
+                    "Windows Bitmap(*.bmp)\n"
                     "Graphic Interchange Format(*.gif)\n"
-                    "Joint Photographic Experts Group(*.jpg; *.jpeg)\n"
+                    "Joint Photographic Experts Group(*.jpg *.jpeg)\n"
                     "Multiple-image Network Graphics(*.mng)\n"
                     "Portable Network Graphics(*.png)\n"
                     "Portable Bitmap(*.pbm)\n"
@@ -88,7 +90,9 @@ void SCgContentImageDialog::chooseImage(const QString &title, QImage *image,
                     "X11 Pixmap(*.xpm)\n"
                     "Scalable Vector Graphics(*.svg)\n"
                     "All Files(*.*)");
-    QString fileName = QFileDialog::getOpenFileName(this, title, "", filters);
+    QString fileName = QFileDialog::getOpenFileName(this, title, "",
+                                                    filters, new QString(),
+                                                    QFileDialog::DontUseNativeDialog);
     if (!fileName.isEmpty()){
         loadImage(fileName, image, button);        
         mPath = fileName;
