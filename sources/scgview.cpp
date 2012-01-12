@@ -88,7 +88,7 @@ void SCgView::craeteActions()
     mActionChangeIdtf->setShortcut(QKeySequence( tr("I") ));
     connect(mActionChangeIdtf, SIGNAL(triggered()), this, SLOT(changeIdentifier()));
 
-    mActionDelete = new QAction(mWindow->findIcon("edit-delete.png"),tr("Delete"),mWindow);
+    mActionDelete = new QAction(QIcon::fromTheme("edit-delete", mWindow->findIcon("edit-delete.png")),tr("Delete"),mWindow);
     mActionDelete->setShortcut(QKeySequence::Delete);
     connect(mActionDelete, SIGNAL(triggered()), this, SLOT(deleteSelected()));
 
@@ -96,19 +96,19 @@ void SCgView::craeteActions()
     mActionContourDelete->setShortcut( QKeySequence(tr("Backspace")) );
     connect(mActionContourDelete, SIGNAL(triggered()), this, SLOT(deleteJustContour()));
 
-    mActionCopy = new QAction(mWindow->findIcon("edit-copy.png"), tr("Copy"),this);
+    mActionCopy = new QAction(QIcon::fromTheme("edit-copy", mWindow->findIcon("edit-copy.png")), tr("Copy"),this);
     mActionCopy->setShortcut(QKeySequence::Copy);
     connect(mActionCopy, SIGNAL(triggered()), mWindow, SLOT(copy()));
 
-    mActionCut = new QAction(mWindow->findIcon("edit-cut.png"),tr("Cut"),this);
+    mActionCut = new QAction(QIcon::fromTheme("edit-cut", mWindow->findIcon("edit-cut.png")),tr("Cut"),this);
     mActionCut->setShortcut(QKeySequence::Cut);
     connect(mActionCut, SIGNAL(triggered()), mWindow, SLOT(cut()));
 
-    mActionPaste = new QAction(mWindow->findIcon("edit-paste.png"), tr("Paste"),this);
+    mActionPaste = new QAction(QIcon::fromTheme("edit-paste", mWindow->findIcon("edit-paste.png")), tr("Paste"),this);
     mActionPaste->setShortcut(QKeySequence::Paste);
     connect(mActionPaste, SIGNAL(triggered()), mWindow, SLOT(paste()));
 
-    mActionSelect_All = new QAction(mWindow->findIcon("edit-select-all.png"), tr("Select All"),this);
+    mActionSelect_All = new QAction(QIcon::fromTheme("edit-select-all", mWindow->findIcon("edit-select-all.png")), tr("Select All"),this);
     mActionSelect_All->setShortcut(QKeySequence::SelectAll);
     connect(mActionSelect_All, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
