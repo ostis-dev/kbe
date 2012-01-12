@@ -148,7 +148,7 @@ void MainWindow::createToolBars()
     mToolBarFile->addAction(ui->actionSave_as);
     //mToolBarFile->addAction(ui->actionSave_all);
     mToolBarFile->addSeparator();
-    //mToolBarFile->addAction(ui->actionClose);
+    mToolBarFile->addAction(ui->actionClose);
     //mToolBarFile->addAction(ui->actionClose_All);
     //mToolBarFile->addAction(ui->actionClose_Others);
     mToolBarFile->setObjectName("Main Tools");
@@ -158,20 +158,15 @@ void MainWindow::createToolBars()
 
 void MainWindow::createActions()
 {
-    ui->actionNew->setIcon(getIcon("document-new.png"));
-    ui->actionOpen->setIcon(getIcon("document-open.png"));
-    ui->actionSave->setIcon(getIcon("document-save.png"));
-    ui->actionSave_as->setIcon(getIcon("document-save-as.png"));
-    ui->actionSave_all->setIcon(getIcon("document-save-all.png"));
+    ui->actionNew->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
+    ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
+    ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
+    ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
 
-    ui->actionClose->setIcon(getIcon("document-close.png"));
-    ui->actionClose_All->setIcon(getIcon("document-close-all.png"));
-    ui->actionClose_Others->setIcon(getIcon("document-close-others.png"));
-    ui->actionExit->setIcon(getIcon("system-shutdown.png"));
+    ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
+    ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
-
-
-    ui->actionAbout->setIcon(getIcon("help-browser.png"));
+    ui->actionAbout->setIcon(QIcon::fromTheme("help-browser", getIcon("help-browser.png")));
 
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(fileNew()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(fileOpen()));

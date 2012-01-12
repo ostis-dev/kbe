@@ -112,17 +112,18 @@ void SCgWindow::createActions()
 {
     mActionFind = new QAction(findIcon("edit-find.png"), tr("&Find by Identifier..."), this);
     mActionFind->setShortcuts(QKeySequence::Find);
+    mActionFind->setIcon(QIcon::fromTheme("edit-find", findIcon("edit-find.png")));
     connect(mActionFind, SIGNAL(triggered()), this, SLOT(showTextSearch()));
 
     mActionUndo = mUndoStack->createUndoAction(this, tr("Undo"));//new QAction(tr("Undo"),this);
     mActionUndo->setEnabled(false);
     mActionUndo->setShortcut(QKeySequence::Undo);
-    mActionUndo->setIcon(findIcon("edit-undo.png"));
+    mActionUndo->setIcon(QIcon::fromTheme("edit-undo", findIcon("edit-undo.png")));
 
     mActionRedo = mUndoStack->createRedoAction(this, tr("Redo"));//new QAction(tr("Redo"),this);
     mActionRedo->setEnabled(false);
     mActionRedo->setShortcut(QKeySequence::Redo);
-    mActionRedo->setIcon(findIcon("edit-redo.png"));
+    mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
 
 //    mActionMinMap = new QAction(tr("Minimap"), this);
 //    mActionMinMap->setCheckable(true);
