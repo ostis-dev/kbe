@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 #include "SCgContourModeEventHandler.h"
-#include "scgcontour.h"
+#include "../scgcontour.h"
 
 #include <QVector2D>
 

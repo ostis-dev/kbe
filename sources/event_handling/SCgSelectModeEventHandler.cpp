@@ -20,9 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 #include "SCgSelectModeEventHandler.h"
-#include "scgcontour.h"
+#include "../scgcontour.h"
 #include <QUndoStack>
-#include "scgnode.h"
+#include "../scgnode.h"
 
 SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
                                             mIsItemsMoved(false),

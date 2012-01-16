@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #include "SCgPairModeEventHandler.h"
-#include "scgcontour.h"
+#include "../scgcontour.h"
 
 SCgPairModeEventHandler::SCgPairModeEventHandler(SCgScene* parent):SCgEventHandler(parent)
 {
