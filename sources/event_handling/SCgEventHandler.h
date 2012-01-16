@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QKeyEvent>
 
-#include "scgscene.h"
+#include "../scgscene.h"
 
 /*! Event handling on SCgScene depends on edit mode.
  *  This is a base class for providing different reaction for each edit mode.

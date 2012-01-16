@@ -22,8 +22,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SCgEventHandler.h"
 #include <QPainterPath>
-#include "scgcontour.h"
-#include "scgnode.h"
+#include "../scgcontour.h"
+#include "../scgnode.h"
 
 SCgEventHandler::SCgEventHandler(SCgScene* parent) :
         QObject(parent),

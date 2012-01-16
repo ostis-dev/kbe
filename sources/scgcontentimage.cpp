@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 #include <QToolButton>
 #include <QFileDialog>
-#include <config.h>
+#include "config.h"
 
 static const QSize resultSize(200, 200);
 QString mPath;
