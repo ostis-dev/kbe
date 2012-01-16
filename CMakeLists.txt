@@ -124,7 +124,7 @@ set (KBE_ALL_SRSC
 
 set (KBE_TRANSLATIONS
     ./sources/translations/lang_en_EN.ts
-	./sources/translations/lang_ru_RU.ts
+    ./sources/translations/lang_ru_RU.ts
     )
 
 project (${PROJECT})
@@ -133,7 +133,7 @@ include_directories (./)
 
 set (WIN_RESOURCE ./sources/kbe.rc)
  
-find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml QtSvg Phonon REQUIRED)
+find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml QtSvg REQUIRED)
 
 include (${QT_USE_FILE})
 qt4_wrap_ui (SAMPLE_UI_HDRS ${KBE_UI_FORMS})
@@ -183,22 +183,17 @@ target_link_libraries (${PROJECT} ${QT_LIBRARIES})
 file (COPY ./sources/media DESTINATION ${CMAKE_BINARY_DIR})
 
 IF (WIN32)
-	add_custom_command (TARGET kbe COMMAND 
-		if not exist $(TargetDir)media\\lang\\ mkdir $(TargetDir)media\\lang\\)
-
-	foreach(FILENAME ${QM_FILES})
-		add_custom_command(TARGET kbe 
-            COMMAND copy \"${FILENAME}\" $(TargetDir)media\\lang\\)
+    add_custom_command (TARGET kbe COMMAND 
+        if not exist $(TargetDir)media\\lang\\ mkdir $(TargetDir)media\\lang\\)
+    foreach(FILENAME ${QM_FILES})
         add_custom_command(TARGET kbe 
-            COMMAND del \"${FILENAME}\")
-	endforeach(FILENAME)
+            COMMAND move \"${FILENAME}\" $(TargetDir)media\\lang\\)
+    endforeach(FILENAME)
 ELSE (WIN32)
     add_custom_command (TARGET kbe COMMAND
         mkdir $(TargetDir)media/lang/)
     foreach(FILENAME ${QM_FILES})
         add_custom_command(TARGET kbe 
-            COMMAND cp ${FILENAME} $(TargetDir)media/lang/)
-        add_custom_command(TARGET kbe 
-            COMMAND rm ${FILENAME})
+            COMMAND mv ${FILENAME} $(TargetDir)media/lang/)
     endforeach(FILENAME)
 ENDIF (WIN32)
