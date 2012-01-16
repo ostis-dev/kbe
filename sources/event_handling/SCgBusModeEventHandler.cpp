@@ -21,8 +21,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "SCgBusModeEventHandler.h"
-#include "scgcontour.h"
-#include "scgnode.h"
+#include "../scgcontour.h"
+#include "../scgnode.h"
 
 #include <QMessageBox>
 #include <QVector2D>

@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "SCgInsertModeEventHandler.h"
-#include "scgcontour.h"
+#include "../scgcontour.h"
 
 SCgInsertModeEventHandler::SCgInsertModeEventHandler(SCgScene* parent):
                                                             SCgEventHandler(parent)
