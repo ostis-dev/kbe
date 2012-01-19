@@ -47,8 +47,9 @@ class SCgScene : public QGraphicsScene
 Q_OBJECT
 
 public:
-    //! Pair with initial and finish position.
-    typedef QPair<QPointF, QPointF> BeginAndEndPoints;
+    //! Pair with item's parent and item's position
+    typedef QPair<QGraphicsItem*, QPointF> ParentAndPosition;
+    typedef QPair<ParentAndPosition, ParentAndPosition> BeginAndEndPoints;
     typedef QMap<QGraphicsItem* ,  BeginAndEndPoints> ItemUndoInfo;
     typedef QMap<QGraphicsItem* ,  BeginAndEndPoints> ObjectUndoInfo;
     typedef enum
@@ -210,7 +211,7 @@ public:
     										bool addToStack = true);
 
     /*! Command for moving objects
-     * @param initialPositions Map with moved objects and their's initial positions.
+     * @param info Map with moved objects and their's initial and finish positions.
      */
     SCgBaseCommand* moveSelectedCommand(const ObjectUndoInfo& info,
     									SCgBaseCommand* parentCmd = 0,

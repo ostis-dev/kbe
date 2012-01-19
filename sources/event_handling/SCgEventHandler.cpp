@@ -242,7 +242,7 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
         foreach(QGraphicsItem* item, mScene->selectedItems())
         {
             if(item->flags() & QGraphicsItem::ItemIsMovable && !movableAncestorIsSelected(item))
-                undoInfo[item] = qMakePair(item->pos(), item->pos()+offset);
+                undoInfo[item] = qMakePair(qMakePair(item->parentItem(), item->pos()), qMakePair(item->parentItem(), item->pos()+offset));
         }
         if(!offset.isNull() && !undoInfo.empty())
         {
