@@ -455,12 +455,12 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
             PointGraphicsItem* pointItem = static_cast<PointGraphicsItem*>(item);
             if(!cmd)
                 cmd = new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
-                                                 pointItem->pointIndex(), it.value().first,
-                                                 it.value().second, parentCmd);
+                                              pointItem->pointIndex(), it.value().first.second,
+                                              it.value().second.second, parentCmd);
             else
                 new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
-                                        pointItem->pointIndex(), it.value().first,
-                                        it.value().second, cmd);
+                                        pointItem->pointIndex(), it.value().first.second,
+                                        it.value().second.second, cmd);
         }
 
         // If Incidence point has moved then
@@ -473,8 +473,8 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
                 SCgPointObject::IncidentRole role = i_item->role();
                 SCgObject* oldObject = p->objectWithRole(role);
                 SCgObject* newObject = i_item->objectAtPoint();
-                const QPointF& oldPoint = it.value().first;
-                const QPointF& newPoint = it.value().second;
+                const QPointF& oldPoint = it.value().first.second;
+                const QPointF& newPoint = it.value().second.second;
 
                 // If state really changed, then create command.
                 if(newObject->type() != SCgNode::Type || oldObject != newObject)
