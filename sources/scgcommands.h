@@ -67,7 +67,7 @@ class SCgCommandSelectedObjectMove : public SCgBaseCommand
 {
 public:
     /*! This command will be major if we'll rewrite scene event handling.
-     * @param undoInfo map holding object and pair with its start and finish positions.
+     * @param undoInfo Map holding object and pair with its initial parent,position and final parent, position.
      */
     explicit SCgCommandSelectedObjectMove(SCgScene *scene,
                                       const SCgScene::ObjectUndoInfo& undoInfo,
