@@ -85,7 +85,7 @@ bool SCgCommandSelectedObjectMove::mergeWith (const QUndoCommand* command)
     SCgScene::ObjectUndoInfo::ConstIterator const_it = c->mUndoInfo.begin();
     while(const_it != c->mUndoInfo.end())
     {
-        QPointF offset = const_it.value().second - const_it.value().first;
+        QPointF offset = const_it.value().second.second - const_it.value().first.second;
         if(offset.manhattanLength() > maxManhattanLength)
             maxManhattanLength = offset.manhattanLength();
         ++const_it;
@@ -108,7 +108,8 @@ void SCgCommandSelectedObjectMove::redo()
     SCgScene::ObjectUndoInfo::ConstIterator const_it = mUndoInfo.begin();
     while(const_it != mUndoInfo.end())
     {
-        const_it.key()->setPos(const_it.value().second);
+        const_it.key()->setParentItem(const_it.value().second.first);
+        const_it.key()->setPos(const_it.value().second.second);
         ++const_it;
     }
     SCgBaseCommand::redo();
@@ -119,7 +120,8 @@ void SCgCommandSelectedObjectMove::undo()
     SCgScene::ObjectUndoInfo::ConstIterator const_it = mUndoInfo.begin();
     while(const_it != mUndoInfo.end())
     {
-        const_it.key()->setPos(const_it.value().first);
+        const_it.key()->setParentItem(const_it.value().first.first);
+        const_it.key()->setPos(const_it.value().first.second);
         ++const_it;
     }
 }
