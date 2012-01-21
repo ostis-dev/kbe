@@ -21,6 +21,7 @@ set (KBE_HDRS
     ./sources/readwritemanager.h
     ./sources/scgabstractobjectbuilder.h
     ./sources/scgalphabet.h
+    ./sources/scgarranger.h
     ./sources/scgbus.h
     ./sources/scgcommands.h
     ./sources/scgconfig.h
@@ -40,7 +41,6 @@ set (KBE_HDRS
     ./sources/scgminimap.h
     ./sources/scgnode.h
     ./sources/scgobject.h
-    ./sources/scgobjectarrangers.h
     ./sources/scgobjectsinfo.h
     ./sources/scgobjectsinfodata.h
     ./sources/scgpair.h
@@ -77,6 +77,7 @@ set (KBE_SRSC
     ./sources/readwritemanager.cpp
     ./sources/scgabstractobjectbuilder.cpp
     ./sources/scgalphabet.cpp
+    ./sources/scgarranger.cpp
     ./sources/scgbus.cpp
     ./sources/scgcommands.cpp
     ./sources/scgconfig.cpp
@@ -96,7 +97,6 @@ set (KBE_SRSC
     ./sources/scgminimap.cpp
     ./sources/scgnode.cpp
     ./sources/scgobject.cpp
-    ./sources/scgobjectarrangers.cpp
     ./sources/scgobjectsinfo.cpp
     ./sources/scgobjectsinfodata.cpp
     ./sources/scgpair.cpp
