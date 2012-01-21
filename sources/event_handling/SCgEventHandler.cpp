@@ -133,6 +133,7 @@ void SCgEventHandler::startLineCreation(const QPointF &point)
     QGraphicsItem* parent = 0;
     SCgScene::EditMode curr_mode = mode();
     mObjectAtFirstPoint = mScene->objectAt(point);
+    mScene->setLineCreationModeActivity(true);
     if(mObjectAtFirstPoint)
     {
         if(mObjectAtFirstPoint->type() == SCgNode::Type || mObjectAtFirstPoint->type() == SCgContour::Type )
@@ -169,6 +170,7 @@ void SCgEventHandler::endLineCreation()
     mPathItem = 0;
     mLastLineItem = 0;
     mObjectAtFirstPoint = 0;
+    mScene->setLineCreationModeActivity(false);
 }
 
 void SCgEventHandler::updateLastLine(QPointF mousePos)
@@ -219,6 +221,7 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
     {
         event->accept();
         clean();
+        mScene->setLineCreationModeActivity(false);
     }
     if (event->modifiers() == Qt::ControlModifier)
     {

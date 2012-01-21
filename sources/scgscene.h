@@ -285,6 +285,18 @@ public:
      */
     void pasteTemplate(const QList<SCgObject*>& list);
 
+    /*!
+    * Return line creation activity flag
+    * @sa SCgEventHandler::startLineCreation
+    * @sa SCgEventHandler::endLineCreation
+    */
+    bool lineCreationModeActivity();
+
+    /*!
+    * Set line creation activity flag
+    */
+    void setLineCreationModeActivity(bool flag);
+
 private:
     QVector<SCgEventHandler*> mSceneEventHandlers;
     //! Current edit mode
@@ -321,6 +333,9 @@ private:
     QGraphicsItemGroup* mInsertedObjectGroup;
     //! previous edit mode
     EditMode mPreviousEditMode;
+
+    //! flag indicates proccess of line creation mode
+    bool mLineCreationModeActivity;
 
 protected:
     /* mouse events */

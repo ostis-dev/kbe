@@ -54,7 +54,8 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mIsGridDrawn(false),
     mIsIdtfModelDirty(true),
     mCursor(0,0),
-    mInsertedObjectGroup(0)
+    mInsertedObjectGroup(0),
+    mLineCreationModeActivity(false)
 {
     mSceneEventHandlers.fill(0,(int)Mode_Count);
 
@@ -76,6 +77,14 @@ SCgScene::~SCgScene()
     for (int i = 0; i < mSceneEventHandlers.size(); ++i)
         delete mSceneEventHandlers[i];
     mSceneEventHandlers.clear();
+}
+
+bool SCgScene::lineCreationModeActivity() {
+    return mLineCreationModeActivity;
+}
+
+void SCgScene::setLineCreationModeActivity(bool flag) {
+    mLineCreationModeActivity = flag;
 }
 
 void SCgScene::setEditMode(EditMode mode)
