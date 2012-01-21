@@ -58,7 +58,10 @@ SOURCES += findwidget.cpp \
     scgdefaultobjectbuilder.cpp \
     scgabstractobjectbuilder.cpp \
     scgconfig.cpp \
-    scgarranger.cpp
+    scgarranger.cpp \
+    scgarrangervertical.cpp \
+    scgarrangerhorizontal.cpp \
+    scgarrangergrid.cpp
 HEADERS += findwidget.h \
     platform.h \
     version.h \
@@ -110,7 +113,10 @@ HEADERS += findwidget.h \
     scgdefaultobjectbuilder.h \
     scgabstractobjectbuilder.h \
     scgconfig.h \
-    scgarranger.h
+    scgarranger.h \
+    scgarrangervertical.h \
+    scgarrangerhorizontal.h \
+    scgarrangergrid.h
 FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
