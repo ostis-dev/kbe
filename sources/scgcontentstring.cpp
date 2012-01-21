@@ -125,3 +125,10 @@ SCgContentDialog* SCgContentStringFactory::createDialogInstance(SCgNode *node)
 {
     return new SCgContentStringDialog(node);
 }
+
+QMap<QString, QString> SCgContentStringFactory::supportedExtentions() {
+    QMap<QString, QString> ext;
+    ext["txt"] = "text/plain";
+
+    return ext;
+}

@@ -48,6 +48,10 @@ public:
       */
     virtual SCgContentDialog* createDialogInstance(SCgNode *node) = 0;
 
+    /**
+    * @brief Get map contained file's extentions mapped to MIME types
+    */
+    virtual QMap<QString, QString> supportedExtentions()= 0;
 
     /* static functions for factory registration */
     /*! Registers factory for a specified content format
@@ -61,6 +65,10 @@ public:
     /*! Get list of supported formats
       */
     static QList<QString> supportedFormats();
+
+    /*! Get map of supported extensions with it's MIME types
+    */
+    static QMap<QString, QString> registeredExtentions2MIME();
 
     /*! Create scg content viewer instance.
         \param  format  content format.
@@ -80,6 +88,9 @@ public:
 private:
     //! Map of registered factories (format, factory)
     static QMap<QString, SCgContentFactory*> mFactories;
+
+    //! Map contains MIME type for each supported extension
+    static QMap<QString, QString> ext2MIME;
 
 signals:
 
