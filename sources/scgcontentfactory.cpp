@@ -24,26 +24,40 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 QMap<QString, SCgContentFactory*> SCgContentFactory::mFactories = QMap<QString, SCgContentFactory*>();
 
+QMap<QString, QString> SCgContentFactory::ext2MIME = QMap<QString, QString>();
+
 SCgContentFactory::SCgContentFactory(QObject *parent) :
     QObject(parent)
-{
+{    
 }
 
 void SCgContentFactory::registerFactory(QString format, SCgContentFactory *factory)
 {
     Q_ASSERT(!mFactories.contains(format));
+    QMap<QString, QString> tmpMap = factory->supportedExtentions();
+    QMap<QString, QString>::const_iterator it = tmpMap.begin();
+    for (; it != tmpMap.end(); ++it)
+        ext2MIME[it.key()] = it.value();
     mFactories[format] = factory;
 }
 
 void SCgContentFactory::unregisterFactory(QString format, SCgContentFactory *factory)
 {
     Q_ASSERT(mFactories.contains(format));
+    QMap<QString, QString> tmpMap = factory->supportedExtentions();
+    QMap<QString, QString>::const_iterator it = tmpMap.begin();
+    for (; it != tmpMap.end(); ++it)
+        ext2MIME.remove(it.value());
     mFactories.remove(format);
 }
 
 QList<QString> SCgContentFactory::supportedFormats()
 {
     return mFactories.keys();
+}
+
+QMap<QString, QString> SCgContentFactory::registeredExtentions2MIME() {
+    return ext2MIME;
 }
 
 SCgContentViewer* SCgContentFactory::createViewer(QString format)

@@ -337,6 +337,7 @@ protected:
     //! Draws grid background
     void drawBackground(QPainter *painter, const QRectF &rect);
 
+    void dropEvent(QGraphicsSceneDragDropEvent *event);
 signals:
 
 public slots:
