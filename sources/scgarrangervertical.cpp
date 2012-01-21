@@ -62,3 +62,8 @@ void SCgVerticalArranger::startOperation()
         }
     }
 }
+
+QString SCgVerticalArranger::name() const
+{
+    return tr("Vertical arrange");
+}

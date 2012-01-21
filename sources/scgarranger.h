@@ -34,10 +34,11 @@ class SCgObject;
 class QGraphicsItem;
 class SCgBaseCommand;
 
-/*! To create new arranger you should implement 3 functions:
+/*! To create new arranger you should implement 4 functions:
  *   bool userMenu();
  *   void startOperation();
  *   int type();
+ *   QString name();
  *  If you won't use the menu then userMenu should return true.
  *  NOTE: If You want use undo/redo commands you should change objects position by calling corresponding functions:
  *  registerCommand(SCgObject*, const QPointF&);
@@ -66,6 +67,9 @@ protected:
 
     //! Start arrange process.
     virtual void startOperation() = 0;
+
+    //! Return arranger name
+    virtual QString name() const = 0;
 
     //! Command for changing node position.
     void registerCommand(SCgObject* obj, const QPointF& newPos);

@@ -18,11 +18,14 @@ public:
     //! @see SCgArranger::type().
     int type() const {return Type;}
 protected:
-    //!  @see SCgArranger::userMenu()
+    //! @see SCgArranger::userMenu()
     bool configDialog();
 
-    //!  @see SCgArranger::startOperation()
+    //! @see SCgArranger::startOperation()
     void startOperation();
+
+    //! @see SCgArranger::name
+    QString name() const;
 };
 
 #endif // SCGARRANGERHORIZONTAL_H

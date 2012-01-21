@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QSpinBox>
+#include <QUndoCommand>
 
 SCgTupleArranger::SCgTupleArranger(QObject *parent) :
     SCgArranger(parent),
@@ -55,6 +56,8 @@ void SCgTupleArranger::startOperation()
     SCgBus *ghostBus = qgraphicsitem_cast<SCgBus*>(mGhosts[bus]);
     Q_ASSERT(ghostBus != 0);
 
+    registerCommand(bus, ghostBus->points());
+
     // affect pairs and objects
     foreach(SCgPair *pair, mBusPairs)
     {
@@ -69,9 +72,12 @@ void SCgTupleArranger::startOperation()
         registerCommand(end, ghostEnd->pos());
     }
 
-    registerCommand(bus, ghostBus->points());
-
     deleteGhosts();
+}
+
+QString SCgTupleArranger::name() const
+{
+    return tr("Tuple arranger");
 }
 
 void SCgTupleArranger::createDialog()
@@ -89,17 +95,17 @@ void SCgTupleArranger::createDialog()
     QSpinBox *ySpin = new QSpinBox(mDialog);
     QSpinBox *dSpin = new QSpinBox(mDialog);
 
-    xSpin->setValue((int)mOffsetX);
     xSpin->setMaximum(500);
     xSpin->setMinimum(-500);
+    xSpin->setValue((int)mOffsetX);
 
-    ySpin->setValue((int)mOffsetY);
     ySpin->setMaximum(100);
     ySpin->setMinimum(-100);
+    ySpin->setValue((int)mOffsetY);
 
-    dSpin->setValue((int)mObjectsDist);
     dSpin->setMaximum(100);
     dSpin->setMinimum(-100);
+    dSpin->setValue((int)mObjectsDist);
 
     QVBoxLayout *vlX = new QVBoxLayout();
     vlX->addWidget(xLabel);
@@ -175,7 +181,6 @@ bool SCgTupleArranger::findArrangeItems()
 void SCgTupleArranger::recalculateGhostsPosition()
 {
     // calculate bus length and set objects to positions
-    int idx = 0;
     qreal busLength = mOffsetY + mObjectsDist * mBusPairs.size();
     foreach(SCgPair *pair, mBusPairs)
     {

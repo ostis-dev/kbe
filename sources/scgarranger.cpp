@@ -54,18 +54,15 @@ void SCgArranger::arrange(SCgView* view)
     if(!view)
         return;
 
-    mParentCommand = 0;
+    mParentCommand = new SCgBaseCommand(0, 0, 0);
+    mParentCommand->setText(name());
 
     mView = view;
     mScene = static_cast<SCgScene*>(mView->scene());
     if(configDialog())
     {
         startOperation();
-        if(mParentCommand)
-        {
-        	mParentCommand->setText(tr("Arrange objects"));
-        	mScene->addCommandToStack(mParentCommand);
-        }
+        mScene->addCommandToStack(mParentCommand);
     }
 }
 

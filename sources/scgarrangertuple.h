@@ -19,14 +19,17 @@ public:
     virtual ~SCgTupleArranger();
 
 protected:
-    //!  @see SCgArranger::userMenu()
+    //!  @see SCgArranger::userMenu
     bool configDialog();
 
-    //!  @see SCgArranger::startOperation()
+    //!  @see SCgArranger::startOperation
     void startOperation();
 
-    //!  @see SCgArranger::type()
+    //!  @see SCgArranger::type
     int type() const { return Type; }
+
+    //! @see SCgArranger::name
+    QString name() const;
 
     /*! Create configuration dialog
       */
@@ -39,6 +42,8 @@ protected:
 
     //! Calculate positions for ghosts
     void recalculateGhostsPosition();
+
+
 
 protected slots:
     /*! @defgroup Slots Slots to react on user actions

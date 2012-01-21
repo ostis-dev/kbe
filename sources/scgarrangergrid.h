@@ -38,6 +38,9 @@ protected:
     //! Translates specified point, given in scene coordinates, to nearest grid node.
     inline QPointF mapFromSceneToGrid(const QPointF& point);
 
+    //! @see SCgArranger::name
+    QString name() const;
+
     /*! @defgroup grdParam Grid Parameters
      *  @{
      */

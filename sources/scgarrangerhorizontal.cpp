@@ -62,3 +62,8 @@ void SCgHorizontalArranger::startOperation()
         }
     }
 }
+
+QString SCgHorizontalArranger::name() const
+{
+    return tr("Horizontal arrange");
+}

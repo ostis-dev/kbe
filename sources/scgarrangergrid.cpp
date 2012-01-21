@@ -269,3 +269,8 @@ void SCgGridArranger::drawGrid(bool draw)
     SCgScene* s = static_cast<SCgScene*>(mView->scene());
     s->setDrawGrid(draw, mGridColor, mXStep, mYStep);
 }
+
+QString SCgGridArranger::name() const
+{
+    return tr("Grid arrange");
+}
