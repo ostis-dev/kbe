@@ -1,18 +1,18 @@
-	!include "MUI2.nsh" 
-	!include "FileAssociation.nsh"
+!include "MUI2.nsh"
+!include "FileAssociation.nsh"
 
-	Name "KBE"
-	
-	; set the name of the installer
-	OutFile "kbe-win32-0.2.0.exe"
+Name "KBE"
 
-	;Default installation folder
-	InstallDir $PROGRAMFILES32\KBE
+; set the name of the installer
+OutFile "kbe-win32-0.2.1.exe"
 
-	;Get installation folder from registry if available
-	InstallDirRegKey HKCU "Software\KBE" ""
-	;Request application privileges for Windows Vista
-	RequestExecutionLevel user
+;Default installation folder
+InstallDir $PROGRAMFILES32\KBE
+
+;Get installation folder from registry if available
+InstallDirRegKey HKCU "Software\KBE" ""
+;Request application privileges for Windows Vista
+RequestExecutionLevel admin
 
 ;--------------------------------
 ;Interface Settings
@@ -27,8 +27,8 @@
   !insertmacro MUI_PAGE_DIRECTORY
   
   ;Start Menu Folder Page Configuration
-  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU" 
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\KBE" 
+  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\KBE"
   !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "KBE"
   var StartMenuFolder
   !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
@@ -47,8 +47,8 @@
 Section ;"Editor"
  
 %INST_FILES%
-	
-	;Store installation folder
+
+;Store installation folder
   WriteRegStr HKCU "Software\KBE" "" $INSTDIR
   
   ;Create uninstaller
@@ -57,25 +57,25 @@ Section ;"Editor"
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
     ;Create shortcuts
-	CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\KBE.lnk" "$INSTDIR\kbe.exe"
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual\User Guide.pdf"
+CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+CreateShortCut "$SMPROGRAMS\$StartMenuFolder\KBE.lnk" "$INSTDIR\kbe.exe"
+CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual\User Guide.pdf"
     CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
-	
-	; associate files
-	${registerExtension} "$INSTDIR\kbe.exe" ".gwf" "GWF File"
+
+; associate files
+${registerExtension} "$INSTDIR\kbe.exe" ".gwf" "GWF File"
   
   !insertmacro MUI_STARTMENU_WRITE_END
 
 SectionEnd
 
 Section "Uninstall"
-	Delete "$INSTDIR\Uninstall.exe"
-	
+Delete "$INSTDIR\Uninstall.exe"
+
 %UNINST_FILES%
 
 %UNINST_EXAMPLE%
-	
+
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
   Delete "$SMPROGRAMS\$StartMenuFolder\examples.lnk"
@@ -91,6 +91,6 @@ SectionEnd
 
 Section "Examples"
 %INST_EXAMPLE%
-	
-	CreateShortCut "$SMPROGRAMS\$StartMenuFolder\examples.lnk" "$INSTDIR\example"
+
+CreateShortCut "$SMPROGRAMS\$StartMenuFolder\examples.lnk" "$INSTDIR\example"
 SectionEnd
