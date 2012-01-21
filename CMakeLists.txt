@@ -22,6 +22,9 @@ set (KBE_HDRS
     ./sources/scgabstractobjectbuilder.h
     ./sources/scgalphabet.h
     ./sources/scgarranger.h
+    ./sources/scgarrangervertical.h
+    ./sources/scgarrangerhorizontal.h
+    ./sources/scgarrangergrid.h
     ./sources/scgbus.h
     ./sources/scgcommands.h
     ./sources/scgconfig.h
@@ -78,6 +81,9 @@ set (KBE_SRSC
     ./sources/scgabstractobjectbuilder.cpp
     ./sources/scgalphabet.cpp
     ./sources/scgarranger.cpp
+    ./sources/scgarrangervertical.cpp
+    ./sources/scgarrangerhorizontal.cpp
+    ./sources/scgarrangergrid.cpp
     ./sources/scgbus.cpp
     ./sources/scgcommands.cpp
     ./sources/scgconfig.cpp
