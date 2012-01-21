@@ -81,6 +81,8 @@ public:
     virtual ~SCgContentStringFactory(){}
     SCgContentViewer* createViewerInstance();
     SCgContentDialog* createDialogInstance(SCgNode *node);
+
+    QMap<QString, QString> supportedExtentions();
 };
 
 #endif // SCGCONTENTSTRING_H
