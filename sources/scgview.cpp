@@ -207,6 +207,10 @@ QList<QAction*> SCgView::actions() const
 
 void SCgView::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (static_cast<SCgScene*>(scene())->lineCreationModeActivity()) {
+        QGraphicsView::contextMenuEvent(event);
+        return;
+    }
     // get scg-object under mouse
     QPointF mousePos = mapToScene(event->pos());/* +
                                 QPointF(horizontalScrollBar()->value(), verticalScrollBar()->value()) -
@@ -221,6 +225,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
         mContextMenu = 0;
     }
 
+    if (!object) scene()->clearSelection();
     // selection by right mouse click
     if(object && !object->isSelected())
     {
