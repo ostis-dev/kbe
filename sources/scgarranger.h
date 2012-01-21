@@ -36,7 +36,7 @@ class QSpinBox;
 class QCheckBox;
 class SCgBaseCommand;
 
-/*! For creating new arranger you should implement 2 functions:
+/*! To create new arranger you should implement 2 functions:
  *   virtual bool userMenu() = 0;
  *   virtual void startOperation() = 0;
  *  If you won't use the menu then userMenu should return true.
