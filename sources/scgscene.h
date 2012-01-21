@@ -285,6 +285,7 @@ public:
      */
     void pasteTemplate(const QList<SCgObject*>& list);
 
+    void dropEvent(QGraphicsSceneDragDropEvent *event);
 private:
     QVector<SCgEventHandler*> mSceneEventHandlers;
     //! Current edit mode
@@ -328,6 +329,8 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+
 
     /* keyboard events */
     void keyPressEvent(QKeyEvent *event);

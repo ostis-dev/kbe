@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    Config::initSettings();
     a.setOrganizationName("OSTIS");
     a.setOrganizationDomain("ostis.net");
     a.setApplicationName("KBE");
