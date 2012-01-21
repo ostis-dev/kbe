@@ -137,3 +137,25 @@ SCgContentDialog* SCgContentImageFactory::createDialogInstance(SCgNode *node)
 {
     return new SCgContentImageDialog(node);
 }
+
+QMap<QString, QString> SCgContentImageFactory::supportedExtentions() {
+    QMap<QString, QString> ext;
+
+    ext["ico"] = "image/x-icon";
+    ext["png"] = "image/png";
+    ext["bmp"] = "image/bmp";
+    ext["gif"] = "image/gif";
+    ext["jpeg"] = "image/jpeg";
+    ext["jpg"] = "image/jpeg";
+    ext["jpe"] = "image/jpeg";
+    ext["svg"] = "image/svg+xml";
+    ext["tiff"] = "image/tiff";
+    ext["tif"] = "image/tiff";
+    ext["mng"] = "image/x-jng";
+    ext["pbm"] = "image/pbm";
+    ext["pgm"] = "image/x-pgm";
+    ext["ppm"] = "image/x-ppm";
+    ext["xbm"] = "image/x-xbm";
+    ext["xpm"] = "image/x-xpixmap";
+    return ext;
+}

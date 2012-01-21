@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcommands.h"
 #include "pointgraphicsitem.h"
+#include "scgcontentfactory.h"
 
 #include "event_handling/SCgBusModeEventHandler.h"
 #include "event_handling/SCgPairModeEventHandler.h"
@@ -36,6 +37,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "event_handling/SCgSelectModeEventHandler.h"
 #include "event_handling/SCgInsertModeEventHandler.h"
 
+#include <QUrl>
+#include <QFile>
+#include <QMessageBox>
 #include <QKeyEvent>
 #include <QVector2D>
 #include <QUndoStack>
@@ -752,4 +756,39 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     }
 
     return result;
+}
+
+void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
+    // get only the first file
+    QString fileName = event->mimeData()->urls().at(0).toLocalFile();
+    QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
+    QMap<QString, QString> ext2MIME = SCgContentFactory::registeredExtentions2MIME();
+    QList<QString> list = ext2MIME.keys();
+    if (list.contains(ext)) {
+        QGraphicsItem *item = itemAt(event->scenePos());
+        SCgContour *parentContour = 0;
+        SCgNode *node = 0;
+        // check if we have a contour object under cursor
+        if (!item) createNodeCommand(event->scenePos(), 0);
+        else if (item->type() == SCgContour::Type) {
+            parentContour = dynamic_cast<SCgContour*>(item);
+            createNodeCommand(event->scenePos(), parentContour);
+        }
+        item = itemAt(event->scenePos());
+        node = dynamic_cast<SCgNode*>(item);
+        SCgContent::ContType cType;
+        QString MIMEType = ext2MIME.value(ext);
+        if (MIMEType.contains("image/")) cType = SCgContent::Data;
+        else if (MIMEType.contains("text/")) cType = SCgContent::String;
+        QFile file(fileName);
+        file.open(QFile::ReadOnly);
+        changeContentDataCommand(node, SCgContent::ContInfo(QVariant(file.readAll()), MIMEType, fileName, cType));
+        event->acceptProposedAction();
+    }
+    else {
+        QMessageBox::information(0,
+                                 tr("Unsupported extention"),
+                                 tr("Current file's extention doesn't supported"));
+        event->ignore();
+    }
 }

@@ -26,8 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
+#include "readwritemanager.h"
 
 #include <math.h>
+#include <QUrl>
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QKeyEvent>
@@ -345,7 +347,12 @@ void SCgView::dragMoveEvent(QDragMoveEvent *evt)
 
 void SCgView::dropEvent(QDropEvent *event)
 {
-    MainWindow::getInstance()->dropEvent(event);
+    // get only the first file
+    QString fileName = event->mimeData()->urls().at(0).toLocalFile();
+    QList<QString> loaderExt = ReadWriteManager::instance().registeredLoaderExtensions();
+    QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
+    if (loaderExt.contains(ext)) MainWindow::getInstance()->dropEvent(event);
+    else QGraphicsView::dropEvent(event);
     event->acceptProposedAction();
 }
 
