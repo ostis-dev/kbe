@@ -155,6 +155,10 @@ private slots:
 
     void updateSceneRect(const QRectF& rect);
 
+    //! Enable context menu @see SCgScene::enableContextMenu
+    void enableContextMenu(bool value);
+
+
 };
 
 #endif // SCGVIEW_H

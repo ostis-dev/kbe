@@ -511,6 +511,7 @@ void SCgView::setScene(SCgScene* scene)
     QGraphicsView::setScene(scene);
     connect(scene, SIGNAL(sceneRectChanged(const QRectF&)), this, SLOT(updateSceneRect(const QRectF&)) );
     connect(scene, SIGNAL(selectionChanged()), this, SLOT(updateActionsState()) );
+    connect(scene, SIGNAL(enableContextMenu(bool)), this, SLOT(enableContextMenu(bool)));
     updateActionsState();
 }
 
@@ -529,4 +530,9 @@ void SCgView::updateSceneRect(const QRectF& rect)
 
         emit sceneRectChanged(result);
     }
+}
+
+void SCgView::enableContextMenu(bool value)
+{
+    setContextMenuPolicy(value ? Qt::DefaultContextMenu : Qt::NoContextMenu);
 }

@@ -339,6 +339,10 @@ protected:
 
     void dropEvent(QGraphicsSceneDragDropEvent *event);
 signals:
+    /*! Signal to block context menu
+      * @param value If it have true value, then context menu enabled; otherwise - disabled
+      */
+    void enableContextMenu(bool value);
 
 public slots:
     void setIdtfDirtyFlag();
