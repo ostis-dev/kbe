@@ -45,7 +45,6 @@ SOURCES += findwidget.cpp \
     scgcontentnumeric.cpp \
     scgcommands.cpp \
     layoutmanager.cpp \
-    scgobjectarrangers.cpp \
     event_handling/SCgInsertModeEventHandler.cpp \
     event_handling/SCgSelectModeEventHandler.cpp \
     event_handling/SCgPairModeEventHandler.cpp \

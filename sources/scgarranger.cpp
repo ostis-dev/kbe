@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "scgobjectarrangers.h"
+#include "scgarranger.h"
 
 #include "scgcommands.h"
 #include "scgview.h"
