@@ -122,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QSettings settings;
     restoreGeometry(settings.value(Config::settingsMainWindowGeometry).toByteArray());
 
-//    setAcceptDrops(true);
+    setAcceptDrops(true);
 }
 
 
