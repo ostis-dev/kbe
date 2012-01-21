@@ -19,7 +19,7 @@ public:
     int type() const {return Type;}
 protected:
     //!  @see SCgArranger::userMenu()
-    bool userMenu();
+    bool configDialog();
 
     //!  @see SCgArranger::startOperation()
     void startOperation();

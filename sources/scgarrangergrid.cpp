@@ -28,7 +28,7 @@ SCgGridArranger::~SCgGridArranger()
 
 }
 
-bool SCgGridArranger::userMenu()
+bool SCgGridArranger::configDialog()
 {
     if(!mDialog)
             createDialog();

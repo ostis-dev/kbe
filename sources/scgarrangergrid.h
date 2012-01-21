@@ -3,6 +3,9 @@
 
 #include "scgarranger.h"
 
+class QSpinBox;
+class QCheckBox;
+
 class SCgGridArranger : public SCgArranger
 {
 Q_OBJECT
@@ -20,7 +23,7 @@ public:
 
 protected:
     //!  @see SCgArranger::userMenu()
-    bool userMenu();
+    bool configDialog();
 
     //!  @see SCgArranger::startOperation()
     void startOperation();

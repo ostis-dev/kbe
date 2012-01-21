@@ -16,7 +16,7 @@ SCgVerticalArranger::~SCgVerticalArranger()
 {
 }
 
-bool SCgVerticalArranger::userMenu()
+bool SCgVerticalArranger::configDialog()
 {
     return true;
 }

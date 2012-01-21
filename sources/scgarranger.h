@@ -32,13 +32,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgView;
 class SCgObject;
 class QGraphicsItem;
-class QSpinBox;
-class QCheckBox;
 class SCgBaseCommand;
 
-/*! To create new arranger you should implement 2 functions:
- *   virtual bool userMenu() = 0;
- *   virtual void startOperation() = 0;
+/*! To create new arranger you should implement 3 functions:
+ *   bool userMenu();
+ *   void startOperation();
+ *   int type();
  *  If you won't use the menu then userMenu should return true.
  *  NOTE: If You want use undo/redo commands you should change objects position by calling corresponding functions:
  *  registerCommand(SCgObject*, const QPointF&);
@@ -63,7 +62,7 @@ public:
 protected:
 
     //! Shows menu to user and returns true, if user agree with changes.
-    virtual bool userMenu() = 0;
+    virtual bool configDialog() = 0;
 
     //! Start arrange process.
     virtual void startOperation() = 0;

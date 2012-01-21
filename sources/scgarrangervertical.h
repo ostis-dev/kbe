@@ -20,7 +20,7 @@ public:
 
 protected:
     //!  @see SCgArranger::userMenu()
-    bool userMenu();
+    bool configDialog();
 
     //!  @see SCgArranger::startOperation()
     void startOperation();

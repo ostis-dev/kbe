@@ -16,7 +16,7 @@ SCgHorizontalArranger::~SCgHorizontalArranger()
 {
 }
 
-bool SCgHorizontalArranger::userMenu()
+bool SCgHorizontalArranger::configDialog()
 {
     return true;
 }

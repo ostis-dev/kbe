@@ -35,6 +35,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgarrangervertical.h"
 #include "scgarrangerhorizontal.h"
 #include "scgarrangergrid.h"
+#include "scgarrangertuple.h"
 
 #include "version.h"
 
@@ -116,6 +117,7 @@ MainWindow::MainWindow(QWidget *parent) :
     LayoutManager::instance().addArranger(new SCgGridArranger(this));
     LayoutManager::instance().addArranger(new SCgVerticalArranger(this));
     LayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
+    LayoutManager::instance().addArranger(new SCgTupleArranger(this));
 
     // blur effect
     mBlurEffect = new QGraphicsBlurEffect(this);

@@ -58,7 +58,7 @@ void SCgArranger::arrange(SCgView* view)
 
     mView = view;
     mScene = static_cast<SCgScene*>(mView->scene());
-    if(userMenu())
+    if(configDialog())
     {
         startOperation();
         if(mParentCommand)

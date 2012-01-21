@@ -61,7 +61,8 @@ SOURCES += findwidget.cpp \
     scgarranger.cpp \
     scgarrangervertical.cpp \
     scgarrangerhorizontal.cpp \
-    scgarrangergrid.cpp
+    scgarrangergrid.cpp \
+    scgarrangertuple.cpp
 HEADERS += findwidget.h \
     platform.h \
     version.h \
@@ -116,7 +117,8 @@ HEADERS += findwidget.h \
     scgarranger.h \
     scgarrangervertical.h \
     scgarrangerhorizontal.h \
-    scgarrangergrid.h
+    scgarrangergrid.h \
+    scgarrangertuple.h
 FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
