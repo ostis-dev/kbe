@@ -27,12 +27,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "basewindow.h"
 #include "config.h"
 
-
 #include "abstractfileloader.h"
 #include "abstractfilewriter.h"
 #include "readwritemanager.h"
 #include "layoutmanager.h"
-
+#include "extendedtabbar.h"
 #include "version.h"
 
 #include "scgcontentstring.h"
@@ -123,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QSettings settings;
     restoreGeometry(settings.value(Config::settingsMainWindowGeometry).toByteArray());
 
-    setAcceptDrops(true);
+//    setAcceptDrops(true);
 }
 
 
@@ -653,6 +652,10 @@ void MainWindow::dragLeaveEvent(QDragLeaveEvent *event)
 
 void MainWindow::dropEvent(QDropEvent *event)
 {
+    //check if the widget under cursor is ExtendedTabBar object
+    ExtendedTabBar *w = dynamic_cast<ExtendedTabBar*>(qApp->widgetAt(QCursor::pos()));
+    if (w) ;
+    else {
     QList<QUrl> urls = event->mimeData()->urls();
     QList<QUrl>::iterator it = urls.begin();
     for(; it != urls.end(); it++) {
@@ -661,4 +664,5 @@ void MainWindow::dropEvent(QDropEvent *event)
             load(fileName);
     }
     event->acceptProposedAction();
+    }
 }

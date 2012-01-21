@@ -30,6 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcommands.h"
 #include "pointgraphicsitem.h"
 
+#include "config.h"
 #include "event_handling/SCgBusModeEventHandler.h"
 #include "event_handling/SCgPairModeEventHandler.h"
 #include "event_handling/SCgContourModeEventHandler.h"
@@ -42,6 +43,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItemGroup>
 #include <QGraphicsView>
 #include <QCursor>
+#include <QMessageBox>
+#include <QUrl>
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     QGraphicsScene(parent),
@@ -125,7 +128,7 @@ void SCgScene::updateIdtfList()
 
     mIdtfList.removeDuplicates();
 
-//    mIsIdtfModelDirty = false;
+    //    mIsIdtfModelDirty = false;
 }
 
 QStringList SCgScene::idtfList()
@@ -144,8 +147,8 @@ void SCgScene::setIdtfDirtyFlag()
 void SCgScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     mEventHandler->mouseDoubleClick(event);
-//    if(!event->isAccepted())
-        QGraphicsScene::mouseDoubleClickEvent(event);
+    //    if(!event->isAccepted())
+    QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 void SCgScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -213,7 +216,7 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
 
     pair->setBeginObject(begObj);
     pair->setEndObject(endObj);
-/*
+    /*
     pair->setBeginDot(begObj->dotPos(points.at(0)));
     pair->setEndDot(endObj->dotPos(points.at(points.size()-1)));*/
 
@@ -446,10 +449,10 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
         // If SCgObject has moved then create SCgCommandObjectMove;
         if(SCgObject::isSCgObjectType(item->type()))
         {
-           //Temporary fix problem with node moving when node has a bus.
+            //Temporary fix problem with node moving when node has a bus.
             if(item->type() != SCgNode::Type || !undoInfo.contains(static_cast<SCgNode*>(item)->bus()))
                 objUndoInfo[item] = it.value();
-        // If PointItem has moved then create  SCgCommandPointMove command.
+            // If PointItem has moved then create  SCgCommandPointMove command.
         }else if(item->type() == PointGraphicsItem::Type)
         {
             PointGraphicsItem* pointItem = static_cast<PointGraphicsItem*>(item);
@@ -478,13 +481,13 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
 
                 // If state really changed, then create command.
                 if(newObject->type() != SCgNode::Type || oldObject != newObject)
-                if(oldObject != newObject || oldPoint != newPoint)
-                {
-                    if(!cmd)
-                        cmd = new SCgCommandChangeIncedentObject(this, p, role, newObject, newPoint, parentCmd);
-                    else
-                        new SCgCommandChangeIncedentObject(this, p, role, newObject, newPoint, cmd);
-                }
+                    if(oldObject != newObject || oldPoint != newPoint)
+                    {
+                        if(!cmd)
+                            cmd = new SCgCommandChangeIncedentObject(this, p, role, newObject, newPoint, parentCmd);
+                        else
+                            new SCgCommandChangeIncedentObject(this, p, role, newObject, newPoint, cmd);
+                    }
             }
         }
     }
@@ -521,11 +524,11 @@ SCgBaseCommand* SCgScene::addPointCommand(SCgPointObject* obj, const QPointF& po
 }
 
 SCgBaseCommand* SCgScene::createNodeCommand(const QPointF& pos,
-											SCgContour* parent,
-											SCgBaseCommand* parentCmd,
-											bool addToStack)
+                                            SCgContour* parent,
+                                            SCgBaseCommand* parentCmd,
+                                            bool addToStack)
 {
-	SCgBaseCommand* cmd = new SCgCommandCreateNode(this, pos, parent, parentCmd);
+    SCgBaseCommand* cmd = new SCgCommandCreateNode(this, pos, parent, parentCmd);
 
     if(addToStack)
     	mUndoStack->push(cmd);
@@ -535,12 +538,12 @@ SCgBaseCommand* SCgScene::createNodeCommand(const QPointF& pos,
 
 
 SCgBaseCommand* SCgScene::createBusCommand(SCgNode* owner,
-											const QVector<QPointF> &points,
-											SCgContour* parent,
-											SCgBaseCommand* parentCmd,
-											bool addToStack)
+                                           const QVector<QPointF> &points,
+                                           SCgContour* parent,
+                                           SCgBaseCommand* parentCmd,
+                                           bool addToStack)
 {
-	SCgBaseCommand* cmd = new SCgCommandCreateBus(this, owner, points, parent, parentCmd);
+    SCgBaseCommand* cmd = new SCgCommandCreateBus(this, owner, points, parent, parentCmd);
 
     if(addToStack)
     	mUndoStack->push(cmd);
@@ -549,11 +552,11 @@ SCgBaseCommand* SCgScene::createBusCommand(SCgNode* owner,
 }
 
 SCgBaseCommand* SCgScene::createPairCommand( const QVector<QPointF> &points,
-                        					SCgObject* beginObj,
-                        					SCgObject* endObj,
-                        					SCgContour* parent,
-                        					SCgBaseCommand* parentCmd,
-                        					bool addToStack)
+                                             SCgObject* beginObj,
+                                             SCgObject* endObj,
+                                             SCgContour* parent,
+                                             SCgBaseCommand* parentCmd,
+                                             bool addToStack)
 {
     SCgBaseCommand* cmd = (new SCgCommandCreatePair(this, points, beginObj, endObj, parent, parentCmd));
 
@@ -564,12 +567,12 @@ SCgBaseCommand* SCgScene::createPairCommand( const QVector<QPointF> &points,
 }
 
 SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& childs,
-												const QVector<QPointF> &points,
-												SCgContour* parent,
-												SCgBaseCommand* parentCmd,
-												bool addToStack)
+                                               const QVector<QPointF> &points,
+                                               SCgContour* parent,
+                                               SCgBaseCommand* parentCmd,
+                                               bool addToStack)
 {
-	SCgBaseCommand* cmd = new SCgCommandCreateContour(this, childs, points, parent, parentCmd);
+    SCgBaseCommand* cmd = new SCgCommandCreateContour(this, childs, points, parent, parentCmd);
 
     if(addToStack)
     	mUndoStack->push(cmd);
@@ -579,9 +582,9 @@ SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& chil
 
 
 SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
-														const QPointF& newPos,
-														SCgBaseCommand* parentCmd,
-														bool addToStack)
+                                                      const QPointF& newPos,
+                                                      SCgBaseCommand* parentCmd,
+                                                      bool addToStack)
 {
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
@@ -596,9 +599,9 @@ SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
 }
 
 SCgBaseCommand* SCgScene::changeObjectPointsCommand(SCgPointObject* obj,
-													const QVector<QPointF>& newPoints,
-													SCgBaseCommand* parentCmd,
-													bool addToStack)
+                                                    const QVector<QPointF>& newPoints,
+                                                    SCgBaseCommand* parentCmd,
+                                                    bool addToStack)
 {
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
@@ -731,8 +734,8 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     while(true)
     {
         if( (*it)->idtfValue().startsWith(ttf, flg & CaseSensitive
-                                                    ? Qt::CaseSensitive
-                                                    : Qt::CaseInsensitive) )
+                                          ? Qt::CaseSensitive
+                                          : Qt::CaseInsensitive) )
         {
             result = *it;
             break;
@@ -752,4 +755,38 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     }
 
     return result;
+}
+
+void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
+    // get only the first file
+    QString fileName = event->mimeData()->urls().at(0).toLocalFile();
+    QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
+    QList<QString> list = Config::ext2MIME.keys();
+    if (list.contains(ext)) {
+        QGraphicsItem *item = itemAt(event->scenePos());
+        SCgContour *parentContour = 0;
+        SCgNode *node = 0;
+        // check if we have a contour object under cursor
+        if (!item) createNodeCommand(event->scenePos(), 0);
+        else if (item->type() == SCgContour::Type) {
+            parentContour = dynamic_cast<SCgContour*>(item);
+            createNodeCommand(event->scenePos(), parentContour);
+        }
+        item = itemAt(event->scenePos());
+        node = dynamic_cast<SCgNode*>(item);
+        SCgContent::ContType cType;
+        QString MIMEType = Config::ext2MIME.value(ext);
+        if (MIMEType.contains("image/")) cType = SCgContent::Data;
+        else if (MIMEType.contains("text/")) cType = SCgContent::String;
+        QFile file(fileName);
+        file.open(QFile::ReadOnly);
+        changeContentDataCommand(node, SCgContent::ContInfo(QVariant(file.readAll()), MIMEType, fileName, cType));
+        event->acceptProposedAction();
+    }
+    else {
+        QMessageBox::information(0,
+                                 tr("Unsupported extention"),
+                                 tr("Current file's extention doesn't supported"));
+        event->ignore();
+    }
 }

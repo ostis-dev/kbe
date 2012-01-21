@@ -58,7 +58,8 @@ SOURCES += findwidget.cpp \
     scgtemplateobjectbuilder.cpp \
     scgdefaultobjectbuilder.cpp \
     scgabstractobjectbuilder.cpp \
-    scgconfig.cpp
+    scgconfig.cpp \
+    extendedtabbar.cpp
 HEADERS += findwidget.h \
     platform.h \
     version.h \
@@ -110,7 +111,8 @@ HEADERS += findwidget.h \
     scgtemplateobjectbuilder.h \
     scgdefaultobjectbuilder.h \
     scgabstractobjectbuilder.h \
-    scgconfig.h
+    scgconfig.h \
+    extendedtabbar.h
 FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
