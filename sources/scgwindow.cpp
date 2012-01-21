@@ -37,6 +37,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 
 #include "layoutmanager.h"
+#include "scgarrangervertical.h"
+#include "scgarrangerhorizontal.h"
+#include "scgarrangergrid.h"
 
 #include "findwidget.h"
 #include "scgview.h"

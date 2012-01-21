@@ -27,11 +27,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "basewindow.h"
 #include "config.h"
 
-
 #include "abstractfileloader.h"
 #include "abstractfilewriter.h"
 #include "readwritemanager.h"
 #include "layoutmanager.h"
+
+#include "scgarrangervertical.h"
+#include "scgarrangerhorizontal.h"
+#include "scgarrangergrid.h"
 
 #include "version.h"
 
