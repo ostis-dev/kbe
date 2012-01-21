@@ -82,7 +82,7 @@ protected:
     //! Holds view items on will be arranged.
     SCgView* mView;
 
-    //! Holds ghost items
+    //! Holds ghost items <RealObject, Ghost>
     QMap<SCgObject*, SCgObject*> mGhosts;
 
 private:

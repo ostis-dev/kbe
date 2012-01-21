@@ -53,7 +53,7 @@ protected:
     QColor mGridColor;
 
 protected slots:
-    /*! @defgroup Slots Slots For Reacting User Actions
+    /*! @defgroup Slots Slots to react on user actions
      *  @{
      */
     void xValueChanged(int newSpacing);

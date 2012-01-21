@@ -568,10 +568,10 @@ SCgBaseCommand* SCgScene::createPairCommand( const QVector<QPointF> &points,
 }
 
 SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& childs,
-												const QVector<QPointF> &points,
-												SCgContour* parent,
-												SCgBaseCommand* parentCmd,
-												bool addToStack)
+                                                const QVector<QPointF> &points,
+                                                SCgContour* parent,
+                                                SCgBaseCommand* parentCmd,
+                                                bool addToStack)
 {
 	SCgBaseCommand* cmd = new SCgCommandCreateContour(this, childs, points, parent, parentCmd);
 
@@ -583,9 +583,9 @@ SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& chil
 
 
 SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
-														const QPointF& newPos,
-														SCgBaseCommand* parentCmd,
-														bool addToStack)
+                                                        const QPointF& newPos,
+                                                        SCgBaseCommand* parentCmd,
+                                                        bool addToStack)
 {
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
@@ -600,9 +600,9 @@ SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
 }
 
 SCgBaseCommand* SCgScene::changeObjectPointsCommand(SCgPointObject* obj,
-													const QVector<QPointF>& newPoints,
-													SCgBaseCommand* parentCmd,
-													bool addToStack)
+                                                    const QVector<QPointF>& newPoints,
+                                                    SCgBaseCommand* parentCmd,
+                                                    bool addToStack)
 {
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
