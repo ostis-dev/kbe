@@ -4,7 +4,7 @@
 Name "KBE"
 
 ; set the name of the installer
-OutFile "kbe-win32-0.2.0.exe"
+OutFile "kbe-win32-0.2.1.exe"
 
 ;Default installation folder
 InstallDir $PROGRAMFILES32\KBE
