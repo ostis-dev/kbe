@@ -25,7 +25,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDir>
 #include <QString>
-#include <QMap>
 
 class Config
 {
@@ -43,17 +42,10 @@ public:
      */
 
     //! Setting name for recent file list.
-    static QString settingsRecentFileList;
-    static QString settingsDocksGeometry;
-    static QString settingsMainWindowGeometry;
+    static const QString settingsRecentFileList;
+    static const QString settingsDocksGeometry;
+    static const QString settingsMainWindowGeometry;
     /*! @}*/
-
-    static QMap<QString, QString> ext2MIME;
-
-    static void initSettings();
-
-private:
-
 };
 
 #endif // CONFIG_H

@@ -120,7 +120,7 @@ void SCgContentImageDialog::contentInfo(SCgContent::ContInfo &info)
         info.data = QVariant(f.readAll());
         f.close();
 
-        info.mimeType = Config::ext2MIME.value(mPath.mid(mPath.lastIndexOf('.') + 1));
+        info.mimeType = "image/" + mPath.mid(mPath.lastIndexOf('.')+1);
         info.fileName = mPath;
         info.type = SCgContent::Data;
 

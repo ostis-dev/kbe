@@ -21,7 +21,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "extendedtabwidget.h"
-#include "extendedtabbar.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -33,8 +32,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 ExtendedTabWidget::ExtendedTabWidget(QWidget *parent) :
         QTabWidget(parent)
 {
-//    QTabBar* tb = new QTabBar(this);
-    ExtendedTabBar *tb = new ExtendedTabBar(this);
+    QTabBar* tb = new QTabBar(this);
     tb->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);
     setTabBar(tb);
     setMovable(true);

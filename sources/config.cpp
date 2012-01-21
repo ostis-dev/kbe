@@ -26,39 +26,7 @@ QDir Config::pathMedia = QDir("");
 QDir Config::pathIcons = QDir("");
 QDir Config::pathTranslations = QDir("");
 
-QString Config::settingsRecentFileList = "";
-QString Config::settingsDocksGeometry = "";
-QString Config::settingsMainWindowGeometry = "";
+const QString Config::settingsRecentFileList = "RecentFileList";
+const QString Config::settingsDocksGeometry = "DockWindowsGeometry";
 
-QMap<QString, QString> Config::ext2MIME = QMap<QString, QString>();
-
-
-void Config::initSettings() {
-    settingsRecentFileList = "RecentFileList";
-    settingsDocksGeometry = "DockWindowsGeometry";
-
-    settingsMainWindowGeometry = "MainWindowGeometry";
-
-    //text
-    ext2MIME["txt"] = "text/plain";
-    //images
-    ext2MIME["ico"] = "image/x-icon";
-    ext2MIME["png"] = "image/png";
-    ext2MIME["bmp"] = "image/bmp";
-    ext2MIME["gif"] = "image/gif";
-    ext2MIME["jpeg"] = "image/jpeg";
-    ext2MIME["jpg"] = "image/jpeg";
-    ext2MIME["jpe"] = "image/jpeg";
-    ext2MIME["svg"] = "image/svg+xml";
-    ext2MIME["tiff"] = "image/tiff";
-    ext2MIME["tif"] = "image/tiff";
-    ext2MIME["mng"] = "image/x-jng";
-    ext2MIME["pbm"] = "image/pbm";
-    ext2MIME["pgm"] = "image/x-pgm";
-    ext2MIME["ppm"] = "image/x-ppm";
-    ext2MIME["xbm"] = "image/x-xbm";
-    ext2MIME["xpm"] = "image/x-xpixmap";
-    //application
-    ext2MIME["swf"] = "application/x-shockwave-flash";
-
-}
+const QString Config::settingsMainWindowGeometry = "MainWindowGeometry";
