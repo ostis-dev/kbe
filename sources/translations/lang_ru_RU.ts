@@ -6,13 +6,13 @@
     <message>
         <location filename="../basewindow.cpp" line="80"/>
         <source>Do you want to save the </source>
-        <translation>Хотите ли вы сохранить </translation>
+        <translation>Вы хотите сохранить </translation>
     </message>
 </context>
 <context>
     <name>ExtendedTabWidget</name>
     <message>
-        <location filename="../extendedtabwidget.cpp" line="105"/>
+        <location filename="../extendedtabwidget.cpp" line="92"/>
         <source>(Untitled)</source>
         <translation>(Безымянный)</translation>
     </message>
@@ -30,7 +30,7 @@
     <message>
         <location filename="../findwidget.cpp" line="53"/>
         <source>Find:</source>
-        <translation>Поиск:</translation>
+        <translation>Найти:</translation>
     </message>
     <message>
         <location filename="../findwidget.cpp" line="64"/>
@@ -71,13 +71,14 @@
         <translation>Экспорт</translation>
     </message>
     <message>
-        <source>Edit</source>
-        <translation type="obsolete">Редактирование</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="53"/>
         <source>Help</source>
         <translation>Помощь</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="60"/>
+        <source>View</source>
+        <translation>Просмотр</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="70"/>
@@ -87,7 +88,7 @@
     <message>
         <location filename="../mainwindow.ui" line="73"/>
         <source>Ctrl+N</source>
-        <translation>Ctrl+N</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="78"/>
@@ -97,7 +98,7 @@
     <message>
         <location filename="../mainwindow.ui" line="81"/>
         <source>Ctrl+O</source>
-        <translation>Ctrl+O</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="86"/>
@@ -107,7 +108,7 @@
     <message>
         <location filename="../mainwindow.ui" line="89"/>
         <source>Ctrl+S</source>
-        <translation>Ctrl+S</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="94"/>
@@ -115,82 +116,24 @@
         <translation>Сохранить как</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="133"/>
-        <source>Save all</source>
-        <translation>Сохранить все</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="136"/>
-        <source>Ctrl+Shift+S</source>
-        <translation>Ctrl+Shift+S</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="102"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="60"/>
-        <source>View</source>
-        <translation>Просмотр</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="105"/>
         <source>Ctrl+Q</source>
-        <translation>Ctrl+Q</translation>
-    </message>
-    <message>
-        <source>Undo</source>
-        <translation type="obsolete">Отменить</translation>
-    </message>
-    <message>
-        <source>Ctrl+Z</source>
-        <translation type="obsolete">Ctrl+Z</translation>
-    </message>
-    <message>
-        <source>Redo</source>
-        <translation type="obsolete">Вернуть</translation>
-    </message>
-    <message>
-        <source>Ctrl+Y</source>
-        <translation type="obsolete">Ctrl+Y</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="obsolete">Копировать</translation>
-    </message>
-    <message>
-        <source>Ctrl+C</source>
-        <translation type="obsolete">Ctrl+C</translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="obsolete">Вырезать</translation>
-    </message>
-    <message>
-        <source>Ctrl+X</source>
-        <translation type="obsolete">Ctrl+X</translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="obsolete">Вставить</translation>
-    </message>
-    <message>
-        <source>Ctrl+V</source>
-        <translation type="obsolete">Ctrl+V</translation>
-    </message>
-    <message>
-        <source>Select All</source>
-        <translation type="obsolete">Выделить все</translation>
-    </message>
-    <message>
-        <source>Ctrl+A</source>
-        <translation type="obsolete">Ctrl+A</translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="110"/>
         <source>About ...</source>
-        <translation>О программе</translation>
+        <translation>О ...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="113"/>
+        <source>F1</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="118"/>
@@ -205,7 +148,17 @@
     <message>
         <location filename="../mainwindow.ui" line="128"/>
         <source>About Qt ...</source>
-        <translation>О Qt</translation>
+        <translation>О Qt ...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="133"/>
+        <source>Save all</source>
+        <translation>Сохранить все</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="136"/>
+        <source>Ctrl+Shift+S</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="141"/>
@@ -220,7 +173,7 @@
     <message>
         <location filename="../mainwindow.ui" line="152"/>
         <source>Close Others</source>
-        <translation>Закрыть другие</translation>
+        <translation>Закрыть остальные</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="157"/>
@@ -233,275 +186,259 @@
         <translation></translation>
     </message>
     <message>
-        <source>About</source>
-        <translation type="obsolete">О программе</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="113"/>
-        <source>F1</source>
-        <translation>F1</translation>
-    </message>
-    <message>
-        <source>Knowledge Base Editor</source>
-        <translation type="obsolete">Редактор баз знаний</translation>
-    </message>
-    <message>
-        <source>Knowledge Base Editor - version %1</source>
-        <translation type="obsolete">Редактор баз знаний - версия %1</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="97"/>
+        <location filename="../mainwindow.cpp" line="102"/>
         <source>Knowledge Base source Editor - version %1</source>
-        <translation>Knowledge Base source Editor - версия %1</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="154"/>
+        <location filename="../mainwindow.cpp" line="160"/>
         <source>Main Tools</source>
         <translation>Основные инструменты</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="263"/>
+        <location filename="../mainwindow.cpp" line="264"/>
         <source>&amp;%1 %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="292"/>
+        <location filename="../mainwindow.cpp" line="293"/>
         <source>Can&apos;t load file.
 File &quot;%1&quot; not found. </source>
-        <translation>Невозможно загрузить файл. Файл &quot;%1&quot; не найден</translation>
+        <translation>Не удается загрузить файл. Файл &quot;%1&quot; не найден. </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="318"/>
+        <location filename="../mainwindow.cpp" line="319"/>
         <source>Untitled</source>
         <translation>Безымянный</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="330"/>
+        <location filename="../mainwindow.cpp" line="331"/>
         <source>Open file</source>
-        <translation>Открытие файла</translation>
+        <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="366"/>
+        <location filename="../mainwindow.cpp" line="367"/>
         <source>Can&apos;t load file.
 Unsupported file format &quot;%1&quot;</source>
-        <translation>Невозможно загрузить файл.\nНеизвестный формат файла &quot;%1&quot;</translation>
+        <translation>Не удается загрузить файл. Формат &quot;%1&quot; не поддерживается</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="384"/>
+        <location filename="../mainwindow.cpp" line="385"/>
         <source>Can&apos;t save file.
 Unsupported file format &quot;%1&quot;</source>
-        <translation>Невозможно сохранить файл.\nНеизвестный формат файла &quot;%1&quot;</translation>
+        <translation>Не удается сохранить файл. Формат &quot;%1&quot; не поддерживается</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="433"/>
+        <location filename="../mainwindow.cpp" line="434"/>
         <source>Save file to ..</source>
-        <translation>Сохранить файл в ...</translation>
+        <translation>Сохранить файл в ..</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="471"/>
+        <location filename="../mainwindow.cpp" line="472"/>
         <source>Export file to ...</source>
-        <translation>Экспортировать в ...</translation>
+        <translation>Экспортировать файл в ..</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="498"/>
+        <location filename="../mainwindow.cpp" line="499"/>
         <source>About KBE</source>
         <translation>О KBE</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="513"/>
+        <location filename="../mainwindow.cpp" line="519"/>
         <source>Knowledge Base source Editor </source>
-        <translation>Knowledge Base source Editor</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="516"/>
+        <location filename="../mainwindow.cpp" line="520"/>
+        <source>version</source>
+        <translation>версия</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="522"/>
         <source>Authors</source>
         <translation>Авторы</translation>
     </message>
     <message>
-        <source>Knowledge base editor </source>
-        <translation type="obsolete">Редактор баз знаний</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="514"/>
-        <source>version</source>
-        <translation>версия</translation>
+        <location filename="../mainwindow.cpp" line="523"/>
+        <source>Contributors</source>
+        <translation>Люди внесшие свой вклад</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../scgnode.cpp" line="45"/>
-        <source>SCg-node</source>
-        <translation>SCg-узел</translation>
-    </message>
-    <message>
-        <location filename="../scgbus.cpp" line="39"/>
-        <source>SCg-bus</source>
-        <translation>SCg-шина</translation>
-    </message>
-    <message>
-        <location filename="../scgcontour.cpp" line="38"/>
-        <source>SCg-contour</source>
-        <translation>SCg-контур</translation>
-    </message>
-    <message>
-        <location filename="../scgpair.cpp" line="43"/>
-        <source>SCg-pair</source>
-        <translation>SCg-пара</translation>
-    </message>
-    <message>
-        <location filename="../scgdefaultobjectbuilder.cpp" line="83"/>
-        <source>Can&apos;t find begin or end object for pair id=&quot;%1&quot;</source>
-        <translation>Не удалось найти начало или конец для пары id=&quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../scgdefaultobjectbuilder.cpp" line="139"/>
-        <source>Try to set the bus owner(&quot;%1&quot;) which is not a node type. Bus id=&quot;%2&quot;</source>
-        <translation>Попытка установить владельца &apos;%1&apos; для шины id=&apos;%2&apos;</translation>
-    </message>
-    <message>
-        <location filename="../scgdefaultobjectbuilder.cpp" line="224"/>
-        <source>Try to create contour (&quot;%1&quot;) with less than 3 points.</source>
-        <translation>Попытка создать контур (%1) с менее чем 3-мя точками</translation>
-    </message>
-    <message>
         <location filename="../gwfobjectinforeader.cpp" line="154"/>
         <source>Given document has unsupported format %1</source>
-        <translation>Полученный дукомент имеет не поддерживаемый формат</translation>
+        <translation>Документ имеет формат, который не поддерживается %1</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="160"/>
         <source>Version %1 of GWF files not supported.
 Just version 1.6 supported.</source>
-        <translation>Версия %1 GWF файлов не поддерживается. Поддерживается лишь версия 1.6.</translation>
+        <translation>Версия %1 gwf файлов не поддерживается. Поддерживается только версия 1.6.</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="293"/>
         <source>Content type &apos;%1&apos; doesn&apos;t supported for now</source>
-        <translation>В настоящее время, содержимое с типом %1 не поддерживается</translation>
+        <translation>Тип содержимого &quot;%1&quot; не поддерживается</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="298"/>
         <source>Unknown content type &apos;%1&apos;</source>
-        <translation>Неизвестный тип содержимого %1</translation>
+        <translation>Неизветсный тип содержимого &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="420"/>
         <source>There are no points data for element &apos;%1&apos;</source>
-        <translation>Нет данных о точках для элемента &apos;%1&apos;</translation>
+        <translation>Нету точек для sc.g-элемента &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="439"/>
         <source>&apos;%1&apos; element haven&apos;t &apos;%2&apos; attribute</source>
-        <translation>У элемента &apos;%1&apos; нет атрибута &apos;%2&apos;</translation>
+        <translation>у элемента &quot;%1&quot; нет атрибута &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="444"/>
         <source>invalid float value in attribute &apos;%1&apos; of element &apos;%2&apos;</source>
-        <translation>Неверное вещественное значение атрибута &apos;%1&apos; у элемента &apos;%2&apos;</translation>
+        <translation>Неверное числовое значение в атрибуте &quot;%1&quot; элемента &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="449"/>
         <source>node element &apos;%1&apos; haven&apos;t content tag</source>
-        <translation>у узла %1 нет тега content</translation>
+        <translation>в узле &quot;%1&quot; нет содержимого</translation>
     </message>
     <message>
         <location filename="../gwfobjectinforeader.cpp" line="454"/>
         <source>type &apos;%1&apos; is unknown for element &apos;%2&apos;</source>
-        <translation>Неизвестный тип &apos;%1&apos; для элемента &apos;%2&apos;</translation>
+        <translation>тип &quot;%1&quot; не является корректным для элемента &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="82"/>
         <source>Error while opening file: 
 </source>
-        <translation>Ошибка при открытии файла</translation>
+        <translation>Ошибка во время открытия файла:</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>
 
 Unsupported file format.</source>
-        <translation>Не поддерживаемый формат файлов</translation>
+        <translation>Не поддерживаемый формат файла.</translation>
+    </message>
+    <message>
+        <location filename="../scgbus.cpp" line="39"/>
+        <source>SCg-bus</source>
+        <translation>sc.g-шина</translation>
     </message>
     <message>
         <location filename="../scgcommands.cpp" line="40"/>
         <source>Move item</source>
-        <translation>Перемещение объекта</translation>
+        <translation>Перемещение sc.g-объекта</translation>
     </message>
     <message>
         <location filename="../scgcommands.cpp" line="66"/>
         <source>Move items</source>
-        <translation>Перемещение объектов</translation>
+        <translation>Перемещение sc.g-объектов</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="138"/>
+        <location filename="../scgcommands.cpp" line="140"/>
         <source>Move object&apos;s point</source>
-        <translation>Перемещение точек объекта</translation>
+        <translation>Перемещение точек sc.g-объекта</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="167"/>
+        <location filename="../scgcommands.cpp" line="169"/>
         <source>Change object&apos;s points</source>
-        <translation>Изменение точек объекта</translation>
+        <translation>Изменение точек sc.g-объекта</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="212"/>
+        <location filename="../scgcommands.cpp" line="214"/>
         <source>Change incident object</source>
-        <translation>Изменение инцидентности</translation>
+        <translation>Изменение точек инцидентности для sc.g-пары</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="244"/>
+        <location filename="../scgcommands.cpp" line="246"/>
         <source>Delete object</source>
-        <translation>Удаление объекта</translation>
+        <translation>Удаление sc.g-объекта</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="310"/>
+        <location filename="../scgcommands.cpp" line="312"/>
         <source>Insert</source>
         <translation>Вставка</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="363"/>
+        <location filename="../scgcommands.cpp" line="365"/>
         <source>Change object&apos;s identifier</source>
-        <translation>Изменение текстового идентификатора</translation>
+        <translation>Изменение главного идентификатора sc.g-объекта</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="390"/>
+        <location filename="../scgcommands.cpp" line="392"/>
         <source>Change object&apos;s type</source>
-        <translation>Изменение типа</translation>
+        <translation>Изменение типа sc.g-объекта</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="421"/>
+        <location filename="../scgcommands.cpp" line="423"/>
         <source>Create node</source>
-        <translation>Создание узла</translation>
+        <translation>Создание sc.g-узла</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="481"/>
+        <location filename="../scgcommands.cpp" line="483"/>
         <source>Create pair</source>
-        <translation>Создание дуги</translation>
+        <translation>Создание sc.g-пары</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="542"/>
+        <location filename="../scgcommands.cpp" line="544"/>
         <source>Create bus</source>
-        <translation>Создание шины</translation>
+        <translation>Создание sc.g-шины</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="601"/>
+        <location filename="../scgcommands.cpp" line="603"/>
         <source>Create contour</source>
-        <translation>Создание контура</translation>
+        <translation>Создание sc.g-контура</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="675"/>
+        <location filename="../scgcommands.cpp" line="677"/>
         <source>Delete contour</source>
-        <translation>Удалить контур</translation>
+        <translation>Удаление sc.g-контура</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="735"/>
+        <location filename="../scgcommands.cpp" line="737"/>
         <source>Change content visibility</source>
         <translation>Изменение видимости содержимого</translation>
     </message>
     <message>
-        <location filename="../scgcommands.cpp" line="772"/>
+        <location filename="../scgcommands.cpp" line="774"/>
         <source>Change content</source>
-        <translation>Изменить содержимое</translation>
+        <translation>Измение содержимого</translation>
+    </message>
+    <message>
+        <location filename="../scgcontour.cpp" line="38"/>
+        <source>SCg-contour</source>
+        <translation>sc.g-контур</translation>
+    </message>
+    <message>
+        <location filename="../scgdefaultobjectbuilder.cpp" line="83"/>
+        <source>Can&apos;t find begin or end object for pair id=&quot;%1&quot;</source>
+        <translation>Не удается найти начальный или конечный sc.g-объект для пары с id=&quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../scgdefaultobjectbuilder.cpp" line="139"/>
+        <source>Try to set the bus owner(&quot;%1&quot;) which is not a node type. Bus id=&quot;%2&quot;</source>
+        <translation>Попытка установить владельца &quot;%1&quot; для шины &quot;%2&quot;, который не является sc.g-узлом</translation>
+    </message>
+    <message>
+        <location filename="../scgdefaultobjectbuilder.cpp" line="224"/>
+        <source>Try to create contour (&quot;%1&quot;) with less than 3 points.</source>
+        <translation>Попытка создать контур &quot;%1&quot; с числом точек меньше 3.</translation>
+    </message>
+    <message>
+        <location filename="../scgnode.cpp" line="45"/>
+        <source>SCg-node</source>
+        <translation>sc.g-узел</translation>
+    </message>
+    <message>
+        <location filename="../scgpair.cpp" line="43"/>
+        <source>SCg-pair</source>
+        <translation>sc.g-пара</translation>
     </message>
 </context>
 <context>
@@ -514,25 +451,17 @@ Unsupported file format.</source>
     </message>
 </context>
 <context>
-    <name>SCgArranger</name>
-    <message>
-        <location filename="../scgobjectarrangers.cpp" line="66"/>
-        <source>Arrange objects</source>
-        <translation>Выравнивание объектов</translation>
-    </message>
-</context>
-<context>
     <name>SCgBusModeEventHandler</name>
     <message>
         <location filename="../event_handling/SCgBusModeEventHandler.cpp" line="55"/>
         <source>Node can&apos;t have more than one bus!</source>
-        <translation>У SCg-узла не может быть более одной шины</translation>
+        <translation>У sc.g-узла не может быть больше одной sc.g-шины!</translation>
     </message>
 </context>
 <context>
     <name>SCgContentChangeDialog</name>
     <message>
-        <location filename="../scgcontentchangedialog.cpp" line="50"/>
+        <location filename="../scgcontentchangedialog.cpp" line="60"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
@@ -542,7 +471,7 @@ Unsupported file format.</source>
     <message>
         <location filename="../scgcontentimage.cpp" line="72"/>
         <source>Choose Source Image</source>
-        <translation>Выберите исходное изображение</translation>
+        <translation>Выберите изображение</translation>
     </message>
 </context>
 <context>
@@ -550,78 +479,16 @@ Unsupported file format.</source>
     <message>
         <location filename="../scgcontentstring.cpp" line="69"/>
         <source>Word wrap</source>
-        <translation>Автоматический перенос</translation>
-    </message>
-</context>
-<context>
-    <name>SCgContentVideoDialog</name>
-    <message>
-        <source>Choose Source Video</source>
-        <translation type="obsolete">Выберите исходное видео</translation>
+        <translation>Перенос слов</translation>
     </message>
 </context>
 <context>
     <name>SCgFileLoaderGWF</name>
     <message>
-        <source>Error while opening file %1</source>
-        <translation type="obsolete">Ошибка при открытии %1</translation>
-    </message>
-    <message>
-        <source>Parse error at line %1, column %2:
-%3</source>
-        <translation type="obsolete">Ошибка в строке %1, столбеце %2:
-%3</translation>
-    </message>
-    <message>
-        <source>Wrong file format</source>
-        <translation type="obsolete">Неверный формат файла</translation>
-    </message>
-    <message>
-        <source>File %1 have no GWF format</source>
-        <translation type="obsolete">Файл %1 не является GWF файлом</translation>
-    </message>
-    <message>
-        <source>Unsupported format version</source>
-        <translation type="obsolete">Не поддерживаемая версия формата</translation>
-    </message>
-    <message>
-        <source>Version %1 of GWF files not supported.
-Just version 1.6 supported.</source>
-        <translation type="obsolete">Версия %1 GWF файлов не поддерживается. Поддерживается лишь версия 1.6.</translation>
-    </message>
-    <message>
-        <source>Content type &apos;%1&apos; doesn&apos;t supported for now</source>
-        <translation type="obsolete">В настоящее время, содержимое с типом %1 не поддерживается</translation>
-    </message>
-    <message>
-        <source>Unknown content type &apos;%1&apos;</source>
-        <translation type="obsolete">Неизвестный тип содержимого %1</translation>
-    </message>
-    <message>
-        <source>There are no points data for element &apos;%1&apos;</source>
-        <translation type="obsolete">Нет данных о точках для элемента &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <source>&apos;%1&apos; element haven&apos;t &apos;%2&apos; attribute</source>
-        <translation type="obsolete">У элемента &apos;%1&apos; нет атрибута &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>invalid float value in attribute &apos;%1&apos; of element &apos;%2&apos;</source>
-        <translation type="obsolete">Неверное вещественное значение атрибута &apos;%1&apos; у элемента &apos;%2&apos;</translation>
-    </message>
-    <message>
-        <source>node element &apos;%1&apos; haven&apos;t content tag</source>
-        <translation type="obsolete">у узла %1 нет тега content</translation>
-    </message>
-    <message>
-        <source>type &apos;%1&apos; is unknown for element &apos;%2&apos;</source>
-        <translation type="obsolete">Неизвестный тип &apos;%1&apos; для элемента &apos;%2&apos;</translation>
-    </message>
-    <message>
         <location filename="../scgfileloadergwf.cpp" line="46"/>
         <source>Error while opening file %1
 </source>
-        <translation>Ошибка при открытии %1
+        <translation>Ошибка при открытии файла %1
 </translation>
     </message>
     <message>
@@ -629,18 +496,21 @@ Just version 1.6 supported.</source>
         <source>Error while opening file %1.
 Parse error at line %2, column %3:
 %4</source>
-        <translation></translation>
+        <translation>Ошибка при открытии файла %1.
+Ошибка чтения в строке %2, столбце %3:
+%4</translation>
     </message>
     <message>
         <location filename="../scgfileloadergwf.cpp" line="97"/>
         <source>Building process has finished with following errors:
 </source>
-        <translation></translation>
+        <translation>Процесс генерации закончен со следующими ошибками:
+</translation>
     </message>
     <message>
         <location filename="../scgfileloadergwf.cpp" line="110"/>
         <source>error to parse file &apos;%1&apos;</source>
-        <translation>Ошибка чтения файла &apos;%1&apos;</translation>
+        <translation>ошибка стения файла &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -648,26 +518,19 @@ Parse error at line %2, column %3:
     <message>
         <location filename="../scgfileloadergwf.cpp" line="139"/>
         <source>Simple format</source>
-        <translation>Простой формат</translation>
+        <translation>GWF формат</translation>
     </message>
 </context>
 <context>
     <name>SCgFileWriterGWF</name>
     <message>
-        <source>File saving error</source>
-        <translation type="obsolete">Ошибка при сохранении  файла</translation>
-    </message>
-    <message>
-        <source>Cannot write file %1:
-%2.</source>
-        <translation type="obsolete">Невозможно записать файл %1: %2</translation>
-    </message>
-    <message>
         <location filename="../scgfilewritergwf.cpp" line="52"/>
         <source>File saving error.
 Cannot write file %1:
 %2.</source>
-        <translation>Ошибка при сохранении файла.\nНе удается записать файл%1: %2</translation>
+        <translation>Ошибка при сохранении файла.
+Не удается записать файл %1:
+%2</translation>
     </message>
 </context>
 <context>
@@ -675,7 +538,7 @@ Cannot write file %1:
     <message>
         <location filename="../scgfilewritergwf.cpp" line="103"/>
         <source>Simple format</source>
-        <translation>Простой формат</translation>
+        <translation>GWF формат</translation>
     </message>
 </context>
 <context>
@@ -697,341 +560,346 @@ Cannot write file %1:
 <context>
     <name>SCgGridArranger</name>
     <message>
-        <location filename="../scgobjectarrangers.cpp" line="360"/>
-        <location filename="../scgobjectarrangers.cpp" line="363"/>
+        <location filename="../scgarrangergrid.cpp" line="90"/>
+        <location filename="../scgarrangergrid.cpp" line="93"/>
         <source>X axis step</source>
         <translation>Шаг по оси X</translation>
     </message>
     <message>
-        <location filename="../scgobjectarrangers.cpp" line="361"/>
-        <location filename="../scgobjectarrangers.cpp" line="367"/>
+        <location filename="../scgarrangergrid.cpp" line="91"/>
+        <location filename="../scgarrangergrid.cpp" line="97"/>
         <source>Y axis step</source>
         <translation>Шаг по оси Y</translation>
     </message>
     <message>
-        <location filename="../scgobjectarrangers.cpp" line="386"/>
+        <location filename="../scgarrangergrid.cpp" line="116"/>
         <source>Symmetrical grid</source>
         <translation>Симметричная сетка</translation>
+    </message>
+    <message>
+        <location filename="../scgarrangergrid.cpp" line="275"/>
+        <source>Grid arrange</source>
+        <translation>Выравнивание по сетке</translation>
     </message>
 </context>
 <context>
     <name>SCgHorizontalArranger</name>
     <message>
-        <location filename="../scgobjectarrangers.cpp" line="249"/>
+        <location filename="../scgarrangerhorizontal.cpp" line="33"/>
         <source>Nothing to align. Did you forget to select objects for alignment?</source>
-        <translation>Нечего выравнивать. Возможно вы забыли выделить объекты для выравнивания?</translation>
-    </message>
-</context>
-<context>
-    <name>SCgObject</name>
-    <message>
-        <source>Change identifier</source>
-        <translation type="obsolete">Изменить идентификатор</translation>
+        <translation>Вы не выделили объекты для выравнивания.</translation>
     </message>
     <message>
-        <source>Delete</source>
-        <translation type="obsolete">Удалить</translation>
-    </message>
-    <message>
-        <source>Identifier:</source>
-        <translation type="obsolete">Идентификатор:</translation>
+        <location filename="../scgarrangerhorizontal.cpp" line="68"/>
+        <source>Horizontal arrange</source>
+        <translation>Горизонтальное выравнивание</translation>
     </message>
 </context>
 <context>
     <name>SCgScene</name>
     <message>
-        <source>Can&apos;t create bus</source>
-        <translation type="obsolete">Невозможно создать SCg-шину</translation>
+        <location filename="../scgscene.cpp" line="792"/>
+        <source>Unsupported extention</source>
+        <translation>Расширение не поддерживается</translation>
     </message>
     <message>
-        <source>Node can&apos;t have more than one bus!</source>
-        <translation type="obsolete">У SCg-узла не может быть более одной шины</translation>
+        <location filename="../scgscene.cpp" line="793"/>
+        <source>Current file&apos;s extention doesn&apos;t supported</source>
+        <translation>Файлы с указанным расширением не поддерживаются</translation>
+    </message>
+</context>
+<context>
+    <name>SCgTupleArranger</name>
+    <message>
+        <location filename="../scgarrangertuple.cpp" line="80"/>
+        <source>Tuple arranger</source>
+        <translation>Выравнивание связки</translation>
+    </message>
+    <message>
+        <location filename="../scgarrangertuple.cpp" line="90"/>
+        <source>Horizontal offset</source>
+        <translation>Горизонтальное смещение</translation>
+    </message>
+    <message>
+        <location filename="../scgarrangertuple.cpp" line="91"/>
+        <source>Vertical offset</source>
+        <translation>Вертикальное смещение</translation>
+    </message>
+    <message>
+        <location filename="../scgarrangertuple.cpp" line="92"/>
+        <source>Distance between objects</source>
+        <translation>Расстояние между объектами</translation>
     </message>
 </context>
 <context>
     <name>SCgVerticalArranger</name>
     <message>
-        <location filename="../scgobjectarrangers.cpp" line="192"/>
+        <location filename="../scgarrangervertical.cpp" line="33"/>
         <source>Nothing to align. Did you forget to select objects for alignment?</source>
-        <translation>Нечего выравнивать. Возможно вы забыли выделить объекты для выравнивания?</translation>
+        <translation>Вы не выделили объекты для выравнивания.</translation>
+    </message>
+    <message>
+        <location filename="../scgarrangervertical.cpp" line="68"/>
+        <source>Vertical arrange</source>
+        <translation>Вертикальное выравнивание</translation>
     </message>
 </context>
 <context>
     <name>SCgView</name>
     <message>
-        <location filename="../scgview.cpp" line="91"/>
-        <source>Delete</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="95"/>
-        <source>Delete contour</source>
-        <translation>Удалить SCg-контур</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="87"/>
-        <location filename="../scgview.cpp" line="378"/>
-        <source>Change identifier</source>
-        <translation>Изменить идентификатор</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="99"/>
-        <source>Copy</source>
-        <translation>Копировать</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="103"/>
-        <source>Cut</source>
-        <translation>Вырезать</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="107"/>
-        <source>Paste</source>
-        <translation>Вставить</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="111"/>
-        <source>Select All</source>
-        <translation>Выделить все</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="166"/>
-        <source>Change content</source>
-        <translation>Изменить содержимое</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="242"/>
-        <source>Const</source>
-        <translation>Константа</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="243"/>
-        <source>Var</source>
-        <translation>Переменная</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="244"/>
-        <source>Meta</source>
-        <translation>Метапеременная</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="75"/>
-        <source>C</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="78"/>
-        <source>Show content</source>
-        <translation>Показать содержимое</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="80"/>
-        <source>H</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="83"/>
-        <source>Delete content</source>
-        <translation>Удалить содержимое</translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="84"/>
-        <source>D</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../scgview.cpp" line="74"/>
-        <location filename="../scgview.cpp" line="171"/>
+        <location filename="../scgview.cpp" line="76"/>
+        <location filename="../scgview.cpp" line="173"/>
         <source>Set content</source>
         <translation>Установить содержимое</translation>
     </message>
     <message>
-        <location filename="../scgview.cpp" line="88"/>
+        <location filename="../scgview.cpp" line="77"/>
+        <source>C</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="80"/>
+        <source>Show content</source>
+        <translation>Показать содержимое</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="82"/>
+        <source>H</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="85"/>
+        <source>Delete content</source>
+        <translation>Удалить содержимое</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="86"/>
+        <source>D</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="89"/>
+        <location filename="../scgview.cpp" line="385"/>
+        <source>Change identifier</source>
+        <translation>Изменить глобальный идентификатор</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="90"/>
         <source>I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../scgview.cpp" line="96"/>
+        <location filename="../scgview.cpp" line="93"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="97"/>
+        <source>Delete contour</source>
+        <translation>Удалить sc.g-контур</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="98"/>
         <source>Backspace</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../scgview.cpp" line="380"/>
-        <source>New identifier:</source>
-        <translation>Новый идентификатор:</translation>
+        <location filename="../scgview.cpp" line="101"/>
+        <source>Copy</source>
+        <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../scgview.cpp" line="238"/>
+        <location filename="../scgview.cpp" line="105"/>
+        <source>Cut</source>
+        <translation>Вырезать</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="109"/>
+        <source>Paste</source>
+        <translation>Вставить</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="113"/>
+        <source>Select All</source>
+        <translation>Выделить все</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="168"/>
+        <source>Change content</source>
+        <translation>Изменить содержимое sc.g-узла</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="240"/>
         <source>Change type</source>
-        <translation>Изменить тип</translation>
+        <translation>Изменить тип sc.g-объекта</translation>
     </message>
     <message>
-        <source>Identifier</source>
-        <translation type="obsolete">Идентификатор</translation>
+        <location filename="../scgview.cpp" line="244"/>
+        <source>Const</source>
+        <translation>Константные</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="245"/>
+        <source>Var</source>
+        <translation>Переменные</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="246"/>
+        <source>Meta</source>
+        <translation>Метапеременные</translation>
+    </message>
+    <message>
+        <location filename="../scgview.cpp" line="387"/>
+        <source>New identifier:</source>
+        <translation>Новый глобальный идентификатор:</translation>
     </message>
 </context>
 <context>
     <name>SCgWindow</name>
     <message>
-        <source>Selection mode</source>
-        <oldsource>Select</oldsource>
-        <translation type="obsolete">Режим выделения</translation>
-    </message>
-    <message>
-        <source>Bus creation mode</source>
-        <oldsource>Bus creation</oldsource>
-        <translation type="obsolete">Режим создания шины</translation>
-    </message>
-    <message>
-        <source>Contour creation mode</source>
-        <oldsource>Contour creation</oldsource>
-        <translation type="obsolete">Режим создания конутра</translation>
-    </message>
-    <message>
-        <source>&amp;Find in Text...</source>
-        <translation type="obsolete">&amp;Поиск в тексте...</translation>
-    </message>
-    <message>
-        <location filename="../scgwindow.cpp" line="113"/>
-        <source>&amp;Find by Identifier...</source>
-        <translation>&amp;Поиск по идентификатору</translation>
-    </message>
-    <message>
         <location filename="../scgwindow.cpp" line="117"/>
+        <source>&amp;Find by Identifier...</source>
+        <translation>Найти sc.g-объект по глобальному идентификатору</translation>
+    </message>
+    <message>
+        <location filename="../scgwindow.cpp" line="122"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="122"/>
+        <location filename="../scgwindow.cpp" line="127"/>
         <source>Redo</source>
         <translation>Вернуть</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="139"/>
-        <source>Mini map</source>
-        <translation>Миникарта</translation>
-    </message>
-    <message>
         <location filename="../scgwindow.cpp" line="144"/>
+        <source>Mini map</source>
+        <translation>Мини карта</translation>
+    </message>
+    <message>
+        <location filename="../scgwindow.cpp" line="149"/>
         <source>History</source>
-        <translation>История</translation>
+        <translation>История изменений</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="162"/>
+        <location filename="../scgwindow.cpp" line="167"/>
         <source>Selection mode(1)</source>
-        <translation>Выделение (1)</translation>
+        <translation>Режим выделения (1)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="165"/>
+        <location filename="../scgwindow.cpp" line="170"/>
         <source>1</source>
         <comment>Selection mode</comment>
-        <translation>1</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="172"/>
+        <location filename="../scgwindow.cpp" line="177"/>
         <source>Pair creation mode(2)</source>
-        <translation>Содание SCg-пары (2)</translation>
+        <translation>Режим создания sc.g-пар (2)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="174"/>
+        <location filename="../scgwindow.cpp" line="179"/>
         <source>2</source>
         <comment>Pair creation mode</comment>
-        <translation>2</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="181"/>
+        <location filename="../scgwindow.cpp" line="186"/>
         <source>Bus creation mode(3)</source>
-        <translation>Создание SCg-шины (3)</translation>
+        <translation>Режим создания sc.g-шин (3)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="183"/>
+        <location filename="../scgwindow.cpp" line="188"/>
         <source>3</source>
         <comment>Bus creation mode</comment>
-        <translation>3</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="190"/>
+        <location filename="../scgwindow.cpp" line="195"/>
         <source>Contour creation mode(4)</source>
-        <translation>Создание SCg-контура (4)</translation>
+        <translation>Режим создания sc.g-контуров (4)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="192"/>
+        <location filename="../scgwindow.cpp" line="197"/>
         <source>4</source>
         <comment>Contour creation mode</comment>
-        <translation>4</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="201"/>
-        <source>Grid alignment(5)</source>
+        <location filename="../scgwindow.cpp" line="206"/>
+        <source>Grid alignment (5)</source>
         <translation>Выравнивание по сетке (5)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="203"/>
+        <location filename="../scgwindow.cpp" line="208"/>
         <source>5</source>
         <comment>Grid alignment</comment>
-        <translation>5</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="208"/>
-        <source>Vertical alignment(6)</source>
-        <translation>Выравнивание по вертикали (6)</translation>
-    </message>
-    <message>
-        <location filename="../scgwindow.cpp" line="210"/>
-        <source>6</source>
-        <comment>Vertical alignment</comment>
-        <translation>6</translation>
+        <location filename="../scgwindow.cpp" line="213"/>
+        <source>Tuple alignment (6)</source>
+        <translation>Выравнивание связки (6)</translation>
     </message>
     <message>
         <location filename="../scgwindow.cpp" line="215"/>
-        <source>Horizontal alignment(7)</source>
-        <translation>Выравнивание по горизонтали (7)</translation>
+        <source>6</source>
+        <comment>Tuple alignment</comment>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="217"/>
+        <location filename="../scgwindow.cpp" line="220"/>
+        <source>Vertical alignment (7)</source>
+        <translation>Выравнивание по вертикали (7)</translation>
+    </message>
+    <message>
+        <location filename="../scgwindow.cpp" line="222"/>
         <source>7</source>
+        <comment>Vertical alignment</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../scgwindow.cpp" line="227"/>
+        <source>Horizontal alignment (8)</source>
+        <translation>Выравнивание по горизонтали (8)</translation>
+    </message>
+    <message>
+        <location filename="../scgwindow.cpp" line="229"/>
+        <source>8</source>
         <comment>Horizontal alignment</comment>
-        <translation>7</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="224"/>
+        <location filename="../scgwindow.cpp" line="237"/>
         <source>Zoom in(+)</source>
-        <translation>Увеличить (+)</translation>
+        <translation>Увеличить масштаб (+)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="226"/>
+        <location filename="../scgwindow.cpp" line="239"/>
         <source>+</source>
         <comment>Zoom in</comment>
-        <translation>+</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="243"/>
+        <location filename="../scgwindow.cpp" line="256"/>
         <source>Zoom out(-)</source>
-        <translation>Уменьшить (-)</translation>
+        <translation>Уменьшить масштаб (-)</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="245"/>
+        <location filename="../scgwindow.cpp" line="258"/>
         <source>-</source>
         <comment>Zoom out</comment>
-        <translation>-</translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="250"/>
+        <location filename="../scgwindow.cpp" line="263"/>
         <source>SCg Tools</source>
-        <translation>SCg-инструменты</translation>
+        <translation>sc.g-инструменты</translation>
     </message>
     <message>
-        <location filename="../scgwindow.cpp" line="516"/>
+        <location filename="../scgwindow.cpp" line="534"/>
         <source>Edit</source>
-        <translation>Редактирование</translation>
-    </message>
-    <message>
-        <source>Saving dialog</source>
-        <translation type="obsolete">Диалог сохранения</translation>
-    </message>
-    <message>
-        <source>Do you want to save the </source>
-        <translation type="obsolete">Хотите ли вы сохранить </translation>
+        <translation>Редактировать</translation>
     </message>
 </context>
 </TS>
