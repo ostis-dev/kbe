@@ -506,15 +506,21 @@ void MainWindow::helpAbout()
                                "<br> <br>Copyright © OSTIS.net</td></tr><tr>"
                                "<td></td><td>%5:<ul>"
                                "<li>Denis Koronchik</li>"
-                               "<li>Gumbar Ilya</li>"
-                               "<li>Harkunov Evgeny</li>"
+                               "<li>Gumbar Ilya (zooner)</li>"
+                               "<li>Harkunov Evgeny (filosov)</li>"
+                               "</ul>%6:<ul>"
+                               "<li>Nikita Grishko (Gr1N)</li>"
+                               "<li>Denis Klimenko</li>"
+                               "<li>Pavel Karpan (pioneer)</li>"
+                               "<li>Dmitry Kolb (skif-sarmat)</li>"
                                "</ul>"
                                "</td></tr></table>")
                        .arg(QFileInfo(Config::pathIcons, "help-about-logo.png").absoluteFilePath())
                        .arg(tr("Knowledge Base source Editor "))
                        .arg(tr("version"))
                        .arg(VERSION.toString())
-                       .arg(tr("Authors")));
+                       .arg(tr("Authors"))
+                       .arg(tr("Contributors")));
 }
 
 void MainWindow::helpAboutQt()
