@@ -155,8 +155,8 @@ private slots:
 
     void updateSceneRect(const QRectF& rect);
 
-    //! Enable context menu @see SCgScene::enableContextMenu
-    void enableContextMenu(bool value);
+    //! Edit mode changed slot @see SCgScene::editModeChanged
+    void editModeChanged(int mode);
 
 
 };

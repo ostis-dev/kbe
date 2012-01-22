@@ -339,10 +339,10 @@ protected:
 
     void dropEvent(QGraphicsSceneDragDropEvent *event);
 signals:
-    /*! Signal to block context menu
-      * @param value If it have true value, then context menu enabled; otherwise - disabled
+    /*! Signal that emits on edit mode change
+      * @param mode New edit mode
       */
-    void enableContextMenu(bool value);
+    void editModeChanged(int mode);
 
 public slots:
     void setIdtfDirtyFlag();

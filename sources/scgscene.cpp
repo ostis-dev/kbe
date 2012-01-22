@@ -90,7 +90,7 @@ void SCgScene::setEditMode(EditMode mode)
 
     mEventHandler = mSceneEventHandlers.at(mode);
 
-    enableContextMenu(mode == Mode_Select);
+    editModeChanged(mode);
 }
 
 SCgScene::EditMode SCgScene::editMode() const
