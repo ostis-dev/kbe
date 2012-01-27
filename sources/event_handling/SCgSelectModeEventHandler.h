@@ -57,7 +57,7 @@ public:
 protected:
 
 private:
-    //! Holds initial items positions (before moving) and finish items positions
+    //! Holds initial items positions and parents before and after moving
     SCgScene::ItemUndoInfo mUndoInfo;
     //! True if items positions have changed.
     bool mIsItemsMoved;

@@ -27,11 +27,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "basewindow.h"
 #include "config.h"
 
-
 #include "abstractfileloader.h"
 #include "abstractfilewriter.h"
 #include "readwritemanager.h"
 #include "layoutmanager.h"
+
+#include "scgarrangervertical.h"
+#include "scgarrangerhorizontal.h"
+#include "scgarrangergrid.h"
+#include "scgarrangertuple.h"
 
 #include "version.h"
 
@@ -113,6 +117,7 @@ MainWindow::MainWindow(QWidget *parent) :
     LayoutManager::instance().addArranger(new SCgGridArranger(this));
     LayoutManager::instance().addArranger(new SCgVerticalArranger(this));
     LayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
+    LayoutManager::instance().addArranger(new SCgTupleArranger(this));
 
     // blur effect
     mBlurEffect = new QGraphicsBlurEffect(this);
@@ -501,15 +506,21 @@ void MainWindow::helpAbout()
                                "<br> <br>Copyright © OSTIS.net</td></tr><tr>"
                                "<td></td><td>%5:<ul>"
                                "<li>Denis Koronchik</li>"
-                               "<li>Gumbar Ilya</li>"
-                               "<li>Harkunov Evgeny</li>"
+                               "<li>Gumbar Ilya (zooner)</li>"
+                               "<li>Harkunov Evgeny (filosov)</li>"
+                               "</ul>%6:<ul>"
+                               "<li>Nikita Grishko (Gr1N)</li>"
+                               "<li>Denis Klimenko</li>"
+                               "<li>Pavel Karpan (pioneer)</li>"
+                               "<li>Dmitry Kolb (skif-sarmat)</li>"
                                "</ul>"
                                "</td></tr></table>")
                        .arg(QFileInfo(Config::pathIcons, "help-about-logo.png").absoluteFilePath())
                        .arg(tr("Knowledge Base source Editor "))
                        .arg(tr("version"))
                        .arg(VERSION.toString())
-                       .arg(tr("Authors")));
+                       .arg(tr("Authors"))
+                       .arg(tr("Contributors")));
 }
 
 void MainWindow::helpAboutQt()

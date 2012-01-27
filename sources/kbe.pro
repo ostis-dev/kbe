@@ -45,7 +45,6 @@ SOURCES += findwidget.cpp \
     scgcontentnumeric.cpp \
     scgcommands.cpp \
     layoutmanager.cpp \
-    scgobjectarrangers.cpp \
     event_handling/SCgInsertModeEventHandler.cpp \
     event_handling/SCgSelectModeEventHandler.cpp \
     event_handling/SCgPairModeEventHandler.cpp \
@@ -58,7 +57,12 @@ SOURCES += findwidget.cpp \
     scgtemplateobjectbuilder.cpp \
     scgdefaultobjectbuilder.cpp \
     scgabstractobjectbuilder.cpp \
-    scgconfig.cpp
+    scgconfig.cpp \
+    scgarranger.cpp \
+    scgarrangervertical.cpp \
+    scgarrangerhorizontal.cpp \
+    scgarrangergrid.cpp \
+    scgarrangertuple.cpp
 HEADERS += findwidget.h \
     platform.h \
     version.h \
@@ -97,7 +101,6 @@ HEADERS += findwidget.h \
     scgcontentnumeric.h \
     scgcommands.h \
     layoutmanager.h \
-    scgobjectarrangers.h \
     event_handling/SCgInsertModeEventHandler.h \
     event_handling/SCgSelectModeEventHandler.h \
     event_handling/SCgPairModeEventHandler.h \
@@ -110,9 +113,17 @@ HEADERS += findwidget.h \
     scgtemplateobjectbuilder.h \
     scgdefaultobjectbuilder.h \
     scgabstractobjectbuilder.h \
-    scgconfig.h
+    scgconfig.h \
+    scgarranger.h \
+    scgarrangervertical.h \
+    scgarrangerhorizontal.h \
+    scgarrangergrid.h \
+    scgarrangertuple.h
 FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
 RC_FILE = kbe.rc
 Debug:DEFINES += _DEBUG
+
+OBJECTS_DIR = obj
+MOC_DIR = moc

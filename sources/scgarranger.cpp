@@ -1,0 +1,163 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2010 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+
+#include "scgarranger.h"
+
+#include "scgcommands.h"
+#include "scgview.h"
+#include "scgobject.h"
+#include "scgpair.h"
+#include "scgnode.h"
+#include "scgcontour.h"
+#include "scgbus.h"
+
+#include <QDialogButtonBox>
+#include <QApplication>
+#include <QMessageBox>
+#include <QSpinBox>
+#include <QLayout>
+#include <QLabel>
+#include <QCheckBox>
+
+SCgArranger::SCgArranger(QObject *parent) :
+    QObject(parent),
+    mView(0)
+{
+}
+
+SCgArranger::~SCgArranger()
+{
+}
+
+
+void SCgArranger::arrange(SCgView* view)
+{
+    if(!view)
+        return;
+
+    mParentCommand = new SCgBaseCommand(0, 0, 0);
+    mParentCommand->setText(name());
+
+    mView = view;
+    mScene = static_cast<SCgScene*>(mView->scene());
+    if(configDialog())
+    {
+        startOperation();
+        mScene->addCommandToStack(mParentCommand);
+    }
+}
+
+void SCgArranger::registerCommand(SCgObject* obj, const QPointF& newPos)
+{
+    if(!mParentCommand)
+        mParentCommand = mScene->changeObjectPositionCommand(obj, newPos, 0, false);
+    else
+    	mScene->changeObjectPositionCommand(obj, newPos, mParentCommand, false);
+}
+
+void SCgArranger::registerCommand(SCgPointObject* obj, const QVector<QPointF>& newPoints)
+{
+
+    if(!mParentCommand)
+        mParentCommand = mScene->changeObjectPointsCommand(obj, newPoints, 0, false);
+    else
+    	mScene->changeObjectPointsCommand(obj, newPoints, mParentCommand, false);
+}
+
+SCgObject* SCgArranger::createGhost(SCgObject* obj, qreal opacityLevel)
+{
+    if(!obj)
+        return 0;
+
+    SCgObject* ghost = 0;
+    SCgScene* s = static_cast<SCgScene*>(mView->scene());
+
+    if(mGhosts.contains(obj))
+        return mGhosts.value(obj);
+    //Creating object
+    switch(obj->type())
+    {
+    case SCgNode::Type:
+        ghost = s->createSCgNode(obj->scenePos());
+        ghost->setTypeAlias(obj->typeAlias());
+        break;
+    case SCgPair::Type:
+    {
+        SCgPair* p = static_cast<SCgPair*>(obj);
+        SCgObject* begGhost = createGhost(p->getBeginObject());
+        SCgObject* endGhost = createGhost(p->getEndObject());
+        ghost = s->createSCgPair(begGhost, endGhost, p->points());
+        ghost->setTypeAlias(obj->typeAlias());
+        break;
+    }
+    case SCgBus::Type:
+    {
+        SCgBus* b = static_cast<SCgBus*>(obj);
+        SCgNode* ownerGhost = static_cast<SCgNode*>(createGhost(b->owner()));
+        ghost = s->createSCgBus(b->points(), ownerGhost);
+        break;
+    }
+    case SCgContour::Type:
+    {
+        SCgContour* c = static_cast<SCgContour*>(obj);
+        ghost = s->createSCgContour(c->scenePoints());
+        break;
+    }
+    default:
+        return 0;
+    }
+
+    mGhosts[obj] = ghost;
+
+    ghost->setZValue(ghost->zValue()+0.5);
+    ghost->setDead(true);
+
+    //Setting parent object
+    SCgObject* parentGhost = 0;
+    if(obj->parentItem() && SCgObject::isSCgObjectType(obj->parentItem()->type()))
+        parentGhost = createGhost(static_cast<SCgObject*>(obj->parentItem()));
+    else
+        ghost->setOpacity(opacityLevel);// Set opacity only for top level items(cause of inheriting parameters)
+
+    ghost->setParentItem(parentGhost);
+
+    return ghost;
+}
+
+
+void SCgArranger::deleteGhosts()
+{
+    QMap<SCgObject*, SCgObject*>::const_iterator i = mGhosts.constBegin();
+    for (;i != mGhosts.constEnd();++i)
+        i.value()->setParentItem(0);
+    for (i = mGhosts.begin();i != mGhosts.constEnd(); ++i)
+        delete i.value();
+
+    mGhosts.clear();
+}
+
+void SCgArranger::createGhosts(const QList<QGraphicsItem*>& list)
+{
+    foreach(QGraphicsItem* it, list)
+        if (it->opacity() == 1 && SCgObject::isSCgObjectType(it->type()))
+            createGhost(static_cast<SCgObject*>(it));
+}

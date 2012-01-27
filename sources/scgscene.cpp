@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcommands.h"
 #include "pointgraphicsitem.h"
+#include "scgcontentfactory.h"
 
 #include "event_handling/SCgBusModeEventHandler.h"
 #include "event_handling/SCgPairModeEventHandler.h"
@@ -36,6 +37,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "event_handling/SCgSelectModeEventHandler.h"
 #include "event_handling/SCgInsertModeEventHandler.h"
 
+#include <QUrl>
+#include <QFile>
+#include <QMessageBox>
 #include <QKeyEvent>
 #include <QVector2D>
 #include <QUndoStack>
@@ -85,6 +89,8 @@ void SCgScene::setEditMode(EditMode mode)
     }
 
     mEventHandler = mSceneEventHandlers.at(mode);
+
+    editModeChanged(mode);
 }
 
 SCgScene::EditMode SCgScene::editMode() const
@@ -455,12 +461,12 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
             PointGraphicsItem* pointItem = static_cast<PointGraphicsItem*>(item);
             if(!cmd)
                 cmd = new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
-                                                 pointItem->pointIndex(), it.value().first,
-                                                 it.value().second, parentCmd);
+                                              pointItem->pointIndex(), it.value().first.second,
+                                              it.value().second.second, parentCmd);
             else
                 new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
-                                        pointItem->pointIndex(), it.value().first,
-                                        it.value().second, cmd);
+                                        pointItem->pointIndex(), it.value().first.second,
+                                        it.value().second.second, cmd);
         }
 
         // If Incidence point has moved then
@@ -473,8 +479,8 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
                 SCgPointObject::IncidentRole role = i_item->role();
                 SCgObject* oldObject = p->objectWithRole(role);
                 SCgObject* newObject = i_item->objectAtPoint();
-                const QPointF& oldPoint = it.value().first;
-                const QPointF& newPoint = it.value().second;
+                const QPointF& oldPoint = it.value().first.second;
+                const QPointF& newPoint = it.value().second.second;
 
                 // If state really changed, then create command.
                 if(newObject->type() != SCgNode::Type || oldObject != newObject)
@@ -564,10 +570,10 @@ SCgBaseCommand* SCgScene::createPairCommand( const QVector<QPointF> &points,
 }
 
 SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& childs,
-												const QVector<QPointF> &points,
-												SCgContour* parent,
-												SCgBaseCommand* parentCmd,
-												bool addToStack)
+                                                const QVector<QPointF> &points,
+                                                SCgContour* parent,
+                                                SCgBaseCommand* parentCmd,
+                                                bool addToStack)
 {
 	SCgBaseCommand* cmd = new SCgCommandCreateContour(this, childs, points, parent, parentCmd);
 
@@ -579,9 +585,9 @@ SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& chil
 
 
 SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
-														const QPointF& newPos,
-														SCgBaseCommand* parentCmd,
-														bool addToStack)
+                                                        const QPointF& newPos,
+                                                        SCgBaseCommand* parentCmd,
+                                                        bool addToStack)
 {
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
@@ -596,9 +602,9 @@ SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
 }
 
 SCgBaseCommand* SCgScene::changeObjectPointsCommand(SCgPointObject* obj,
-													const QVector<QPointF>& newPoints,
-													SCgBaseCommand* parentCmd,
-													bool addToStack)
+                                                    const QVector<QPointF>& newPoints,
+                                                    SCgBaseCommand* parentCmd,
+                                                    bool addToStack)
 {
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
@@ -752,4 +758,39 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     }
 
     return result;
+}
+
+void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
+    // get only the first file
+    QString fileName = event->mimeData()->urls().at(0).toLocalFile();
+    QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
+    QMap<QString, QString> ext2MIME = SCgContentFactory::registeredExtentions2MIME();
+    QList<QString> list = ext2MIME.keys();
+    if (list.contains(ext)) {
+        QGraphicsItem *item = itemAt(event->scenePos());
+        SCgContour *parentContour = 0;
+        SCgNode *node = 0;
+        // check if we have a contour object under cursor
+        if (!item) createNodeCommand(event->scenePos(), 0);
+        else if (item->type() == SCgContour::Type) {
+            parentContour = dynamic_cast<SCgContour*>(item);
+            createNodeCommand(event->scenePos(), parentContour);
+        }
+        item = itemAt(event->scenePos());
+        node = dynamic_cast<SCgNode*>(item);
+        SCgContent::ContType cType;
+        QString MIMEType = ext2MIME.value(ext);
+        if (MIMEType.contains("image/")) cType = SCgContent::Data;
+        else if (MIMEType.contains("text/")) cType = SCgContent::String;
+        QFile file(fileName);
+        file.open(QFile::ReadOnly);
+        changeContentDataCommand(node, SCgContent::ContInfo(QVariant(file.readAll()), MIMEType, fileName, cType));
+        event->acceptProposedAction();
+    }
+    else {
+        QMessageBox::information(0,
+                                 tr("Unsupported extention"),
+                                 tr("Current file's extention doesn't supported"));
+        event->ignore();
+    }
 }

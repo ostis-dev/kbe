@@ -32,13 +32,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgView;
 class SCgObject;
 class QGraphicsItem;
-class QSpinBox;
-class QCheckBox;
 class SCgBaseCommand;
 
-/*! For creating new arranger you should implement 2 functions:
- *   virtual bool userMenu() = 0;
- *   virtual void startOperation() = 0;
+/*! To create new arranger you should implement 4 functions:
+ *   bool userMenu();
+ *   void startOperation();
+ *   int type();
+ *   QString name();
  *  If you won't use the menu then userMenu should return true.
  *  NOTE: If You want use undo/redo commands you should change objects position by calling corresponding functions:
  *  registerCommand(SCgObject*, const QPointF&);
@@ -63,10 +63,13 @@ public:
 protected:
 
     //! Shows menu to user and returns true, if user agree with changes.
-    virtual bool userMenu() = 0;
+    virtual bool configDialog() = 0;
 
     //! Start arrange process.
     virtual void startOperation() = 0;
+
+    //! Return arranger name
+    virtual QString name() const = 0;
 
     //! Command for changing node position.
     void registerCommand(SCgObject* obj, const QPointF& newPos);
@@ -83,7 +86,7 @@ protected:
     //! Holds view items on will be arranged.
     SCgView* mView;
 
-    //! Holds ghost items
+    //! Holds ghost items <RealObject, Ghost>
     QMap<SCgObject*, SCgObject*> mGhosts;
 
 private:
@@ -95,129 +98,6 @@ private:
     * @p opacityLevel - opacity value for top level items.
     **/
     SCgObject* createGhost(SCgObject* obj, qreal opacityLevel = 0.4);
-};
-
-class SCgVerticalArranger : public SCgArranger
-{
-Q_OBJECT
-
-public:
-    enum
-    {
-        Type = 1
-    };
-    explicit SCgVerticalArranger(QObject *parent = 0);
-    virtual ~SCgVerticalArranger();
-
-    //! @see SCgArranger::type().
-    int type() const {return Type;}
-
-protected:
-    //!  @see SCgArranger::userMenu()
-    bool userMenu();
-
-    //!  @see SCgArranger::startOperation()
-    void startOperation();
-};
-
-class SCgHorizontalArranger : public SCgArranger
-{
-Q_OBJECT
-
-public:
-    enum
-    {
-        Type = 2
-    };
-    explicit SCgHorizontalArranger(QObject *parent = 0);
-    virtual ~SCgHorizontalArranger();
-
-    //! @see SCgArranger::type().
-    int type() const {return Type;}
-protected:
-    //!  @see SCgArranger::userMenu()
-    bool userMenu();
-
-    //!  @see SCgArranger::startOperation()
-    void startOperation();
-};
-
-class SCgGridArranger : public SCgArranger
-{
-Q_OBJECT
-
-public:
-    enum
-    {
-        Type = 3
-    };
-    explicit SCgGridArranger(QObject *parent = 0);
-    virtual ~SCgGridArranger();
-
-    //! @see SCgArranger::type().
-    int type() const {return Type;}
-
-protected:
-    //!  @see SCgArranger::userMenu()
-    bool userMenu();
-
-    //!  @see SCgArranger::startOperation()
-    void startOperation();
-
-    //! Holds dialog window, shown to user.
-    //! @see SCgGridArranger::createDialog()
-    QDialog* mDialog;
-
-    //! Creates dialog for asking grid parameters.
-    QDialog* createDialog();
-
-    //! Translates specified point, given in scene coordinates, to nearest grid node.
-    inline QPointF mapFromSceneToGrid(const QPointF& point);
-
-    /*! @defgroup grdParam Grid Parameters
-     *  @{
-     */
-    int mXStep;
-    int mYStep;
-    bool mIsSymmetrical;
-
-    QSpinBox* mXSpinBox;
-    QSpinBox* mYSpinBox;
-    /*! @}*/
-
-    //! Holds grid color. The grid will be drown on scene.
-    QColor mGridColor;
-
-protected slots:
-    /*! @defgroup Slots Slots For Reacting User Actions
-     *  @{
-     */
-    void xValueChanged(int newSpacing);
-    void yValueChanged(int newSpacing);
-    void symmetricalCheckBoxClicked(bool checked);
-    /*! @}*/
-
-private:
-    //! Draws grid on current scene (@see mView)
-    /*!
-     *
-     * @param draw true if needed to draw grid.
-     */
-    void drawGrid(bool draw = true);
-
-    //! Replaces ghosts on the scene with new grid parameters (@see grdParam)
-    void recalculateGhostsPosition();
-
-    //! Maps specified object from it's position to new position corresponding the grid
-    void placeToGrid(SCgObject* obj, SCgObject* realObj);
-
-    //! write new position of one of object in PositionMap.
-    void calculatePosition(SCgObject* obj);
-
-    //! Holds items already placed to the grid on current operation.
-    QSet<SCgObject*> mPlaced;
-
-
 };
 
 #endif /* SCGOBJECTARRANGERS_H_ */

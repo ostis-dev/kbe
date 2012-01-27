@@ -26,8 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
+#include "readwritemanager.h"
 
 #include <math.h>
+#include <QUrl>
 #include <QContextMenuEvent>
 #include <QMenu>
 #include <QKeyEvent>
@@ -345,7 +347,12 @@ void SCgView::dragMoveEvent(QDragMoveEvent *evt)
 
 void SCgView::dropEvent(QDropEvent *event)
 {
-    MainWindow::getInstance()->dropEvent(event);
+    // get only the first file
+    QString fileName = event->mimeData()->urls().at(0).toLocalFile();
+    QList<QString> loaderExt = ReadWriteManager::instance().registeredLoaderExtensions();
+    QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
+    if (loaderExt.contains(ext)) MainWindow::getInstance()->dropEvent(event);
+    else QGraphicsView::dropEvent(event);
     event->acceptProposedAction();
 }
 
@@ -504,6 +511,7 @@ void SCgView::setScene(SCgScene* scene)
     QGraphicsView::setScene(scene);
     connect(scene, SIGNAL(sceneRectChanged(const QRectF&)), this, SLOT(updateSceneRect(const QRectF&)) );
     connect(scene, SIGNAL(selectionChanged()), this, SLOT(updateActionsState()) );
+    connect(scene, SIGNAL(editModeChanged(int)), this, SLOT(editModeChanged(int)));
     updateActionsState();
 }
 
@@ -522,4 +530,9 @@ void SCgView::updateSceneRect(const QRectF& rect)
 
         emit sceneRectChanged(result);
     }
+}
+
+void SCgView::editModeChanged(int mode)
+{
+    setContextMenuPolicy(mode == SCgScene::Mode_Select ? Qt::DefaultContextMenu : Qt::NoContextMenu);
 }

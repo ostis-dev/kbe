@@ -105,3 +105,7 @@ SCgContentDialog* SCgContentNumericFactory::createDialogInstance(SCgNode *node)
 {
     return new SCgContentNumericDialog(node);
 }
+
+QMap<QString, QString> SCgContentNumericFactory::supportedExtentions() {
+    return QMap<QString, QString>();
+}

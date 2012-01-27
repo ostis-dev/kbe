@@ -37,6 +37,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 
 #include "layoutmanager.h"
+#include "scgarrangervertical.h"
+#include "scgarrangerhorizontal.h"
+#include "scgarrangergrid.h"
+#include "scgarrangertuple.h"
 
 #include "findwidget.h"
 #include "scgview.h"
@@ -199,25 +203,33 @@ void SCgWindow::createToolBar()
     mToolBar->addSeparator();
     //
     //Grid alignment
-    action = new QAction(findIcon("tool-align-grid.png"), tr("Grid alignment(5)"), mToolBar);
+    action = new QAction(findIcon("tool-align-grid.png"), tr("Grid alignment (5)"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("5", "Grid alignment")));
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onGridAlignment()));
 
-    //Vertical alignment
-    action = new QAction(findIcon("tool-align-vert.png"), tr("Vertical alignment(6)"), mToolBar);
+    // tuple alignment
+    action = new QAction(findIcon("tool-align-tuple.png"), tr("Tuple alignment (6)"), mToolBar);
     action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("6", "Vertical alignment")));
+    action->setShortcut(QKeySequence(tr("6", "Tuple alignment")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onTupleAlignment()));
+
+    //Vertical alignment
+    action = new QAction(findIcon("tool-align-vert.png"), tr("Vertical alignment (7)"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("7", "Vertical alignment")));
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onVerticalAlignment()));
 
     //Horizontal alignment
-    action = new QAction(findIcon("tool-align-horz.png"), tr("Horizontal alignment(7)"), mToolBar);
+    action = new QAction(findIcon("tool-align-horz.png"), tr("Horizontal alignment (8)"), mToolBar);
     action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("7", "Horizontal alignment")));
+    action->setShortcut(QKeySequence(tr("8", "Horizontal alignment")));
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onHorizontalAlignment()));
+
     //
     mToolBar->addSeparator();
     //
@@ -328,6 +340,11 @@ void SCgWindow::onContourMode()
 void SCgWindow::onGridAlignment()
 {
     LayoutManager::instance().arrange(mView, SCgGridArranger::Type);
+}
+
+void SCgWindow::onTupleAlignment()
+{
+    LayoutManager::instance().arrange(mView, SCgTupleArranger::Type);
 }
 
 void SCgWindow::onVerticalAlignment()

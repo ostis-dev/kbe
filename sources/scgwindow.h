@@ -176,6 +176,9 @@ private slots:
     /*! Slot for the grid alignment tool bar button clicked.
       */
     void onGridAlignment();
+    /*! Slot for the tuple alignment tool bar button clicked.
+      */
+    void onTupleAlignment();
     /*! Slot for the vertical alignment tool bar button clicked.
       */
     void onVerticalAlignment();

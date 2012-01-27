@@ -155,6 +155,10 @@ private slots:
 
     void updateSceneRect(const QRectF& rect);
 
+    //! Edit mode changed slot @see SCgScene::editModeChanged
+    void editModeChanged(int mode);
+
+
 };
 
 #endif // SCGVIEW_H
