@@ -45,6 +45,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QUndoStack>
 #include <QGraphicsItemGroup>
 #include <QGraphicsView>
+#include <QGraphicsProxyWidget>
 #include <QCursor>
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
@@ -764,7 +765,7 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
     // get only the first file
     QString fileName = event->mimeData()->urls().at(0).toLocalFile();
     QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
-    QMap<QString, QString> ext2MIME = SCgContentFactory::registeredExtentions2MIME();
+    QMap<QString, SCgContentFactory::MimeAndSCgTypes> ext2MIME = SCgContentFactory::registeredExtentions2MIME();
     QList<QString> list = ext2MIME.keys();
     if (list.contains(ext)) {
         QGraphicsItem *item = itemAt(event->scenePos());
@@ -777,14 +778,18 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
             createNodeCommand(event->scenePos(), parentContour);
         }
         item = itemAt(event->scenePos());
-        node = dynamic_cast<SCgNode*>(item);
-        SCgContent::ContType cType;
-        QString MIMEType = ext2MIME.value(ext);
-        if (MIMEType.contains("image/")) cType = SCgContent::Data;
-        else if (MIMEType.contains("text/")) cType = SCgContent::String;
+        // check item we have a proxy widget under cursor
+        if (item->type() == QGraphicsProxyWidget::Type) item = item->parentItem();
+        node = qgraphicsitem_cast<SCgNode*>(item);
+        QString MIMEType = ext2MIME.value(ext).first;
+        SCgContent::ContType cType = ext2MIME.value(ext).second;
         QFile file(fileName);
-        file.open(QFile::ReadOnly);
+        if (file.open(QFile::ReadOnly)) {
         changeContentDataCommand(node, SCgContent::ContInfo(QVariant(file.readAll()), MIMEType, fileName, cType));
+        }
+        else QMessageBox::information(0,
+                                      tr("File opening error"),
+                                      file.errorString());
         event->acceptProposedAction();
     }
     else {

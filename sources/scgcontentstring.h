@@ -82,7 +82,7 @@ public:
     SCgContentViewer* createViewerInstance();
     SCgContentDialog* createDialogInstance(SCgNode *node);
 
-    QMap<QString, QString> supportedExtentions();
+    QMap<QString, MimeAndSCgTypes> supportedExtentions();
 };
 
 #endif // SCGCONTENTSTRING_H

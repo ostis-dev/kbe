@@ -138,24 +138,24 @@ SCgContentDialog* SCgContentImageFactory::createDialogInstance(SCgNode *node)
     return new SCgContentImageDialog(node);
 }
 
-QMap<QString, QString> SCgContentImageFactory::supportedExtentions() {
-    QMap<QString, QString> ext;
+QMap<QString, SCgContentFactory::MimeAndSCgTypes> SCgContentImageFactory::supportedExtentions() {
+    QMap<QString, MimeAndSCgTypes> ext;
 
-    ext["ico"] = "image/x-icon";
-    ext["png"] = "image/png";
-    ext["bmp"] = "image/bmp";
-    ext["gif"] = "image/gif";
-    ext["jpeg"] = "image/jpeg";
-    ext["jpg"] = "image/jpeg";
-    ext["jpe"] = "image/jpeg";
-    ext["svg"] = "image/svg+xml";
-    ext["tiff"] = "image/tiff";
-    ext["tif"] = "image/tiff";
-    ext["mng"] = "image/x-jng";
-    ext["pbm"] = "image/pbm";
-    ext["pgm"] = "image/x-pgm";
-    ext["ppm"] = "image/x-ppm";
-    ext["xbm"] = "image/x-xbm";
-    ext["xpm"] = "image/x-xpixmap";
+    ext["ico"] = qMakePair(QString("image/x-icon"), SCgContent::Data);
+    ext["png"] = qMakePair(QString("image/png"), SCgContent::Data);
+    ext["bmp"] = qMakePair(QString("image/bmp"), SCgContent::Data);
+    ext["gif"] = qMakePair(QString("image/gif"), SCgContent::Data);
+    ext["jpeg"] = qMakePair(QString("image/jpeg"), SCgContent::Data);
+    ext["jpg"] = qMakePair(QString("image/jpeg"), SCgContent::Data);
+    ext["jpe"] = qMakePair(QString("image/jpeg"), SCgContent::Data);
+    ext["svg"] = qMakePair(QString("image/svg+xml"), SCgContent::Data);
+    ext["tiff"] = qMakePair(QString("image/tiff"), SCgContent::Data);
+    ext["tif"] = qMakePair(QString("image/tiff"), SCgContent::Data);
+    ext["mng"] = qMakePair(QString("image/x-jng"), SCgContent::Data);
+    ext["pbm"] = qMakePair(QString("image/pbm"), SCgContent::Data);
+    ext["pgm"] = qMakePair(QString("image/x-pgm"), SCgContent::Data);
+    ext["ppm"] = qMakePair(QString("image/x-ppm"), SCgContent::Data);
+    ext["xbm"] = qMakePair(QString("image/x-xbm"), SCgContent::Data);
+    ext["xpm"] = qMakePair(QString("image/x-xpixmap"), SCgContent::Data);
     return ext;
 }
