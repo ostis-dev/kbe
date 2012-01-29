@@ -141,10 +141,10 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
             }
             int index = itemList.indexOf(item);
             SCgContour *newParent = 0;
-            Q_ASSERT(index >= 0);
+            //Q_ASSERT(index >= 0);
             // find nearest SCgContour according to stack order
             do {
-                if (!index) break;
+                if (index <= 0) break;
                 QGraphicsItem *tmpItem = itemList.at(--index);
                 // check
                 if (!item->childItems().contains(tmpItem) && tmpItem->type() == SCgContour::Type)
