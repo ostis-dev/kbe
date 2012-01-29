@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 
 #include <QMap>
+#include <QPair>
+#include "scgcontent.h"
 
 class SCgContentViewer;
 class SCgContentDialog;
@@ -35,6 +37,8 @@ class SCgContentFactory : public QObject
 {
 Q_OBJECT
 public:
+    typedef QPair<QString, SCgContent::ContType> MimeAndSCgTypes;
+
     explicit SCgContentFactory(QObject *parent = 0);
     virtual ~SCgContentFactory(){}
 
@@ -49,9 +53,9 @@ public:
     virtual SCgContentDialog* createDialogInstance(SCgNode *node) = 0;
 
     /**
-    * @brief Get map contained file's extentions mapped to MIME types
+    * @brief Get map contained file's extentions mapped to MIME and SCg types
     */
-    virtual QMap<QString, QString> supportedExtentions()= 0;
+    virtual QMap<QString, MimeAndSCgTypes> supportedExtentions()= 0;
 
     /* static functions for factory registration */
     /*! Registers factory for a specified content format
@@ -66,9 +70,9 @@ public:
       */
     static QList<QString> supportedFormats();
 
-    /*! Get map of supported extensions with it's MIME types
+    /*! Get map of supported extensions with it's MIME and SCg types
     */
-    static QMap<QString, QString> registeredExtentions2MIME();
+    static QMap<QString, MimeAndSCgTypes> registeredExtentions2MIME();
 
     /*! Create scg content viewer instance.
         \param  format  content format.
@@ -89,8 +93,8 @@ private:
     //! Map of registered factories (format, factory)
     static QMap<QString, SCgContentFactory*> mFactories;
 
-    //! Map contains MIME type for each supported extension
-    static QMap<QString, QString> ext2MIME;
+    //! Map contains MIME and SCg type for each supported extension
+    static QMap<QString, MimeAndSCgTypes> ext2MIME;
 
 signals:
 
