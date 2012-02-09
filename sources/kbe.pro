@@ -62,7 +62,11 @@ SOURCES += findwidget.cpp \
     scgarrangervertical.cpp \
     scgarrangerhorizontal.cpp \
     scgarrangergrid.cpp \
-    scgarrangertuple.cpp
+    scgarrangertuple.cpp \
+    m4scp/m4scpwindow.cpp \
+    m4scp/m4scpfileloader.cpp \
+    m4scp/m4scpfilewriter.cpp \
+    m4scp/m4scpsyntaxhighlighter.cpp
 HEADERS += findwidget.h \
     platform.h \
     version.h \
@@ -118,7 +122,11 @@ HEADERS += findwidget.h \
     scgarrangervertical.h \
     scgarrangerhorizontal.h \
     scgarrangergrid.h \
-    scgarrangertuple.h
+    scgarrangertuple.h \
+    m4scp/m4scpwindow.h \
+    m4scp/m4scpfileloader.h \
+    m4scp/m4scpfilewriter.h \
+    m4scp/m4scpsyntaxhighlighter.h
 FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
