@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "../scgcontour.h"
 #include <QUndoStack>
 #include "../scgnode.h"
+#include "../scgbus.h"
 #include "../pointgraphicsitem.h"
 
 SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
@@ -127,31 +128,25 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
         SCgScene::ItemUndoInfo::iterator it = mUndoInfo.begin();
         for(; it != mUndoInfo.end(); ++it) {
             QGraphicsItem *item = it.key();
-            // exclude PointGraphicsItem's object, because it always has a parent item
-            if (item->type() == PointGraphicsItem::Type) {
+            SCgContour *newParent = 0;
+            switch(item->type()) {
+                case PointGraphicsItem::Type : {
+                // exclude PointGraphicsItem's object, because it always has a parent item
                 it.value().second.second = item->pos();
                 continue;
             }
-            // get list of items, which have the same position
-            QList<QGraphicsItem*> itemList = mScene->items(item->scenePos(), Qt::ContainsItemShape, Qt::AscendingOrder);
-            // if item is a SCgNode we will move it to the end of the list
-            if (item->type() == SCgNode::Type) {
-                itemList.removeOne(item);
-                itemList.push_back(item);
+            case SCgNode::Type : case SCgContour::Type : {
+                newParent = findNearestParentContour(item);
+                break;
             }
-            int index = itemList.indexOf(item);
-            SCgContour *newParent = 0;
-            Q_ASSERT(index >= 0);
-            // find nearest SCgContour according to stack order
-            do {
-                if (!index) break;
-                QGraphicsItem *tmpItem = itemList.at(--index);
-                // check
-                if (!item->childItems().contains(tmpItem) && tmpItem->type() == SCgContour::Type)
-                    newParent = dynamic_cast<SCgContour*>(tmpItem);
-            } while(!newParent && index != 0);
+            case SCgBus::Type : {
+                 SCgNode* node = qgraphicsitem_cast<SCgBus*>(item)->owner();
+                 newParent = findNearestParentContour(node);
+            }
+            default : break;
+            }
+            QGraphicsItem *oldParent = item->parentItem();
             if (newParent) {// mapped item coordinates to new parent item
-                QGraphicsItem *oldParent = item->parentItem();
                 if (oldParent) it.value().second.second = oldParent->mapToItem(newParent, item->pos());
                 else it.value().second.second = newParent->mapFromScene(item->pos());
 
@@ -160,8 +155,7 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
             }
             else {
                 // we need check if items under cursor contain old parent item
-                QGraphicsItem *oldParent = item->parentItem();
-                if (!itemList.contains(oldParent)){
+                if (mScene->itemAt(item->scenePos()) != oldParent){
                     it.value().second.second = item->scenePos();
                     item->setParentItem(0);
                     it.value().second.first = 0;
@@ -186,5 +180,22 @@ void SCgSelectModeEventHandler::clean()
     mCurrentPointObject = 0;
 }
 
-
-
+SCgContour* SCgSelectModeEventHandler::findNearestParentContour(QGraphicsItem *item) {
+    // get list of items, which have the same position
+    QList<QGraphicsItem*> itemList = mScene->items(item->scenePos(), Qt::ContainsItemShape, Qt::AscendingOrder);
+    // if item is a SCgNode we will move it to the end of the list
+    if (item->type() == SCgNode::Type) {
+        itemList.removeOne(item);
+        itemList.push_back(item);
+    }
+    int index = itemList.indexOf(item);
+    SCgContour *newParent = 0;
+    // find nearest SCgContour according to stack order
+    do {
+        if (index <= 0) break;
+        QGraphicsItem *tmpItem = itemList.at(--index);
+        if (!item->childItems().contains(tmpItem) && tmpItem->type() == SCgContour::Type)
+            newParent = dynamic_cast<SCgContour*>(tmpItem);
+    } while(!newParent && index != 0);
+    return newParent;
+}

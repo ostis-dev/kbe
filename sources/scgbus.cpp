@@ -73,6 +73,9 @@ QVariant SCgBus::itemChange(GraphicsItemChange change, const QVariant &value)
             && mOwner && !mOwner->isDead())
         mOwner->setPos(mapToParent(mOwnerPos));
 
+    if (change == QGraphicsItem::ItemParentHasChanged && mOwner && !mOwner->isDead())
+        mOwner->setParentItem(parentItem());
+
     return SCgObject::itemChange(change, value);
 }
 

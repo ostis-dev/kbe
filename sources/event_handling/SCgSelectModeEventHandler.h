@@ -63,6 +63,8 @@ private:
     bool mIsItemsMoved;
     //! Currently controlled pointObject.
     SCgPointObject* mCurrentPointObject;
+    //! find nearest countour according to stack order for @p item
+    SCgContour *findNearestParentContour(QGraphicsItem* item);
 };
 
 #endif /* SCGSCENEEVENTHANDLERS_H_ */
