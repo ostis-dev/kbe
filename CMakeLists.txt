@@ -60,6 +60,11 @@ set (KBE_HDRS
     ./sources/event_handling/SCgEventHandler.h
     ./sources/event_handling/SCgContourModeEventHandler.h
     ./sources/event_handling/SCgBusModeEventHandler.h
+	./sources/m4scp/m4scpfileloader.h
+	./sources/m4scp/m4scpfilewriter.h
+	./sources/m4scp/m4scpsyntaxhighlighter.h
+	./sources/m4scp/m4scpwindow.h
+    ./sources/scgarrangertuple.h
     )
  
 set (KBE_SRSC
@@ -117,6 +122,11 @@ set (KBE_SRSC
     ./sources/event_handling/SCgEventHandler.cpp
     ./sources/event_handling/SCgContourModeEventHandler.cpp
     ./sources/event_handling/SCgBusModeEventHandler.cpp
+	./sources/m4scp/m4scpfileloader.cpp
+	./sources/m4scp/m4scpfilewriter.cpp
+	./sources/m4scp/m4scpsyntaxhighlighter.cpp
+	./sources/m4scp/m4scpwindow.cpp
+    ./sources/scgarrangertuple.cpp
     )
 
 set (KBE_UI_FORMS
@@ -130,7 +140,7 @@ set (KBE_ALL_SRSC
 
 set (KBE_TRANSLATIONS
     ./sources/translations/lang_en_EN.ts
-    ./sources/translations/lang_ru_RU.ts
+	./sources/translations/lang_ru_RU.ts
     )
 
 project (${PROJECT})
@@ -139,7 +149,7 @@ include_directories (./)
 
 set (WIN_RESOURCE ./sources/kbe.rc)
  
-find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml QtSvg REQUIRED)
+find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml QtSvg REQUIRED) #Phonon 
 
 include (${QT_USE_FILE})
 qt4_wrap_ui (SAMPLE_UI_HDRS ${KBE_UI_FORMS})
@@ -189,17 +199,22 @@ target_link_libraries (${PROJECT} ${QT_LIBRARIES})
 file (COPY ./sources/media DESTINATION ${CMAKE_BINARY_DIR})
 
 IF (WIN32)
-    add_custom_command (TARGET kbe COMMAND 
-        if not exist $(TargetDir)media\\lang\\ mkdir $(TargetDir)media\\lang\\)
-    foreach(FILENAME ${QM_FILES})
+	add_custom_command (TARGET kbe COMMAND 
+		if not exist $(TargetDir)media\\lang\\ mkdir $(TargetDir)media\\lang\\)
+
+	foreach(FILENAME ${QM_FILES})
+		add_custom_command(TARGET kbe 
+            COMMAND copy \"${FILENAME}\" $(TargetDir)media\\lang\\)
         add_custom_command(TARGET kbe 
-            COMMAND move \"${FILENAME}\" $(TargetDir)media\\lang\\)
-    endforeach(FILENAME)
+            COMMAND del \"${FILENAME}\")
+	endforeach(FILENAME)
 ELSE (WIN32)
     add_custom_command (TARGET kbe COMMAND
         mkdir $(TargetDir)media/lang/)
     foreach(FILENAME ${QM_FILES})
         add_custom_command(TARGET kbe 
-            COMMAND mv ${FILENAME} $(TargetDir)media/lang/)
+            COMMAND cp ${FILENAME} $(TargetDir)media/lang/)
+        add_custom_command(TARGET kbe 
+            COMMAND rm ${FILENAME})
     endforeach(FILENAME)
 ENDIF (WIN32)
