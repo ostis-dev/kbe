@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPWINDOW_H
 #define M4SCPWINDOW_H
 
-#include "basewindow.h"
+#include "../basewindow.h"
 
 class QTextEdit;
 class M4SCpSyntaxHighlighter;

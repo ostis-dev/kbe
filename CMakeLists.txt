@@ -60,6 +60,11 @@ set (KBE_HDRS
     ./sources/event_handling/SCgEventHandler.h
     ./sources/event_handling/SCgContourModeEventHandler.h
     ./sources/event_handling/SCgBusModeEventHandler.h
+	./sources/m4scp/m4scpfileloader.h
+	./sources/m4scp/m4scpfilewriter.h
+	./sources/m4scp/m4scpsyntaxhighlighter.h
+	./sources/m4scp/m4scpwindow.h
+    ./sources/scgarrangertuple.h
     )
  
 set (KBE_SRSC
@@ -117,6 +122,11 @@ set (KBE_SRSC
     ./sources/event_handling/SCgEventHandler.cpp
     ./sources/event_handling/SCgContourModeEventHandler.cpp
     ./sources/event_handling/SCgBusModeEventHandler.cpp
+	./sources/m4scp/m4scpfileloader.cpp
+	./sources/m4scp/m4scpfilewriter.cpp
+	./sources/m4scp/m4scpsyntaxhighlighter.cpp
+	./sources/m4scp/m4scpwindow.cpp
+    ./sources/scgarrangertuple.cpp
     )
 
 set (KBE_UI_FORMS
@@ -139,7 +149,7 @@ include_directories (./)
 
 set (WIN_RESOURCE ./sources/kbe.rc)
  
-find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml QtSvg Phonon REQUIRED)
+find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml QtSvg REQUIRED) #Phonon 
 
 include (${QT_USE_FILE})
 qt4_wrap_ui (SAMPLE_UI_HDRS ${KBE_UI_FORMS})
