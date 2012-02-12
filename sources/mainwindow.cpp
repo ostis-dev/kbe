@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "m4scp/m4scpwindow.h"
 #include "scgwindow.h"
 #include "basewindow.h"
 #include "config.h"
@@ -47,6 +48,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgfilewriterimage.h"
 #include "scgfilewritergwf.h"
 #include "scgfileloadergwf.h"
+#include "m4scp/m4scpfileloader.h"
+#include "m4scp/m4scpfilewriter.h"
 
 #include <QMdiSubWindow>
 #include <QToolBar>
@@ -111,8 +114,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //SCgContentFactory::registerFactory("video", new SCgContentVideoFactory);
 
     ReadWriteManager::instance().registerFileLoaderFactory(new SCgFileLoaderGWFFactory());
+    ReadWriteManager::instance().registerFileLoaderFactory(new M4SCpFileLoaderFactory());
+
     ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterGWFFactory());
     ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterImageFactory());
+    ReadWriteManager::instance().registerFileWriterFactory(new M4SCpFileWriterFactory());
 
     LayoutManager::instance().addArranger(new SCgGridArranger(this));
     LayoutManager::instance().addArranger(new SCgVerticalArranger(this));
@@ -302,7 +308,7 @@ BaseWindow* MainWindow::createSubWindow(const QString& fileName, int windowType)
     switch(windowType)
     {
     default:
-        childWindow = new SCgWindow(fileName);
+        childWindow = new M4SCpWindow(fileName);
     }
 
     Q_ASSERT_X( childWindow,
@@ -345,7 +351,7 @@ void MainWindow::load(QString fileName)
     {
         BaseWindow* childWindow = createSubWindow(fileName);
 
-        AbstractFileLoader *loader = ReadWriteManager::instance().createLoader("gwf");
+        AbstractFileLoader *loader = ReadWriteManager::instance().createLoader(ext);
 
         if (childWindow->loadFromFile(fileName, loader))
         {
