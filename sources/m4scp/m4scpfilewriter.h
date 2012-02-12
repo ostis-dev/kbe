@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPFILEWRITER_H
 #define M4SCPFILEWRITER_H
 
-#include "abstractfilewriter.h"
+#include "../abstractfilewriter.h"
 
 class M4SCpFileWriter : public AbstractFileWriter
 {

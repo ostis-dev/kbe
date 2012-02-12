@@ -22,9 +22,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "m4scpwindow.h"
 #include "m4scpsyntaxhighlighter.h"
-#include "abstractfileloader.h"
-#include "abstractfilewriter.h"
-#include "config.h"
+#include "../abstractfileloader.h"
+#include "../abstractfilewriter.h"
+#include "../config.h"
 
 #include <QTextEdit>
 #include <QHBoxLayout>

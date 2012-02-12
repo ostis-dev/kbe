@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPFILELOADER_H
 #define M4SCPFILELOADER_H
 
-#include "abstractfileloader.h"
+#include "../abstractfileloader.h"
 
 class M4SCpFileLoader : public AbstractFileLoader
 {
