@@ -46,6 +46,9 @@ private:
          QTextCharFormat format;
     };
     QVector<M4SCpHighlightingRule> highlightingRules;
+    QTextCharFormat multiLineCommentFormat;
+    QRegExp commentStartExpression;
+    QRegExp commentEndExpression;
 
 };
 
