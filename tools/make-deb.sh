@@ -7,6 +7,10 @@ then
 fi
 if ! dpkg -l | grep cmake
 then
+	sudo apt-get install debhelper
+fi
+if ! dpkg -l | grep cmake
+then
 	sudo apt-get install cmake
 fi
 if ! dpkg -l | grep make
@@ -25,10 +29,17 @@ make
 
 echo -en "\033[37;1;41mCreate temporary directory for package and copy required files...\033[0m\n"
 cd ./tools/
-mkdir -p ./kbe/opt/kbe
-cp -r ./DEBIAN ./kbe
-mv -f ../media ./kbe/opt/kbe
-mv -f ../kbe ./kbe/opt/kbe
+mkdir -p ./kbe/usr/share/kbe
+mkdir -p ./kbe/usr/bin
+mkdir -p ./kbe/usr/share/applications
+mkdir -p ./kbe/usr/share/pixmaps
+cp -r ./DEBIAN ./kbe/
+mv -f ../media ./kbe/usr/share/kbe/
+mv -f ../kbe ./kbe/usr/share/kbe/
+ln -s /usr/share/kbe/kbe ./kbe/usr/bin/kbe
+
+cp ./files/kbe.desktop ./kbe/usr/share/applications/
+cp ./files/kbe.xpm ./kbe/usr/share/pixmaps/
 
 echo -en "\033[37;1;41mMake *.deb pachage...\033[0m\n"
 cd ./kbe
