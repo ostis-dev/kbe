@@ -21,12 +21,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "m4scpwindow.h"
+#include "m4scpcodeeditor.h"
 #include "m4scpsyntaxhighlighter.h"
 #include "../abstractfileloader.h"
 #include "../abstractfilewriter.h"
 #include "../config.h"
 
-#include <QTextEdit>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QUndoStack>
@@ -40,10 +40,11 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     editor(0),
     highlighter(0)
 {
-    editor = new QTextEdit();
+    editor = new M4SCpCodeEditor();
     QFont font;
     font.setStyleHint(QFont::Serif);
-    editor->setTextColor(Qt::black);
+    font.setPointSize(11);
+    editor->setFont(font);
     editor->setPalette(QPalette(QPalette::Background, Qt::white));
     highlighter = new M4SCpSyntaxHighlighter(editor->document());
     QVBoxLayout *layout = new QVBoxLayout();

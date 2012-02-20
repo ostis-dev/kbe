@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../basewindow.h"
 
-class QTextEdit;
+class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
 class QIcon;
 
@@ -77,7 +77,7 @@ public:
 
 private:
 
-    QTextEdit *editor;
+    M4SCpCodeEditor *editor;
     M4SCpSyntaxHighlighter *highlighter;
 
 };
