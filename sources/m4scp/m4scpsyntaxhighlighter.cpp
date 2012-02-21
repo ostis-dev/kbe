@@ -125,7 +125,7 @@ void M4SCpSyntaxHighlighter::createSCpOriginsFormat()
     //m4scpOrdinalsFormat.setFontWeight(QFont::Bold);
     m4scpOrdinalsFormat.setForeground(Qt::black);
 
-    saveFormat(m4scpOrdinalsFormat,m4scpOrdinals);
+    saveFormat(m4scpOrdinalsFormat, m4scpOrdinals);
 }
 
 void M4SCpSyntaxHighlighter::createSCpAttributesFormat()
@@ -140,7 +140,7 @@ void M4SCpSyntaxHighlighter::createSCpAttributesFormat()
         << "\\bthen_\\b"    << "\\bundf_\\b"   << "\\bvar_\\b"   <<"\\belem_\\b"
         << "\\bf_\\b"       << "\\binit_\\b"   << "\\bpos_\\b";
     QTextCharFormat m4scpAttributesFormat;
-    m4scpAttributesFormat.setForeground(QBrush(qRgb(0, 128, 0)));
+    m4scpAttributesFormat.setForeground(QBrush(qRgb(255, 128, 64)));
 
     saveFormat(m4scpAttributesFormat, m4scpAttributes);
     m4scpAttributes.clear();
@@ -175,7 +175,7 @@ void M4SCpSyntaxHighlighter::createOthersFormat()
 {
     M4SCpHighlightingRule rule;
     QTextCharFormat quotationFormat;
-    quotationFormat.setForeground(Qt::darkYellow);
+    quotationFormat.setForeground(QBrush(QColor(0, 128, 0)));
     rule.pattern = QRegExp("\".*\"");
     rule.format = quotationFormat;
     highlightingRules.append(rule);

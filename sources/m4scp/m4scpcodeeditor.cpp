@@ -45,7 +45,7 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     mCompleter->setWidget(this);
     mCompleter->setCompletionMode(QCompleter::PopupCompletion);
     mCompleter->setCaseSensitivity(Qt::CaseSensitive);
-    mCompleter->setModelSorting(QCompleter::CaseSensitivelySortedModel);
+    mCompleter->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 
     connect(mCompleter, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
 }
@@ -132,7 +132,7 @@ void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 
     if (!isShortcut && (hasModifier ||
                         e->text().isEmpty() ||
-                        completionPrefix.length() < 3 ||
+                        completionPrefix.length() < 1 ||
                         eow.contains(e->text().right(1))))
     {
         mCompleter->popup()->hide();
