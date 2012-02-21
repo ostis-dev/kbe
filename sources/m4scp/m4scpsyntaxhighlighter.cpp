@@ -122,7 +122,7 @@ void M4SCpSyntaxHighlighter::createSCpOriginsFormat()
        << "\\b6_\\b"    << "\\bset3_\\b" << "\\bset9_\\b" ;
 
     QTextCharFormat m4scpOrdinalsFormat;
-    m4scpOrdinalsFormat.setFontWeight(QFont::Bold);
+    //m4scpOrdinalsFormat.setFontWeight(QFont::Bold);
     m4scpOrdinalsFormat.setForeground(Qt::black);
 
     saveFormat(m4scpOrdinalsFormat,m4scpOrdinals);
@@ -164,7 +164,7 @@ void M4SCpSyntaxHighlighter::createBracketsFormat()
     QTextCharFormat bracketsFormat;
     QBrush brush = QBrush(qRgb(0,64,0));
     bracketsFormat.setForeground(brush);
-    bracketsFormat.setFontWeight(QFont::Bold);
+    //bracketsFormat.setFontWeight(QFont::Bold);
     M4SCpHighlightingRule rule;
 
     rule.pattern = QRegExp("[])[(){}]");
