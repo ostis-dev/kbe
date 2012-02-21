@@ -67,9 +67,6 @@ void M4SCpSyntaxHighlighter::highlightBlock(const QString &text)
 void M4SCpSyntaxHighlighter::createSCpOperatorFormat()
 {
     QTextCharFormat m4scpOperatorFormat;
-    QFont font("Courier New",11,true);
-    font.setBold(true);
-    m4scpOperatorFormat.setFont(font);
     m4scpOperatorFormat.setForeground(Qt::blue);
 
     QStringList m4scpOperators;
@@ -108,9 +105,6 @@ void M4SCpSyntaxHighlighter::createSCpOperatorFormat()
       M4SCpHighlightingRule rule;
       saveFormat(m4scpOperatorFormat,m4scpOperators);
       QTextCharFormat labelFormat;
-      font.setPointSize(11);
-      font.setBold(true);
-      labelFormat.setFont(font);
       QBrush brush = QBrush(qRgb(255,0,128));
       labelFormat.setForeground(brush);
       rule.pattern = QRegExp("\\label\\b");
@@ -128,8 +122,6 @@ void M4SCpSyntaxHighlighter::createSCpOriginsFormat()
        << "\\b6_\\b"    << "\\bset3_\\b" << "\\bset9_\\b" ;
 
     QTextCharFormat m4scpOrdinalsFormat;
-    QFont font("Courier New",11,true);
-    m4scpOrdinalsFormat.setFont(font);
     m4scpOrdinalsFormat.setFontWeight(QFont::Bold);
     m4scpOrdinalsFormat.setForeground(Qt::black);
 
@@ -148,18 +140,12 @@ void M4SCpSyntaxHighlighter::createSCpAttributesFormat()
         << "\\bthen_\\b"    << "\\bundf_\\b"   << "\\bvar_\\b"   <<"\\belem_\\b"
         << "\\bf_\\b"       << "\\binit_\\b"   << "\\bpos_\\b";
     QTextCharFormat m4scpAttributesFormat;
-    QFont font_1("Arial",10,true);
-    font_1.setBold(false);
-    m4scpAttributesFormat.setFont(font_1);
     m4scpAttributesFormat.setForeground(QBrush(qRgb(0,128,0)));
 
     saveFormat(m4scpAttributesFormat,m4scpAttributes);
     m4scpAttributes.clear();
 
     m4scpAttributes<< "\\bassign_\\b" << "\\bfixed_\\b"<< "\\bf_\\b";
-    QFont font_2("Courier New",10,true);
-    font_2.setBold(false);
-    m4scpAttributesFormat.setFont(font_2);
     m4scpAttributesFormat.setForeground(Qt::red);
     saveFormat(m4scpAttributesFormat,m4scpAttributes);
  }
