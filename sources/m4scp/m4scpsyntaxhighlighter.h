@@ -30,6 +30,11 @@ class M4SCpSyntaxHighlighter : public QSyntaxHighlighter
 public:
     M4SCpSyntaxHighlighter(QTextDocument *parent = 0);
     void highlightBlock(const QString &text);
+    struct M4SCpHighlightingRule
+    {
+         QRegExp pattern;
+         QTextCharFormat format;
+    };
 private:
     void createSCpOperatorFormat();
     void createSCpAttributesFormat();
@@ -38,15 +43,11 @@ private:
     void createBracketsFormat();
 
     void saveFormat(QTextCharFormat format, QStringList patterns);
-private:
-
-    struct M4SCpHighlightingRule
-    {
-         QRegExp pattern;
-         QTextCharFormat format;
-    };
+private:    
     QVector<M4SCpHighlightingRule> highlightingRules;
-
+    QTextCharFormat multiLineCommentFormat;
+    QRegExp commentStartExpression;
+    QRegExp commentEndExpression;
 };
 
 #endif // M4SCPSYNTAXHIGHLIGHTER_H
