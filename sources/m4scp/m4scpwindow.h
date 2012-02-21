@@ -77,8 +77,8 @@ public:
 
 private:
 
-    M4SCpCodeEditor *editor;
-    M4SCpSyntaxHighlighter *highlighter;
+    M4SCpCodeEditor *mEditor;
+    M4SCpSyntaxHighlighter *mHighlighter;
 
 };
 

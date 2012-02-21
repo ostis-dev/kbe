@@ -102,14 +102,14 @@ void M4SCpSyntaxHighlighter::createSCpOperatorFormat()
       << "\\bsys_wait\\b"                << "\\bwaitReturn\\b"
       << "\\bwait_gen_output_arc\\b";
 
-      M4SCpHighlightingRule rule;
-      saveFormat(m4scpOperatorFormat,m4scpOperators);
-      QTextCharFormat labelFormat;
-      QBrush brush = QBrush(qRgb(255,0,128));
-      labelFormat.setForeground(brush);
-      rule.pattern = QRegExp("\\label\\b");
-      rule.format = labelFormat;
-      highlightingRules.append(rule);
+    M4SCpHighlightingRule rule;
+    saveFormat(m4scpOperatorFormat,m4scpOperators);
+    QTextCharFormat labelFormat;
+    QBrush brush = QBrush(qRgb(255, 0, 128));
+    labelFormat.setForeground(brush);
+    rule.pattern = QRegExp("\\label\\b");
+    rule.format = labelFormat;
+    highlightingRules.append(rule);
 }
 
 void M4SCpSyntaxHighlighter::createSCpOriginsFormat()
@@ -140,14 +140,14 @@ void M4SCpSyntaxHighlighter::createSCpAttributesFormat()
         << "\\bthen_\\b"    << "\\bundf_\\b"   << "\\bvar_\\b"   <<"\\belem_\\b"
         << "\\bf_\\b"       << "\\binit_\\b"   << "\\bpos_\\b";
     QTextCharFormat m4scpAttributesFormat;
-    m4scpAttributesFormat.setForeground(QBrush(qRgb(0,128,0)));
+    m4scpAttributesFormat.setForeground(QBrush(qRgb(0, 128, 0)));
 
-    saveFormat(m4scpAttributesFormat,m4scpAttributes);
+    saveFormat(m4scpAttributesFormat, m4scpAttributes);
     m4scpAttributes.clear();
 
     m4scpAttributes<< "\\bassign_\\b" << "\\bfixed_\\b"<< "\\bf_\\b";
     m4scpAttributesFormat.setForeground(Qt::red);
-    saveFormat(m4scpAttributesFormat,m4scpAttributes);
+    saveFormat(m4scpAttributesFormat, m4scpAttributes);
  }
 
 void M4SCpSyntaxHighlighter::saveFormat(QTextCharFormat format,QStringList patterns)
@@ -162,7 +162,7 @@ void M4SCpSyntaxHighlighter::saveFormat(QTextCharFormat format,QStringList patte
 void M4SCpSyntaxHighlighter::createBracketsFormat()
 {
     QTextCharFormat bracketsFormat;
-    QBrush brush = QBrush(qRgb(0,64,0));
+    QBrush brush = QBrush(qRgb(0, 64, 0));
     bracketsFormat.setForeground(brush);
     //bracketsFormat.setFontWeight(QFont::Bold);
     M4SCpHighlightingRule rule;

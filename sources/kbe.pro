@@ -67,7 +67,9 @@ SOURCES += findwidget.cpp \
     m4scp/m4scpfileloader.cpp \
     m4scp/m4scpfilewriter.cpp \
     m4scp/m4scpsyntaxhighlighter.cpp \
-    m4scp/m4scpcodeeditor.cpp
+    m4scp/m4scpcodeeditor.cpp \
+    m4scp/m4scpcodecompleter.cpp \
+    m4scp/m4scpsyntax.cpp
 HEADERS += findwidget.h \
     platform.h \
     version.h \
@@ -128,7 +130,9 @@ HEADERS += findwidget.h \
     m4scp/m4scpfileloader.h \
     m4scp/m4scpfilewriter.h \
     m4scp/m4scpsyntaxhighlighter.h \
-    m4scp/m4scpcodeeditor.h
+    m4scp/m4scpcodeeditor.h \
+    m4scp/m4scpcodecompleter.h \
+    m4scp/m4scpsyntax.h
 FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts

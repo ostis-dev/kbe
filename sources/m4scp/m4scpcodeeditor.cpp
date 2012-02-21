@@ -21,11 +21,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "m4scpcodeeditor.h"
+#include "m4scpcodecompleter.h"
+
 #include <QPainter>
 #include <QTextBlock>
+#include <QAbstractItemView>
+#include <QScrollBar>
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
-    QPlainTextEdit(parent)
+    QPlainTextEdit(parent),
+    mCompleter(0)
 {
     lineNumberArea = new LineNumberArea(this);
 
@@ -33,6 +38,20 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
 
     updateLineNumberAreaWidth();
+
+    // create auto completer
+    mCompleter = new M4SCpCodeCompleter(this);
+    mCompleter->initDictionary();
+    mCompleter->setWidget(this);
+    mCompleter->setCompletionMode(QCompleter::PopupCompletion);
+    mCompleter->setCaseSensitivity(Qt::CaseSensitive);
+
+    connect(mCompleter, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+}
+
+M4SCpCodeEditor::~M4SCpCodeEditor()
+{
+
 }
 
 int M4SCpCodeEditor::lineNumberAreaWidth()
@@ -65,12 +84,70 @@ void M4SCpCodeEditor::updateLineNumberArea(const QRect &rect, int dy)
         updateLineNumberAreaWidth();
 }
 
+QString M4SCpCodeEditor::textUnderCursor()
+{
+    QTextCursor tc = textCursor();
+
+    tc.select(QTextCursor::WordUnderCursor);
+    return tc.selectedText();
+}
+
 void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 {
     QPlainTextEdit::resizeEvent(e);
 
     QRect cr = contentsRect();
     lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+}
+
+void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
+{
+    if (mCompleter->popup()->isVisible())
+    {
+        if (e->key() == Qt::Key_Escape ||
+            e->key() == Qt::Key_Enter ||
+            e->key() == Qt::Key_Return ||
+            e->key() == Qt::Key_Tab ||
+            e->key() == Qt::Key_Backtab)
+        {
+            e->ignore();
+            return;
+        }
+    }
+
+    bool isShortcut = (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_Space);
+    if (!isShortcut)
+        QPlainTextEdit::keyPressEvent(e);
+
+    bool ctrlOrShift = e->modifiers() == Qt::ControlModifier || e->modifiers() == Qt::ShiftModifier;
+    if (ctrlOrShift && e->text().isEmpty())
+        return;
+
+    QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
+
+    bool hasModifier = ((e->modifiers() != Qt::NoModifier) && !ctrlOrShift);
+
+    QString completionPrefix = textUnderCursor();
+
+    if (!isShortcut && (hasModifier ||
+                        e->text().isEmpty() ||
+                        completionPrefix.length() < 3 ||
+                        eow.contains(e->text().right(1))))
+    {
+        mCompleter->popup()->hide();
+        return;
+    }
+
+    if (completionPrefix != mCompleter->completionPrefix())
+    {
+        mCompleter->setCompletionPrefix(completionPrefix);
+        mCompleter->popup()->setCurrentIndex(mCompleter->completionModel()->index(0, 0));
+    }
+
+    QRect cr = cursorRect();
+    cr.setWidth(mCompleter->popup()->sizeHintForColumn(0) +
+                mCompleter->popup()->verticalScrollBar()->sizeHint().width());
+    mCompleter->complete(cr);
 }
 
 void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -95,4 +172,17 @@ void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         top = bottom;
         bottom = top +  blockBoundingRect(block).height();
     }
+}
+
+void M4SCpCodeEditor::insertCompletion(QString completion)
+{
+    QTextCursor tc = textCursor();
+
+    QString templ = mCompleter->resolveTemplate(completion);
+
+    quint32 extra = templ.length() - mCompleter->completionPrefix().length();
+    tc.movePosition(QTextCursor::Left);
+    tc.movePosition(QTextCursor::EndOfWord);
+    tc.insertText(templ.right(extra));
+    setTextCursor(tc);
 }

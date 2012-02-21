@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpwindow.h"
 #include "m4scpcodeeditor.h"
 #include "m4scpsyntaxhighlighter.h"
+
 #include "../abstractfileloader.h"
 #include "../abstractfilewriter.h"
 #include "../config.h"
@@ -38,23 +39,25 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     BaseWindow("SCpWindow", _windowTitle, parent),
-    editor(0),
-    highlighter(0)
+    mEditor(0),
+    mHighlighter(0)
 {
-    editor = new M4SCpCodeEditor();
-    QFont font("Arial",11);
+    mEditor = new M4SCpCodeEditor();
+    QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
-    editor->setFont(font);
-    editor->setPalette(QPalette(QPalette::Background, Qt::white));
-    highlighter = new M4SCpSyntaxHighlighter(editor->document());
+    mEditor->setFont(font);
+    mEditor->setPalette(QPalette(QPalette::Background, Qt::white));
+
+    mHighlighter = new M4SCpSyntaxHighlighter(mEditor->document());
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(editor);
+    layout->addWidget(mEditor);
     setLayout(layout);
 }
 
-M4SCpWindow::~M4SCpWindow(){
-    delete highlighter;
-    delete editor;
+M4SCpWindow::~M4SCpWindow()
+{
+    delete mHighlighter;
+    delete mEditor;
 }
 
 bool M4SCpWindow::isSaved() const
@@ -70,7 +73,7 @@ void M4SCpWindow::createToolBar()
 
 bool M4SCpWindow::loadFromFile(const QString &fileName, AbstractFileLoader *loader)
 {
-    if (loader->load(fileName, editor->document()))
+    if (loader->load(fileName, mEditor->document()))
     {
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
@@ -82,7 +85,7 @@ bool M4SCpWindow::loadFromFile(const QString &fileName, AbstractFileLoader *load
 
 bool M4SCpWindow::saveToFile(const QString &fileName, AbstractFileWriter *writer)
 {
-    if (writer->save(fileName, editor->document()))
+    if (writer->save(fileName, mEditor->document()))
     {
         if(writer->type() == AbstractFileWriter::WT_Save)
         {

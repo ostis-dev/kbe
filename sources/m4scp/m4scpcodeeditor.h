@@ -25,24 +25,38 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPlainTextEdit>
 
+class M4SCpCodeCompleter;
+
 class M4SCpCodeEditor : public QPlainTextEdit
 {
     Q_OBJECT
 public:
     explicit M4SCpCodeEditor(QWidget *parent = 0);
+    virtual ~M4SCpCodeEditor();
     
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
 
 protected:
+    //! Return text under cursor
+    QString textUnderCursor();
+
+protected:
     void resizeEvent(QResizeEvent *event);
+    void keyPressEvent(QKeyEvent *e);
 
 private slots:
     void updateLineNumberAreaWidth();
     void updateLineNumberArea(const QRect &, int);
 
+    //! Slot to insert completion
+    void insertCompletion(QString completion);
+
 private:
     QWidget *lineNumberArea;
+
+    //! Pointer to code completer
+    M4SCpCodeCompleter *mCompleter;
 };
 
 class LineNumberArea : public QWidget

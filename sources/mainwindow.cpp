@@ -23,7 +23,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "m4scp/m4scpwindow.h"
 #include "scgwindow.h"
 #include "basewindow.h"
 #include "config.h"
@@ -48,8 +47,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgfilewriterimage.h"
 #include "scgfilewritergwf.h"
 #include "scgfileloadergwf.h"
+
 #include "m4scp/m4scpfileloader.h"
 #include "m4scp/m4scpfilewriter.h"
+#include "m4scp/m4scpwindow.h"
+#include "m4scp/m4scpsyntax.h"
 
 #include <QMdiSubWindow>
 #include <QToolBar>
@@ -107,7 +109,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //QApplication::setStyle(QStyleFactory::create("Plastique"));
     //QApplication::setPalette(QApplication::style()->standardPalette());
 
+
+
     // temporary
+    M4SCpSyntax::initialize();
+
     SCgContentFactory::registerFactory("string", new SCgContentStringFactory);
     SCgContentFactory::registerFactory("image", new SCgContentImageFactory);
     SCgContentFactory::registerFactory("numeric", new SCgContentNumericFactory);
