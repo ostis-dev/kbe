@@ -45,6 +45,7 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     mCompleter->setWidget(this);
     mCompleter->setCompletionMode(QCompleter::PopupCompletion);
     mCompleter->setCaseSensitivity(Qt::CaseSensitive);
+    mCompleter->setModelSorting(QCompleter::CaseSensitivelySortedModel);
 
     connect(mCompleter, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
 }

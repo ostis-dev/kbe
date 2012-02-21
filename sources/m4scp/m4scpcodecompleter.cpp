@@ -44,12 +44,19 @@ void M4SCpCodeCompleter::initDictionary()
     model->setStringList(keywords);
     setModel(model);
 
-
     // create templates
     mTemplatesMap["program"] = "program(,\n[[\n\t// constants\n]],\n[{\n}])\n\n\nreturn()\nend()";
     mTemplatesMap["return"] = "return()\n";
     mTemplatesMap["end"] = "end()\n";
     mTemplatesMap["sys_set_event_handler"] = "sys_set_event_handler([\n\t1_: fixed_: , // event\n\t2_: fixed_: , //procedure\n\t3_: fixed_: //pattern\n])";
+    mTemplatesMap["sys_get_location"] = "sys_get_location([\n\t1_: fixed_: ,// sc-element\n\t2_: assign_: //segment\n])";
+    mTemplatesMap["sys_open_segment"] = "sys_open_segment([1_: fixed_: ])";
+    mTemplatesMap["sys_set_default_segment"] = "sys_set_default_segment([1_: fixed_: ])";
+
+    mTemplatesMap["printEl"] = "printEl([1_: fixed_: ])";
+
+    mTemplatesMap["searchElStr3"] = "searchElStr3([\n\t1_: ,\n\t2_: ,\n\t3_: \n\t], ,)";
+    mTemplatesMap["searchElStr5"] = "searchElStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: \n\t], ,)";
 }
 
 QString M4SCpCodeCompleter::resolveTemplate(const QString &keyword)
