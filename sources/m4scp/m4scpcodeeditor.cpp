@@ -59,8 +59,7 @@ void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 
     int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
 
-    const int bHeight=(int) blockBoundingRect(block).height();
-    int bottom = top + bHeight;
+    int bottom = top + (int) blockBoundingRect(block).height();;
     while (block.isValid() && top <= event->rect().bottom()) {
 
         if (block.isVisible() && bottom >= event->rect().top()) {
@@ -72,6 +71,6 @@ void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 
         block = block.next();
         top = bottom;
-        bottom = top + bHeight;
+        bottom = top +  blockBoundingRect(block).height();
     }
 }

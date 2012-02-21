@@ -35,15 +35,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     BaseWindow("SCpWindow", _windowTitle, parent),
     editor(0),
     highlighter(0)
 {
     editor = new M4SCpCodeEditor();
-    QFont font;
+    QFont font("Arial",11);
     font.setStyleHint(QFont::Serif);
-    font.setPointSize(11);
     editor->setFont(font);
     editor->setPalette(QPalette(QPalette::Background, Qt::white));
     highlighter = new M4SCpSyntaxHighlighter(editor->document());
