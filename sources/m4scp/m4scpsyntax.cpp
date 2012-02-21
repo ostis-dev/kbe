@@ -26,6 +26,8 @@ QStringList M4SCpSyntax::mOperatorsList = QStringList();
 QStringList M4SCpSyntax::mAttributesList = QStringList();
 QStringList M4SCpSyntax::mOrdinalsList = QStringList();
 
+QString M4SCpSyntax::mEndOfWord = "~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="; // end of word
+
 void M4SCpSyntax::initialize()
 {
     mOperatorsList.clear();
@@ -78,8 +80,8 @@ void M4SCpSyntax::initialize()
         << "prm_"     << "segc_1_" << "segc_2_"<< "segc_3_"
         << "segc_5_"  << "segc_6_" << "segc_7_"<< "segc_8_"
         << "then_"    << "undf_"   << "var_"   <<"elem_"
-        << "f_"       << "init_"   << "pos_"
-        << "assign_"  << "fixed_"  << "f_";
+        << "f_"       << "init_"   << "pos_"   << "assign_"
+        << "fixed_"  << "f_";
 }
 
 const QStringList& M4SCpSyntax::operators()
@@ -95,4 +97,10 @@ const QStringList& M4SCpSyntax::attributes()
 const QStringList& M4SCpSyntax::ordinals()
 {
     return mOrdinalsList;
+}
+
+
+const QString& M4SCpSyntax::eow()
+{
+    return mEndOfWord;
 }

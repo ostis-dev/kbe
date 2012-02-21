@@ -22,11 +22,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "m4scpcodeeditor.h"
 #include "m4scpcodecompleter.h"
+#include "m4scpsyntax.h"
 
 #include <QPainter>
 #include <QTextBlock>
 #include <QAbstractItemView>
 #include <QScrollBar>
+
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     QPlainTextEdit(parent),
@@ -90,6 +92,7 @@ QString M4SCpCodeEditor::textUnderCursor()
     QTextCursor tc = textCursor();
 
     tc.select(QTextCursor::WordUnderCursor);
+
     return tc.selectedText();
 }
 
@@ -124,8 +127,6 @@ void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
     if (ctrlOrShift && e->text().isEmpty())
         return;
 
-    QString eow("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-="); // end of word
-
     bool hasModifier = ((e->modifiers() != Qt::NoModifier) && !ctrlOrShift);
 
     QString completionPrefix = textUnderCursor();
@@ -133,7 +134,7 @@ void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
     if (!isShortcut && (hasModifier ||
                         e->text().isEmpty() ||
                         completionPrefix.length() < 1 ||
-                        eow.contains(e->text().right(1))))
+                        M4SCpSyntax::eow().contains(e->text().right(1))))
     {
         mCompleter->popup()->hide();
         return;

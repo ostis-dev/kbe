@@ -42,6 +42,9 @@ public:
     //! Return list of ordinals
     static const QStringList& ordinals();
 
+    //! Get last symbols for words
+    static const QString& eow();
+
 protected:
     //! List of all m4scp operators
     static QStringList mOperatorsList;
@@ -49,6 +52,9 @@ protected:
     static QStringList mAttributesList;
     //! List of all m4scp ordinals
     static QStringList mOrdinalsList;
+
+    //! Symbols that used as end of word
+    static QString mEndOfWord;
 
 };
 

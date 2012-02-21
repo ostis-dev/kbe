@@ -38,8 +38,8 @@ void M4SCpCodeCompleter::initDictionary()
 {
     QStringListModel *model = new QStringListModel(this);
 
-    QStringList keywords = M4SCpSyntax::operators();
-    keywords << M4SCpSyntax::attributes() << M4SCpSyntax::ordinals();
+    QStringList keywords;
+    keywords << M4SCpSyntax::attributes() << M4SCpSyntax::ordinals() << M4SCpSyntax::operators();
 
     model->setStringList(keywords);
     setModel(model);
