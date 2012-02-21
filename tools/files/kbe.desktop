@@ -6,4 +6,4 @@ GenericName=Knowledge Base Source Editor
 Icon=kbe
 Exec=kbe
 Terminal=false
-Categories=Education;Science;Development;ArtificialIntelligence;Qt;
+Categories=Education;Science;ArtificialIntelligence;Qt;

@@ -5,8 +5,6 @@ Priority: optional
 Architecture: all
 Depends: libqtcore4, libqtgui4
 Maintainer: gr1n <https://github.com/Gr1N>
-Uploaders: gr1n <https://github.com/Gr1N>, Aliaksei Palkanau <lifusexitus@gmail.com>
-Changed-By: Aliaksei Palkanau <lifusexitus@gmail.com>
 Homepage: <https://github.com/deniskoronchik/kbe>
 Description: Knowledge Base source Editor
  OSTIS (Open Semantic Technology for Intelligent Systems)
