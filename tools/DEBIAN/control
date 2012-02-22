@@ -2,10 +2,10 @@ Package: kbe
 Version: 0.2.1
 Section: science
 Priority: optional
-Architecture: all
-Depends: libqtcore4, libqtgui4
-Maintainer: gr1n <https://github.com/Gr1N>
-Homepage: <https://github.com/deniskoronchik/kbe>
+Architecture: amd64
+Depends: libc6 (>= 2.3), libgcc1 (>= 1:4.1.1), libqt4-svg (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-xmlpatterns (>= 4:4.5.3), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.7.0~beta1)
+Maintainer: Nikita Grishko <grin.minsk@gmail.com>
+Homepage: https://github.com/deniskoronchik/kbe
 Description: Knowledge Base source Editor
  OSTIS (Open Semantic Technology for Intelligent Systems)
  For the latest info, see http://www.ostis.net
