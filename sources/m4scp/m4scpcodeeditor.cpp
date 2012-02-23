@@ -28,16 +28,20 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QAbstractItemView>
 #include <QScrollBar>
-
+#include <QDebug>
+#include <QTextDocumentFragment>
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     QPlainTextEdit(parent),
+    startSelectionBlockNumber(-1),
+    endSelectionBlockNumber(-1),
     mCompleter(0)
 {
     lineNumberArea = new LineNumberArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
+    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth()));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(changeSelection()));
 
     updateLineNumberAreaWidth();
 
@@ -106,13 +110,15 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
+    if (e->modifiers() == Qt::ShiftModifier && (e->key() == Qt::Key_PageDown || Qt::Key_PageUp))
+        emit selectionChanged();
     if (mCompleter->popup()->isVisible())
     {
         if (e->key() == Qt::Key_Escape ||
-            e->key() == Qt::Key_Enter ||
-            e->key() == Qt::Key_Return ||
-            e->key() == Qt::Key_Tab ||
-            e->key() == Qt::Key_Backtab)
+                e->key() == Qt::Key_Enter ||
+                e->key() == Qt::Key_Return ||
+                e->key() == Qt::Key_Tab ||
+                e->key() == Qt::Key_Backtab)
         {
             e->ignore();
             return;
@@ -166,6 +172,16 @@ void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
         if (block.isVisible() && bottom >= event->rect().top()) {
             QString number = QString::number(block.blockNumber() + 1);
             painter.setPen(Qt::black);
+            if (block.blockNumber() <= endSelectionBlockNumber &&
+                block.blockNumber() >= startSelectionBlockNumber &&
+                    startSelectionBlockNumber != -1 && endSelectionBlockNumber != -1) {
+                painter.setBackground(QBrush(Qt::darkGray));
+                painter.setBackgroundMode(Qt::OpaqueMode);
+            }
+            else {
+                painter.setBackground(QBrush(Qt::lightGray));
+                painter.setBackgroundMode(Qt::OpaqueMode);
+            }
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
                              Qt::AlignCenter, number);
         }
@@ -187,4 +203,15 @@ void M4SCpCodeEditor::insertCompletion(QString completion)
     tc.movePosition(QTextCursor::EndOfWord);
     tc.insertText(templ.right(extra));
     setTextCursor(tc);
+}
+
+
+void M4SCpCodeEditor::changeSelection() {
+    QTextCursor cur = textCursor();
+    startSelectionBlockNumber = document()->findBlock(cur.selectionStart()).blockNumber();
+    endSelectionBlockNumber = document()->findBlock(cur.selectionEnd()).blockNumber();
+    if (cur.selection().isEmpty()) {
+        startSelectionBlockNumber = -1;
+        endSelectionBlockNumber = -1;
+    }
 }
