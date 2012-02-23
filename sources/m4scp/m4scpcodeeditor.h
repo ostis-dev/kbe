@@ -27,6 +27,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 class M4SCpCodeCompleter;
 
+class LineNumberArea;
+
 class M4SCpCodeEditor : public QPlainTextEdit
 {
     Q_OBJECT
@@ -52,8 +54,14 @@ private slots:
     //! Slot to insert completion
     void insertCompletion(QString completion);
 
+    void changeSelection();
+
 private:
-    QWidget *lineNumberArea;
+    LineNumberArea *lineNumberArea;
+
+    int startSelectionBlockNumber;
+    int endSelectionBlockNumber;
+
 
     //! Pointer to code completer
     M4SCpCodeCompleter *mCompleter;
@@ -77,6 +85,8 @@ protected:
 
 private:
     M4SCpCodeEditor *codeEditor;
+    int startSelectionBlockNumber;
+    int endSelectionBlockNumber;
 };
 
 
