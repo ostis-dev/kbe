@@ -64,6 +64,10 @@ gzip -9 ./kbe/usr/share/doc/kbe/changelog
 
 cp copyright ./kbe/usr/share/doc/kbe/
 
+# Calculate full size
+full_size=$(du -s ./kbe/usr | awk '{print $1}')
+sed -i '/Installed-Size/s|: .*$|: '"$full_size"'|' DEBIAN/control
+
 echo -en "\033[37;1;41mMake *.deb pachage...\033[0m\n"
 cd ./kbe
 md5deep -l usr/lib/kbe/kbe > ./DEBIAN/md5sums
