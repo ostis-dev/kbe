@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QTextDocumentFragment>
+#include <QDebug>
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     QPlainTextEdit(parent),
@@ -52,7 +53,7 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     mCompleter->setCaseSensitivity(Qt::CaseSensitive);
     mCompleter->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 
-    connect(mCompleter, SIGNAL(activated(QString)), this, SLOT(insertCompletion(QString)));
+    connect(mCompleter, SIGNAL(activated(QModelIndex)), this, SLOT(insertCompletion(QModelIndex)));
 }
 
 M4SCpCodeEditor::~M4SCpCodeEditor()
@@ -195,12 +196,12 @@ void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     }
 }
 
-void M4SCpCodeEditor::insertCompletion(QString completion)
+void M4SCpCodeEditor::insertCompletion(QModelIndex index)
 {
     QTextCursor tc = textCursor();
 
-    QString templ = mCompleter->resolveTemplate(completion);
-
+    QString templ = mCompleter->completionModel()->data(index, Qt::UserRole).toString();
+    if (templ.isEmpty()) templ = mCompleter->completionModel()->data(index, Qt::DisplayRole).toString();
     quint32 extra = templ.length() - mCompleter->completionPrefix().length();
     tc.movePosition(QTextCursor::Left);
     tc.movePosition(QTextCursor::EndOfWord);
