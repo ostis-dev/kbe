@@ -28,7 +28,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTextBlock>
 #include <QAbstractItemView>
 #include <QScrollBar>
-#include <QDebug>
 #include <QTextDocumentFragment>
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
@@ -58,7 +57,8 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
 
 M4SCpCodeEditor::~M4SCpCodeEditor()
 {
-
+    delete lineNumberArea;
+    delete mCompleter;
 }
 
 int M4SCpCodeEditor::lineNumberAreaWidth()
@@ -110,8 +110,12 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
-    if (e->modifiers() == Qt::ShiftModifier && (e->key() == Qt::Key_PageDown || Qt::Key_PageUp))
+    if (e->modifiers() == Qt::ShiftModifier && (e->key() == Qt::Key_PageDown || Qt::Key_PageUp)) {
+        QPlainTextEdit::keyPressEvent(e);
         emit selectionChanged();
+        e->accept();
+        return;
+    }
     if (mCompleter->popup()->isVisible())
     {
         if (e->key() == Qt::Key_Escape ||
@@ -209,7 +213,7 @@ void M4SCpCodeEditor::insertCompletion(QString completion)
 void M4SCpCodeEditor::changeSelection() {
     QTextCursor cur = textCursor();
     startSelectionBlockNumber = document()->findBlock(cur.selectionStart()).blockNumber();
-    endSelectionBlockNumber = document()->findBlock(cur.selectionEnd()).blockNumber();
+    endSelectionBlockNumber = document()->findBlock(cur.selectionEnd() - 1).blockNumber();
     if (cur.selection().isEmpty()) {
         startSelectionBlockNumber = -1;
         endSelectionBlockNumber = -1;
