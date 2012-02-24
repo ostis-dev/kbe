@@ -4,7 +4,7 @@
 Name "KBE"
 
 ; set the name of the installer
-OutFile "kbe-win32-0.2.1.exe"
+OutFile "kbe-win32-0.2.2.exe"
 
 ;Default installation folder
 InstallDir $PROGRAMFILES32\KBE
@@ -64,6 +64,7 @@ CreateShortCut "$SMPROGRAMS\$StartMenuFolder\User Manual.lnk" "$INSTDIR\manual\U
 
 ; associate files
 ${registerExtension} "$INSTDIR\kbe.exe" ".gwf" "GWF File"
+${registerExtension} "$INSTDIR\kbe.exe" ".m4scp" "M4SCP File"
   
   !insertmacro MUI_STARTMENU_WRITE_END
 
@@ -87,6 +88,7 @@ Delete "$INSTDIR\Uninstall.exe"
   DeleteRegKey /ifempty HKCU "Software\KBE"
   
   ${unregisterExtension} ".gwf" "GWF File"
+  ${unregisterExtension} ".m4scp" "M4SCP File"
 SectionEnd
 
 Section "Examples"
