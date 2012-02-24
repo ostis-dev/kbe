@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define M4SCPCODEEDITOR_H
 
 #include <QPlainTextEdit>
+#include <QModelIndex>
 
 class M4SCpCodeCompleter;
 
@@ -52,7 +53,7 @@ private slots:
     void updateLineNumberArea(const QRect &, int);
 
     //! Slot to insert completion
-    void insertCompletion(QString completion);
+    void insertCompletion(QModelIndex index);
 
     void changeSelection();
 
