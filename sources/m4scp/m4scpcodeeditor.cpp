@@ -187,7 +187,7 @@ void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
                 painter.setBackgroundMode(Qt::OpaqueMode);
             }
             painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
-                             Qt::AlignCenter, number);
+                             Qt::AlignRight, number);
         }
 
         block = block.next();
