@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define M4SCPCODECOMPLETER_H
 
 #include <QCompleter>
-#include <QMap>
+//#include <QMap>
 
 class M4SCpCodeCompleter : public QCompleter
 {
@@ -43,11 +43,11 @@ public:
       * @return Return string, that contains template. If there are no
       * template for a \p keyword, then return last one
       */
-    QString resolveTemplate(const QString &keyword);
+//    QString resolveTemplate(const QString &keyword);
 
 private:
     //! Map taht contains completion templates for specified keywords
-    QMap<QString, QString> mTemplatesMap;
+//    QMap<QString, QString> mTemplatesMap;
 
 signals:
 
