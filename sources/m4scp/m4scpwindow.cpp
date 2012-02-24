@@ -47,6 +47,7 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     font.setStyleHint(QFont::Serif);
     mEditor->setFont(font);
     mEditor->setPalette(QPalette(QPalette::Background, Qt::white));
+    mEditor->setTabStopWidth(20);
 
     mHighlighter = new M4SCpSyntaxHighlighter(mEditor->document());
     QVBoxLayout *layout = new QVBoxLayout();
