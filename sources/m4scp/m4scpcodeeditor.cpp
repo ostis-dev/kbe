@@ -94,8 +94,7 @@ void M4SCpCodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 QString M4SCpCodeEditor::textUnderCursor()
 {
     QTextCursor tc = textCursor();
-
-    tc.select(QTextCursor::WordUnderCursor);
+    tc.movePosition(QTextCursor::WordLeft, QTextCursor::KeepAnchor);
 
     return tc.selectedText();
 }
