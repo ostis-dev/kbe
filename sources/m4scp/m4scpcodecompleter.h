@@ -38,16 +38,8 @@ public:
       */
     void initDictionary();
 
-    /*! Function to find specified template for a \p keyword
-      * @param keyword Keyword, that need to be replaced with template.
-      * @return Return string, that contains template. If there are no
-      * template for a \p keyword, then return last one
-      */
-//    QString resolveTemplate(const QString &keyword);
-
 private:
-    //! Map taht contains completion templates for specified keywords
-//    QMap<QString, QString> mTemplatesMap;
+
 
 signals:
 
