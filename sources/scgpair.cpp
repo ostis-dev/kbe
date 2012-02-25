@@ -138,6 +138,11 @@ void SCgPair::updatePosition()
             mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
         }
 
+    // change parent item for the pair if parent's item for begin or end objects was changed
+    if (mBeginObject->isSelected() && mBeginObject->parentItem() != parentItem())
+        setParentItem(mBeginObject->parentItem());
+    else if (mEndObject->isSelected() && mEndObject->parentItem() != parentItem())
+        setParentItem(mEndObject->parentItem());
     // update shape with new points.
     updateShape();
 }
