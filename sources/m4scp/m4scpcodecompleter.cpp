@@ -25,7 +25,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "config.h"
 #include <QStringListModel>
 #include <QStandardItemModel>
-#include <QDebug>
 
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QCompleter(parent)
@@ -61,20 +60,66 @@ void M4SCpCodeCompleter::initDictionary()
     }
 
     QMap<QString, QString> mTemplatesMap;
+    words.clear();
+    words << M4SCpSyntax::operators();
+    foreach(QString str, words)
+        mTemplatesMap.insert(str, str);
 
     // create templates
-    mTemplatesMap["program"] = "program(,\n[[\n\t// constants\n]],\n[{\n}])\n\n\nreturn()\nend()";
+    mTemplatesMap["program"] = "program(,\n[[\n\t// constants\n]],\n[{\n\t// variables\n}])\n\n\nreturn()\nend()";
+    mTemplatesMap["procedure"] = "procedure(,\n[[\n\t// constants\n]],\n[{\n\t// variables\n}],\n{[\n\t//parameters\n]})\n\nreturn()\nend()";
     mTemplatesMap["return"] = "return()\n";
     mTemplatesMap["end"] = "end()\n";
-    mTemplatesMap["sys_set_event_handler"] = "sys_set_event_handler([\n\t1_: fixed_: , // event\n\t2_: fixed_: , //procedure\n\t3_: fixed_: //pattern\n])";
-    mTemplatesMap["sys_get_location"] = "sys_get_location([\n\t1_: fixed_: ,// sc-element\n\t2_: assign_: //segment\n])";
-    mTemplatesMap["sys_open_segment"] = "sys_open_segment([1_: fixed_: ])";
-    mTemplatesMap["sys_set_default_segment"] = "sys_set_default_segment([1_: fixed_: ])";
 
-    mTemplatesMap["printEl"] = "printEl([1_: fixed_: ])";
+    mTemplatesMap["sys_set_event_handler"] = "sys_set_event_handler([\n\t1_: fixed_: , // event\n\t2_: fixed_: , //procedure\n\t3_: fixed_: //pattern\n])\n";
+    mTemplatesMap["sys_get_location"] = "sys_get_location([\n\t1_: fixed_: ,// sc-element\n\t2_: assign_: //segment\n])\n";
+    mTemplatesMap["sys_open_segment"] = "sys_open_segment([1_: fixed_: ])\n";
+    mTemplatesMap["sys_open_segment_uri"] = "sys_open_segment_uri([\n\t1_: fixed_: ,\n\t2_: assign_: \n])\n";
+    mTemplatesMap["sys_set_default_segment"] = "sys_set_default_segment([1_: fixed_: ])\n";
+    mTemplatesMap["sys_get_default_segment"] = "sys_get_default_segment([1_: assign_: ])\n";
+    mTemplatesMap["sys_spin_segment"] = "sys_spin_segment([\n\t1_: fixed_: ,\n\t2_: assign_: \n\t])\n";
+    mTemplatesMap["sys_close_segment"] = "sys_close_segment([1_: fixed_: ])\n";
+    mTemplatesMap["sys_search"] = "sys_search([\n\t1_: fixed_: ,\t// search pattern\n\t2_: fixed_: {\t// set of search result pairs\n\t\t{1_: , 2_: }\n\t},\n\t3_: fixed_: {\t// set of pairs that consisted of input parameters\n\t\t{1_: , 2_: }\n\t},\n\t4_: \t// result set\n])\n";
+    mTemplatesMap["sys_gen"] = "sys_gen([\n\t1_: fixed_: ,\t// pattern generation\n\t2_: fixed_: {\t// set of search result pairs\n\t\t{1_: , 2_: }\n\t},\n\t3_: fixed_: {\t// set of pairs that consisted of input parameters\n\t\t{1_: , 2_: }\n\t},\n\t4_: \t// result set\n])\n";
 
-    mTemplatesMap["searchElStr3"] = "searchElStr3([\n\t1_: ,\n\t2_: ,\n\t3_: \n\t], ,)";
-    mTemplatesMap["searchElStr5"] = "searchElStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: \n\t], ,)";
+    mTemplatesMap["print"]   = "print([1_: fixed_: ])\n";
+    mTemplatesMap["printEl"] = "printEl([1_: fixed_: ])\n";
+    mTemplatesMap["printNl"] = "printNl([1_: fixed_: ])\n";
+
+    mTemplatesMap["searchElStr3"] = "searchElStr3([\n\t1_: ,\n\t2_: ,\n\t3_: \n], ,)\n";
+    mTemplatesMap["searchElStr5"] = "searchElStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: \n], ,)\n";
+    mTemplatesMap["searchSetStr3"] = "searchSetStr3([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\tset1_: ,\n\tset2_: ,\n\tset3_: \n], ,)\n";
+    mTemplatesMap["searchSetStr5"] = "searchSetStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: ,\n\tset1_: ,\n\tset2_: ,\n\tset3_: ,\n\tset4_: ,\n\tset5_: \n], ,)\n";
+
+    mTemplatesMap["genEl"] = "genEl([1_: assign_: ])\n";
+    mTemplatesMap["genElStr3"] = "genElStr3([\n\t1_: ,\n\t2_: ,\n\t3_: \n])\n";
+    mTemplatesMap["genElStr5"] = "genElStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: \n])\n";
+
+    mTemplatesMap["eraseEl"] = "eraseEl([1_: fixed_: ])\n";
+    mTemplatesMap["eraseElStr3"] = "eraseElStr3([\n\t1_: fixed_: ,\n\t2_: assign_: f_: ,\n\t3_: fixed_: \n])\n";
+    mTemplatesMap["eraseElStr5"] = "eraseElStr5([\n\t1_: fixed_: ,\n\t2_: assign_: ,\n\t3_: fixed_: ,\n\t4_: assign_: f_: ,\n\t5_: fixed_: \n])\n";
+
+    mTemplatesMap["selectYStr3"] = "selectYStr3([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\tset1_: ,\n\tset2_: ,\n\tset3_: \n], ,)\n";
+    mTemplatesMap["selectNStr3"] = "selectNStr3([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\tset1_: ,\n\tset2_: ,\n\tset3_: \n], ,)\n";
+    mTemplatesMap["selectYStr5"] = "selectYStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: ,\n\tset1_: ,\n\tset2_: ,\n\tset3_: ,\n\tset4_: ,\n\tset5_: \n], ,)\n";
+    mTemplatesMap["selectNStr5"] = "selectNStr5([\n\t1_: ,\n\t2_: ,\n\t3_: ,\n\t4_: ,\n\t5_: ,\n\tset1_: ,\n\tset2_: ,\n\tset3_: ,\n\tset4_: ,\n\tset5_: \n], ,)\n";
+
+    mTemplatesMap["ifType"] = "ifType([\n\t1_: \n], ,)\n";
+    mTemplatesMap["ifEq"] = "ifEq([\n\t1_: fixed_: ,\n\t2_: fixed_: \n], ,)\n";
+    mTemplatesMap["ifCoin"] = "ifCoin([\n\t1_: ,\n\t2_: \n], ,)\n";
+    mTemplatesMap["ifGr"] = "ifGr([\n\t1_: fixed_: \n\t2_: fixed_: \n], , )\n";
+    mTemplatesMap["ifFormCount"] = "ifFormCount([\n\t1_: fixed_: ,\n\t2_: fixed_: \n], ,)\n";
+    mTemplatesMap["ifVarAssign"] = "ifVarAssign([\n\t1_: fixed_: \n], ,)\n";
+
+    mTemplatesMap["add"] = "add([\n\t1_: assign_: ,\t// result\n\t2_: fixed_: ,\n\t3_: fixed_: \n])\n";
+    mTemplatesMap["sub"] = "sub([\n\t1_: assign_: ,\t// result\n\t2_: fixed_: ,\n\t3_: fixed_: \n])\n";
+    mTemplatesMap["mult"] = "mult([\n\t1_: assign_: ,\t// result\n\t2_: fixed_: ,\n\t3_: fixed_: \n])\n";
+    mTemplatesMap["div"] = "div([\n\t1_: assign_: ,\t// result\n\t2_: fixed_: ,\n\t3_: fixed_: \n])\n";
+    mTemplatesMap["pow"] = "pow([\n\t1_: assign_: ,\t// result\n\t2_: fixed_: ,\n\t3_: fixed_: \n])\n";
+
+    mTemplatesMap["callReturn"] = "callReturn([\n\t1_: fixed_: ,\n\t2_: fixed_: {[\n\t\t1_: fixed_: \n\t\t]}\n])";
+
+    mTemplatesMap["label"] = "label()\n";
 
     QMap<QString, QString>::iterator it = mTemplatesMap.begin();
     for (; it != mTemplatesMap.end(); ++it) {
