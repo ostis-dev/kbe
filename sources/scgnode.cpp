@@ -137,7 +137,7 @@ QVariant SCgNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (mBus && !mBus->isDead() && change == QGraphicsItem::ItemParentHasChanged)
         mBus->setParentItem(parentItem());
-
+    updateConnected();
     return SCgObject::itemChange(change, value);
 }
 
