@@ -25,8 +25,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpsyntaxhighlighter.h"
 #include "m4scpplugin.h"
 
-#include "interfaces/fileloaderinterface.h"
-#include "interfaces/filewriterinterface.h"
+#include "m4scpfileloader.h"
+#include "m4scpfilewriter.h"
+
 #include "config.h"
 
 #include <QHBoxLayout>
@@ -39,10 +40,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
-    WindowInterface(),
+    EditorInterface(),
     QWidget(parent),
     mEditor(0),
-    mHighlighter(0)
+    mHighlighter(0),
+    mIsSaved(false)
 {
     mEditor = new M4SCpCodeEditor();
     QFont font("Arial", 11);
@@ -63,42 +65,61 @@ M4SCpWindow::~M4SCpWindow()
     delete mEditor;
 }
 
-bool M4SCpWindow::isSaved() const
+QWidget* M4SCpWindow::widget()
 {
-    return true;
+    return this;
 }
 
-void M4SCpWindow::createToolBar()
+QToolBar* M4SCpWindow::toolBar()
 {
-
+    return 0;
 }
 
-
-bool M4SCpWindow::loadFromFile(const QString &fileName, FileLoaderInterface *loader)
+QList<QWidget*> M4SCpWindow::widgetsForDocks()
 {
-    if (loader->load(fileName, mEditor->document()))
+    return QList<QWidget*>();
+}
+
+QStringList M4SCpWindow::supportedFormatsExt() const
+{
+    QStringList res;
+    res << "m4scp";
+    return res;
+}
+
+bool M4SCpWindow::loadFromFile(const QString &fileName)
+{    
+    M4SCpFileLoader loader;
+
+    if (loader.load(fileName, mEditor->document()))
     {
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
+        mIsSaved = true;
         return true;
     }
+
     return false;
 }
 
 
-bool M4SCpWindow::saveToFile(const QString &fileName, FileWriterInterface *writer)
+bool M4SCpWindow::saveToFile(const QString &fileName)
 {
-    if (writer->save(fileName, mEditor->document()))
+    M4SCpFileWriter writer;
+
+    if (writer.save(fileName, mEditor->document()))
     {
-        if(writer->type() == FileWriterInterface::WT_Save)
-        {
-            mFileName = fileName;
-            setWindowTitle(mFileName + "[*]");
-            //mUndoStack->setClean();
-        }
+        mFileName = fileName;
+        setWindowTitle(mFileName + "[*]");
+        mIsSaved = true;
         return true;
     }else
         return false;
+}
+
+bool M4SCpWindow::isSaved() const
+{
+    return mIsSaved;
 }
 
 void M4SCpWindow::_update()
@@ -116,4 +137,36 @@ QIcon M4SCpWindow::findIcon(const QString &iconName) const
     QDir dir(M4SCpPlugin::mediaPath());
     dir.cd("icons");
     return QIcon(QFileInfo(dir, iconName).absoluteFilePath());
+}
+
+
+// ---------------
+M4SCpWindowFactory::M4SCpWindowFactory(QObject *parent) :
+    QObject(parent)
+{
+
+}
+
+M4SCpWindowFactory::~M4SCpWindowFactory()
+{
+
+}
+
+const QString& M4SCpWindowFactory::name() const
+{
+    static QString name = "m4scp";
+    return name;
+}
+
+EditorInterface* M4SCpWindowFactory::createInstance()
+{
+    return new M4SCpWindow("");
+}
+
+QStringList M4SCpWindowFactory::supportedFormatsExt()
+{
+    QStringList list;
+    list << "m4scp";
+
+    return list;
 }

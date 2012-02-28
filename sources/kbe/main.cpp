@@ -31,7 +31,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMessageBox>
 #include <QDebug>
 
-#include "readwritemanager.h"
 #include "pluginmanager.h"
 #include "config.h"
 #include "platform.h"

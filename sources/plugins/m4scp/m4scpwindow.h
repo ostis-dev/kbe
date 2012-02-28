@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPWINDOW_H
 #define M4SCPWINDOW_H
 
-#include "interfaces/windowinterface.h"
+#include "interfaces/editorinterface.h"
 
 #include <QWidget>
 
@@ -31,42 +31,38 @@ class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
 class QIcon;
 
-class M4SCpWindow : public WindowInterface,
+class M4SCpWindow : public EditorInterface,
                     public QWidget
 {
 public:
     explicit M4SCpWindow(const QString& _windowTitle, QWidget *parent = 0);
     ~M4SCpWindow();
-    /*! Get document save state.
-      @return if document haven't any changes after last save, then return true, else - false.
-      */
+
+    //! @copydoc EditorInterface::widget
+    QWidget* widget();
+    //! @copydoc EditorInterface::toolBar
+    QToolBar* toolBar();
+    //! @copydoc EditorInterface::widgetsForDocks
+    QList<QWidget*> widgetsForDocks();
+    //! @copydoc EditorInterface::supportedFormatsExt
+    QStringList supportedFormatsExt() const;
+    //! @copydoc EditorInterface::isSaved
     bool isSaved() const;
-
-
-    /*! Create tool bar
-      */
-    void createToolBar();
 
     /*! Load content from file.
       @param fileName   Name of file.
-      @param loader     Loader to load file.
-
-      @note File loader will be removed automaticaly. You doesn't need to do that.
 
       @return If file loaded, then return true, else - false.
       */
-    bool loadFromFile(const QString &fileName, FileLoaderInterface *loader);
+    bool loadFromFile(const QString &fileName);
 
     /*! Save content to file.
       @param fileName   Name of file.
-      @param writer     Writer to save file.
-
-      @note File writer will be removed automaticaly. You doesn't need to do that.
 
       @return If file saved, then return true, else - false.
       */
 
-    bool saveToFile(const QString &fileName, FileWriterInterface *writer);
+    bool saveToFile(const QString &fileName);
 
     /*! Update window imideately
       */
@@ -82,7 +78,26 @@ private:
 
     M4SCpCodeEditor *mEditor;
     M4SCpSyntaxHighlighter *mHighlighter;
+    bool mIsSaved;
 
+};
+
+class M4SCpWindowFactory : public QObject,
+                           public EditorFactoryInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(EditorFactoryInterface)
+
+public:
+    explicit M4SCpWindowFactory(QObject *parent = 0);
+    virtual ~M4SCpWindowFactory();
+
+    //! @copydoc EditorFactoryInterface::name
+    const QString& name() const;
+    //! @copydoc EditorFactoryInterface::createInstance
+    EditorInterface* createInstance();
+    //! @copydoc EditorFactoryInterface::supportedFormatsExt
+    QStringList supportedFormatsExt();
 };
 
 #endif // M4SCPWINDOW_H

@@ -25,9 +25,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QMap>
+#include <QStringList>
 
 class QPluginLoader;
 class PluginInterface;
+class EditorInterface;
+class EditorFactoryInterface;
 
 class PluginManager : public QObject
 {
@@ -50,6 +53,26 @@ public:
     //! Unload all plugins and de-initialize plugin manager
     void shutdown();
 
+    /*! Consturct string that contains filters for open dialog
+      * and return it
+      */
+    QString openFilters() const;
+
+    /*! Construct string that contains filters for save dialog
+      * based on list of file extensions
+      * @param supExtensions List of sopperted file extensions
+      */
+    QString saveFilters(const QStringList &supExtensions) const;
+
+    //! Return list of supported file extensions
+    const QStringList& supportedFilesExt() const;
+
+    /*! Create editor for specified file extension
+      * @param ext File extension
+      * @return Return pointer to created window
+      */
+    EditorInterface* createWindow(const QString &ext);
+
 protected:
     /*! Load plugin with specified \p path
       * @param path Path to plugin
@@ -65,6 +88,10 @@ protected:
 protected:
     //! Map of used plugin loaders
     QMap<QString, QPluginLoader*> mPluginLoaders;
+    //! List of supported extensions
+    QStringList mSupportedExtensions;
+    //! Registered factories
+    QMap<QString, EditorFactoryInterface*> mEditorFactories;
 
 signals:
 

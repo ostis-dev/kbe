@@ -35,7 +35,7 @@ class QSignalMapper;
 class QUndoGroup;
 class QGraphicsBlurEffect;
 class QKeyEvent;
-class WindowInterface;
+class EditorInterface;
 class SCgWindow;
 
 class MainWindow : public QMainWindow {
@@ -60,7 +60,7 @@ public:
     /*! Get active sub window
       @return Pointer to active sub window
       */
-    WindowInterface *activeChild();
+    EditorInterface *activeChild();
 
     /*! Load file with @p fileName
       */
@@ -92,7 +92,7 @@ private:
     /*! Saves window into specified file given by @p name with extension @p ext (without leading dot).
      * @return true if saved correctly
      */
-    bool saveWindow(WindowInterface* window, QString& name, const QString& ext);
+    bool saveWindow(EditorInterface* window, QString& name, const QString& ext);
     /*! Check saved state of all subwindows
      * @return true if all subwinows are saved
      */
@@ -100,11 +100,10 @@ private:
 
     /*!
      * Fabric method for creating subWindow.
-     * @param fileName name of file owned by created view.
-     * @param viewType type of created view. (Not used. Only SCgWindow supported for now)
-     * @return created view.
+     * @param ext File format extension
+     * @return created window.
      */
-    WindowInterface* createSubWindow(const QString& fileName, int viewType = 0 );
+    EditorInterface* createSubWindow(const QString& ext);
 
 private:
     Ui::MainWindow *ui;
@@ -113,7 +112,7 @@ private:
     int windowCounter;    // windows counter for untitled windows naming
 
     //! Active window
-    WindowInterface* mLastActiveWindow;
+    EditorInterface* mLastActiveWindow;
 
     //! Tool bar for working with files
     QToolBar *mToolBarFile;
@@ -139,6 +138,10 @@ private:
      */
     QMap<QString, QByteArray> mStates;
 
+    /*! Map to convert widget to editor interface
+      */
+    QMap<QWidget*, EditorInterface*> mWidget2EditorInterface;
+
 public slots:
     /*! Update main menu.
       */
@@ -149,8 +152,8 @@ public slots:
     void openRecentFile();
     void fileNew();
     void fileOpen();
-    void fileSave(WindowInterface* window = 0);
-    void fileSaveAs(WindowInterface* window = 0);
+    void fileSave(EditorInterface* window = 0);
+    void fileSaveAs(EditorInterface* window = 0);
     void fileSaveAll();
     void fileExportToImage();
     void fileExit();

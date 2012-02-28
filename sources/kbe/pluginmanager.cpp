@@ -22,9 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "pluginmanager.h"
 #include "interfaces/plugininterface.h"
-#include "interfaces/fileloaderinterface.h"
-#include "interfaces/filewriterinterface.h"
-#include "readwritemanager.h"
+#include "interfaces/editorinterface.h"
 #include "config.h"
 
 #include <QDir>
@@ -124,22 +122,47 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
     QObject *_interface;
     foreach(_interface, interfaces)
     {
-        // components factory
-        FileLoaderFactoryInterface *fileLoaderFactory = qobject_cast<FileLoaderFactoryInterface*>(_interface);
-        if (fileLoaderFactory != 0)
+        EditorFactoryInterface* factory = qobject_cast<EditorFactoryInterface*>(_interface);
+        if (factory != 0)
         {
-            ReadWriteManager::instance()->registerFileLoaderFactory(fileLoaderFactory);
-            continue;
-        }
+            QStringList extList = factory->supportedFormatsExt();
+            QString ext;
+            foreach(ext, extList)
+            {
+                Q_ASSERT(mEditorFactories.find(ext) == mEditorFactories.end());
+                mEditorFactories[ext] = factory;
+                mSupportedExtensions << ext;
+            }
 
-        FileWriterFactoryInterface *fileWriterFactory = qobject_cast<FileWriterFactoryInterface*>(_interface);
-        if (fileWriterFactory != 0)
-        {
-            ReadWriteManager::instance()->registerFileWriterFactory(fileWriterFactory);
             continue;
         }
 
         // interface can't be handled
         qWarning() << "Can't prosess interface: " << _interface;
     }
+}
+
+QString PluginManager::openFilters() const
+{
+    return "";
+}
+
+QString PluginManager::saveFilters(const QStringList &supExtensions) const
+{
+    return "";
+}
+
+const QStringList& PluginManager::supportedFilesExt() const
+{
+    return mSupportedExtensions;
+}
+
+EditorInterface* PluginManager::createWindow(const QString &ext)
+{
+    // trying to find factory
+    QMap<QString, EditorFactoryInterface*>::iterator it = mEditorFactories.find(ext);
+
+    Q_ASSERT(it != mEditorFactories.end());
+
+    return (*it)->createInstance();
 }

@@ -12,7 +12,7 @@ CONFIG (debug, debug|release) {
 
 TEMPLATE = app
 
-SOURCES += readwritemanager.cpp \
+SOURCES += \
     mainwindow.cpp \
     main.cpp \
     findwidget.cpp \
@@ -23,7 +23,6 @@ SOURCES += readwritemanager.cpp \
     pluginmanager.cpp
 
 HEADERS += version.h \
-    readwritemanager.h \
     platform.h \
     mainwindow.h \
     findwidget.h \
@@ -33,9 +32,7 @@ HEADERS += version.h \
     config.h \
     interfaces/plugininterface.h \
     pluginmanager.h \
-    interfaces/windowinterface.h \
-    interfaces/filewriterinterface.h \
-    interfaces/fileloaderinterface.h
+    interfaces/editorinterface.h
 
 FORMS += mainwindow.ui
 

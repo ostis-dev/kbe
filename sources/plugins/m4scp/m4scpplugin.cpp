@@ -22,8 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "m4scpplugin.h"
 #include "m4scpsyntax.h"
-#include "m4scpfileloader.h"
-#include "m4scpfilewriter.h"
+#include "m4scpwindow.h"
 
 #include <QDir>
 
@@ -65,13 +64,17 @@ void M4SCpPlugin::initialize(const QString &mediaPath)
     dir.cd("m4scp");
     mMediaPath = dir.absolutePath();
 
-    mInterfaces.push_back(new M4SCpFileLoaderFactory(this));
-    mInterfaces.push_back(new M4SCpFileWriterFactory(this));
+
+    mInterfaces.push_back(new M4SCpWindowFactory(this));
 }
 
 void M4SCpPlugin::shutdown()
 {
+    QObject *obj = 0;
+    foreach(obj, mInterfaces)
+        delete obj;
 
+    mInterfaces.clear();
 }
 
 QString M4SCpPlugin::mediaPath()

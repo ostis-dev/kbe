@@ -32,11 +32,11 @@ class FileWriterInterface;
 class QToolBar;
 class QMainWindow;
 
-class WindowInterface
+class EditorInterface
 {
 public:
-    explicit WindowInterface() {}
-    virtual ~WindowInterface() {}
+    explicit EditorInterface() {}
+    virtual ~EditorInterface() {}
 
     //! Return pointer to widget, that represent window
     virtual QWidget* widget() = 0;
@@ -58,30 +58,19 @@ public:
      */
     virtual bool isSaved() const = 0;
 
-
-    /*! Create tool bar
-     */
-    virtual void createToolBar() = 0;
-
     /*! Load content from file.
      @param fileName   Name of file.
-     @param loader     Loader to load file.
-
-     @note File loader will be removed automaticaly. You doesn't need to do that.
 
      @return If file loaded, then return true, else - false.
      */
-    virtual bool loadFromFile(const QString &fileName, FileLoaderInterface *loader) { mFileName = fileName; return false; }
+    virtual bool loadFromFile(const QString &fileName) { mFileName = fileName; return false; }
 
     /*! Save content to file.
      @param fileName   Name of file.
-     @param writer     Writer to save file.
-
-     @note File writer will be removed automaticaly. You doesn't need to do that.
 
      @return If file saved, then return true, else - false.
      */
-    virtual bool saveToFile(const QString &fileName, FileWriterInterface *writer) { mFileName = fileName; return false; }
+    virtual bool saveToFile(const QString &fileName) { mFileName = fileName; return false; }
 
     /*! Update window imideately
      */
@@ -123,25 +112,25 @@ protected:
 
 };
 
-class WindowFactoryInterface
+class EditorFactoryInterface
 {
 public:
-    explicit WindowFactoryInterface() {}
-    virtual ~WindowFactoryInterface() {}
+    explicit EditorFactoryInterface() {}
+    virtual ~EditorFactoryInterface() {}
 
     //! Return name of window factory
     virtual const QString& name() const = 0;
 
     //! Create new window instance
-    virtual WindowInterface* createInstance()  = 0;
+    virtual EditorInterface* createInstance()  = 0;
 
     //! Return file extensions supported by that type of window
     virtual QStringList supportedFormatsExt() = 0;
 };
 
-Q_DECLARE_INTERFACE(WindowInterface,
-                    "com.OSTIS.kbe.WindowInterface/1.0")
-Q_DECLARE_INTERFACE(WindowFactoryInterface,
-                    "com.OSTIS.kbe.WindowFactoryInterface/1.0")
+Q_DECLARE_INTERFACE(EditorInterface,
+                    "com.OSTIS.kbe.EditorInterface/1.0")
+Q_DECLARE_INTERFACE(EditorFactoryInterface,
+                    "com.OSTIS.kbe.EditorFactoryInterface/1.0")
 
 #endif // WINDOWINTERFACE_H

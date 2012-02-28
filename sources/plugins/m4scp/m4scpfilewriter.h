@@ -24,11 +24,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPFILEWRITER_H
 #define M4SCPFILEWRITER_H
 
-#include "interfaces/filewriterinterface.h"
+#include <QObject>
+#include <QString>
 
-class M4SCpFileWriter : public FileWriterInterface
+class M4SCpFileWriter
 {
-    Q_INTERFACES(FileWriterInterface)
+
 public:
     M4SCpFileWriter();
     virtual ~M4SCpFileWriter();
@@ -41,29 +42,6 @@ public:
       */
     bool save(QString file_name, QObject *input);
 
-    FileWriterInterface::Type type() const {return FileWriterInterface::WT_Save;}
-
-};
-
-class M4SCpFileWriterFactory : public QObject,
-                               public FileWriterFactoryInterface
-{
-    Q_OBJECT
-    Q_INTERFACES(FileWriterFactoryInterface)
-public:
-    explicit M4SCpFileWriterFactory(QObject *parent);
-    virtual ~M4SCpFileWriterFactory();
-
-    //! @see FileWriterFactory::createInstance
-    FileWriterInterface* createInstance();
-    //! @see FileWriterFactory::extensions
-    QList<QString> extensions();
-    //! @see FileWriterFactory::formatDescription
-    QString formatDescription(const QString &ext);
-    //! @see FileWriterFactory::clone
-    FileWriterFactoryInterface* clone();
-    //! @see FileWriterFactory::type
-    FileWriterInterface::Type type();
 };
 
 #endif // M4SCPFILEWRITER_H

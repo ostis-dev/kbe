@@ -25,11 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "config.h"
 
-#include "interfaces/fileloaderinterface.h"
-#include "interfaces/filewriterinterface.h"
-#include "interfaces/windowinterface.h"
+#include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
-#include "readwritemanager.h"
 
 #include "version.h"
 
@@ -86,7 +83,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle(tr("Knowledge Base source Editor - version %1").arg(VERSION_STR));
 
-    new ReadWriteManager();
     new PluginManager();
     PluginManager::instance()->initialize(Config::pathPlugins.absolutePath());
 
@@ -141,7 +137,6 @@ MainWindow::~MainWindow()
 
     PluginManager::instance()->shutdown();
     delete PluginManager::instance();
-    delete ReadWriteManager::instance();
 }
 
 void MainWindow::createToolBars()
@@ -211,21 +206,21 @@ bool MainWindow::checkSubWindowSavedState()
     QList<QWidget*> list = mTabWidget->subWindowList();
     QList<QWidget*>::iterator it = list.begin();
     for(; it != list.end(); it++)
-        if (!qobject_cast<WindowInterface*>(*it)->isSaved())
+        if (!qobject_cast<EditorInterface*>(*it)->isSaved())
             return false;
     return true;
 }
 
-WindowInterface *MainWindow::activeChild()
+EditorInterface *MainWindow::activeChild()
 {
     if (QWidget *activeSubWindow = mTabWidget->currentWidget())
-        return qobject_cast<WindowInterface *>(activeSubWindow);
+        return qobject_cast<EditorInterface *>(activeSubWindow);
     return 0;
 }
 
 void MainWindow::updateMenu()
 {
-    WindowInterface *subWindow = activeChild();
+    EditorInterface *subWindow = activeChild();
 
     ui->actionSave->setEnabled(subWindow && !subWindow->isSaved());
     ui->actionSave_as->setEnabled(subWindow != 0);
@@ -295,20 +290,16 @@ void MainWindow::openRecentFile()
     }
 }
 
-WindowInterface* MainWindow::createSubWindow(const QString& fileName, int windowType)
+EditorInterface* MainWindow::createSubWindow(const QString& ext)
 {
-    WindowInterface* childWindow = 0;
+    EditorInterface* childWindow = 0;
 
-    switch(windowType)
-    {
-    //default:
-        //childWindow = new M4SCpWindow(fileName);
-    }
+    if (PluginManager::instance()->supportedFilesExt().contains(ext))
+        childWindow = PluginManager::instance()->createWindow(ext);
+    else
+        return 0;
 
-    Q_ASSERT_X( childWindow,
-               "void MainWindow::createSubWindow(const QString& fileName, int viewType)",
-               "Error while creating window with given type");
-
+    mWidget2EditorInterface[childWindow->widget()] = childWindow;
     mTabWidget->addSubWindow(childWindow->widget());
 
     return childWindow;
@@ -316,7 +307,8 @@ WindowInterface* MainWindow::createSubWindow(const QString& fileName, int window
 
 void MainWindow::fileNew()
 {
-    createSubWindow(tr("Untitled") + "-" + QString::number(++windowCounter));
+    if (PluginManager::instance()->supportedFilesExt().size() > 0)
+        createSubWindow(PluginManager::instance()->supportedFilesExt().first());
 }
 
 void MainWindow::fileOpen()
@@ -330,7 +322,7 @@ void MainWindow::fileOpen()
     QString fileName = dlg.getOpenFileName(this,
                                            tr("Open file"),
                                            "",
-                                           ReadWriteManager::instance()->openFilters(),
+                                           PluginManager::instance()->openFilters(),
                                            &selectedFilter,
                                            options);
     if (!fileName.isEmpty())
@@ -340,14 +332,13 @@ void MainWindow::fileOpen()
 
 void MainWindow::load(QString fileName)
 {
-    QString ext = fileName.mid(fileName.lastIndexOf('.') + 1);
-    if(ReadWriteManager::instance()->registeredLoaderExtensions().contains(ext))
+    QFileInfo fi(fileName);
+    QString ext = fi.suffix();
+    if(PluginManager::instance()->supportedFilesExt().contains(ext))
     {
-        WindowInterface* childWindow = createSubWindow(fileName);
+        EditorInterface* childWindow = createSubWindow(ext);
 
-        FileLoaderInterface *loader = ReadWriteManager::instance()->createLoader(ext);
-
-        if (childWindow->loadFromFile(fileName, loader))
+        if (childWindow->loadFromFile(fileName))
         {
             QSettings settings;
 
@@ -362,25 +353,22 @@ void MainWindow::load(QString fileName)
             updateRecentFileActions();
         }
 
-        delete loader;
     } else
         QMessageBox::warning(this, qAppName(), tr("Can't load file.\nUnsupported file format \"%1\"").arg(ext));
 }
 
-bool MainWindow::saveWindow(WindowInterface* window, QString& name, const QString& ext)
+bool MainWindow::saveWindow(EditorInterface* window, QString& name, const QString& ext)
 {
     if(!name.isEmpty() && window)
     {
         bool retVal = false;
 
-        if(ReadWriteManager::instance()->registeredWriterExtensions().contains(ext))
+        if(PluginManager::instance()->supportedFilesExt().contains(ext))
         {
             if (!name.endsWith("." + ext))
                 name += "." + ext;
 
-            FileWriterInterface *writer = ReadWriteManager::instance()->createWriter(ext);
-            retVal = window->saveToFile(name, writer);
-            delete writer;
+            retVal = window->saveToFile(name);
         } else
             QMessageBox::warning(this, qAppName(), tr("Can't save file.\nUnsupported file format \"%1\"").arg(ext));
 
@@ -390,9 +378,9 @@ bool MainWindow::saveWindow(WindowInterface* window, QString& name, const QStrin
     return false;
 }
 
-void MainWindow::fileSave(WindowInterface* window)
+void MainWindow::fileSave(EditorInterface* window)
 {
-    WindowInterface* childWindow = window;
+    EditorInterface* childWindow = window;
 
     if(!childWindow)
         childWindow = activeChild();
@@ -413,16 +401,16 @@ void MainWindow::fileSave(WindowInterface* window)
     }
 }
 
-void MainWindow::fileSaveAs(WindowInterface* window)
+void MainWindow::fileSaveAs(EditorInterface* window)
 {
-    WindowInterface* childWindow = window;
+    EditorInterface* childWindow = window;
 
     if(!childWindow)
         childWindow = activeChild();
 
     Q_ASSERT(childWindow);
 
-    QString formatsStr = ReadWriteManager::instance()->saveFilters();
+    QString formatsStr = PluginManager::instance()->saveFilters(window->supportedFormatsExt());
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog ;
 
@@ -437,7 +425,15 @@ void MainWindow::fileSaveAs(WindowInterface* window)
                                             &selectedFilter,
                                             options);
     if(!fileName.isEmpty())
-        saveWindow(childWindow, fileName, ReadWriteManager::extFromFilter(selectedFilter));
+    {
+        //! TODO: use regular expression
+        int pos = selectedFilter.indexOf("*.");
+        Q_ASSERT_X(pos != -1, "MainWindow::fileSaveAs", "Can't find begin of extension");
+        pos += 2;
+        int pos2 = selectedFilter.indexOf(")", pos);
+        Q_ASSERT_X(pos2 != -1, "MainWindow::fileSaveAs", "Can't find end of extension");
+        saveWindow(childWindow, fileName, selectedFilter.mid(pos, pos2 - pos).trimmed());
+    }
 
     mBlurEffect->setEnabled(false);
 
@@ -603,7 +599,7 @@ void MainWindow::subWindowHasChanged(int index)
     QWidget* window = mTabWidget->widget(index);
     if (window)
     {
-        mLastActiveWindow = qobject_cast<WindowInterface*>(window);
+        mLastActiveWindow = mWidget2EditorInterface[window];
 
         Q_ASSERT(mLastActiveWindow);
         mLastActiveWindow->activate(this);
@@ -616,12 +612,14 @@ void MainWindow::subWindowHasChanged(int index)
 
 void MainWindow::windowWillBeClosed(QWidget* w)
 {
-    WindowInterface* wnd = qobject_cast<WindowInterface*>(w);
+    QMap<QWidget*, EditorInterface*>::iterator it = mWidget2EditorInterface.find(w);
 
-    Q_ASSERT_X( wnd,
+
+    Q_ASSERT_X( it != mWidget2EditorInterface.end(),
                "void MainWindow::windowWillBeClosed(QWidget *w)",
-               "Given widget is null or invalid widget type!");
+               "There are no conversion to editor interface for a given window");
 
+    mWidget2EditorInterface.erase(it);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
