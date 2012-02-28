@@ -40,7 +40,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
-    EditorInterface(),
     QWidget(parent),
     mEditor(0),
     mHighlighter(0),

@@ -31,9 +31,12 @@ class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
 class QIcon;
 
-class M4SCpWindow : public EditorInterface,
-                    public QWidget
+class M4SCpWindow : public QWidget,
+                    public EditorInterface
+
 {
+    Q_OBJECT
+    Q_INTERFACES(EditorInterface)
 public:
     explicit M4SCpWindow(const QString& _windowTitle, QWidget *parent = 0);
     ~M4SCpWindow();

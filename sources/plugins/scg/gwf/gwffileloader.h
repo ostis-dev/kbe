@@ -23,8 +23,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGFILELOADERGWF_H
 #define SCGFILELOADERGWF_H
 
-#include "abstractfileloader.h"
-
 #include <QDomElement>
 #include <QMap>
 #include <QPair>
@@ -34,12 +32,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgScene;
 class SCgObject;
 
-class SCgFileLoaderGWF : public AbstractFileLoader
+class GWFFileLoader
 
 {
 public:
-    SCgFileLoaderGWF();
-    virtual ~SCgFileLoaderGWF();
+    GWFFileLoader();
+    virtual ~GWFFileLoader();
     /*! Loads gwf format.
       @param file_name Name of file.
       @param output scg-editor scene.
@@ -67,25 +65,6 @@ private:
     QString mFileName;
     //! Last error
     QString mLastError;
-};
-
-
-class SCgFileLoaderGWFFactory : public FileLoaderFactory
-{
-public:
-    SCgFileLoaderGWFFactory();
-    virtual ~SCgFileLoaderGWFFactory();
-
-    //! @see FileLoaderFactory::createInstance
-    AbstractFileLoader* createInstance();
-    //! @see FileLoaderFactory::extensions
-    QList<QString> extensions();
-    //! @see FileLoaderFactory::formatDescription
-    QString formatDescription(const QString &ext);
-    //! @see FileLoaderFactory::clone
-    FileLoaderFactory* clone();
-    //! @see FileLoaderFactory::type
-    AbstractFileLoader::Type type();
 };
 
 #endif // SCGFILELOADERGWF_H

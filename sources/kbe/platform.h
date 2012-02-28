@@ -46,20 +46,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #   define KBE_ARCH_TYPE KBE_ARCHITECTURE_32
 #endif
 
-#if KBE_PLATFORM == KBE_PLATFORM_WIN32
-#   if defined(_DEBUG) || defined(DEBUG)
-#       define KBE_DEBUG_MODE 1
-#   else
-#       define KBE_DEBUG_MODE 0
-#   endif
+#if defined(_DEBUG) || defined(DEBUG)
+#   define KBE_DEBUG_MODE 1
+#else
+#   define KBE_DEBUG_MODE 0
 #endif
 
-#if KBE_PLATFORM == KBE_PLATFORM_APPLE || KBE_PLATFORM == KBE_PLATFORM_LINUX
-#   ifdef DEBUG
-#       define KBE_DEBUG_MODE 1
-#   else
-#       define KBE_DEBUG_MODE 0
-#   endif
-#endif
 
 #endif // PLATFORM_H

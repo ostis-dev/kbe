@@ -152,8 +152,8 @@ public slots:
     void openRecentFile();
     void fileNew();
     void fileOpen();
-    void fileSave(EditorInterface* window = 0);
-    void fileSaveAs(EditorInterface* window = 0);
+    void fileSave(QWidget* window = 0);
+    void fileSaveAs(QWidget* window = 0);
     void fileSaveAll();
     void fileExportToImage();
     void fileExit();

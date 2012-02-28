@@ -89,28 +89,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //QApplication::setStyle(QStyleFactory::create("Plastique"));
     //QApplication::setPalette(QApplication::style()->standardPalette());
 
-
-
-//    // temporary
-//    M4SCpSyntax::initialize();
-
-//    SCgContentFactory::registerFactory("string", new SCgContentStringFactory);
-//    SCgContentFactory::registerFactory("image", new SCgContentImageFactory);
-//    SCgContentFactory::registerFactory("numeric", new SCgContentNumericFactory);
-//    //SCgContentFactory::registerFactory("video", new SCgContentVideoFactory);
-
-//    ReadWriteManager::instance().registerFileLoaderFactory(new SCgFileLoaderGWFFactory());
-//    ReadWriteManager::instance().registerFileLoaderFactory(new M4SCpFileLoaderFactory());
-
-//    ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterGWFFactory());
-//    ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterImageFactory());
-//    ReadWriteManager::instance().registerFileWriterFactory(new M4SCpFileWriterFactory());
-
-//    LayoutManager::instance().addArranger(new SCgGridArranger(this));
-//    LayoutManager::instance().addArranger(new SCgVerticalArranger(this));
-//    LayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
-//    LayoutManager::instance().addArranger(new SCgTupleArranger(this));
-
     // blur effect
     mBlurEffect = new QGraphicsBlurEffect(this);
     mBlurEffect->setEnabled(false);
@@ -214,7 +192,7 @@ bool MainWindow::checkSubWindowSavedState()
 EditorInterface *MainWindow::activeChild()
 {
     if (QWidget *activeSubWindow = mTabWidget->currentWidget())
-        return qobject_cast<EditorInterface *>(activeSubWindow);
+        return mWidget2EditorInterface[activeSubWindow];
     return 0;
 }
 
@@ -378,9 +356,9 @@ bool MainWindow::saveWindow(EditorInterface* window, QString& name, const QStrin
     return false;
 }
 
-void MainWindow::fileSave(EditorInterface* window)
+void MainWindow::fileSave(QWidget* window)
 {
-    EditorInterface* childWindow = window;
+    EditorInterface* childWindow = mWidget2EditorInterface[window];
 
     if(!childWindow)
         childWindow = activeChild();
@@ -397,20 +375,20 @@ void MainWindow::fileSave(EditorInterface* window)
             QString ext = fileName.mid(dPos);
             saveWindow(childWindow, fileName, ext);
         }else
-            fileSaveAs(childWindow);
+            fileSaveAs(childWindow->widget());
     }
 }
 
-void MainWindow::fileSaveAs(EditorInterface* window)
+void MainWindow::fileSaveAs(QWidget* window)
 {
-    EditorInterface* childWindow = window;
+    EditorInterface* childWindow = mWidget2EditorInterface[window];
 
     if(!childWindow)
         childWindow = activeChild();
 
     Q_ASSERT(childWindow);
 
-    QString formatsStr = PluginManager::instance()->saveFilters(window->supportedFormatsExt());
+    QString formatsStr = PluginManager::instance()->saveFilters(childWindow->supportedFormatsExt());
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog ;
 

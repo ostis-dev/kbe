@@ -48,12 +48,13 @@ int main(int argc, char *argv[])
     a.setAttribute(Qt::AA_DontShowIconsInMenus, false);
     QDir root_dir = a.applicationDirPath();
 
-#if KBE_DEBUG_MODE
-    QDir tmp(root_dir.absolutePath());
-    if(!tmp.cd("media"))
-        root_dir.cdUp();
-#endif
+//#if KBE_DEBUG_MODE
+//    root_dir.cdUp();
+//#endif
     Config::pathMedia = root_dir;
+#if KBE_DEBUG_MODE
+    Config::pathMedia.cdUp();
+#endif
     Config::pathMedia.cd("media");
     Config::pathIcons = Config::pathMedia;
     Config::pathIcons.cd("icons");
@@ -61,6 +62,8 @@ int main(int argc, char *argv[])
     Config::pathTranslations.cd("langs");
     Config::pathPlugins = root_dir;
     Config::pathPlugins.cd("plugins");
+
+    qDebug() << Config::pathMedia.absolutePath();
 
     // Create splash screen
     //QSplashScreen splash(QPixmap(QFileInfo(QDir(Config::pathMedia), "splash.png").absoluteFilePath()));

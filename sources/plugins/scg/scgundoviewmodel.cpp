@@ -20,13 +20,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "extendedundoviewmodel.h"
+#include "scgundoviewmodel.h"
 
 #include <QUndoStack>
 #include <QItemSelectionModel>
 #include <QBrush>
 
-ExtendedUndoViewModel::ExtendedUndoViewModel(QObject *parent)
+SCgUndoViewModel::SCgUndoViewModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
     m_stack = 0;
@@ -36,17 +36,17 @@ ExtendedUndoViewModel::ExtendedUndoViewModel(QObject *parent)
     m_emty_label = tr("<empty>");
 }
 
-QItemSelectionModel *ExtendedUndoViewModel::selectionModel() const
+QItemSelectionModel *SCgUndoViewModel::selectionModel() const
 {
     return m_sel_model;
 }
 
-QUndoStack *ExtendedUndoViewModel::stack() const
+QUndoStack *SCgUndoViewModel::stack() const
 {
     return m_stack;
 }
 
-void ExtendedUndoViewModel::setStack(QUndoStack *stack)
+void SCgUndoViewModel::setStack(QUndoStack *stack)
 {
     if (m_stack == stack)
         return;
@@ -68,7 +68,7 @@ void ExtendedUndoViewModel::setStack(QUndoStack *stack)
     stackChanged();
 }
 
-void ExtendedUndoViewModel::stackDestroyed(QObject *obj)
+void SCgUndoViewModel::stackDestroyed(QObject *obj)
 {
     if (obj != m_stack)
         return;
@@ -77,13 +77,13 @@ void ExtendedUndoViewModel::stackDestroyed(QObject *obj)
     stackChanged();
 }
 
-void ExtendedUndoViewModel::stackChanged()
+void SCgUndoViewModel::stackChanged()
 {
     reset();
     m_sel_model->setCurrentIndex(selectedIndex(), QItemSelectionModel::ClearAndSelect);
 }
 
-void ExtendedUndoViewModel::setStackCurrentIndex(const QModelIndex &index)
+void SCgUndoViewModel::setStackCurrentIndex(const QModelIndex &index)
 {
     if (m_stack == 0)
         return;
@@ -97,12 +97,12 @@ void ExtendedUndoViewModel::setStackCurrentIndex(const QModelIndex &index)
     m_stack->setIndex(index.row());
 }
 
-QModelIndex ExtendedUndoViewModel::selectedIndex() const
+QModelIndex SCgUndoViewModel::selectedIndex() const
 {
     return m_stack == 0 ? QModelIndex() : createIndex(m_stack->index(), 0);
 }
 
-QModelIndex ExtendedUndoViewModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex SCgUndoViewModel::index(int row, int column, const QModelIndex &parent) const
 {
     if (m_stack == 0)
         return QModelIndex();
@@ -119,12 +119,12 @@ QModelIndex ExtendedUndoViewModel::index(int row, int column, const QModelIndex 
     return createIndex(row, column);
 }
 
-QModelIndex ExtendedUndoViewModel::parent(const QModelIndex&) const
+QModelIndex SCgUndoViewModel::parent(const QModelIndex&) const
 {
     return QModelIndex();
 }
 
-int ExtendedUndoViewModel::rowCount(const QModelIndex &parent) const
+int SCgUndoViewModel::rowCount(const QModelIndex &parent) const
 {
     if (m_stack == 0)
         return 0;
@@ -135,12 +135,12 @@ int ExtendedUndoViewModel::rowCount(const QModelIndex &parent) const
     return m_stack->count() + 1;
 }
 
-int ExtendedUndoViewModel::columnCount(const QModelIndex&) const
+int SCgUndoViewModel::columnCount(const QModelIndex&) const
 {
     return 1;
 }
 
-QVariant ExtendedUndoViewModel::data(const QModelIndex &index, int role) const
+QVariant SCgUndoViewModel::data(const QModelIndex &index, int role) const
 {
     if (m_stack == 0)
         return QVariant();
@@ -169,24 +169,24 @@ QVariant ExtendedUndoViewModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-QString ExtendedUndoViewModel::emptyLabel() const
+QString SCgUndoViewModel::emptyLabel() const
 {
     return m_emty_label;
 }
 
-void ExtendedUndoViewModel::setEmptyLabel(const QString &label)
+void SCgUndoViewModel::setEmptyLabel(const QString &label)
 {
     m_emty_label = label;
     stackChanged();
 }
 
-void ExtendedUndoViewModel::setCleanIcon(const QIcon &icon)
+void SCgUndoViewModel::setCleanIcon(const QIcon &icon)
 {
     m_clean_icon = icon;
     stackChanged();
 }
 
-QIcon ExtendedUndoViewModel::cleanIcon() const
+QIcon SCgUndoViewModel::cleanIcon() const
 {
     return m_clean_icon;
 }

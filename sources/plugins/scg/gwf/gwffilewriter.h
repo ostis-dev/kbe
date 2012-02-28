@@ -22,8 +22,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGFILEWRITERGWF_H
 #define SCGFILEWRITERGWF_H
 
-#include "abstractfilewriter.h"
-
 #include "gwfstreamwriter.h"
 
 //! TODO: add error messages
@@ -31,11 +29,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgObject;
 class SCgNode;
 
-class SCgFileWriterGWF : public AbstractFileWriter
+class GWFFileWriter
 {
 public:
-    SCgFileWriterGWF();
-    virtual ~SCgFileWriterGWF();
+    GWFFileWriter();
+    virtual ~GWFFileWriter();
 
     /*! Saves gwf format to file.
       @param file_name Name of file.
@@ -45,29 +43,9 @@ public:
       */
     bool save(QString file_name, QObject *input);
 
-    AbstractFileWriter::Type type() const {return AbstractFileWriter::WT_Save;}
-
 private:
 
     GwfStreamWriter stream;
-};
-
-class SCgFileWriterGWFFactory : public FileWriterFactory
-{
-public:
-    SCgFileWriterGWFFactory();
-    virtual ~SCgFileWriterGWFFactory();
-
-    //! @see FileWriterFactory::createInstance
-    AbstractFileWriter* createInstance();
-    //! @see FileWriterFactory::extensions
-    QList<QString> extensions();
-    //! @see FileWriterFactory::formatDescription
-    QString formatDescription(const QString &ext);
-    //! @see FileWriterFactory::clone
-    FileWriterFactory* clone();
-    //! @see FileWriterFactory::type
-    AbstractFileWriter::Type type();
 };
 
 #endif // SCGFILEWRITERGWF_H

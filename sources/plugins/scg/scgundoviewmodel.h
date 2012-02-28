@@ -32,11 +32,11 @@ class QItemSelectionModel;
 /*! Model, provided connection with QUndoStack.
  * Most part of this class is taken from Qt sources (qundomodel.cpp)
  */
-class ExtendedUndoViewModel : public QAbstractItemModel
+class SCgUndoViewModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ExtendedUndoViewModel(QObject *parent = 0);
+    SCgUndoViewModel(QObject *parent = 0);
 
     QUndoStack *stack() const;
 

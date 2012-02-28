@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSize>
 #include <QRect>
 #include <QWidget>
-#include <QSvgGenerator>
+//#include <QSvgGenerator>
 
 SCgFileWriterImage::SCgFileWriterImage()
 {
@@ -42,7 +42,7 @@ bool SCgFileWriterImage::save(QString file_name, QObject *input)
     QRect rect = scene->itemsBoundingRect().toRect();
 
     QString isSVG = file_name.mid(file_name.length()-3);
-    if(isSVG=="svg"){
+   /* if(isSVG=="svg"){
          QSvgGenerator generator;
          generator.setFileName(file_name);
          generator.setSize(sz);
@@ -54,7 +54,7 @@ bool SCgFileWriterImage::save(QString file_name, QObject *input)
          scene->render(&painter,QRect(QPoint(0,0), sz),scene->itemsBoundingRect());
          return true;
      }
-    else{
+    else*/{
         QImage img(sz,QImage::Format_ARGB32_Premultiplied);
         if (!img.isNull())
         {
@@ -68,46 +68,3 @@ bool SCgFileWriterImage::save(QString file_name, QObject *input)
     return false;
 }
 
-
-SCgFileWriterImageFactory::SCgFileWriterImageFactory() :
-        FileWriterFactory()
-{
-
-}
-
-SCgFileWriterImageFactory::~SCgFileWriterImageFactory()
-{
-
-}
-
-AbstractFileWriter* SCgFileWriterImageFactory::createInstance()
-{
-    return new SCgFileWriterImage();
-}
-
-QList<QString> SCgFileWriterImageFactory::extensions()
-{
-    QList<QByteArray> src = QImageWriter::supportedImageFormats();
-    QList<QString> res;
-    foreach(const QByteArray& ext,src)
-    {
-        res.push_back(ext.data());
-    }
-    res.push_back("svg");
-    return res;
-}
-
-QString SCgFileWriterImageFactory::formatDescription(const QString &ext)
-{
-    return tr("Image");
-}
-
-FileWriterFactory* SCgFileWriterImageFactory::clone()
-{
-    return new SCgFileWriterImageFactory();
-}
-
-AbstractFileWriter::Type SCgFileWriterImageFactory::type()
-{
-    return AbstractFileWriter::WT_Export;
-}

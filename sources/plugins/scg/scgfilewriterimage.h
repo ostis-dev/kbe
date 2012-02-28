@@ -25,9 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QString>
 
-#include "abstractfilewriter.h"
 
-class SCgFileWriterImage : public AbstractFileWriter
+class SCgFileWriterImage
 {
 public:
     SCgFileWriterImage();
@@ -35,27 +34,7 @@ public:
 
     bool save(QString file_name, QObject *input);
 
-    AbstractFileWriter::Type type() const {return AbstractFileWriter::WT_Export;}
 };
-
-class SCgFileWriterImageFactory : public FileWriterFactory
-{
-public:
-    SCgFileWriterImageFactory();
-    virtual ~SCgFileWriterImageFactory();
-
-    //! @see FileWriterFactory::createInstance
-    AbstractFileWriter* createInstance();
-    //! @see FileWriterFactory::extensions
-    QList<QString> extensions();
-    //! @see FileWriterFactory::formatDescription
-    QString formatDescription(const QString &ext);
-    //! @see FileWriterFactory::clone
-    FileWriterFactory* clone();
-    //! @see FileWriterFactory::type
-    AbstractFileWriter::Type type();
-};
-
 
 
 #endif // SCGFILEWRITERJPEG_H

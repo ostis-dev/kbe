@@ -30,13 +30,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgView;
 class LayoutAlgorithm;
 
-class LayoutManager : public QObject
+class SCgLayoutManager : public QObject
 {
 Q_OBJECT
-    explicit LayoutManager(QObject *parent = 0);
-    virtual ~LayoutManager();
+    explicit SCgLayoutManager(QObject *parent = 0);
+    virtual ~SCgLayoutManager();
 public:
-    static LayoutManager& instance();
+    static SCgLayoutManager& instance();
 
     //! Destroys instance of the manager.
     static void destroy();
@@ -60,7 +60,7 @@ public:
 
 private:
     //! Pointer to instance
-    static LayoutManager *mInstance;
+    static SCgLayoutManager *mInstance;
 
 protected:
     //! Holds registered arrangers

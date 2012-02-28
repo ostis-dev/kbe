@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
-#include "scgfilewritergwf.h"
+#include "gwffilewriter.h"
 #include "scgscene.h"
 #include "scgnode.h"
 #include "scgpair.h"
@@ -32,24 +32,24 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 
 
-SCgFileWriterGWF::SCgFileWriterGWF()
+GWFFileWriter::GWFFileWriter()
 {
 
 }
 
-SCgFileWriterGWF::~SCgFileWriterGWF()
+GWFFileWriter::~GWFFileWriter()
 {
 
 }
 
-bool SCgFileWriterGWF::save(QString file_name, QObject *input)
+bool GWFFileWriter::save(QString file_name, QObject *input)
 {
     SCgScene *scene = qobject_cast<SCgScene*>(input);
 
         QFile fileOut(file_name);
         if (!fileOut.open(QFile::WriteOnly | QFile::Text)) {
                  QMessageBox::warning(0, qAppName(),
-                                      tr("File saving error.\nCannot write file %1:\n%2.")
+                                      QObject::tr("File saving error.\nCannot write file %1:\n%2.")
                                       .arg(file_name)
                                       .arg(fileOut.errorString()));
                  return false;
@@ -72,43 +72,4 @@ bool SCgFileWriterGWF::save(QString file_name, QObject *input)
 
         fileOut.close();
         return true;
-}
-
-// -------------------------------------------------
-SCgFileWriterGWFFactory::SCgFileWriterGWFFactory() :
-        FileWriterFactory()
-{
-
-}
-
-SCgFileWriterGWFFactory::~SCgFileWriterGWFFactory()
-{
-
-}
-
-AbstractFileWriter* SCgFileWriterGWFFactory::createInstance()
-{
-    return new SCgFileWriterGWF();
-}
-
-QList<QString> SCgFileWriterGWFFactory::extensions()
-{
-    QList<QString> res;
-    res.push_back("gwf");
-    return res;
-}
-
-QString SCgFileWriterGWFFactory::formatDescription(const QString &ext)
-{
-    return tr("Simple format");
-}
-
-FileWriterFactory* SCgFileWriterGWFFactory::clone()
-{
-    return new SCgFileWriterGWFFactory();
-}
-
-AbstractFileWriter::Type SCgFileWriterGWFFactory::type()
-{
-    return AbstractFileWriter::WT_Save;
 }

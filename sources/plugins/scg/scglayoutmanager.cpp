@@ -20,42 +20,42 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "layoutmanager.h"
+#include "scglayoutmanager.h"
 
 
-LayoutManager* LayoutManager::mInstance = 0;
+SCgLayoutManager* SCgLayoutManager::mInstance = 0;
 
-LayoutManager::LayoutManager(QObject *parent) :
+SCgLayoutManager::SCgLayoutManager(QObject *parent) :
     QObject(parent)
 {
 }
 
-LayoutManager::~LayoutManager()
+SCgLayoutManager::~SCgLayoutManager()
 {
     deleteArrangers();
 }
 
-LayoutManager& LayoutManager::instance()
+SCgLayoutManager& SCgLayoutManager::instance()
 {
     if (mInstance == 0)
-        mInstance = new LayoutManager();
+        mInstance = new SCgLayoutManager();
 
     return *mInstance;
 }
 
-void LayoutManager::destroy()
+void SCgLayoutManager::destroy()
 {
     delete mInstance;
     mInstance = 0;
 }
 
-void LayoutManager::arrange(SCgView* view, int type) const
+void SCgLayoutManager::arrange(SCgView* view, int type) const
 {
     if(mArrangers.contains(type))
         mArrangers.value(type)->arrange(view);
 }
 
-void LayoutManager::deleteArrangers()
+void SCgLayoutManager::deleteArrangers()
 {
     QMap<int, SCgArranger*>::iterator it = mArrangers.begin();
     for (; it != mArrangers.end(); ++it)
@@ -63,7 +63,7 @@ void LayoutManager::deleteArrangers()
     mArrangers.clear();
 }
 
-void LayoutManager::addArranger(SCgArranger* arranger)
+void SCgLayoutManager::addArranger(SCgArranger* arranger)
 {
     Q_ASSERT_X(arranger, "LayoutManager::addArranger", "arranger is null");
     if(!mArrangers.contains(arranger->type()))

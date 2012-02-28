@@ -4,8 +4,9 @@
 
 DESTDIR = ../bin
 
-CONFIG (debug, debug|release) {
+CONFIG (debug) {
         TARGET = kbe_d
+        DEFINES += _DEBUG
 } else {
         TARGET = kbe
 }
@@ -15,9 +16,6 @@ TEMPLATE = app
 SOURCES += \
     mainwindow.cpp \
     main.cpp \
-    findwidget.cpp \
-    extendedundoviewmodel.cpp \
-    extendedundoview.cpp \
     extendedtabwidget.cpp \
     config.cpp \
     pluginmanager.cpp
@@ -25,9 +23,6 @@ SOURCES += \
 HEADERS += version.h \
     platform.h \
     mainwindow.h \
-    findwidget.h \
-    extendedundoviewmodel.h \
-    extendedundoview.h \
     extendedtabwidget.h \
     config.h \
     interfaces/plugininterface.h \
@@ -39,7 +34,7 @@ FORMS += mainwindow.ui
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
 RC_FILE = kbe.rc
-Debug:DEFINES += _DEBUG
+#Debug:DEFINES += _DEBUG
 
 OBJECTS_DIR = obj
 MOC_DIR = moc

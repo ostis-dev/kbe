@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "scgfileloadergwf.h"
+#include "gwffileloader.h"
 
 #include "scgdefaultobjectbuilder.h"
 #include "gwfobjectinforeader.h"
@@ -32,27 +32,27 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QFile>
 
-SCgFileLoaderGWF::SCgFileLoaderGWF()
+GWFFileLoader::GWFFileLoader()
 {
 
 }
-SCgFileLoaderGWF::~SCgFileLoaderGWF()
+GWFFileLoader::~GWFFileLoader()
 {
 
 }
         
-void SCgFileLoaderGWF::showLastError()
+void GWFFileLoader::showLastError()
 {
-    QMessageBox::information(0, qAppName(), tr("Error while opening file %1\n").arg(mFileName) + mLastError);
+    QMessageBox::information(0, qAppName(), QObject::tr("Error while opening file %1\n").arg(mFileName) + mLastError);
 }
 
-void SCgFileLoaderGWF::showGeneralError()
+void GWFFileLoader::showGeneralError()
 {
     errorParse();
     showLastError();
 }
 
-bool SCgFileLoaderGWF::load(QString file_name, QObject *output)
+bool GWFFileLoader::load(QString file_name, QObject *output)
 {
     SCgScene *scene = qobject_cast<SCgScene*>(output);
 
@@ -69,7 +69,7 @@ bool SCgFileLoaderGWF::load(QString file_name, QObject *output)
     if (!document.setContent(&file, &errorStr, &errorLine, &errorColumn))
     {
         QMessageBox::information(0, qAppName(),
-                                 tr("Error while opening file %1.\nParse error at line %2, column %3:\n%4")
+                                 QObject::tr("Error while opening file %1.\nParse error at line %2, column %3:\n%4")
                                  .arg(file_name)
                                  .arg(errorLine)
                                  .arg(errorColumn)
@@ -94,7 +94,7 @@ bool SCgFileLoaderGWF::load(QString file_name, QObject *output)
     objectBuilder.buildObjects(reader.objectsInfo());
     if (objectBuilder.hasErrors())
     {
-        mLastError = tr("Building process has finished with following errors:\n").arg(mFileName);
+        mLastError = QObject::tr("Building process has finished with following errors:\n").arg(mFileName);
         foreach(const QString& str, objectBuilder.errorList())
             mLastError += str + '\n';
 
@@ -105,46 +105,7 @@ bool SCgFileLoaderGWF::load(QString file_name, QObject *output)
     return true;
 }
 
-void SCgFileLoaderGWF::errorParse()
+void GWFFileLoader::errorParse()
 {
-    mLastError = tr("error to parse file '%1'").arg(mFileName);
-}
-
-
-SCgFileLoaderGWFFactory::SCgFileLoaderGWFFactory() :
-        FileLoaderFactory()
-{
-
-}
-
-SCgFileLoaderGWFFactory::~SCgFileLoaderGWFFactory()
-{
-
-}
-
-AbstractFileLoader* SCgFileLoaderGWFFactory::createInstance()
-{
-    return new SCgFileLoaderGWF();
-}
-
-QList<QString> SCgFileLoaderGWFFactory::extensions()
-{
-    QList<QString> res;
-    res.push_back("gwf");
-    return res;
-}
-
-QString SCgFileLoaderGWFFactory::formatDescription(const QString &ext)
-{
-    return tr("Simple format");
-}
-
-FileLoaderFactory* SCgFileLoaderGWFFactory::clone()
-{
-    return new SCgFileLoaderGWFFactory();
-}
-
-AbstractFileLoader::Type SCgFileLoaderGWFFactory::type()
-{
-    return AbstractFileLoader::LT_Open;
+    mLastError = QObject::tr("error to parse file '%1'").arg(mFileName);
 }

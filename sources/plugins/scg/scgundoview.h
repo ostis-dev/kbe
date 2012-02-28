@@ -28,14 +28,14 @@ class QUndoStack;
 
 /* We don't use QUndoView directly, because this approach is more flexible.
  */
-class ExtendedUndoView: public QListView//public QUndoView
+class SCgUndoView: public QListView//public QUndoView
 {
     Q_OBJECT
 public:
 
-    ExtendedUndoView(QWidget* parent = 0);
+    SCgUndoView(QWidget* parent = 0);
 
-    virtual ~ExtendedUndoView();
+    virtual ~SCgUndoView();
 
     //! Sets stack as a model of this view.
     void setStack(QUndoStack* st);

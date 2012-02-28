@@ -35,23 +35,24 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
+#include <QDebug>
 
-#include "layoutmanager.h"
+#include "scglayoutmanager.h"
 #include "scgarrangervertical.h"
 #include "scgarrangerhorizontal.h"
 #include "scgarrangergrid.h"
 #include "scgarrangertuple.h"
+#include "scgplugin.h"
 
-#include "findwidget.h"
+#include "scgfindwidget.h"
 #include "scgview.h"
 #include "scgminimap.h"
-#include "abstractfileloader.h"
-#include "abstractfilewriter.h"
-#include "gwfstreamwriter.h"
-#include "gwfobjectinforeader.h"
+#include "gwf/gwffileloader.h"
+#include "gwf/gwffilewriter.h"
+#include "gwf/gwfobjectinforeader.h"
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
-#include "extendedundoview.h"
+#include "scgundoview.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -63,12 +64,14 @@ const QStringList SCgWindow::mScales = QStringList()<< "25" << "50"
 const int SCgWindow::mScaleChangeStep = 25;
 
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
-    BaseWindow("SCgWindow", _windowTitle, parent),
+    QWidget(parent),
     mView(0),
     mZoomFactorLine(0),
     mMinimap(0),
     mUndoView(0),
     mFindWidget(0),
+    mToolBar(0),
+    mUndoStack(0),
 //    mViewMenu(0),
     mEditMenu(0),
     mActionUndo(0),
@@ -76,13 +79,17 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mActionFind(0)//,
 //    mActionMinMap(0)
 {
+
+    setObjectName(QString((quint32)this));
+
+    mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////
     //Creating main environment
     mView = new SCgView(0, this);
     mView->setScene(new SCgScene(mUndoStack, mView));
     mView->setSceneRect(0, 0, 1000, 1000);
 
-    mFindWidget = new FindWidget(this);
+    mFindWidget = new SCgFindWidget(this);
     connect(mFindWidget, SIGNAL(findNext()), this, SLOT(findNext()));
     connect(mFindWidget, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
     connect(mFindWidget, SIGNAL(find(QString)), this, SLOT(findTextChanged(QString)));
@@ -92,19 +99,29 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     layout->addWidget(mFindWidget);
 
     setLayout(layout);
+
+    setAttribute(Qt::WA_DeleteOnClose);
+ //   connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(stackCleanStateChanged(bool)));
+ //   connect(mUndoStack, SIGNAL(cleanChanged(bool)), MainWindow::getInstance(), SLOT(updateMenu()));
+
     /////////////////////////////////////////////////
 
     // Create widgets, which will be added into dock area of main window.
     createWidgetsForDocks();
 
     createActions();
+
+    createToolBar();
 }
 
 SCgWindow::~SCgWindow()
 {
+    delete mToolBar;
+    delete mView;
     delete mUndoView;
     delete mMinimap;
     delete mFindWidget;
+    delete mUndoStack;
 }
 
 QUndoStack* SCgWindow::undoStack() const
@@ -144,14 +161,14 @@ void SCgWindow::createWidgetsForDocks()
     mMinimap->setWindowTitle(tr("Mini map"));
     mMinimap->setObjectName("Mini map");
 
-    mUndoView = new ExtendedUndoView(this);
+    mUndoView = new SCgUndoView(this);
     mUndoView->setStack(mUndoStack);
     mUndoView->setWindowTitle(tr("History"));
     mUndoView->setObjectName("History");
 
     //Register this widgets
-    addWidgetForDock(mUndoView);
-    addWidgetForDock(mMinimap);
+    mWidgetsForDocks.push_back(mUndoView);
+    mWidgetsForDocks.push_back(mMinimap);
 }
 
 
@@ -265,8 +282,9 @@ void SCgWindow::createToolBar()
 
 QIcon SCgWindow::findIcon(const QString &iconName) const
 {
-    QDir dir(Config::pathMedia);
+    QDir dir(SCgPlugin::mediaPath());
     dir.cd("scg/icons");
+    qDebug() << dir.absolutePath();
     return QIcon(QFileInfo(dir, iconName).absoluteFilePath());
 }
 
@@ -275,9 +293,11 @@ QIcon SCgWindow::icon() const
     return findIcon("mime_type.png");
 }
 
-bool SCgWindow::loadFromFile(const QString &fileName, AbstractFileLoader *loader)
+bool SCgWindow::loadFromFile(const QString &fileName)
 {
-    if (loader->load(fileName, mView->scene()))
+    GWFFileLoader loader;
+
+    if (loader.load(fileName, mView->scene()))
     {
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
@@ -286,16 +306,15 @@ bool SCgWindow::loadFromFile(const QString &fileName, AbstractFileLoader *loader
         return false;
 }
 
-bool SCgWindow::saveToFile(const QString &fileName, AbstractFileWriter *writer)
+bool SCgWindow::saveToFile(const QString &fileName)
 {
-    if (writer->save(fileName, mView->scene()))
+    GWFFileWriter writer;
+
+    if (writer.save(fileName, mView->scene()))
     {
-        if(writer->type() == AbstractFileWriter::WT_Save)
-        {
-            mFileName = fileName;
-            setWindowTitle(mFileName + "[*]");
-            mUndoStack->setClean();
-        }
+        mFileName = fileName;
+        setWindowTitle(mFileName + "[*]");
+        mUndoStack->setClean();
         return true;
     }else
         return false;
@@ -339,22 +358,22 @@ void SCgWindow::onContourMode()
 
 void SCgWindow::onGridAlignment()
 {
-    LayoutManager::instance().arrange(mView, SCgGridArranger::Type);
+    SCgLayoutManager::instance().arrange(mView, SCgGridArranger::Type);
 }
 
 void SCgWindow::onTupleAlignment()
 {
-    LayoutManager::instance().arrange(mView, SCgTupleArranger::Type);
+    SCgLayoutManager::instance().arrange(mView, SCgTupleArranger::Type);
 }
 
 void SCgWindow::onVerticalAlignment()
 {
-    LayoutManager::instance().arrange(mView, SCgVerticalArranger::Type);
+    SCgLayoutManager::instance().arrange(mView, SCgVerticalArranger::Type);
 }
 
 void SCgWindow::onHorizontalAlignment()
 {
-    LayoutManager::instance().arrange(mView, SCgHorizontalArranger::Type);
+    SCgLayoutManager::instance().arrange(mView, SCgHorizontalArranger::Type);
 }
 
 void SCgWindow::onZoomIn()
@@ -514,17 +533,55 @@ void SCgWindow::find(const QString &ttf, bool forward, bool checkCurrent)
 
 void SCgWindow::activate(QMainWindow *window)
 {
-    BaseWindow::activate(window);
+    EditorInterface::activate(window);
+
     createMenu();
     QList<QAction*> allMenus = window->menuBar()->actions();
     window->menuBar()->insertMenu(allMenus.at(1), mEditMenu);
-//    window->menuBar()->insertMenu(allMenus.last(),mViewMenu);
+
+    QToolBar *tool_bar = toolBar();
+    if (tool_bar != 0)
+    {
+        window->addToolBar(Qt::LeftToolBarArea, tool_bar);
+        tool_bar->show();
+    }
+    mUndoStack->setActive(true);
 }
 
 void SCgWindow::deactivate(QMainWindow *window)
 {
-    BaseWindow::deactivate(window);
+    EditorInterface::deactivate(window);
     deleteMenu();
+
+    window->removeToolBar(toolBar());
+    mUndoStack->setActive(false);
+}
+
+QWidget* SCgWindow::widget()
+{
+    return this;
+}
+
+QToolBar* SCgWindow::toolBar()
+{
+    return mToolBar;
+}
+
+QList<QWidget*> SCgWindow::widgetsForDocks()
+{
+    return mWidgetsForDocks;
+}
+
+bool SCgWindow::isSaved() const
+{
+    return mUndoStack->isClean();
+}
+
+QStringList SCgWindow::supportedFormatsExt() const
+{
+    QStringList res;
+    res << "gwf";
+    return res;
 }
 
 void SCgWindow::createMenu()
@@ -552,4 +609,34 @@ void SCgWindow::deleteMenu()
 //    delete mViewMenu;
 //    mViewMenu = 0;
     mEditMenu = 0;
+}
+
+
+// ---------------------
+SCgWindowFactory::SCgWindowFactory(QObject *parent) :
+    QObject(parent)
+{
+
+}
+
+SCgWindowFactory::~SCgWindowFactory()
+{
+}
+
+const QString& SCgWindowFactory::name() const
+{
+    static QString name = "scg";
+    return name;
+}
+
+EditorInterface* SCgWindowFactory::createInstance()
+{
+    return new SCgWindow("");
+}
+
+QStringList SCgWindowFactory::supportedFormatsExt()
+{
+    QStringList res;
+    res << "gwf";
+    return res;
 }

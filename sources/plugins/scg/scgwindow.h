@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGWINDOW_H
 #define SCGWINDOW_H
 
-#include "basewindow.h"
+#include "interfaces/editorinterface.h"
 #include "scgscene.h"
 
 #include <QToolBox>
@@ -31,15 +31,17 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 class SCgMinimap;
 class SCgView;
-class ExtendedUndoView;
+class SCgUndoView;
 
 class QToolBar;
 class QLineEdit;
-class FindWidget;
+class SCgFindWidget;
 
-class SCgWindow : public BaseWindow
+class SCgWindow : public QWidget,
+                  public EditorInterface
 {
-Q_OBJECT
+    Q_OBJECT
+    Q_INTERFACES(EditorInterface)
 public:
     //! Supported Mime-type for paste command.
     static const QString SupportedPasteMimeType;
@@ -58,13 +60,11 @@ public:
       */
     virtual ~SCgWindow();
 
-    /*! Load content from file.
-      */
-    bool loadFromFile(const QString &fileName, AbstractFileLoader *loader);
+    //! @copydoc EditorInterface::loadFromFile
+    bool loadFromFile(const QString &fileName);
 
-    /*! Save content to file.
-      */
-    bool saveToFile(const QString &fileName, AbstractFileWriter *writer);
+    //! @copydoc EditorInterface::saveToFile
+    bool saveToFile(const QString &fileName);
 
     /*! Update window immediately
       */
@@ -80,13 +80,24 @@ public:
 
 protected:
 
-    //! @see BaseWindow::icon()
+    //! @copydoc EditorInterface::icon()
     QIcon icon() const;
 
-    //! @see BaseWindow::activate
+    //! @copydoc EditorInterface::activate
     void activate(QMainWindow *window);
-    //! @see BaseWindow::deactivate
+    //! @copydoc EditorInterface::deactivate
     void deactivate(QMainWindow *window);
+    //! @copydoc EditorInterface::widget
+    QWidget* widget();
+
+    //! @copydoc EditorInterface::toolBar
+    QToolBar* toolBar();
+    //! @copydoc EditorInterface::widgetsForDocks
+    QList<QWidget*> widgetsForDocks();
+    //! @copydoc EditorInterface::isSaved
+    bool isSaved() const;
+    //! @copydoc EditorInterface::supportedFormatsExt
+    QStringList supportedFormatsExt() const;
 
 private:
     //! List of scales.
@@ -123,10 +134,19 @@ private:
     SCgMinimap *mMinimap;
 
     //! Undo view widget
-    ExtendedUndoView *mUndoView;
+    SCgUndoView *mUndoView;
 
     //! Find widget
-    FindWidget *mFindWidget;
+    SCgFindWidget *mFindWidget;
+
+    //! Tool bar
+    QToolBar *mToolBar;
+
+    //! Undo stack
+    QUndoStack *mUndoStack;
+
+    //! Widgets, which will be placed into dock area of main window.
+    QList<QWidget*> mWidgetsForDocks;
 
     /**
      * \defgroup menu Menu
@@ -224,6 +244,24 @@ private slots:
 
     //! Delete action handler.
     void deleteSelected();
+};
+
+class SCgWindowFactory : public QObject,
+                         public EditorFactoryInterface
+{
+    Q_OBJECT
+    Q_INTERFACES(EditorFactoryInterface)
+public:
+    explicit SCgWindowFactory(QObject *parent);
+    virtual ~SCgWindowFactory();
+
+    //! @copydoc EditorFactoryInterface::name
+    const QString& name() const;
+    //! @copydoc EditorFactoryInterface::createInstance
+    EditorInterface* createInstance();
+    //! @copydoc EditorFactoryInterface::supportedFormatsExt
+    QStringList supportedFormatsExt();
+
 };
 
 #endif // SCGWINDOW_H

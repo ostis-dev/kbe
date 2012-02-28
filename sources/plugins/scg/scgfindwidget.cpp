@@ -20,9 +20,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "findwidget.h"
-
-#include "config.h"
+#include "scgfindwidget.h"
+#include "scgplugin.h"
 
 #include <QApplication>
 #include <QBoxLayout>
@@ -33,7 +32,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCheckBox>
 #include <QHideEvent>
 
-FindWidget::FindWidget(QWidget *parent):
+SCgFindWidget::SCgFindWidget(QWidget *parent):
         QWidget(parent),
         mAppPalette(qApp->palette())
 {
@@ -43,9 +42,7 @@ FindWidget::FindWidget(QWidget *parent):
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0,0,0,0);
 
-    QFileInfo fi(Config::pathIcons, "find-close.png");
-
-    mCloseButton = setupToolButton("",fi.absoluteFilePath());
+    mCloseButton = setupToolButton("", SCgPlugin::mediaPath() + "/scg/icons/find-close.png");
 
     connect(mCloseButton, SIGNAL(clicked()), this, SLOT(hide()));
     layout->addWidget(mCloseButton);
@@ -60,13 +57,11 @@ FindWidget::FindWidget(QWidget *parent):
     connect(mFindLine, SIGNAL(textChanged(QString)), this, SLOT(updateButtons()));
     layout->addWidget(mFindLine);
 
-    fi.setFile(Config::pathIcons, "find-previous.png");
-    mFindPreviousButton = setupToolButton(tr("Previous"),fi.absoluteFilePath());
+    mFindPreviousButton = setupToolButton(tr("Previous"), SCgPlugin::mediaPath() + "/scg/icons/find-previous.png");
     connect(mFindPreviousButton, SIGNAL(clicked()), this, SIGNAL(findPrevious()));
     layout->addWidget(mFindPreviousButton);
 
-    fi.setFile(Config::pathIcons, "find-next.png");
-    mFindNextButton = setupToolButton(tr("Next"),fi.absoluteFilePath());
+    mFindNextButton = setupToolButton(tr("Next"), SCgPlugin::mediaPath() + "/scg/icons/find-next.png");
     layout->addWidget(mFindNextButton);
     connect(mFindNextButton, SIGNAL(clicked()), this, SIGNAL(findNext()));
 
@@ -91,35 +86,35 @@ FindWidget::FindWidget(QWidget *parent):
     updateButtons();
 }
 
-FindWidget::~FindWidget()
+SCgFindWidget::~SCgFindWidget()
 {
 
 }
 
-void FindWidget::show()
+void SCgFindWidget::show()
 {
     QWidget::show();
     mFindLine->selectAll();
     mFindLine->setFocus(Qt::ShortcutFocusReason);
 }
 
-void FindWidget::showAndClear()
+void SCgFindWidget::showAndClear()
 {
     show();
     mFindLine->clear();
 }
 
-QString FindWidget::text() const
+QString SCgFindWidget::text() const
 {
     return mFindLine->text();
 }
 
-bool FindWidget::caseSensitive() const
+bool SCgFindWidget::caseSensitive() const
 {
     return mCaseSensitivityChaeck->isChecked();
 }
 
-void FindWidget::setPalette(bool found)
+void SCgFindWidget::setPalette(bool found)
 {
     QPalette palette = mFindLine->palette();
     palette.setColor(QPalette::Active, QPalette::Base, found ? Qt::white
@@ -127,18 +122,18 @@ void FindWidget::setPalette(bool found)
     mFindLine->setPalette(palette);
 }
 
-void FindWidget::setTextWrappedVisible(bool visible)
+void SCgFindWidget::setTextWrappedVisible(bool visible)
 {
     mWrappedLabel->setVisible(visible);
 }
 
-void FindWidget::hideEvent(QHideEvent* event)
+void SCgFindWidget::hideEvent(QHideEvent* event)
 {
 //    if (!event->spontaneous())
 //        qApp->setPalette(mAppPalette);
 }
 
-void FindWidget::showEvent(QShowEvent* event)
+void SCgFindWidget::showEvent(QShowEvent* event)
 {
 //    if (!event->spontaneous()) {
 //        QPalette p = mAppPalette;
@@ -150,24 +145,24 @@ void FindWidget::showEvent(QShowEvent* event)
 //    }
 }
 
-void FindWidget::updateButtons()
+void SCgFindWidget::updateButtons()
 {
     bool enable = !mFindLine->text().isEmpty();
     mFindNextButton->setEnabled(enable);
     mFindPreviousButton->setEnabled(enable);
 }
 
-void FindWidget::caseSensitivityChanged(int val)
+void SCgFindWidget::caseSensitivityChanged(int val)
 {
     emit find(mFindLine->text());
 }
 
-void FindWidget::textChanged(const QString &text)
+void SCgFindWidget::textChanged(const QString &text)
 {
     emit find(text);
 }
 
-bool FindWidget::eventFilter(QObject *object, QEvent *e)
+bool SCgFindWidget::eventFilter(QObject *object, QEvent *e)
 {
     if (e->type() == QEvent::KeyPress) {
         if ((static_cast<QKeyEvent*>(e))->key() == Qt::Key_Escape) {
@@ -178,7 +173,7 @@ bool FindWidget::eventFilter(QObject *object, QEvent *e)
     return QWidget::eventFilter(object, e);
 }
 
-QToolButton* FindWidget::setupToolButton(const QString &text, const QString &icon)
+QToolButton* SCgFindWidget::setupToolButton(const QString &text, const QString &icon)
 {
     QToolButton *toolButton = new QToolButton(this);
 

@@ -31,13 +31,13 @@ class QLineEdit;
 class QToolButton;
 
 //! Simple find widget
-class FindWidget : public QWidget
+class SCgFindWidget : public QWidget
 {
     Q_OBJECT
 public:
-    FindWidget(QWidget *parent = 0);
+    SCgFindWidget(QWidget *parent = 0);
 
-    ~FindWidget();
+    ~SCgFindWidget();
 
     void show();
     void showAndClear();

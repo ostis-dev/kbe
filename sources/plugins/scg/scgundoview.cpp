@@ -20,16 +20,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "extendedundoview.h"
-#include "extendedundoviewmodel.h"
+#include "scgundoview.h"
+#include "scgundoviewmodel.h"
 
-ExtendedUndoView::ExtendedUndoView(QWidget* parent)
+SCgUndoView::SCgUndoView(QWidget* parent)
                     :QListView(parent)
 {
     QItemSelectionModel* m = selectionModel();
     QAbstractItemModel* im = model();
 
-    ExtendedUndoViewModel* newModel = new ExtendedUndoViewModel(this);
+    SCgUndoViewModel* newModel = new SCgUndoViewModel(this);
     setModel(newModel);
     setSelectionModel(newModel->selectionModel());
 
@@ -37,14 +37,14 @@ ExtendedUndoView::ExtendedUndoView(QWidget* parent)
     delete im;
 }
 
-ExtendedUndoView::~ExtendedUndoView()
+SCgUndoView::~SCgUndoView()
 {
 
 }
 
-void ExtendedUndoView::setStack(QUndoStack* st)
+void SCgUndoView::setStack(QUndoStack* st)
 {
-    ExtendedUndoViewModel* vm = dynamic_cast<ExtendedUndoViewModel*>(model());
+    SCgUndoViewModel* vm = dynamic_cast<SCgUndoViewModel*>(model());
     Q_ASSERT_X( vm,
                "void ExtendedUndoView::setStack()",
                "Only ExtendedUndoViewModel is supported as model of ExtendedUndoView");
