@@ -23,14 +23,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "scgwindow.h"
 #include "basewindow.h"
 #include "config.h"
 
-#include "abstractfileloader.h"
-#include "abstractfilewriter.h"
+#include "interfaces/abstractfileloader.h"
+#include "interfaces/abstractfilewriter.h"
 #include "readwritemanager.h"
-#include "layoutmanager.h"
 
 #include "scgarrangervertical.h"
 #include "scgarrangerhorizontal.h"

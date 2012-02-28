@@ -26,8 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QMap>
 
-#include "abstractfileloader.h"
-#include "abstractfilewriter.h"
+#include "interfaces/abstractfileloader.h"
+#include "interfaces/abstractfilewriter.h"
 
 class FileLoaderFactory;
 class FileWriterFactory;

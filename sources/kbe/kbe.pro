@@ -1,139 +1,35 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-03-10T23:38:40
 # -------------------------------------------------
-QT += svg \
-    xml \
-    xmlpatterns # \
+QT += core
 
 # phonon
 TARGET = kbe
 TEMPLATE = app
-SOURCES += findwidget.cpp \
-    main.cpp \
-    config.cpp \
+
+SOURCES += readwritemanager.cpp \
     mainwindow.cpp \
-    extendedtabwidget.cpp \
-    basewindow.cpp \
-    scgwindow.cpp \
-    scgscene.cpp \
-    scgalphabet.cpp \
-    scgview.cpp \
-    pointgraphicsitem.cpp \
-    scgobject.cpp \
-    scgpointobject.cpp \
-    scgnode.cpp \
-    scgpair.cpp \
-    scgbus.cpp \
-    scgcontour.cpp \
-    scgobjectsinfodata.cpp \
-    scgobjectsinfo.cpp \
-    readwritemanager.cpp \
-    abstractfileloader.cpp \
-    scgfileloadergwf.cpp \
-    abstractfilewriter.cpp \
-    gwfstreamwriter.cpp \
-    gwfobjectinforeader.cpp \
-    scgfilewritergwf.cpp \
-    scgfilewriterimage.cpp \
-    scgcontent.cpp \
-    scgcontentfactory.cpp \
-    scgcontentdialog.cpp \
-    scgcontentviewer.cpp \
-    scgcontentstring.cpp \
-    scgcontentchangedialog.cpp \
-    scgcontentimage.cpp \
-    scgcontentnumeric.cpp \
-    scgcommands.cpp \
-    layoutmanager.cpp \
-    event_handling/SCgInsertModeEventHandler.cpp \
-    event_handling/SCgSelectModeEventHandler.cpp \
-    event_handling/SCgPairModeEventHandler.cpp \
-    event_handling/SCgEventHandler.cpp \
-    event_handling/SCgContourModeEventHandler.cpp \
-    event_handling/SCgBusModeEventHandler.cpp \
-    scgminimap.cpp \
+    main.cpp \
+    findwidget.cpp \
     extendedundoviewmodel.cpp \
     extendedundoview.cpp \
-    scgtemplateobjectbuilder.cpp \
-    scgdefaultobjectbuilder.cpp \
-    scgabstractobjectbuilder.cpp \
-    scgconfig.cpp \
-    scgarranger.cpp \
-    scgarrangervertical.cpp \
-    scgarrangerhorizontal.cpp \
-    scgarrangergrid.cpp \
-    scgarrangertuple.cpp \
-    m4scp/m4scpwindow.cpp \
-    m4scp/m4scpfileloader.cpp \
-    m4scp/m4scpfilewriter.cpp \
-    m4scp/m4scpsyntaxhighlighter.cpp \
-    m4scp/m4scpcodeeditor.cpp \
-    m4scp/m4scpcodecompleter.cpp \
-    m4scp/m4scpsyntax.cpp
-HEADERS += findwidget.h \
-    platform.h \
-    version.h \
-    config.h \
-    mainwindow.h \
-    extendedtabwidget.h \
-    basewindow.h \
-    scgwindow.h \
-    scgscene.h \
-    scgalphabet.h \
-    scgview.h \
-    pointgraphicsitem.h \
-    scgobject.h \
-    scgpointobject.h \
-    scgnode.h \
-    scgpair.h \
-    scgbus.h \
-    scgcontour.h \
-    scgobjectsinfodata.h \
-    scgobjectsinfo.h \
+    extendedtabwidget.cpp \
+    config.cpp \
+
+HEADERS += version.h \
     readwritemanager.h \
-    abstractfileloader.h \
-    scgfileloadergwf.h \
-    abstractfilewriter.h \
-    gwfstreamwriter.h \
-    gwfobjectinforeader.h \
-    scgfilewritergwf.h \
-    scgfilewriterimage.h \
-    scgcontent.h \
-    scgcontentfactory.h \
-    scgcontentdialog.h \
-    scgcontentviewer.h \
-    scgcontentstring.h \
-    scgcontentchangedialog.h \
-    scgcontentimage.h \
-    scgcontentnumeric.h \
-    scgcommands.h \
-    layoutmanager.h \
-    event_handling/SCgInsertModeEventHandler.h \
-    event_handling/SCgSelectModeEventHandler.h \
-    event_handling/SCgPairModeEventHandler.h \
-    event_handling/SCgEventHandler.h \
-    event_handling/SCgContourModeEventHandler.h \
-    event_handling/SCgBusModeEventHandler.h \
-    scgminimap.h \
+    platform.h \
+    mainwindow.h \
+    findwidget.h \
     extendedundoviewmodel.h \
     extendedundoview.h \
-    scgtemplateobjectbuilder.h \
-    scgdefaultobjectbuilder.h \
-    scgabstractobjectbuilder.h \
-    scgconfig.h \
-    scgarranger.h \
-    scgarrangervertical.h \
-    scgarrangerhorizontal.h \
-    scgarrangergrid.h \
-    scgarrangertuple.h \
-    m4scp/m4scpwindow.h \
-    m4scp/m4scpfileloader.h \
-    m4scp/m4scpfilewriter.h \
-    m4scp/m4scpsyntaxhighlighter.h \
-    m4scp/m4scpcodeeditor.h \
-    m4scp/m4scpcodecompleter.h \
-    m4scp/m4scpsyntax.h
+    extendedtabwidget.h \
+    config.h \
+    interfaces/abstractfilewriter.h \
+    interfaces/abstractfileloader.h
+
 FORMS += mainwindow.ui
+
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
 RC_FILE = kbe.rc

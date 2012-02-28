@@ -41,8 +41,8 @@ public:
         WT_Count
     } Type;
 
-    explicit AbstractFileWriter(QObject *parent = 0);
-    virtual ~AbstractFileWriter();
+    explicit AbstractFileWriter(QObject *parent = 0) {}
+    virtual ~AbstractFileWriter() {}
     /*! Saves data from window into file.
       @param file_name Name of file.
       @param input Input object to create saved data out.

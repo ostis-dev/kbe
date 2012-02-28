@@ -40,8 +40,8 @@ public:
         LT_Count
     } Type;
 
-    explicit AbstractFileLoader(QObject *parent = 0);
-    virtual ~AbstractFileLoader();
+    explicit AbstractFileLoader(QObject *parent = 0) {}
+    virtual ~AbstractFileLoader() {}
 
     /*! Loads data from file into window.
       @param file_name Name of file.
