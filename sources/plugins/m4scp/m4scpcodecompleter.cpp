@@ -22,7 +22,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "m4scpcodecompleter.h"
 #include "m4scpsyntax.h"
-#include "config.h"
+#include "m4scpplugin.h"
+
 #include <QStringListModel>
 #include <QStandardItemModel>
 
@@ -46,7 +47,7 @@ void M4SCpCodeCompleter::initDictionary()
 
     foreach(QString str, words) {
         QStandardItem *item = new QStandardItem(
-                    QIcon(Config::pathMedia.absolutePath() + "/m4scp/icons/attribute.png"),
+                    QIcon(M4SCpPlugin::mediaPath() + "/icons/attribute.png"),
                     str);
         mod->appendRow(item);
     }
@@ -54,7 +55,7 @@ void M4SCpCodeCompleter::initDictionary()
     words << M4SCpSyntax::ordinals();
     foreach(QString str, words) {
         QStandardItem *item = new QStandardItem(
-                    QIcon(Config::pathMedia.absolutePath() + "/m4scp/icons/ordinal.png"),
+                    QIcon(M4SCpPlugin::mediaPath() + "/icons/ordinal.png"),
                     str);
         mod->appendRow(item);
     }
@@ -124,7 +125,7 @@ void M4SCpCodeCompleter::initDictionary()
     QMap<QString, QString>::iterator it = templatesMap.begin();
     for (; it != templatesMap.end(); ++it) {
         QStandardItem *item = new QStandardItem(
-                    QIcon(Config::pathMedia.absolutePath() + "/m4scp/icons/procedure.png"),
+                    QIcon(M4SCpPlugin::mediaPath() + "/icons/procedure.png"),
                     it.key());
         mod->appendRow(item);
         QModelIndex index = mod->indexFromItem(item);

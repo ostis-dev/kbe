@@ -19,62 +19,69 @@ You should have received a copy of the GNU General Public License
 along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
-
-#ifndef ABSTRACTFILELOADER_H
-#define ABSTRACTFILELOADER_H
+#ifndef ABSTRACTFILEWRITER_H
+#define ABSTRACTFILEWRITER_H
 
 #include <QObject>
+#include <QList>
+#include <QString>
 
-/*! Base absract class for file loaders
+/*! Base abstract class for file savers
   */
-class AbstractFileLoader : public QObject
+class FileWriterInterface
 {
-Q_OBJECT
 public:
 
-    //! Type of loader
+    //! Type of writer
     typedef enum
     {
-        LT_Open = 0,
-        LT_Import,
-        LT_Count
+        WT_Save = 0,
+        WT_Export,
+        WT_Count
     } Type;
 
-    explicit AbstractFileLoader(QObject *parent = 0) {}
-    virtual ~AbstractFileLoader() {}
-
-    /*! Loads data from file into window.
+    explicit FileWriterInterface() {}
+    virtual ~FileWriterInterface() {}
+    /*! Saves data from window into file.
       @param file_name Name of file.
-      @param output Output object to create loaded data in.
+      @param input Input object to create saved data out.
 
-      @return If file loaded, then return true, else - false.
+      @return If file saved, then return true, else - false.
       */
-    virtual bool load(QString file_name, QObject *output) = 0;
+    virtual bool save(QString file_name, QObject *input) = 0;
+    //! Return type of writer
+    virtual FileWriterInterface::Type type() const = 0;
 
 signals:
 
 public slots:
-
 };
 
 //! Base class for factories that create file loaders
-class FileLoaderFactory : public QObject
+class FileWriterFactoryInterface
 {
-Q_OBJECT
-public:
-    FileLoaderFactory() {};
-    virtual ~FileLoaderFactory() {};
 
-    //! Return instance of file loader
-    virtual AbstractFileLoader* createInstance() = 0;
+public:
+    FileWriterFactoryInterface() {};
+    virtual ~FileWriterFactoryInterface() {};
+
+    //! Return instance of file writer
+    virtual FileWriterInterface* createInstance() = 0;
     //! Return list of supported file extensions
     virtual QList<QString> extensions() = 0;
     //! Return format description
     virtual QString formatDescription(const QString &ext) = 0;
     //! Clone factory
-    virtual FileLoaderFactory* clone() = 0;
-    //! Get loader type
-    virtual AbstractFileLoader::Type type() = 0;
+    virtual FileWriterFactoryInterface* clone() = 0;
+    //! Return type of writer
+    virtual FileWriterInterface::Type type() = 0;
 };
 
-#endif // ABSTRACTFILELOADER_H
+Q_DECLARE_INTERFACE(FileWriterInterface,
+                    "com.OSTIS.kbe.FileWriterInterface/1.0")
+
+Q_DECLARE_INTERFACE(FileWriterFactoryInterface,
+                    "com.OSTIS.kbe.FileWriterFactoryInterface/1.0")
+
+
+#endif // ABSTRACTFILEWRITER_H

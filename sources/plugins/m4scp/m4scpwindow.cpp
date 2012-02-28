@@ -23,10 +23,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpwindow.h"
 #include "m4scpcodeeditor.h"
 #include "m4scpsyntaxhighlighter.h"
+#include "m4scpplugin.h"
 
-#include "../abstractfileloader.h"
-#include "../abstractfilewriter.h"
-#include "../config.h"
+#include "interfaces/fileloaderinterface.h"
+#include "interfaces/filewriterinterface.h"
+#include "config.h"
 
 #include <QHBoxLayout>
 #include <QIcon>
@@ -38,7 +39,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
-    BaseWindow("SCpWindow", _windowTitle, parent),
+    WindowInterface(),
+    QWidget(parent),
     mEditor(0),
     mHighlighter(0)
 {
@@ -72,7 +74,7 @@ void M4SCpWindow::createToolBar()
 }
 
 
-bool M4SCpWindow::loadFromFile(const QString &fileName, AbstractFileLoader *loader)
+bool M4SCpWindow::loadFromFile(const QString &fileName, FileLoaderInterface *loader)
 {
     if (loader->load(fileName, mEditor->document()))
     {
@@ -84,15 +86,15 @@ bool M4SCpWindow::loadFromFile(const QString &fileName, AbstractFileLoader *load
 }
 
 
-bool M4SCpWindow::saveToFile(const QString &fileName, AbstractFileWriter *writer)
+bool M4SCpWindow::saveToFile(const QString &fileName, FileWriterInterface *writer)
 {
     if (writer->save(fileName, mEditor->document()))
     {
-        if(writer->type() == AbstractFileWriter::WT_Save)
+        if(writer->type() == FileWriterInterface::WT_Save)
         {
             mFileName = fileName;
             setWindowTitle(mFileName + "[*]");
-            mUndoStack->setClean();
+            //mUndoStack->setClean();
         }
         return true;
     }else
@@ -111,7 +113,7 @@ QIcon M4SCpWindow::icon() const
 
 QIcon M4SCpWindow::findIcon(const QString &iconName) const
 {
-    QDir dir(Config::pathMedia);
-    dir.cd("scg/icons");
+    QDir dir(M4SCpPlugin::mediaPath());
+    dir.cd("icons");
     return QIcon(QFileInfo(dir, iconName).absoluteFilePath());
 }

@@ -35,7 +35,7 @@ class QSignalMapper;
 class QUndoGroup;
 class QGraphicsBlurEffect;
 class QKeyEvent;
-class BaseWindow;
+class WindowInterface;
 class SCgWindow;
 
 class MainWindow : public QMainWindow {
@@ -60,7 +60,7 @@ public:
     /*! Get active sub window
       @return Pointer to active sub window
       */
-    BaseWindow *activeChild();
+    WindowInterface *activeChild();
 
     /*! Load file with @p fileName
       */
@@ -92,7 +92,7 @@ private:
     /*! Saves window into specified file given by @p name with extension @p ext (without leading dot).
      * @return true if saved correctly
      */
-    bool saveWindow(BaseWindow* window, QString& name, const QString& ext);
+    bool saveWindow(WindowInterface* window, QString& name, const QString& ext);
     /*! Check saved state of all subwindows
      * @return true if all subwinows are saved
      */
@@ -104,7 +104,7 @@ private:
      * @param viewType type of created view. (Not used. Only SCgWindow supported for now)
      * @return created view.
      */
-    BaseWindow* createSubWindow(const QString& fileName, int viewType = 0 );
+    WindowInterface* createSubWindow(const QString& fileName, int viewType = 0 );
 
 private:
     Ui::MainWindow *ui;
@@ -113,7 +113,7 @@ private:
     int windowCounter;    // windows counter for untitled windows naming
 
     //! Active window
-    BaseWindow* mLastActiveWindow;
+    WindowInterface* mLastActiveWindow;
 
     //! Tool bar for working with files
     QToolBar *mToolBarFile;
@@ -149,8 +149,8 @@ public slots:
     void openRecentFile();
     void fileNew();
     void fileOpen();
-    void fileSave(BaseWindow* window = 0);
-    void fileSaveAs(BaseWindow* window = 0);
+    void fileSave(WindowInterface* window = 0);
+    void fileSaveAs(WindowInterface* window = 0);
     void fileSaveAll();
     void fileExportToImage();
     void fileExit();

@@ -20,14 +20,37 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "config.h"
+#ifndef PLUGININTERFACE_H
+#define PLUGININTERFACE_H
 
-QDir Config::pathMedia = QDir("");
-QDir Config::pathIcons = QDir("");
-QDir Config::pathTranslations = QDir("");
-QDir Config::pathPlugins = QDir("");
+#include <QtPlugin>
 
-const QString Config::settingsRecentFileList = "RecentFileList";
-const QString Config::settingsDocksGeometry = "DockWindowsGeometry";
+class PluginInterface
+{
+public:
+    virtual ~PluginInterface() {}
 
-const QString Config::settingsMainWindowGeometry = "MainWindowGeometry";
+    //! Returns plugin name
+    virtual const QString& name() const = 0;
+
+    //! Returns plugin version
+    virtual const QString& version() const = 0;
+
+    /*! Return list of all interfaces that realized in that plugin
+      * @attention All interfaces need to be a QObject, and created with plugin interface as a parent object
+      */
+    virtual const QList<QObject*>& interfaces() const = 0;
+
+    /*! Initialize plugin
+      * @param root Pointer to root object
+      */
+    virtual void initialize(const QString &mediaPath) = 0;
+
+    //! Shutdown plugin
+    virtual void shutdown() = 0;
+};
+
+Q_DECLARE_INTERFACE(PluginInterface,
+                    "com.OSTIS.kbe.PluginInterface/1.0")
+
+#endif // PLUGIN_H

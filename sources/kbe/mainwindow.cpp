@@ -23,33 +23,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "basewindow.h"
 #include "config.h"
 
-#include "interfaces/abstractfileloader.h"
-#include "interfaces/abstractfilewriter.h"
+#include "interfaces/fileloaderinterface.h"
+#include "interfaces/filewriterinterface.h"
+#include "interfaces/windowinterface.h"
+#include "pluginmanager.h"
 #include "readwritemanager.h"
 
-#include "scgarrangervertical.h"
-#include "scgarrangerhorizontal.h"
-#include "scgarrangergrid.h"
-#include "scgarrangertuple.h"
-
 #include "version.h"
-
-#include "scgcontentstring.h"
-#include "scgcontentimage.h"
-#include "scgcontentnumeric.h"
-//#include "scgcontentvideo.h"
-
-#include "scgfilewriterimage.h"
-#include "scgfilewritergwf.h"
-#include "scgfileloadergwf.h"
-
-#include "m4scp/m4scpfileloader.h"
-#include "m4scp/m4scpfilewriter.h"
-#include "m4scp/m4scpwindow.h"
-#include "m4scp/m4scpsyntax.h"
 
 #include <QMdiSubWindow>
 #include <QToolBar>
@@ -104,30 +86,34 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowTitle(tr("Knowledge Base source Editor - version %1").arg(VERSION_STR));
 
+    new ReadWriteManager();
+    new PluginManager();
+    PluginManager::instance()->initialize(Config::pathPlugins.absolutePath());
+
     //QApplication::setStyle(QStyleFactory::create("Plastique"));
     //QApplication::setPalette(QApplication::style()->standardPalette());
 
 
 
-    // temporary
-    M4SCpSyntax::initialize();
+//    // temporary
+//    M4SCpSyntax::initialize();
 
-    SCgContentFactory::registerFactory("string", new SCgContentStringFactory);
-    SCgContentFactory::registerFactory("image", new SCgContentImageFactory);
-    SCgContentFactory::registerFactory("numeric", new SCgContentNumericFactory);
-    //SCgContentFactory::registerFactory("video", new SCgContentVideoFactory);
+//    SCgContentFactory::registerFactory("string", new SCgContentStringFactory);
+//    SCgContentFactory::registerFactory("image", new SCgContentImageFactory);
+//    SCgContentFactory::registerFactory("numeric", new SCgContentNumericFactory);
+//    //SCgContentFactory::registerFactory("video", new SCgContentVideoFactory);
 
-    ReadWriteManager::instance().registerFileLoaderFactory(new SCgFileLoaderGWFFactory());
-    ReadWriteManager::instance().registerFileLoaderFactory(new M4SCpFileLoaderFactory());
+//    ReadWriteManager::instance().registerFileLoaderFactory(new SCgFileLoaderGWFFactory());
+//    ReadWriteManager::instance().registerFileLoaderFactory(new M4SCpFileLoaderFactory());
 
-    ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterGWFFactory());
-    ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterImageFactory());
-    ReadWriteManager::instance().registerFileWriterFactory(new M4SCpFileWriterFactory());
+//    ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterGWFFactory());
+//    ReadWriteManager::instance().registerFileWriterFactory(new SCgFileWriterImageFactory());
+//    ReadWriteManager::instance().registerFileWriterFactory(new M4SCpFileWriterFactory());
 
-    LayoutManager::instance().addArranger(new SCgGridArranger(this));
-    LayoutManager::instance().addArranger(new SCgVerticalArranger(this));
-    LayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
-    LayoutManager::instance().addArranger(new SCgTupleArranger(this));
+//    LayoutManager::instance().addArranger(new SCgGridArranger(this));
+//    LayoutManager::instance().addArranger(new SCgVerticalArranger(this));
+//    LayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
+//    LayoutManager::instance().addArranger(new SCgTupleArranger(this));
 
     // blur effect
     mBlurEffect = new QGraphicsBlurEffect(this);
@@ -150,8 +136,12 @@ MainWindow::~MainWindow()
     delete ui;
     delete mTabWidget;
 
-    ReadWriteManager::destroy();
-    LayoutManager::destroy();
+//    ReadWriteManager::destroy();
+//    LayoutManager::destroy();
+
+    PluginManager::instance()->shutdown();
+    delete PluginManager::instance();
+    delete ReadWriteManager::instance();
 }
 
 void MainWindow::createToolBars()
@@ -221,21 +211,21 @@ bool MainWindow::checkSubWindowSavedState()
     QList<QWidget*> list = mTabWidget->subWindowList();
     QList<QWidget*>::iterator it = list.begin();
     for(; it != list.end(); it++)
-        if (!qobject_cast<BaseWindow*>(*it)->isSaved())
+        if (!qobject_cast<WindowInterface*>(*it)->isSaved())
             return false;
     return true;
 }
 
-BaseWindow *MainWindow::activeChild()
+WindowInterface *MainWindow::activeChild()
 {
     if (QWidget *activeSubWindow = mTabWidget->currentWidget())
-        return qobject_cast<BaseWindow *>(activeSubWindow);
+        return qobject_cast<WindowInterface *>(activeSubWindow);
     return 0;
 }
 
 void MainWindow::updateMenu()
 {
-    BaseWindow *subWindow = activeChild();
+    WindowInterface *subWindow = activeChild();
 
     ui->actionSave->setEnabled(subWindow && !subWindow->isSaved());
     ui->actionSave_as->setEnabled(subWindow != 0);
@@ -305,21 +295,21 @@ void MainWindow::openRecentFile()
     }
 }
 
-BaseWindow* MainWindow::createSubWindow(const QString& fileName, int windowType)
+WindowInterface* MainWindow::createSubWindow(const QString& fileName, int windowType)
 {
-    BaseWindow* childWindow = 0;
+    WindowInterface* childWindow = 0;
 
     switch(windowType)
     {
-    default:
-        childWindow = new M4SCpWindow(fileName);
+    //default:
+        //childWindow = new M4SCpWindow(fileName);
     }
 
     Q_ASSERT_X( childWindow,
                "void MainWindow::createSubWindow(const QString& fileName, int viewType)",
                "Error while creating window with given type");
 
-    mTabWidget->addSubWindow(childWindow);
+    mTabWidget->addSubWindow(childWindow->widget());
 
     return childWindow;
 }
@@ -340,7 +330,7 @@ void MainWindow::fileOpen()
     QString fileName = dlg.getOpenFileName(this,
                                            tr("Open file"),
                                            "",
-                                           ReadWriteManager::instance().openFilters(),
+                                           ReadWriteManager::instance()->openFilters(),
                                            &selectedFilter,
                                            options);
     if (!fileName.isEmpty())
@@ -351,11 +341,11 @@ void MainWindow::fileOpen()
 void MainWindow::load(QString fileName)
 {
     QString ext = fileName.mid(fileName.lastIndexOf('.') + 1);
-    if(ReadWriteManager::instance().registeredLoaderExtensions().contains(ext))
+    if(ReadWriteManager::instance()->registeredLoaderExtensions().contains(ext))
     {
-        BaseWindow* childWindow = createSubWindow(fileName);
+        WindowInterface* childWindow = createSubWindow(fileName);
 
-        AbstractFileLoader *loader = ReadWriteManager::instance().createLoader(ext);
+        FileLoaderInterface *loader = ReadWriteManager::instance()->createLoader(ext);
 
         if (childWindow->loadFromFile(fileName, loader))
         {
@@ -377,18 +367,18 @@ void MainWindow::load(QString fileName)
         QMessageBox::warning(this, qAppName(), tr("Can't load file.\nUnsupported file format \"%1\"").arg(ext));
 }
 
-bool MainWindow::saveWindow(BaseWindow* window, QString& name, const QString& ext)
+bool MainWindow::saveWindow(WindowInterface* window, QString& name, const QString& ext)
 {
     if(!name.isEmpty() && window)
     {
         bool retVal = false;
 
-        if(ReadWriteManager::instance().registeredWriterExtensions().contains(ext))
+        if(ReadWriteManager::instance()->registeredWriterExtensions().contains(ext))
         {
             if (!name.endsWith("." + ext))
                 name += "." + ext;
 
-            AbstractFileWriter *writer = ReadWriteManager::instance().createWriter(ext);
+            FileWriterInterface *writer = ReadWriteManager::instance()->createWriter(ext);
             retVal = window->saveToFile(name, writer);
             delete writer;
         } else
@@ -400,9 +390,9 @@ bool MainWindow::saveWindow(BaseWindow* window, QString& name, const QString& ex
     return false;
 }
 
-void MainWindow::fileSave(BaseWindow* window)
+void MainWindow::fileSave(WindowInterface* window)
 {
-    BaseWindow* childWindow = window;
+    WindowInterface* childWindow = window;
 
     if(!childWindow)
         childWindow = activeChild();
@@ -423,16 +413,16 @@ void MainWindow::fileSave(BaseWindow* window)
     }
 }
 
-void MainWindow::fileSaveAs(BaseWindow* window)
+void MainWindow::fileSaveAs(WindowInterface* window)
 {
-    BaseWindow* childWindow = window;
+    WindowInterface* childWindow = window;
 
     if(!childWindow)
         childWindow = activeChild();
 
     Q_ASSERT(childWindow);
 
-    QString formatsStr = ReadWriteManager::instance().saveFilters();
+    QString formatsStr = ReadWriteManager::instance()->saveFilters();
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog ;
 
@@ -455,47 +445,47 @@ void MainWindow::fileSaveAs(BaseWindow* window)
 
 void MainWindow::fileSaveAll()
 {
-    for(int i = 0; i < mTabWidget->subWindowList().size(); i++) {
-        if (!qobject_cast<SCgWindow*>(activeChild())->isSaved())
-            fileSave();
-            mTabWidget->setCurrentIndex(mTabWidget->currentIndex()+1);
-        }
+//    for(int i = 0; i < mTabWidget->subWindowList().size(); i++) {
+//        if (!qobject_cast<SCgWindow*>(activeChild())->isSaved())
+//            fileSave();
+//            mTabWidget->setCurrentIndex(mTabWidget->currentIndex()+1);
+//        }
 }
 
 void MainWindow::fileExportToImage()
 {
-    SCgWindow *childWindow = qobject_cast<SCgWindow*>(activeChild());
+//    SCgWindow *childWindow = qobject_cast<SCgWindow*>(activeChild());
 
-    if(childWindow){
+//    if(childWindow){
 
-        QString formatsStr = ReadWriteManager::instance().exportFilters();
-        QFileDialog::Options options;
-        options |= QFileDialog::DontUseNativeDialog;
+//        QString formatsStr = ReadWriteManager::instance().exportFilters();
+//        QFileDialog::Options options;
+//        options |= QFileDialog::DontUseNativeDialog;
 
 
-        QString selectedFilter;
-        QFileDialog dlg;
+//        QString selectedFilter;
+//        QFileDialog dlg;
 
-        mBlurEffect->setEnabled(true);
-        QString fileName = QCoreApplication::applicationDirPath() + "/" + childWindow->currentFileName();
-        fileName = dlg.getSaveFileName(this,
-                                       tr("Export file to ..."),
-                                       fileName,
-                                       formatsStr,
-                                       &selectedFilter,
-                                       options);
+//        mBlurEffect->setEnabled(true);
+//        QString fileName = QCoreApplication::applicationDirPath() + "/" + childWindow->currentFileName();
+//        fileName = dlg.getSaveFileName(this,
+//                                       tr("Export file to ..."),
+//                                       fileName,
+//                                       formatsStr,
+//                                       &selectedFilter,
+//                                       options);
 
-        if (!fileName.isEmpty())
-        {
-            QString ext = ReadWriteManager::instance().extFromFilter(selectedFilter);
-            if (!fileName.endsWith("." + ext))
-                fileName += "." + ext;
-            AbstractFileWriter *writer = ReadWriteManager::instance().createWriter(ext);
-            childWindow->saveToFile(fileName, writer);
-            delete writer;
-        }
-        mBlurEffect->setEnabled(false);
-    }
+//        if (!fileName.isEmpty())
+//        {
+//            QString ext = ReadWriteManager::instance().extFromFilter(selectedFilter);
+//            if (!fileName.endsWith("." + ext))
+//                fileName += "." + ext;
+//            AbstractFileWriter *writer = ReadWriteManager::instance().createWriter(ext);
+//            childWindow->saveToFile(fileName, writer);
+//            delete writer;
+//        }
+//        mBlurEffect->setEnabled(false);
+//    }
 
 }
 
@@ -513,7 +503,7 @@ void MainWindow::helpAbout()
                                "a:link {text-decoration: none}"
                                "</STYLE>"
                                "<a href=\"http://www.ostis.net\">http://www.ostis.net</a>"
-                               "<br> <br>Copyright © OSTIS.net</td></tr><tr>"
+                               "<br> <br>Copyright  OSTIS.net</td></tr><tr>"
                                "<td></td><td>%5:<ul>"
                                "<li>Denis Koronchik</li>"
                                "<li>Gumbar Ilya (zooner)</li>"
@@ -557,7 +547,7 @@ void MainWindow::updateDockWidgets(bool visible)
                "void MainWindow::updateDockWidgets(bool hide)",
                "window must be activated first!");
 
-    QString objName = mLastActiveWindow->objectName();
+    QString objName = mLastActiveWindow->widget()->objectName();
 
     if(!visible)
     {
@@ -613,7 +603,7 @@ void MainWindow::subWindowHasChanged(int index)
     QWidget* window = mTabWidget->widget(index);
     if (window)
     {
-        mLastActiveWindow = qobject_cast<BaseWindow*>(window);
+        mLastActiveWindow = qobject_cast<WindowInterface*>(window);
 
         Q_ASSERT(mLastActiveWindow);
         mLastActiveWindow->activate(this);
@@ -626,7 +616,7 @@ void MainWindow::subWindowHasChanged(int index)
 
 void MainWindow::windowWillBeClosed(QWidget* w)
 {
-    BaseWindow* wnd = qobject_cast<BaseWindow*>(w);
+    WindowInterface* wnd = qobject_cast<WindowInterface*>(w);
 
     Q_ASSERT_X( wnd,
                "void MainWindow::windowWillBeClosed(QWidget *w)",

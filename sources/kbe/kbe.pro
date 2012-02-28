@@ -1,10 +1,15 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-03-10T23:38:40
 # -------------------------------------------------
-QT += core
 
-# phonon
-TARGET = kbe
+DESTDIR = ../bin
+
+CONFIG (debug, debug|release) {
+        TARGET = kbe_d
+} else {
+        TARGET = kbe
+}
+
 TEMPLATE = app
 
 SOURCES += readwritemanager.cpp \
@@ -15,6 +20,7 @@ SOURCES += readwritemanager.cpp \
     extendedundoview.cpp \
     extendedtabwidget.cpp \
     config.cpp \
+    pluginmanager.cpp
 
 HEADERS += version.h \
     readwritemanager.h \
@@ -25,8 +31,11 @@ HEADERS += version.h \
     extendedundoview.h \
     extendedtabwidget.h \
     config.h \
-    interfaces/abstractfilewriter.h \
-    interfaces/abstractfileloader.h
+    interfaces/plugininterface.h \
+    pluginmanager.h \
+    interfaces/windowinterface.h \
+    interfaces/filewriterinterface.h \
+    interfaces/fileloaderinterface.h
 
 FORMS += mainwindow.ui
 

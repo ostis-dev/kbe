@@ -43,7 +43,7 @@ bool M4SCpFileWriter::save(QString file_name, QObject *input)
     QFile fileOut(file_name);
     if (!fileOut.open(QFile::WriteOnly | QFile::Text)) {
              QMessageBox::warning(0, qAppName(),
-                                  tr("File saving error.\nCannot write file %1:\n%2.")
+                                  QObject::tr("File saving error.\nCannot write file %1:\n%2.")
                                   .arg(file_name)
                                   .arg(fileOut.errorString()));
              return false;
@@ -55,8 +55,9 @@ bool M4SCpFileWriter::save(QString file_name, QObject *input)
 }
 
 // -------------------------------------------------
-M4SCpFileWriterFactory::M4SCpFileWriterFactory() :
-        FileWriterFactory()
+M4SCpFileWriterFactory::M4SCpFileWriterFactory(QObject *parent) :
+    QObject(parent),
+    FileWriterFactoryInterface()
 {
 
 }
@@ -66,7 +67,7 @@ M4SCpFileWriterFactory::~M4SCpFileWriterFactory()
 
 }
 
-AbstractFileWriter* M4SCpFileWriterFactory::createInstance()
+FileWriterInterface* M4SCpFileWriterFactory::createInstance()
 {
     return new M4SCpFileWriter();
 }
@@ -83,12 +84,12 @@ QString M4SCpFileWriterFactory::formatDescription(const QString &ext)
     return tr("Simple format");
 }
 
-FileWriterFactory* M4SCpFileWriterFactory::clone()
+FileWriterFactoryInterface* M4SCpFileWriterFactory::clone()
 {
-    return new M4SCpFileWriterFactory();
+    return new M4SCpFileWriterFactory(this);
 }
 
-AbstractFileWriter::Type M4SCpFileWriterFactory::type()
+FileWriterInterface::Type M4SCpFileWriterFactory::type()
 {
-    return AbstractFileWriter::WT_Save;
+    return FileWriterInterface::WT_Save;
 }

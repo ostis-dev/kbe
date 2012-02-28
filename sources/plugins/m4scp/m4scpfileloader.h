@@ -23,11 +23,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPFILELOADER_H
 #define M4SCPFILELOADER_H
 
-#include "../abstractfileloader.h"
+#include "interfaces/fileloaderinterface.h"
 
-class M4SCpFileLoader : public AbstractFileLoader
+class M4SCpFileLoader : public FileLoaderInterface
 {
-
+    Q_INTERFACES(FileLoaderInterface)
 public:
     M4SCpFileLoader();
     virtual ~M4SCpFileLoader();
@@ -44,22 +44,27 @@ private:
 };
 
 
-class M4SCpFileLoaderFactory : public FileLoaderFactory
+class M4SCpFileLoaderFactory : public QObject,
+                               public FileLoaderFactoryInterface
+
 {
+    Q_OBJECT
+    Q_INTERFACES(FileLoaderFactoryInterface)
+
 public:
-    M4SCpFileLoaderFactory();
+    explicit M4SCpFileLoaderFactory(QObject *parent);
     virtual ~M4SCpFileLoaderFactory();
 
     //! @see FileLoaderFactory::createInstance
-    AbstractFileLoader* createInstance();
+    FileLoaderInterface* createInstance();
     //! @see FileLoaderFactory::extensions
     QList<QString> extensions();
     //! @see FileLoaderFactory::formatDescription
     QString formatDescription(const QString &ext);
     //! @see FileLoaderFactory::clone
-    FileLoaderFactory* clone();
+    FileLoaderFactoryInterface* clone();
     //! @see FileLoaderFactory::type
-    AbstractFileLoader::Type type();
+    FileLoaderInterface::Type type();
 };
 
 #endif // M4SCPFILELOADER_H

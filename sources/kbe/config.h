@@ -35,6 +35,8 @@ public:
     static QDir pathIcons;
     //! path to translations
     static QDir pathTranslations;
+    //! path to plugins
+    static QDir pathPlugins;
 
     /*! @defgroup settingNames Names For Saving Application Parameters
      *  @note Used with QSettings.

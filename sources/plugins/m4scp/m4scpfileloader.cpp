@@ -55,8 +55,9 @@ bool M4SCpFileLoader::load(QString file_name, QObject *output)
 }
 
 
-M4SCpFileLoaderFactory::M4SCpFileLoaderFactory() :
-        FileLoaderFactory()
+M4SCpFileLoaderFactory::M4SCpFileLoaderFactory(QObject *parent) :
+    QObject(parent),
+    FileLoaderFactoryInterface()
 {
 
 }
@@ -66,7 +67,7 @@ M4SCpFileLoaderFactory::~M4SCpFileLoaderFactory()
 
 }
 
-AbstractFileLoader* M4SCpFileLoaderFactory::createInstance()
+FileLoaderInterface* M4SCpFileLoaderFactory::createInstance()
 {
     return new M4SCpFileLoader();
 }
@@ -83,12 +84,12 @@ QString M4SCpFileLoaderFactory::formatDescription(const QString &ext)
     return tr("Simple format");
 }
 
-FileLoaderFactory* M4SCpFileLoaderFactory::clone()
+FileLoaderFactoryInterface* M4SCpFileLoaderFactory::clone()
 {
-    return new M4SCpFileLoaderFactory();
+    return new M4SCpFileLoaderFactory(this);
 }
 
-AbstractFileLoader::Type M4SCpFileLoaderFactory::type()
+FileLoaderInterface::Type M4SCpFileLoaderFactory::type()
 {
-    return AbstractFileLoader::LT_Open;
+    return FileLoaderInterface::LT_Open;
 }

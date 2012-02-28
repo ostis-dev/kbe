@@ -24,10 +24,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPFILEWRITER_H
 #define M4SCPFILEWRITER_H
 
-#include "../abstractfilewriter.h"
+#include "interfaces/filewriterinterface.h"
 
-class M4SCpFileWriter : public AbstractFileWriter
+class M4SCpFileWriter : public FileWriterInterface
 {
+    Q_INTERFACES(FileWriterInterface)
 public:
     M4SCpFileWriter();
     virtual ~M4SCpFileWriter();
@@ -40,26 +41,29 @@ public:
       */
     bool save(QString file_name, QObject *input);
 
-    AbstractFileWriter::Type type() const {return AbstractFileWriter::WT_Save;}
+    FileWriterInterface::Type type() const {return FileWriterInterface::WT_Save;}
 
 };
 
-class M4SCpFileWriterFactory : public FileWriterFactory
+class M4SCpFileWriterFactory : public QObject,
+                               public FileWriterFactoryInterface
 {
+    Q_OBJECT
+    Q_INTERFACES(FileWriterFactoryInterface)
 public:
-    M4SCpFileWriterFactory();
+    explicit M4SCpFileWriterFactory(QObject *parent);
     virtual ~M4SCpFileWriterFactory();
 
     //! @see FileWriterFactory::createInstance
-    AbstractFileWriter* createInstance();
+    FileWriterInterface* createInstance();
     //! @see FileWriterFactory::extensions
     QList<QString> extensions();
     //! @see FileWriterFactory::formatDescription
     QString formatDescription(const QString &ext);
     //! @see FileWriterFactory::clone
-    FileWriterFactory* clone();
+    FileWriterFactoryInterface* clone();
     //! @see FileWriterFactory::type
-    AbstractFileWriter::Type type();
+    FileWriterInterface::Type type();
 };
 
 #endif // M4SCPFILEWRITER_H

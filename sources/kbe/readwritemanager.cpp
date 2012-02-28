@@ -30,26 +30,23 @@ ReadWriteManager* ReadWriteManager::mInstance = 0;
 ReadWriteManager::ReadWriteManager(QObject *parent) :
     QObject(parent)
 {
+    Q_ASSERT(mInstance == 0);
+    mInstance = this;
 }
 
 ReadWriteManager::~ReadWriteManager()
 {
     unregisterAllFactories();
-}
 
-ReadWriteManager& ReadWriteManager::instance()
-{
-    if (mInstance == 0)
-        mInstance = new ReadWriteManager();
-
-    return *mInstance;
-}
-
-void ReadWriteManager::destroy()
-{
-    delete mInstance;
+    Q_ASSERT(mInstance != 0);
     mInstance = 0;
 }
+
+ReadWriteManager* ReadWriteManager::instance()
+{
+    return mInstance;
+}
+
 
 QString ReadWriteManager::extFromFilter(const QString &filter)
 {
@@ -62,7 +59,7 @@ QString ReadWriteManager::extFromFilter(const QString &filter)
     return filter.mid(pos, pos2 - pos).trimmed();
 }
 
-void ReadWriteManager::registerFileLoaderFactory(FileLoaderFactory *factory)
+void ReadWriteManager::registerFileLoaderFactory(FileLoaderFactoryInterface *factory)
 {
     Q_ASSERT_X(factory != 0, "ReadWriteManager::registerFileLoaderFactory", "factory is null");
     QList<QString> ext = factory->extensions();
@@ -78,7 +75,7 @@ void ReadWriteManager::registerFileLoaderFactory(FileLoaderFactory *factory)
     }
 }
 
-void ReadWriteManager::registerFileWriterFactory(FileWriterFactory *factory)
+void ReadWriteManager::registerFileWriterFactory(FileWriterFactoryInterface *factory)
 {
     Q_ASSERT_X(factory != 0, "ReadWriteManager::registerFileWriterFactory", "Factory is null");
     QList<QString> ext = factory->extensions();
@@ -107,7 +104,7 @@ void ReadWriteManager::unregisterAllFactories()
     mFileWriteFactories.clear();
 }
 
-AbstractFileLoader* ReadWriteManager::createLoader(const QString &ext)
+FileLoaderInterface* ReadWriteManager::createLoader(const QString &ext)
 {
     Q_ASSERT_X(mFileLoaderFactories.find(ext) != mFileLoaderFactories.end(),
                "ReadWriteManager::createLoader",
@@ -115,7 +112,7 @@ AbstractFileLoader* ReadWriteManager::createLoader(const QString &ext)
     return mFileLoaderFactories[ext]->createInstance();
 }
 
-AbstractFileWriter* ReadWriteManager::createWriter(const QString &ext)
+FileWriterInterface* ReadWriteManager::createWriter(const QString &ext)
 {
     Q_ASSERT_X(mFileWriteFactories.find(ext) != mFileWriteFactories.end(),
                "ReadWriteManager::createWriter",
@@ -125,22 +122,22 @@ AbstractFileWriter* ReadWriteManager::createWriter(const QString &ext)
 
 QString ReadWriteManager::openFilters() const
 {
-    return loaderFilters(AbstractFileLoader::LT_Open);
+    return loaderFilters(FileLoaderInterface::LT_Open);
 }
 
 QString ReadWriteManager::saveFilters() const
 {
-    return writerFilters(AbstractFileWriter::WT_Save);
+    return writerFilters(FileWriterInterface::WT_Save);
 }
 
 QString ReadWriteManager::importFilters() const
 {
-    return loaderFilters(AbstractFileLoader::LT_Import);
+    return loaderFilters(FileLoaderInterface::LT_Import);
 }
 
 QString ReadWriteManager::exportFilters() const
 {
-    return writerFilters(AbstractFileWriter::WT_Export);
+    return writerFilters(FileWriterInterface::WT_Export);
 }
 
 QList<QString> ReadWriteManager::registeredLoaderExtensions() const
@@ -153,7 +150,7 @@ QList<QString> ReadWriteManager::registeredWriterExtensions() const
     return mFileWriteFactories.keys();
 }
 
-QString ReadWriteManager::loaderFilters(AbstractFileLoader::Type type) const
+QString ReadWriteManager::loaderFilters(FileLoaderInterface::Type type) const
 {
     QString filters;
     StringFileLoaderFactoryMap::const_iterator it = mFileLoaderFactories.begin();
@@ -171,7 +168,7 @@ QString ReadWriteManager::loaderFilters(AbstractFileLoader::Type type) const
     return filters;
 }
 
-QString ReadWriteManager::writerFilters(AbstractFileWriter::Type type) const
+QString ReadWriteManager::writerFilters(FileWriterInterface::Type type) const
 {
     QString filters;
     StringFileWriterFactoryMap::const_iterator it = mFileWriteFactories.begin();

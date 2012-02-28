@@ -23,13 +23,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPWINDOW_H
 #define M4SCPWINDOW_H
 
-#include "../basewindow.h"
+#include "interfaces/windowinterface.h"
+
+#include <QWidget>
 
 class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
 class QIcon;
 
-class M4SCpWindow : public BaseWindow
+class M4SCpWindow : public WindowInterface,
+                    public QWidget
 {
 public:
     explicit M4SCpWindow(const QString& _windowTitle, QWidget *parent = 0);
@@ -52,7 +55,7 @@ public:
 
       @return If file loaded, then return true, else - false.
       */
-    bool loadFromFile(const QString &fileName, AbstractFileLoader *loader);
+    bool loadFromFile(const QString &fileName, FileLoaderInterface *loader);
 
     /*! Save content to file.
       @param fileName   Name of file.
@@ -63,7 +66,7 @@ public:
       @return If file saved, then return true, else - false.
       */
 
-    bool saveToFile(const QString &fileName, AbstractFileWriter *writer);
+    bool saveToFile(const QString &fileName, FileWriterInterface *writer);
 
     /*! Update window imideately
       */

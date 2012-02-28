@@ -26,20 +26,21 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QMap>
 
-#include "interfaces/abstractfileloader.h"
-#include "interfaces/abstractfilewriter.h"
+#include "interfaces/fileloaderinterface.h"
+#include "interfaces/filewriterinterface.h"
 
-class FileLoaderFactory;
-class FileWriterFactory;
+class FileLoaderFactoryInterface;
+class FileWriterFactoryInterface;
 
 class ReadWriteManager : public QObject
 {
 Q_OBJECT
+public:
+
     explicit ReadWriteManager(QObject *parent = 0);
     virtual ~ReadWriteManager();
-public:
-    static ReadWriteManager& instance();
-    static void destroy();
+
+    static ReadWriteManager* instance();
 
     //! Get extension name from filter description
     static QString extFromFilter(const QString &filter);
@@ -53,13 +54,13 @@ public:
       @note Factory will be removed automaticaly on manager shutdown. Also
             alocated for factory memory will be free.
       */
-    void registerFileLoaderFactory(FileLoaderFactory *factory);
+    void registerFileLoaderFactory(FileLoaderFactoryInterface *factory);
 
     /*! Register file writer factory
       @note Factory will be removed automaticaly on manager shutdown. Also
             alocated for factory memory will be free.
       */
-    void registerFileWriterFactory(FileWriterFactory *factory);
+    void registerFileWriterFactory(FileWriterFactoryInterface *factory);
 
     /*! Unregister all factories
       */
@@ -68,12 +69,12 @@ public:
     /*! Create file loader
       @param ext    File extension
       */
-    AbstractFileLoader* createLoader(const QString &ext);
+    FileLoaderInterface* createLoader(const QString &ext);
 
     /*! Create file writer
       @param ext    File extension
       */
-    AbstractFileWriter* createWriter(const QString &ext);
+    FileWriterInterface* createWriter(const QString &ext);
 
     /*! Get filters of registered loaders for file opening
       @note Return string with filters description
@@ -97,11 +98,11 @@ public:
 
     /*! Get loader filters for a specified loader type
       */
-    QString loaderFilters(AbstractFileLoader::Type type) const;
+    QString loaderFilters(FileLoaderInterface::Type type) const;
 
     /*! Get writer filters for a specified writer type
       */
-    QString writerFilters(AbstractFileWriter::Type type) const;
+    QString writerFilters(FileWriterInterface::Type type) const;
 
     /*!
      * @return all registered loader extensions
@@ -116,11 +117,11 @@ public:
 
 protected:
     //! Map of file loader factories
-    typedef QMap<QString, FileLoaderFactory*> StringFileLoaderFactoryMap;
+    typedef QMap<QString, FileLoaderFactoryInterface*> StringFileLoaderFactoryMap;
     StringFileLoaderFactoryMap mFileLoaderFactories;
 
     //! Map of file wrtier factories
-    typedef QMap<QString, FileWriterFactory*> StringFileWriterFactoryMap;
+    typedef QMap<QString, FileWriterFactoryInterface*> StringFileWriterFactoryMap;
     StringFileWriterFactoryMap mFileWriteFactories;
 
 
