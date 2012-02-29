@@ -27,13 +27,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QStringListModel>
 #include <QStandardItemModel>
+#include <QPlainTextEdit>
 
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QCompleter(parent)
 {
-    QStandardItemModel *_mItemModel = new QStandardItemModel(parent);
+    _mItemModel = new QStandardItemModel(parent);
+    globalModel=new QStandardItemModel(parent);
+    variablesModel=new QStandardItemModel(parent);
+    atributesModel=new QStandardItemModel(parent);
+    ordinalsModel=new QStandardItemModel(parent);
     setModel(_mItemModel);
     popup()->setIconSize(QSize(16, 16));
+    this->parent=parent;
 }
 
 M4SCpCodeCompleter::~M4SCpCodeCompleter()
@@ -42,7 +48,6 @@ M4SCpCodeCompleter::~M4SCpCodeCompleter()
 
 void M4SCpCodeCompleter::initDictionary()
 {
-    QStandardItemModel *mod = static_cast<QStandardItemModel*>(model());
     QStringList words;
     words << M4SCpSyntax::attributes();
 
@@ -50,15 +55,16 @@ void M4SCpCodeCompleter::initDictionary()
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("attribute.png"),
                     str);
-        mod->appendRow(item);
+        atributesModel->appendRow(item);
     }
     words.clear();
+
     words << M4SCpSyntax::ordinals();
     foreach(QString str, words) {
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("ordinal.png"),
                     str);
-        mod->appendRow(item);
+        ordinalsModel->appendRow(item);
     }
 
     QMap<QString, QString> templatesMap;
@@ -128,10 +134,139 @@ void M4SCpCodeCompleter::initDictionary()
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("procedure.png"),
                     it.key());
-        mod->appendRow(item);
-        QModelIndex index = mod->indexFromItem(item);
-        mod->setData(index, QVariant(it.value()), Qt::UserRole);
-        mod->setData(index, QVariant(it.value()), Qt::ToolTipRole);
+        globalModel->appendRow(item);
+        QModelIndex index = globalModel->indexFromItem(item);
+        globalModel->setData(index, QVariant(it.value()), Qt::UserRole);
+        globalModel->setData(index, QVariant(it.value()), Qt::ToolTipRole);
     }
+    setModel(globalModel);
 }
 
+QList<QStandardItem *> M4SCpCodeCompleter::updateVariables(const QString text,QTextCursor cursor)
+{
+    QList<QStandardItem *> variables;
+    if (!text.contains("procedure"))
+        return variables;
+    int cursorPosition=cursor.position();
+    int current=text.lastIndexOf("procedure",cursorPosition+1);
+        if (current==-1)
+            return variables;
+    //constants
+    int from=text.indexOf("[[",current)+2;
+    int length=text.indexOf("]]",current)-from;
+    if(length<1)
+        return variables;
+    QString constantsLine=text.mid(from,length);
+    constantsLine.remove(QRegExp("\\n|\\t|//[^\n]*|\\s|/\\*(.|\\s)*\\*/"));
+    QStringList list;
+    list<<constantsLine.split(',');
+    foreach(QString str, list) {
+        if(str.isEmpty()) continue;
+        QStandardItem *item = new QStandardItem(
+                    M4SCpWindow::findIcon("constant.png"),
+                    str);
+        variables.append(item);
+    }
+    //variables
+    from= text.indexOf("[{",current)+2;
+    length=text.indexOf("}]",current)-from;
+    if(length<1)
+            return variables;
+    constantsLine=text.mid(from,length);
+    constantsLine.remove(QRegExp("\\n|\\t|//[^\n]*|\\s|/\\*(.|\\s)*\\*/"));
+    list.clear();
+    list<<constantsLine.split(',');
+    foreach(QString str, list) {
+        if(str.isEmpty()) continue;
+        QStandardItem *item = new QStandardItem(
+                    M4SCpWindow::findIcon("variable.png"),
+                    str);
+        variables.append(item);
+    }
+    list.clear();
+    list << M4SCpSyntax::attributes();
+
+    foreach(QString str, list) {
+        QStandardItem *item = new QStandardItem(
+                    M4SCpWindow::findIcon("attribute.png"),
+                    str);
+        variables.append(item);
+    }
+    return variables;
+ }
+
+void M4SCpCodeCompleter::changeModel()
+{
+     QPlainTextEdit *editor=qobject_cast<QPlainTextEdit *>(parent);
+     QString text = editor->toPlainText();
+     int cursorPos = editor->textCursor().position();
+     if (text.isEmpty()) return;
+     if (isCommentOrProcedure(text,cursorPos)){
+         setModel(new QStandardItemModel());
+         return;
+     }
+     //курсор не в теге
+     if(isGlobal(text, cursorPos))
+         setModel(globalModel);
+     //курсор в открытом теге
+     else{
+         //если нужно вставить атрибут или переменную
+         if(isAtributeOrVariable(text, cursorPos)){
+            QStandardItemModel *mod = new QStandardItemModel();
+            QList<QStandardItem *> list=updateVariables(text,editor->textCursor());
+            if(list.isEmpty())
+                setModel(atributesModel);
+            else{
+                foreach(QStandardItem * it, list)
+                    mod->appendRow(it);
+                setModel(mod);
+            }
+         }
+         //иначе вставляем только порядковые номера (ordinals)
+         else
+             setModel(ordinalsModel);
+     }
+}
+bool M4SCpCodeCompleter::isGlobal(const QString text, int cursorPos)
+{
+    int closePos = text.lastIndexOf("]",cursorPos);
+    int openPos = text.lastIndexOf("([",cursorPos);
+    if(closePos!=-1 && openPos!=-1){
+        if(closePos>openPos)
+            return true;
+        else return false;
+    }
+    if(closePos==-1 && openPos!=-1)
+        return false;
+    if(closePos!=-1 && openPos==-1)
+        return true;
+    if(closePos==-1 && openPos==-1)
+        return true;
+}
+
+bool M4SCpCodeCompleter::isAtributeOrVariable(const QString text, int cursorPos)
+{
+    int colonPos = text.lastIndexOf(":",cursorPos-1);
+    int comaPos = text.lastIndexOf(",",cursorPos-1);
+    if(comaPos!=-1 && colonPos!=-1){
+        if(comaPos<colonPos)
+            return true;
+        else return false;
+    }
+    if(comaPos==-1 && colonPos!=-1)
+        return true;
+    if(comaPos!=-1 && colonPos==-1)
+        return false;
+    if(comaPos==-1 && colonPos==-1)
+        return false;
+}
+
+bool M4SCpCodeCompleter::isCommentOrProcedure(const QString text, int cursorPos)
+{
+    bool comment=false, procedure=false;
+    int proceduePos = text.lastIndexOf(":",cursorPos-1);
+    int endOfProcedure=text.indexOf(")",proceduePos);
+    if (cursorPos<endOfProcedure && cursorPos>proceduePos) procedure=true;
+    //detect comment
+    return procedure || comment ? true : false;
+}

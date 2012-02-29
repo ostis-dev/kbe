@@ -36,7 +36,7 @@ class M4SCpCodeEditor : public QPlainTextEdit
 public:
     explicit M4SCpCodeEditor(QWidget *parent = 0);
     virtual ~M4SCpCodeEditor();
-    
+
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
 
