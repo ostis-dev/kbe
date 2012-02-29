@@ -25,6 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QMap>
+#include <QSet>
 #include <QStringList>
 
 class QPluginLoader;
@@ -65,7 +66,7 @@ public:
     QString saveFilters(const QStringList &supExtensions) const;
 
     //! Return list of supported file extensions
-    const QStringList& supportedFilesExt() const;
+    const QSet<QString>& supportedFilesExt() const;
 
     /*! Create editor for specified file extension
       * @param ext File extension
@@ -89,7 +90,7 @@ protected:
     //! Map of used plugin loaders
     QMap<QString, QPluginLoader*> mPluginLoaders;
     //! List of supported extensions
-    QStringList mSupportedExtensions;
+    QSet<QString> mSupportedExtensions;
     //! Registered factories
     QMap<QString, EditorFactoryInterface*> mEditorFactories;
 

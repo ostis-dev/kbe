@@ -26,6 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <QMap>
 #include "extendedtabwidget.h"
+#include "interfaces/editorinterface.h"
 
 namespace Ui {
     class MainWindow;
@@ -38,8 +39,11 @@ class QKeyEvent;
 class EditorInterface;
 class SCgWindow;
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow,
+                   public EditorObserverInterface
+{
     Q_OBJECT
+    Q_INTERFACES(EditorObserverInterface)
 
 public:
     static MainWindow* getInstance();
@@ -83,6 +87,8 @@ protected:
       */
     void createToolBars();
 
+    //! @copydoc EditorObserverInterface::updateEvent
+    void updateEvent(EditorInterface *editor, EditEvents event);
 
 private:
     /*! Gets icon by name

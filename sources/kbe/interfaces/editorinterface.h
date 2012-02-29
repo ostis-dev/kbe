@@ -31,11 +31,42 @@ class FileWriterInterface;
 
 class QToolBar;
 class QMainWindow;
+class EditorInterface;
+
+/*! Interface for observer, that observes changes in editors
+  */
+class EditorObserverInterface
+{
+public:
+    enum EditEvents
+    {
+        ContentChanged = 0,
+        ContentSaved,
+        ContentLoaded
+    };
+
+
+    explicit EditorObserverInterface() {}
+    virtual ~EditorObserverInterface() {}
+
+    /*! Notification about observer object change
+      * @param editor Pointer to editor interface, that emit event
+      * @param event Event code @see EditorObserverInterface::EditEvents
+      */
+    virtual void updateEvent(EditorInterface *editor, EditEvents event) = 0;
+};
 
 class EditorInterface
 {
+    friend class EditorObserverInterface;
+
 public:
-    explicit EditorInterface() {}
+
+    explicit EditorInterface() :
+        mIsActivated(false),
+        mObserver(0)
+    {
+    }
     virtual ~EditorInterface() {}
 
     //! Return pointer to widget, that represent window
@@ -103,6 +134,16 @@ public:
     //! Return list of supported for save format extensions
     virtual QStringList supportedFormatsExt() const = 0;
 
+    /*! Emit eritor event to observer
+      * @param event Event code @see EditorObserverInterface::EditEvents
+      */
+    virtual void emitEvent(EditorObserverInterface::EditEvents event) { if (mObserver != 0) mObserver->updateEvent(this, event); }
+
+    /*! Set pointer to observed.
+      * @attention Only for internal usage.
+      */
+    virtual void _setObserver(EditorObserverInterface *observer) { mObserver = observer; }
+
 protected:
     //! Holds file name for current document.
     QString mFileName;
@@ -110,6 +151,8 @@ protected:
     //! Activated flag
     bool mIsActivated;
 
+    //! Pointer to observer
+    EditorObserverInterface *mObserver;
 };
 
 class EditorFactoryInterface
@@ -128,9 +171,13 @@ public:
     virtual QStringList supportedFormatsExt() = 0;
 };
 
+
+
 Q_DECLARE_INTERFACE(EditorInterface,
                     "com.OSTIS.kbe.EditorInterface/1.0")
 Q_DECLARE_INTERFACE(EditorFactoryInterface,
                     "com.OSTIS.kbe.EditorFactoryInterface/1.0")
+Q_DECLARE_INTERFACE(EditorObserverInterface,
+                    "com.OSTIS.kbe.EditorObserverInterface/1.0")
 
 #endif // WINDOWINTERFACE_H

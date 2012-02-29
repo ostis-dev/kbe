@@ -173,6 +173,19 @@ void MainWindow::createActions()
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
 }
 
+void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
+{
+    switch(event)
+    {
+    case ContentChanged:
+    case ContentLoaded:
+    case ContentSaved:
+        updateMenu();
+        updateSpcificViewMenu();
+        break;
+    }
+}
+
 QIcon MainWindow::getIcon(const QString &name) const
 {
     QFileInfo fi(Config::pathIcons, name);
@@ -279,6 +292,7 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
 
     mWidget2EditorInterface[childWindow->widget()] = childWindow;
     mTabWidget->addSubWindow(childWindow->widget());
+    childWindow->_setObserver(this);
 
     return childWindow;
 }
@@ -286,7 +300,7 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
 void MainWindow::fileNew()
 {
     if (PluginManager::instance()->supportedFilesExt().size() > 0)
-        createSubWindow(PluginManager::instance()->supportedFilesExt().first());
+        createSubWindow(*PluginManager::instance()->supportedFilesExt().begin());
 }
 
 void MainWindow::fileOpen()
@@ -597,6 +611,7 @@ void MainWindow::windowWillBeClosed(QWidget* w)
                "void MainWindow::windowWillBeClosed(QWidget *w)",
                "There are no conversion to editor interface for a given window");
 
+    it.value()->_setObserver(0);
     mWidget2EditorInterface.erase(it);
 }
 

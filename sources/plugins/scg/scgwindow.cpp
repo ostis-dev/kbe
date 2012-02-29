@@ -101,8 +101,7 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     setLayout(layout);
 
     setAttribute(Qt::WA_DeleteOnClose);
- //   connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(stackCleanStateChanged(bool)));
- //   connect(mUndoStack, SIGNAL(cleanChanged(bool)), MainWindow::getInstance(), SLOT(updateMenu()));
+    connect(mUndoStack, SIGNAL(cleanChanged(bool)), this, SLOT(stackCleanStateChanged(bool)));
 
     /////////////////////////////////////////////////
 
@@ -609,6 +608,11 @@ void SCgWindow::deleteMenu()
 //    delete mViewMenu;
 //    mViewMenu = 0;
     mEditMenu = 0;
+}
+
+void SCgWindow::stackCleanStateChanged(bool value)
+{
+    emitEvent(EditorObserverInterface::ContentChanged);
 }
 
 

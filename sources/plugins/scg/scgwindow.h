@@ -244,6 +244,8 @@ private slots:
 
     //! Delete action handler.
     void deleteSelected();
+
+    void stackCleanStateChanged(bool value);
 };
 
 class SCgWindowFactory : public QObject,
