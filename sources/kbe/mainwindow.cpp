@@ -216,7 +216,7 @@ void MainWindow::updateMenu()
     ui->actionSave->setEnabled(subWindow && !subWindow->isSaved());
     ui->actionSave_as->setEnabled(subWindow != 0);
     ui->actionSave_all->setEnabled(subWindow != 0 && !checkSubWindowSavedState());
-    ui->menuExport->setEnabled(subWindow !=0);
+    //ui->menuExport->setEnabled(subWindow !=0);
 
     ui->actionClose->setEnabled(subWindow != 0);
     ui->actionClose_All->setEnabled(subWindow != 0);

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Wed Feb 29 01:26:33 2012
+** Created: Wed Feb 29 15:49:28 2012
 **      by: Qt User Interface Compiler version 4.7.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -66,6 +66,7 @@ public:
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         actionImport = new QAction(MainWindow);
         actionImport->setObjectName(QString::fromUtf8("actionImport"));
+        actionImport->setEnabled(false);
         actionTo_image = new QAction(MainWindow);
         actionTo_image->setObjectName(QString::fromUtf8("actionTo_image"));
         actionAbout_Qt = new QAction(MainWindow);
@@ -85,11 +86,12 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 20));
+        menuBar->setGeometry(QRect(0, 0, 600, 25));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuExport = new QMenu(menuFile);
         menuExport->setObjectName(QString::fromUtf8("menuExport"));
+        menuExport->setEnabled(false);
         menuHelp = new QMenu(menuBar);
         menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
         menuView = new QMenu(menuBar);
