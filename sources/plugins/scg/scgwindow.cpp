@@ -281,10 +281,7 @@ void SCgWindow::createToolBar()
 
 QIcon SCgWindow::findIcon(const QString &iconName) const
 {
-    QDir dir(SCgPlugin::mediaPath());
-    dir.cd("scg/icons");
-    qDebug() << dir.absolutePath();
-    return QIcon(QFileInfo(dir, iconName).absoluteFilePath());
+    return QIcon(":/media/icons/" + iconName);
 }
 
 QIcon SCgWindow::icon() const

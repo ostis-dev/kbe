@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/">
+        <file>media/icons/edit-clear.png</file>
+        <file>media/icons/edit-copy.png</file>
+        <file>media/icons/edit-cut.png</file>
+        <file>media/icons/edit-delete.png</file>
+        <file>media/icons/edit-find.png</file>
+        <file>media/icons/edit-find-replace.png</file>
+        <file>media/icons/edit-paste.png</file>
+        <file>media/icons/edit-redo.png</file>
+        <file>media/icons/edit-select-all.png</file>
+        <file>media/icons/edit-undo.png</file>
+        <file>media/icons/find-close.png</file>
+        <file>media/icons/find-next.png</file>
+        <file>media/icons/find-previous.png</file>
+        <file>media/icons/mime_type.png</file>
+        <file>media/icons/tool-align-grid.png</file>
+        <file>media/icons/tool-align-horz.png</file>
+        <file>media/icons/tool-align-tuple.png</file>
+        <file>media/icons/tool-align-vert.png</file>
+        <file>media/icons/tool-bus.png</file>
+        <file>media/icons/tool-contour.png</file>
+        <file>media/icons/tool-pair.png</file>
+        <file>media/icons/tool-select.png</file>
+        <file>media/icons/tool-zoom-in.png</file>
+        <file>media/icons/tool-zoom-out.png</file>
+    </qresource>
+</RCC>
