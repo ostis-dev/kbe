@@ -153,6 +153,10 @@ QString PluginManager::openFilters() const
         filters += QString("%1 format (*.%1)").arg(*it);
     }
 
+    if (!filters.isEmpty())
+        filters += "\n";
+    filters += tr("All files (*.*)");
+
     return filters;
 }
 
@@ -167,13 +171,7 @@ QString PluginManager::saveFilters(const QStringList &supExtensions) const
         filters += QString("%1 format (*.%1)").arg(*it);
     }
 
-    if (!filters.isEmpty())
-        filters += "\n";
-    filters += tr("All files (*.*)");
-
     return filters;
-
-    return "";
 }
 
 const QSet<QString>& PluginManager::supportedFilesExt() const
