@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>media/icons/attribute.png</file>
+        <file>media/icons/ordinal.png</file>
+        <file>media/icons/procedure.png</file>
+    </qresource>
+</RCC>

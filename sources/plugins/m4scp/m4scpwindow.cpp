@@ -131,11 +131,9 @@ QIcon M4SCpWindow::icon() const
     return findIcon("mime_type.png");
 }
 
-QIcon M4SCpWindow::findIcon(const QString &iconName) const
+QIcon M4SCpWindow::findIcon(const QString &iconName)
 {
-    QDir dir(M4SCpPlugin::mediaPath());
-    dir.cd("icons");
-    return QIcon(QFileInfo(dir, iconName).absoluteFilePath());
+    return QIcon(":/media/icons/" + iconName);
 }
 
 

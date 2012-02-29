@@ -75,7 +75,7 @@ public:
       */
     QIcon icon() const;
 
-    QIcon findIcon(const QString &iconName) const;
+    static QIcon findIcon(const QString &iconName);
 
 private:
 

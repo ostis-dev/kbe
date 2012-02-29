@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpcodecompleter.h"
 #include "m4scpsyntax.h"
 #include "m4scpplugin.h"
+#include "m4scpwindow.h"
 
 #include <QStringListModel>
 #include <QStandardItemModel>
@@ -47,7 +48,7 @@ void M4SCpCodeCompleter::initDictionary()
 
     foreach(QString str, words) {
         QStandardItem *item = new QStandardItem(
-                    QIcon(M4SCpPlugin::mediaPath() + "/icons/attribute.png"),
+                    M4SCpWindow::findIcon("attribute.png"),
                     str);
         mod->appendRow(item);
     }
@@ -55,7 +56,7 @@ void M4SCpCodeCompleter::initDictionary()
     words << M4SCpSyntax::ordinals();
     foreach(QString str, words) {
         QStandardItem *item = new QStandardItem(
-                    QIcon(M4SCpPlugin::mediaPath() + "/icons/ordinal.png"),
+                    M4SCpWindow::findIcon("ordinal.png"),
                     str);
         mod->appendRow(item);
     }
@@ -125,7 +126,7 @@ void M4SCpCodeCompleter::initDictionary()
     QMap<QString, QString>::iterator it = templatesMap.begin();
     for (; it != templatesMap.end(); ++it) {
         QStandardItem *item = new QStandardItem(
-                    QIcon(M4SCpPlugin::mediaPath() + "/icons/procedure.png"),
+                    M4SCpWindow::findIcon("procedure.png"),
                     it.key());
         mod->appendRow(item);
         QModelIndex index = mod->indexFromItem(item);

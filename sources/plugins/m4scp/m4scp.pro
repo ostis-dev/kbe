@@ -30,3 +30,6 @@ SOURCES += \
     m4scpcodeeditor.cpp \
     m4scpcodecompleter.cpp \
     m4scpplugin.cpp
+
+RESOURCES += \
+    m4scp.qrc
