@@ -32,12 +32,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QCompleter(parent)
 {
-    _mItemModel = new QStandardItemModel(parent);
     globalModel=new QStandardItemModel(parent);
     variablesModel=new QStandardItemModel(parent);
     atributesModel=new QStandardItemModel(parent);
     ordinalsModel=new QStandardItemModel(parent);
-    setModel(_mItemModel);
+    setModel(globalModel);
     popup()->setIconSize(QSize(16, 16));
     this->parent=parent;
 }
@@ -145,10 +144,8 @@ void M4SCpCodeCompleter::initDictionary()
 QList<QStandardItem *> M4SCpCodeCompleter::updateVariables(const QString text,QTextCursor cursor)
 {
     QList<QStandardItem *> variables;
-    if (!text.contains("procedure"))
-        return variables;
     int cursorPosition=cursor.position();
-    int current=text.lastIndexOf("procedure",cursorPosition+1);
+    int current=text.lastIndexOf(QRegExp("\\bprocedure\\b|\\bprogram\\b"),cursorPosition+1);
         if (current==-1)
             return variables;
     //constants
@@ -265,7 +262,7 @@ bool M4SCpCodeCompleter::isCommentOrProcedure(const QString text, int cursorPos)
 {
     bool comment=false, procedure=false, multiline=false;
     //detecting procedure
-    int proceduePos = text.lastIndexOf("procedure",cursorPos-1);
+    int proceduePos = text.lastIndexOf(QRegExp("\\bprocedure\\b|\\bprogram\\b"),cursorPos-1);
     int endOfProcedure=text.indexOf(")",proceduePos);
     if (proceduePos==-1 && endOfProcedure!=-1) procedure=false;
     if (proceduePos!=-1 && endOfProcedure==-1) procedure=true;
