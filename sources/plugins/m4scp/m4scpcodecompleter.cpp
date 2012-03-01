@@ -30,10 +30,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QPlainTextEdit>
 
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
-    QCompleter(parent)
+    QCompleter(parent),
+    atributesModelLength(0)
 {
     globalModel=new QStandardItemModel(parent);
-    variablesModel=new QStandardItemModel(parent);
+    atributesModel=new QStandardItemModel(parent);
     ordinalsModel=new QStandardItemModel(parent);
     setModel(globalModel);
     popup()->setIconSize(QSize(16, 16));
@@ -53,8 +54,8 @@ void M4SCpCodeCompleter::initDictionary()
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("attribute.png"),
                     str);
-        //create copy
-        atributesList.append(item);
+        atributesModel->appendRow(item);
+        atributesModelLength++;
     }
     words.clear();
 
@@ -145,12 +146,12 @@ QList<QStandardItem *> M4SCpCodeCompleter::updateVariables(const QString text,QT
 {
     QList<QStandardItem *> variables;
     int cursorPosition=cursor.position();
-    int current=text.lastIndexOf(QRegExp("\\bprocedure\\b|\\bprogram\\b"),cursorPosition+1);
-        if (current==-1)
+    int startOfProcedureTag=text.lastIndexOf(QRegExp("\\bprocedure\\b|\\bprogram\\b"),cursorPosition+1);
+        if (startOfProcedureTag==-1)
             return variables;
     //constants
-    int from=text.indexOf("[[",current)+2;
-    int length=text.indexOf("]]",current)-from;
+    int from=text.indexOf("[[",startOfProcedureTag)+2;
+    int length=text.indexOf("]]",startOfProcedureTag)-from;
     if(length<1)
         return variables;
     QString constantsLine=text.mid(from,length);
@@ -165,8 +166,8 @@ QList<QStandardItem *> M4SCpCodeCompleter::updateVariables(const QString text,QT
         variables.append(item);
     }
     //variables
-    from= text.indexOf("[{",current)+2;
-    length=text.indexOf("}]",current)-from;
+    from= text.indexOf("[{",startOfProcedureTag)+2;
+    length=text.indexOf("}]",startOfProcedureTag)-from;
     if(length<1)
             return variables;
     constantsLine=text.mid(from,length);
@@ -180,7 +181,7 @@ QList<QStandardItem *> M4SCpCodeCompleter::updateVariables(const QString text,QT
                     str);
         variables.append(item);
     }
-    variables.append(atributesList);
+//    variables.append(atributesList);
 
     return variables;
  }
@@ -202,13 +203,12 @@ void M4SCpCodeCompleter::changeModel()
      else{
          //если нужно вставить атрибут или переменную
          if(isAtributeOrVariable(text, cursorPos)){
-            QStandardItemModel *mod = new QStandardItemModel();
-
-            QList<QStandardItem *> list=updateVariables(text,editor->textCursor());
+            int currentRowCount=atributesModel->rowCount();
+            atributesModel->removeRows(atributesModelLength,currentRowCount-atributesModelLength);
+            QList<QStandardItem *> list=updateVariables(text,editor->textCursor());            
                 foreach(QStandardItem * it, list)
-                    mod->appendRow(it);
-                setModel(mod);
-
+                    atributesModel->appendRow(it);
+                setModel(atributesModel);
          }
          //иначе вставляем только порядковые номера (ordinals)
          else

@@ -46,9 +46,10 @@ public:
 private:
     QObject *parent;
     QStandardItemModel *globalModel;
-    QList<QStandardItem *> atributesList;
-    QStandardItemModel *variablesModel;
+    QStandardItemModel *atributesModel;
     QStandardItemModel *ordinalsModel;
+
+    int atributesModelLength;
 
     inline bool isGlobal(const QString text, int cursorPos);
     inline bool isAtributeOrVariable(const QString text, int cursorPos);
