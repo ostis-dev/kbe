@@ -37,8 +37,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 
 
-
-
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
     mEditor(0),
