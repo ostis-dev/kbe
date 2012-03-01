@@ -263,10 +263,38 @@ bool M4SCpCodeCompleter::isAtributeOrVariable(const QString text, int cursorPos)
 
 bool M4SCpCodeCompleter::isCommentOrProcedure(const QString text, int cursorPos)
 {
-    bool comment=false, procedure=false;
-    int proceduePos = text.lastIndexOf(":",cursorPos-1);
+    bool comment=false, procedure=false, multiline=false;
+    //detecting procedure
+    int proceduePos = text.lastIndexOf("procedure",cursorPos-1);
     int endOfProcedure=text.indexOf(")",proceduePos);
-    if (cursorPos<endOfProcedure && cursorPos>proceduePos) procedure=true;
-    //detect comment
-    return procedure || comment ? true : false;
+    if (proceduePos==-1 && endOfProcedure!=-1) procedure=false;
+    if (proceduePos!=-1 && endOfProcedure==-1) procedure=true;
+    if (proceduePos!=-1 && endOfProcedure!=-1){
+        if (cursorPos<=endOfProcedure && cursorPos>=proceduePos)
+            procedure=true;
+    }
+    if (proceduePos==-1 && endOfProcedure==-1) procedure=false;
+    //detecting single line comment
+    int doubleSlash = text.lastIndexOf("//",cursorPos-1);
+    int returnChar=text.lastIndexOf("\n",cursorPos-1);
+    if(doubleSlash!=-1 && returnChar!=-1){
+        if(doubleSlash>returnChar)
+            comment=true;
+    }
+    if((doubleSlash==-1 && returnChar!=-1)||(doubleSlash==-1 && returnChar==-1))
+        comment=false;
+    if(doubleSlash!=-1 && returnChar==-1)
+        comment=true;
+    //detecting multiline comment
+    int startComment = text.lastIndexOf("/*",cursorPos-1);
+    int endComment=text.indexOf("*/", startComment);
+    if (startComment==-1 && endComment!=-1) multiline=false;
+    if (startComment!=-1 && endComment==-1) multiline=true;
+    if (startComment!=-1 && endComment!=-1){
+        if (startComment<=cursorPos && cursorPos<=endComment)
+            multiline=true;
+    }
+    if (startComment==-1 && endComment==-1) multiline=false;
+
+    return procedure || comment || multiline ? true : false;
 }
