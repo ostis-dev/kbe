@@ -45,9 +45,8 @@ public:
 
 private:
     QObject *parent;
-    QStandardItemModel *_mItemModel;
     QStandardItemModel *globalModel;
-    QStandardItemModel *atributesModel;
+    QList<QStandardItem *> atributesList;
     QStandardItemModel *variablesModel;
     QStandardItemModel *ordinalsModel;
 

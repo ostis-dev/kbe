@@ -34,7 +34,6 @@ M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
 {
     globalModel=new QStandardItemModel(parent);
     variablesModel=new QStandardItemModel(parent);
-    atributesModel=new QStandardItemModel(parent);
     ordinalsModel=new QStandardItemModel(parent);
     setModel(globalModel);
     popup()->setIconSize(QSize(16, 16));
@@ -54,7 +53,8 @@ void M4SCpCodeCompleter::initDictionary()
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("attribute.png"),
                     str);
-        atributesModel->appendRow(item);
+        //create copy
+        atributesList.append(item);
     }
     words.clear();
 
@@ -180,15 +180,8 @@ QList<QStandardItem *> M4SCpCodeCompleter::updateVariables(const QString text,QT
                     str);
         variables.append(item);
     }
-    list.clear();
-    list << M4SCpSyntax::attributes();
+    variables.append(atributesList);
 
-    foreach(QString str, list) {
-        QStandardItem *item = new QStandardItem(
-                    M4SCpWindow::findIcon("attribute.png"),
-                    str);
-        variables.append(item);
-    }
     return variables;
  }
 
@@ -210,14 +203,12 @@ void M4SCpCodeCompleter::changeModel()
          //если нужно вставить атрибут или переменную
          if(isAtributeOrVariable(text, cursorPos)){
             QStandardItemModel *mod = new QStandardItemModel();
+
             QList<QStandardItem *> list=updateVariables(text,editor->textCursor());
-            if(list.isEmpty())
-                setModel(atributesModel);
-            else{
                 foreach(QStandardItem * it, list)
                     mod->appendRow(it);
                 setModel(mod);
-            }
+
          }
          //иначе вставляем только порядковые номера (ordinals)
          else
@@ -258,8 +249,7 @@ bool M4SCpCodeCompleter::isAtributeOrVariable(const QString text, int cursorPos)
         return false;
 }
 
-bool M4SCpCodeCompleter::isCommentOrProcedure(const QString text, int cursorPos)
-{
+bool M4SCpCodeCompleter::isCommentOrProcedure(const QString text, int cursorPos){
     bool comment=false, procedure=false, multiline=false;
     //detecting procedure
     int proceduePos = text.lastIndexOf(QRegExp("\\bprocedure\\b|\\bprogram\\b"),cursorPos-1);
