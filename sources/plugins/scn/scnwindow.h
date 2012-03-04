@@ -26,6 +26,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QWidget>
 #include "interfaces/editorinterface.h"
 
+class SCnEditorScene;
+class QGraphicsView;
+
 class SCnWindow : public QWidget,
                   public EditorInterface
 {
@@ -62,6 +65,10 @@ public:
 protected:
     //! Saved flag
     bool mIsSaved;
+    //! Pointer to editor scene
+    SCnEditorScene *mEditorScene;
+    //! Pointer to editor view
+    QGraphicsView *mEditorView;
 
 signals:
 

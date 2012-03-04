@@ -21,11 +21,34 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scnwindow.h"
+#include "scneditorscene.h"
+
+#include <QVBoxLayout>
+#include <QGraphicsView>
 
 SCnWindow::SCnWindow(QWidget *parent) :
     QWidget(parent),
-    mIsSaved(false)
+    mIsSaved(false),
+    mEditorScene(0),
+    mEditorView(0)
 {
+    mEditorView = new QGraphicsView(this);
+    mEditorScene = new SCnEditorScene();
+
+    mEditorView->setScene(mEditorScene);
+
+    mEditorView->setCacheMode(QGraphicsView::CacheNone);//CacheBackground);
+    mEditorView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+    mEditorView->setRenderHint(QPainter::Antialiasing);
+    mEditorView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    mEditorView->setResizeAnchor(QGraphicsView::AnchorViewCenter);
+    mEditorView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
+    //mEditorView->setDragMode(QGraphicsView::RubberBandDrag);
+
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(mEditorView);
+
+    setLayout(layout);
 }
 
 SCnWindow::~SCnWindow()

@@ -15,8 +15,12 @@ RESOURCES += \
 
 HEADERS += \
     scnplugin.h \
-    scnwindow.h
+    scnwindow.h \
+    scneditorscene.h \
+    scnfielditem.h
 
 SOURCES += \
     scnplugin.cpp \
-    scnwindow.cpp
+    scnwindow.cpp \
+    scneditorscene.cpp \
+    scnfielditem.cpp
