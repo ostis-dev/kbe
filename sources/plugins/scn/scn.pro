@@ -14,7 +14,9 @@ RESOURCES += \
     scn.qrc
 
 HEADERS += \
-    scnplugin.h
+    scnplugin.h \
+    scnwindow.h
 
 SOURCES += \
-    scnplugin.cpp
+    scnplugin.cpp \
+    scnwindow.cpp

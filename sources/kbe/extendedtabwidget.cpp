@@ -152,10 +152,13 @@ void ExtendedTabWidget::close(int index)
     closeWindow(widget(index));
 }
 
-int ExtendedTabWidget::addSubWindow(QWidget* widget)
+int ExtendedTabWidget::addSubWindow(EditorInterface* window)
 {
+    QWidget *widget = window->widget();
+    Q_ASSERT(widget != 0);
+
     int curr = currentIndex();
-    int index = QTabWidget::insertTab(curr + 1, widget, tabTextFor(widget));
+    int index = QTabWidget::insertTab(curr + 1, widget, window->icon(), tabTextFor(widget));
     widget->installEventFilter(this);
     widget->setAttribute(Qt::WA_DeleteOnClose, true);
     setCurrentWidget(widget);

@@ -21,6 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scnplugin.h"
+#include "scnwindow.h"
 
 Q_EXPORT_PLUGIN2(scn, SCnPlugin)
 
@@ -52,10 +53,14 @@ const QList<QObject*>& SCnPlugin::interfaces() const
 
 void SCnPlugin::initialize()
 {
-
+    mInterfaces.push_back(new SCnWindowFactory(this));
 }
 
 void SCnPlugin::shutdown()
 {
 
+    QObject *interface = 0;
+    foreach(interface, mInterfaces)
+        delete interface;
+    mInterfaces.clear();
 }

@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class QMenu;
 
 class QMdiSubWindow;
+class EditorInterface;
 
 class ExtendedTabWidget : public QTabWidget
 {
@@ -74,10 +75,10 @@ public slots:
     void close(int index = -1);
 
     /*! Adds new tab.
-     *
+     * @param window Pointer to editor interface, that added
      * @return Tab index for added @p widget widget.
      */
-    int addSubWindow(QWidget* widget);
+    int addSubWindow(EditorInterface* window);
 
 private:
 /*    //! Adds additional options in default menu

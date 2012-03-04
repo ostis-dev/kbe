@@ -291,7 +291,7 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
         return 0;
 
     mWidget2EditorInterface[childWindow->widget()] = childWindow;
-    mTabWidget->addSubWindow(childWindow->widget());
+    mTabWidget->addSubWindow(childWindow);
     childWindow->_setObserver(this);
 
     return childWindow;
