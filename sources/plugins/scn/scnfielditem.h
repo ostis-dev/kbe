@@ -82,6 +82,12 @@ public:
     quint32 level() const;
 
 protected:
+    /*! Sets field type
+      * @param type New field type
+      */
+    void setType(FieldType type);
+
+protected:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
@@ -100,6 +106,11 @@ private:
     //! Field level in hierarchy
     quint32 mLevel;
 
+    //! Attribute value
+    QString mAttribute;
+    //! Field value
+    QString mValue;
+
 signals:
     /*! Signal that emits on item change @see ChangeType
       * @param field Pointer to changed scn-field
@@ -108,7 +119,14 @@ signals:
     void changed(SCnFieldItem *field, ChangeType changeType);
 
 public slots:
-
+    //! Starts edit attribute
+    void startEditAttr();
+    //! Starts edit field value
+    void startEditValue();
+    //! Applies entered text for field attribute / value
+    void applyEdit();
+    //! Cancel edit without any changes
+    void cancelEdit();
 };
 
 #endif // SCNFIELDITEM_H

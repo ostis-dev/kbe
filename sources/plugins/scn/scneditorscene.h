@@ -53,6 +53,19 @@ public:
       */
     void moveField(SCnFieldItem *field, SCnFieldItem *afterField);
 
+    //! Select next field after specified \p field
+    void selectNextField(SCnFieldItem *field);
+    //! Select previous field before specified \p field
+    void selectPrevField(SCnFieldItem *field);
+
+private:
+    //! Unselect all selected items
+    void unselectItems();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+
 private:
     /*! Recalculate all fields positions
       */
@@ -63,8 +76,8 @@ protected:
     void removeAllFields();
 
 protected:
-    //! List of scn fields
-    QList<SCnFieldItem*> mFields;
+    typedef QVector<SCnFieldItem*> FieldItems;
+    FieldItems mFields;
     //! Level horizontal offset in pixels
     quint32 mLevelOffset;
     //! Vertical distance between fields

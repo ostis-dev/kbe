@@ -21,26 +21,50 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scnfielditem.h"
+#include "scneditorscene.h"
 
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
+#include <QGraphicsProxyWidget>
+#include <QTextEdit>
+#include <QKeyEvent>
 
 SCnFieldItem::SCnFieldItem() :
     QGraphicsItem(),
     mSize(100, 30),
     mType(Empty),
     mEditorScene(0),
+    mLevel(0),
     mState(StateNormal)
 {
     setFlags(QGraphicsItem::ItemIsSelectable
                 | QGraphicsItem::ItemIsFocusable
                 | QGraphicsItem::ItemSendsGeometryChanges);
     setAcceptHoverEvents(true);
+
 }
 
 SCnFieldItem::~SCnFieldItem()
 {
+}
+
+bool SCnFieldItem::isSubitemsPossible() const
+{
+    switch(mType)
+    {
+    case GlobalIdtf:
+    case Synonym:
+    case Subitem:
+    case ArcIn:
+    case ArcOut:
+        return false;
+
+    case RelIn:
+    case RelOut:
+        return true;
+    };
+    return false;
 }
 
 void SCnFieldItem::setLevel(quint32 level)
@@ -54,15 +78,23 @@ quint32 SCnFieldItem::level() const
     return mLevel;
 }
 
+void SCnFieldItem::setType(FieldType type)
+{
+    mType = type;
+    changed(this, TypeChanged);
+}
+
 QRectF SCnFieldItem::boundingRect() const
 {
+
+
     return QRectF(-mSize.width() / 2.f, -mSize.height() / 2.f,
                   mSize.width(), mSize.height()).adjusted(-5, -5, 5, 5);
 }
 
 void SCnFieldItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QColor brushColor = QColor(180, 180, 180, 180);
+    QColor brushColor = QColor(240, 240, 240, 180);
 
     switch (mState)
     {
@@ -101,6 +133,7 @@ QVariant SCnFieldItem::itemChange(GraphicsItemChange change, const QVariant &val
             if (mState != StateEdit)
                 mState = StateSelected;
         }
+        update();
     }
 
     return value;
@@ -118,4 +151,14 @@ void SCnFieldItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     if (mState == StateHighlight)
         mState = StateNormal;
     update();
+}
+
+void SCnFieldItem::startEditAttr()
+{
+
+}
+
+void SCnFieldItem::startEditValue()
+{
+
 }

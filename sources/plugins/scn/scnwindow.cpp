@@ -35,7 +35,9 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView = new QGraphicsView(this);
     mEditorScene = new SCnEditorScene();
 
+    mEditorView->setResizeAnchor(QGraphicsView::AnchorViewCenter);
     mEditorView->setScene(mEditorScene);
+
 
     mEditorView->setCacheMode(QGraphicsView::CacheNone);//CacheBackground);
     mEditorView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
