@@ -3,24 +3,9 @@ Version: 0.2.1
 Section: science
 Priority: optional
 Architecture: amd64
+Installed-Size: 788
 Depends: libc6 (>= 2.3), libgcc1 (>= 1:4.1.1), libqt4-svg (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-xmlpatterns (>= 4:4.5.3), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.7.0~beta1)
 Maintainer: Nikita Grishko <grin.minsk@gmail.com>
 Homepage: https://github.com/deniskoronchik/kbe
 Description: Knowledge Base source Editor
- OSTIS (Open Semantic Technology for Intelligent Systems)
- For the latest info, see http://www.ostis.net
- .
- Copyright (c) 2010 OSTIS
- .
- OSTIS is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- .
- OSTIS is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- .
- You should have received a copy of the GNU General Public License
- along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+ Specialized tool for knowledge base creation
