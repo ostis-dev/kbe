@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgnode.h"
 #include "scgplugin.h"
+#include "scgwindow.h"
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -79,7 +80,7 @@ SCgContentImageDialog::SCgContentImageDialog(SCgNode *node, QWidget *parent) :
         tempImage.loadFromData(mNode->contentData().toByteArray());
         mChooseButton->setIcon(QPixmap::fromImage(tempImage));
     }
-    else loadImage(SCgPlugin::mediaPath() + "/icons/document-open.png", &sourceImage, mChooseButton);
+    else loadImage("", &sourceImage, mChooseButton);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(mChooseButton);

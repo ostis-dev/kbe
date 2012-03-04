@@ -279,7 +279,7 @@ void SCgWindow::createToolBar()
     mToolBar->setWindowTitle(tr("SCg Tools"));
 }
 
-QIcon SCgWindow::findIcon(const QString &iconName) const
+QIcon SCgWindow::findIcon(const QString &iconName)
 {
     return QIcon(":/media/icons/" + iconName);
 }

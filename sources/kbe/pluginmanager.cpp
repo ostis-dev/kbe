@@ -116,7 +116,7 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
     // iterate all interfaces in plugin and register them in managers
     Q_ASSERT(pluginInterface != 0);
 
-    pluginInterface->initialize(Config::pathMedia.absolutePath());
+    pluginInterface->initialize();
 
     const QList<QObject*> &interfaces = pluginInterface->interfaces();
     QObject *_interface;

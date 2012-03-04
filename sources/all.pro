@@ -9,4 +9,5 @@ DESTDIR = ./bin
 
 SUBDIRS = plugins/m4scp \
           plugins/scg \
+          plugins/scn \
           kbe

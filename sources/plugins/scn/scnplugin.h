@@ -20,36 +20,37 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef PLUGININTERFACE_H
-#define PLUGININTERFACE_H
+#ifndef SCNPLUGIN_H
+#define SCNPLUGIN_H
 
-#include <QtPlugin>
+#include <QObject>
+#include "interfaces/plugininterface.h"
 
-class PluginInterface
+class SCnPlugin : public QObject,
+                  public PluginInterface
 {
+    Q_OBJECT
+    Q_INTERFACES(PluginInterface)
+
 public:
-    virtual ~PluginInterface() {}
+    explicit SCnPlugin(QObject *parent = 0);
+    virtual ~SCnPlugin();
 
-    //! Returns plugin name
-    virtual const QString& name() const = 0;
+    //! @copydoc PluginInterface::name
+    const QString& name() const;
+    //! @copydoc PluginInterface::version
+    const QString& version() const;
+    //! @copydoc PluginInterface::interfaces
+    const QList<QObject*>& interfaces() const;
+    //! @copydoc PluginInterface::initialize
+    void initialize();
+    //! @copydoc PluginInterface::shutdown
+    void shutdown();
 
-    //! Returns plugin version
-    virtual const QString& version() const = 0;
+protected:
+    //! List of provided by plugin interfaces
+    QList<QObject*> mInterfaces;
 
-    /*! Return list of all interfaces that realized in that plugin
-      * @attention All interfaces need to be a QObject, and created with plugin interface as a parent object
-      */
-    virtual const QList<QObject*>& interfaces() const = 0;
-
-    /*! Initialize plugin
-      */
-    virtual void initialize() = 0;
-
-    //! Shutdown plugin
-    virtual void shutdown() = 0;
 };
 
-Q_DECLARE_INTERFACE(PluginInterface,
-                    "com.OSTIS.kbe.PluginInterface/1.0")
-
-#endif // PLUGIN_H
+#endif // SCNPLUGIN_H

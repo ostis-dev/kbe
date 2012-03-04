@@ -73,7 +73,7 @@ public:
     /*! Returns specified icon  by name for a SCg toolbar.
       @param iconName   Icon file name.
       */
-    QIcon findIcon(const QString &iconName) const;
+    static QIcon findIcon(const QString &iconName);
 
     //! @return Undo stack for this window
     QUndoStack* undoStack() const;

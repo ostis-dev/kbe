@@ -20,36 +20,42 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef PLUGININTERFACE_H
-#define PLUGININTERFACE_H
+#include "scnplugin.h"
 
-#include <QtPlugin>
+Q_EXPORT_PLUGIN2(scn, SCnPlugin)
 
-class PluginInterface
+SCnPlugin::SCnPlugin(QObject *parent) :
+    QObject(parent)
 {
-public:
-    virtual ~PluginInterface() {}
+}
 
-    //! Returns plugin name
-    virtual const QString& name() const = 0;
+SCnPlugin::~SCnPlugin()
+{
+}
 
-    //! Returns plugin version
-    virtual const QString& version() const = 0;
+const QString& SCnPlugin::name() const
+{
+    static QString name = "scn";
+    return name;
+}
 
-    /*! Return list of all interfaces that realized in that plugin
-      * @attention All interfaces need to be a QObject, and created with plugin interface as a parent object
-      */
-    virtual const QList<QObject*>& interfaces() const = 0;
+const QString& SCnPlugin::version() const
+{
+    static QString version = "0.1.0";
+    return version;
+}
 
-    /*! Initialize plugin
-      */
-    virtual void initialize() = 0;
+const QList<QObject*>& SCnPlugin::interfaces() const
+{
+    return mInterfaces;
+}
 
-    //! Shutdown plugin
-    virtual void shutdown() = 0;
-};
+void SCnPlugin::initialize()
+{
 
-Q_DECLARE_INTERFACE(PluginInterface,
-                    "com.OSTIS.kbe.PluginInterface/1.0")
+}
 
-#endif // PLUGIN_H
+void SCnPlugin::shutdown()
+{
+
+}

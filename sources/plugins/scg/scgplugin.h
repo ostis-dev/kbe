@@ -36,9 +36,6 @@ public:
     explicit SCgPlugin(QObject *parent = 0);
     virtual ~SCgPlugin();
 
-    //! Return path to media directory
-    static const QString& mediaPath();
-
 protected:
     //! @copydoc PluginInterface::name
     const QString& name() const;
@@ -47,14 +44,12 @@ protected:
     //! @copydoc PluginInterface::interfaces
     const QList<QObject*>& interfaces() const;
     //! @copydoc PluginInterface::initialize
-    void initialize(const QString &mediaPath);
+    void initialize();
     //! @copydoc PluginInterface::shutdown
     void shutdown();
 
 private:
     QList<QObject*> mInterfaces;
-
-    static QString mMediaPath;
 
 signals:
 

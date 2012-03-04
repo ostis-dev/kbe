@@ -28,8 +28,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 Q_EXPORT_PLUGIN2(m4scp, M4SCpPlugin)
 
-QString M4SCpPlugin::mMediaPath = QString();
-
 M4SCpPlugin::M4SCpPlugin(QObject *parent) :
     QObject(parent)
 {
@@ -56,14 +54,9 @@ const QList<QObject*>& M4SCpPlugin::interfaces() const
     return mInterfaces;
 }
 
-void M4SCpPlugin::initialize(const QString &mediaPath)
+void M4SCpPlugin::initialize()
 {
     M4SCpSyntax::initialize();
-
-    QDir dir = mediaPath;
-    dir.cd("m4scp");
-    mMediaPath = dir.absolutePath();
-
 
     mInterfaces.push_back(new M4SCpWindowFactory(this));
 }
@@ -75,9 +68,4 @@ void M4SCpPlugin::shutdown()
         delete obj;
 
     mInterfaces.clear();
-}
-
-QString M4SCpPlugin::mediaPath()
-{
-    return mMediaPath;
 }

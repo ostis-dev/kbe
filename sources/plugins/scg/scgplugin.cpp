@@ -36,8 +36,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 Q_EXPORT_PLUGIN2(scg, SCgPlugin)
 
-QString SCgPlugin::mMediaPath = "";
-
 SCgPlugin::SCgPlugin(QObject *parent) :
     QObject(parent)
 {
@@ -45,11 +43,6 @@ SCgPlugin::SCgPlugin(QObject *parent) :
 
 SCgPlugin::~SCgPlugin()
 {
-}
-
-const QString& SCgPlugin::mediaPath()
-{
-    return mMediaPath;
 }
 
 const QString& SCgPlugin::name() const
@@ -69,10 +62,8 @@ const QList<QObject*>& SCgPlugin::interfaces() const
     return mInterfaces;
 }
 
-void SCgPlugin::initialize(const QString &mediaPath)
+void SCgPlugin::initialize()
 {
-    mMediaPath = mediaPath;
-
     mInterfaces.push_back(new SCgWindowFactory(this));
 
     SCgContentFactory::registerFactory("string", new SCgContentStringFactory);

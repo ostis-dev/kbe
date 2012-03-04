@@ -46,15 +46,13 @@ protected:
     //! @copydoc PluginInterface::interfaces
     const QList<QObject*>& interfaces() const;
     //! @copydoc PluginInterface::initialize
-    void initialize(const QString &mediaPath);
+    void initialize();
     //! @copydoc PluginInterface::shutdown
     void shutdown();
 
 private:
     //! List of interfaces
     QList<QObject*> mInterfaces;
-
-    static QString mMediaPath;
 
 signals:
 

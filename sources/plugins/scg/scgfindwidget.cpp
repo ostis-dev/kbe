@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgfindwidget.h"
 #include "scgplugin.h"
+#include "scgwindow.h"
 
 #include <QApplication>
 #include <QBoxLayout>
@@ -42,7 +43,7 @@ SCgFindWidget::SCgFindWidget(QWidget *parent):
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setContentsMargins(0,0,0,0);
 
-    mCloseButton = setupToolButton("", SCgPlugin::mediaPath() + "/scg/icons/find-close.png");
+    mCloseButton = setupToolButton("", "find-close.png");
 
     connect(mCloseButton, SIGNAL(clicked()), this, SLOT(hide()));
     layout->addWidget(mCloseButton);
@@ -57,11 +58,11 @@ SCgFindWidget::SCgFindWidget(QWidget *parent):
     connect(mFindLine, SIGNAL(textChanged(QString)), this, SLOT(updateButtons()));
     layout->addWidget(mFindLine);
 
-    mFindPreviousButton = setupToolButton(tr("Previous"), SCgPlugin::mediaPath() + "/scg/icons/find-previous.png");
+    mFindPreviousButton = setupToolButton(tr("Previous"), "find-previous.png");
     connect(mFindPreviousButton, SIGNAL(clicked()), this, SIGNAL(findPrevious()));
     layout->addWidget(mFindPreviousButton);
 
-    mFindNextButton = setupToolButton(tr("Next"), SCgPlugin::mediaPath() + "/scg/icons/find-next.png");
+    mFindNextButton = setupToolButton(tr("Next"), "find-next.png");
     layout->addWidget(mFindNextButton);
     connect(mFindNextButton, SIGNAL(clicked()), this, SIGNAL(findNext()));
 
@@ -179,7 +180,7 @@ QToolButton* SCgFindWidget::setupToolButton(const QString &text, const QString &
 
     toolButton->setText(text);
     toolButton->setAutoRaise(true);
-    toolButton->setIcon(QIcon(icon));
+    toolButton->setIcon(SCgWindow::findIcon(icon));
     toolButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
     return toolButton;
