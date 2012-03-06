@@ -30,13 +30,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTextEdit>
 #include <QKeyEvent>
 
-SCnFieldItem::SCnFieldItem() :
+SCnFieldItem::SCnFieldItem(QObject *parent) :
+    QObject(parent),
     QGraphicsItem(),
-    mSize(100, 30),
-    mType(Empty),
-    mEditorScene(0),
-    mLevel(0),
-    mState(StateNormal)
+    mState(StateNormal),
+    mEditorScene(0)
 {
     setFlags(QGraphicsItem::ItemIsSelectable
                 | QGraphicsItem::ItemIsFocusable
@@ -47,54 +45,46 @@ SCnFieldItem::SCnFieldItem() :
 
 SCnFieldItem::~SCnFieldItem()
 {
+
 }
 
-bool SCnFieldItem::isSubitemsPossible() const
+void SCnFieldItem::setValue(const QString &value)
 {
-    switch(mType)
+    mValue = value;
+    changed(this, ValueChanged);
+}
+
+void SCnFieldItem::updateOnChilds()
+{
+    qreal offset = childsOffset();
+    QGraphicsItem *child = 0;
+    QList<QGraphicsItem*> _childItems = childItems();
+
+    foreach(child, _childItems)
     {
-    case GlobalIdtf:
-    case Synonym:
-    case Subitem:
-    case ArcIn:
-    case ArcOut:
-        return false;
+        SCnFieldItem *item = qgraphicsitem_cast<SCnFieldItem*>(child);
+        if (item == 0) continue; // do nothing
 
-    case RelIn:
-    case RelOut:
-        return true;
-    };
-    return false;
+        item->setPos(30, offset);
+        offset += 10 + item->boundingRect().height();
+    }
+
+    updateControls();
 }
 
-void SCnFieldItem::setLevel(quint32 level)
+void SCnFieldItem::updateControls()
 {
-    mLevel = level;
-    changed(this, LevelChanged);
-}
 
-quint32 SCnFieldItem::level() const
-{
-    return mLevel;
-}
-
-void SCnFieldItem::setType(FieldType type)
-{
-    mType = type;
-    changed(this, TypeChanged);
 }
 
 QRectF SCnFieldItem::boundingRect() const
 {
-
-
-    return QRectF(-mSize.width() / 2.f, -mSize.height() / 2.f,
-                  mSize.width(), mSize.height()).adjusted(-5, -5, 5, 5);
+    return QRectF(0, 0, 100, 30);
 }
 
 void SCnFieldItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    QColor brushColor = QColor(240, 240, 240, 180);
+    QColor brushColor = QColor(240, 240, 240, 220);
 
     switch (mState)
     {
@@ -103,11 +93,14 @@ void SCnFieldItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
         break;
 
     case StateEdit:
-        brushColor = QColor(143, 160, 118, 250);
+        brushColor = QColor(144, 173, 146, 180);
         break;
 
     case StateSelected:
         brushColor = QColor(157, 201, 94, 180);
+        break;
+
+    default:
         break;
     };
 
@@ -133,7 +126,14 @@ QVariant SCnFieldItem::itemChange(GraphicsItemChange change, const QVariant &val
             if (mState != StateEdit)
                 mState = StateSelected;
         }
+
+        updateControls();
         update();
+    }
+
+    if (change == ItemChildAddedChange || change == ItemChildRemovedChange)
+    {
+        updateOnChilds();
     }
 
     return value;
@@ -153,12 +153,14 @@ void SCnFieldItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     update();
 }
 
-void SCnFieldItem::startEditAttr()
+void SCnFieldItem::startEdit()
 {
-
+    mState = StateEdit;
+    update();
 }
 
-void SCnFieldItem::startEditValue()
+void SCnFieldItem::changed(SCnFieldItem *field, SCnFieldItem::ChangeType changeType)
 {
-
+    if (mEditorScene != 0)
+        mEditorScene->itemChanged(field, changeType);
 }

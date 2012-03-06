@@ -37,27 +37,15 @@ class SCnFieldItem : public QObject,
     friend class SCnEditorScene;
 
 protected:
-    explicit SCnFieldItem();
+    explicit SCnFieldItem(QObject *parent = 0);
     virtual ~SCnFieldItem();
 
 public:
-    enum FieldType
-    {
-        Empty = 0,
-        GlobalIdtf, // global identifier
-        Synonym,    // synonym field
-        RelIn,      // Input binary relation
-        RelOut,     // Ouput binary relation
-        ArcIn,      // Included into set with global identifier
-        ArcOut,     // Include described object as element into this set
-        Subitem     // Item of binary relation sheaf
-    };
-
     enum ChangeType
     {
-        LevelChanged,
-        TypeChanged,
-        ValueChanged
+        ParentChanged,
+        ValueChanged,
+        StateChanged
     };
 
     enum FieldState
@@ -68,61 +56,69 @@ public:
         StateSelected
     };
 
+    enum { Type = UserType + 2 };
+
+    int type() const { return Type; }
+
 public:
     //! Return true, if field is empty; otherwise - return flase
-    bool isEmpty() const { return mType == Empty; }
-    //! Return true, if specified field is possible to has subitems
-    bool isSubitemsPossible() const;
+    bool isEmpty() const { return mValue.isEmpty(); }
+    //! Return true, if this field is possible to has subitems
+    virtual bool isSubitemsPossible() const = 0;
+    //! Return true, if this field can be a root
+    virtual bool canBeRoot() const = 0;
+    //! Return true, if this field can be at first level
+    virtual bool canBeAtZeroLevel() const = 0;
+    //! Return y offset for first child item
+    virtual qreal childsOffset() const = 0;
+    //! Update on childs changed. Called when any child changed, or added/removed
+    virtual void updateOnChilds();
+    //! Update controls positions, state and etc.
+    virtual void updateControls();
 
-    /*! Setup new level of item
-      * @param level New level value
+    //! Return current state
+    FieldState state() const { return mState; }
+
+    /*! Set new value for field
+      * @param value New value
       */
-    void setLevel(quint32 level);
-    //! Return item level
-    quint32 level() const;
+    void setValue(const QString &value);
+    //! Return field value
+    const QString& value() const { return mValue; }
+
 
 protected:
-    /*! Sets field type
-      * @param type New field type
-      */
-    void setType(FieldType type);
-
-protected:
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QRectF boundingRect() const;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
     // hover events
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 private:
-    QSizeF mSize;
-    FieldType mType;
+    /*! Function to notify scene about item change
+      * @param field Pointer to changed scn-field
+      * @param changeType Changes type
+      */
+    void changed(SCnFieldItem *field, ChangeType changeType);
+
+protected:
     FieldState mState;
 
     //! Pointer to scene, that controls field
     SCnEditorScene *mEditorScene;
-    //! Field level in hierarchy
-    quint32 mLevel;
-
     //! Attribute value
     QString mAttribute;
     //! Field value
     QString mValue;
 
 signals:
-    /*! Signal that emits on item change @see ChangeType
-      * @param field Pointer to changed scn-field
-      * @param changeType Changes type
-      */
-    void changed(SCnFieldItem *field, ChangeType changeType);
+
 
 public slots:
-    //! Starts edit attribute
-    void startEditAttr();
     //! Starts edit field value
-    void startEditValue();
+    void startEdit();
     //! Applies entered text for field attribute / value
     void applyEdit();
     //! Cancel edit without any changes

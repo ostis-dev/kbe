@@ -17,10 +17,12 @@ HEADERS += \
     scnplugin.h \
     scnwindow.h \
     scneditorscene.h \
-    scnfielditem.h
+    scnfielditem.h \
+    scnfieldglobalidtf.h
 
 SOURCES += \
     scnplugin.cpp \
     scnwindow.cpp \
     scneditorscene.cpp \
-    scnfielditem.cpp
+    scnfielditem.cpp \
+    scnfieldglobalidtf.cpp

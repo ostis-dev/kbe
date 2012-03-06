@@ -22,22 +22,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scneditorscene.h"
 #include "scnfielditem.h"
+#include "scnfieldglobalidtf.h"
 
 #include <QKeyEvent>
+#include <QGraphicsView>
 
 SCnEditorScene::SCnEditorScene(QObject *parent) :
     QGraphicsScene(parent),
     mLevelOffset(30),
     mLevelDistance(10)
 {
-    appendField()->setSelected(true);
-
-    // test
-    for (quint32 i = 0; i < 10; i++)
-    {
-        SCnFieldItem *item = appendField();
-        //item->setLevel(rand() % 2 + 1);
-    }
+    SCnFieldItem *item = new SCnFieldGlobalIdtf(this);
+    item->setValue("test");
+    appendField(item);
 }
 
 SCnEditorScene::~SCnEditorScene()
@@ -48,10 +45,12 @@ SCnEditorScene::~SCnEditorScene()
     mFields.clear();
 }
 
-SCnFieldItem* SCnEditorScene::appendField(SCnFieldItem *afterField)
+SCnFieldItem* SCnEditorScene::appendField(SCnFieldItem *field, SCnFieldItem *afterField)
 {
-    SCnFieldItem *item = new SCnFieldItem();
-    item->mEditorScene = this;
+    if (field->mEditorScene != 0)
+        field->mEditorScene->removeField(field);
+
+    field->mEditorScene = this;
 
     if (afterField != 0)
     {
@@ -61,23 +60,21 @@ SCnFieldItem* SCnEditorScene::appendField(SCnFieldItem *afterField)
         {
             if (*it == afterField)
             {
-                mFields.insert(it + 1, item);
+                mFields.insert(it + 1, field);
                 inserted = true;
                 break;
             }
         }
 
         if (!inserted)
-            mFields.push_back(item);
+            mFields.push_back(field);
     }else
-        mFields.push_back(item);
+        mFields.push_back(field);
 
-    connect(item, SIGNAL(changed(SCnFieldItem*, SCnFieldItem::ChangeType)), this, SLOT(itemChanged(SCnFieldItem*,SCnFieldItem::ChangeType)));
-
-    addItem(item);
+    addItem(field);
     updateFieldsPositions();
 
-    return item;
+    return field;
 }
 
 void SCnEditorScene::removeField(SCnFieldItem *field)
@@ -85,7 +82,7 @@ void SCnEditorScene::removeField(SCnFieldItem *field)
     Q_ASSERT(mFields.contains(field));
 
     removeItem(field);
-    for (quint32 i = 0; i < mFields.size(); i++)
+    for (qint32 i = 0; i < mFields.size(); i++)
     {
         if (mFields[i] == field)
         {
@@ -99,28 +96,6 @@ void SCnEditorScene::removeField(SCnFieldItem *field)
     updateFieldsPositions();
 }
 
-void SCnEditorScene::moveField(SCnFieldItem *field, SCnFieldItem *afterField)
-{
-    Q_ASSERT(field != 0 && afterField != 0);
-
-    bool inserted = false;
-    FieldItems::iterator it;
-    for (it != mFields.begin(); it != mFields.end(); ++it)
-    {
-        if (*it == afterField)
-        {
-            mFields.insert(it + 1, field);
-            inserted = true;
-            break;
-        }
-    }
-
-    if (!inserted)
-        mFields.push_back(field);
-
-    updateFieldsPositions();
-}
-
 void SCnEditorScene::removeAllFields()
 {
     SCnFieldItem *field = 0;
@@ -129,7 +104,7 @@ void SCnEditorScene::removeAllFields()
     mFields.clear();
 }
 
-void SCnEditorScene::selectNextField(SCnFieldItem *field)
+SCnFieldItem* SCnEditorScene::nextField(SCnFieldItem *field)
 {
     FieldItems::iterator it, it1;
     for (it = mFields.begin(); it != mFields.end(); ++it)
@@ -138,16 +113,15 @@ void SCnEditorScene::selectNextField(SCnFieldItem *field)
         {
             it1 = it + 1;
             if (it1 != mFields.end())
-            {
-                unselectItems();
-                (*it1)->setSelected(true);
-            }
+                return *it1;
             break;
         }
     }
+
+    return 0;
 }
 
-void SCnEditorScene::selectPrevField(SCnFieldItem *field)
+SCnFieldItem* SCnEditorScene::prevField(SCnFieldItem *field)
 {
     FieldItems::iterator it, it1;
     for (it = mFields.begin(); it != mFields.end(); ++it)
@@ -159,14 +133,33 @@ void SCnEditorScene::selectPrevField(SCnFieldItem *field)
         }
 
         if (*it == field)
-        {
-            unselectItems();
-            (*it1)->setSelected(true);
-            break;
-        }
-
+            return *it1;
 
         it1 = it;
+    }
+
+    return 0;
+}
+
+void SCnEditorScene::selectNextField(SCnFieldItem *field)
+{
+    SCnFieldItem *next = nextField(field);
+    if (next != 0)
+    {
+        unselectItems();
+        next->setSelected(true);
+        views().first()->centerOn(next);
+    }
+}
+
+void SCnEditorScene::selectPrevField(SCnFieldItem *field)
+{
+    SCnFieldItem *prev = prevField(field);
+    if (prev != 0)
+    {
+        unselectItems();
+        prev->setSelected(true);
+        views().first()->centerOn(prev);
     }
 }
 
@@ -181,24 +174,32 @@ void SCnEditorScene::unselectItems()
 void SCnEditorScene::updateFieldsPositions()
 {
     SCnFieldItem *field = 0;
-    qreal y_offset = 0.f;
+    qreal y_offset = 40.f;
+    qreal max_width = 0.f;
     foreach(field, mFields)
     {
         QRectF rect = field->boundingRect();
         // calculate new position
         QPointF pos;
-        pos.setX(mLevelOffset * field->level() + rect.width() / 2.f);
-        pos.setY(y_offset + rect.height() / 2.f);
+        pos.setX(20);
+        pos.setY(y_offset);
 
-        y_offset += mLevelDistance +rect.height();
+        y_offset += mLevelDistance + rect.height();
+
+        qreal w = rect.width();
+        max_width = qMax(w, max_width);
 
         field->setPos(pos);
     }
+
+    // setup new bounding box for scene
+    setSceneRect(0, 0, max_width, y_offset);
 }
 
 void SCnEditorScene::itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType changeType)
 {
-
+    if (changeType == SCnFieldItem::StateChanged)
+        updateFieldsPositions();
 }
 
 void SCnEditorScene::keyPressEvent(QKeyEvent *event)
@@ -209,23 +210,9 @@ void SCnEditorScene::keyPressEvent(QKeyEvent *event)
     {
         SCnFieldItem *field = qgraphicsitem_cast<SCnFieldItem*>(selected.first());
 
-        if (field != 0)
+        if (field != 0 && field->state() != SCnFieldItem::StateEdit)
         {
-            SCnFieldItem::FieldState state = field->mState;
-
-            if (event->key() == Qt::Key_Enter && state != SCnFieldItem::StateEdit)
-            {
-                if (event->modifiers() & Qt::ShiftModifier)
-                    field->startEditAttr();
-                else
-                    field->startEditValue();
-            }
-
-            if (event->key() == Qt::Key_Enter && (event->modifiers() & Qt::ControlModifier) && state == SCnFieldItem::StateEdit)
-                field->applyEdit();
-
-            if (event->key() == Qt::Key_Escape && state == SCnFieldItem::StateEdit)
-                field->cancelEdit();
+            SCnFieldItem::FieldState state = field->state();
 
             if (state == SCnFieldItem::StateSelected)
             {
@@ -234,12 +221,13 @@ void SCnEditorScene::keyPressEvent(QKeyEvent *event)
                 if (event->key() == Qt::Key_Up)
                     selectPrevField(field);
             }
+
+            // chnage level
+
         }
     }
 
-}
-
-void SCnEditorScene::keyReleaseEvent(QKeyEvent *event)
-{
+    QGraphicsScene::keyPressEvent(event);
 
 }
+

@@ -36,22 +36,31 @@ public:
     virtual ~SCnEditorScene();
 
     /*! Append new scn-field after specified \p afterField
+      * @param field Pointer to appended scn-field
       * @param afterField Pointer to item, to insert new field after this one.
       * If \p afterField pointer is null, then new field will be added to the end
       * @return Return pointer to appended new field
       */
-    SCnFieldItem* appendField(SCnFieldItem *afterField = 0);
+    SCnFieldItem* appendField(SCnFieldItem *field, SCnFieldItem *afterField = 0);
 
     /*! Remove specified field from scene and destroy it.
       * @param field Pointer to field that need to be removed
       */
     void removeField(SCnFieldItem *field);
 
-    /*! Move specified \p field to position after \p afterField
-      * @param field Poiter to field that moves
-      * @param aferField Pointer to field, that will be previsous for \p field
+    /*! Get pointer to field, that located after specified \p field
+      * @param field Pointer to scn-field for get next
+      * @return Return pointer to scn-field, that located after \p field.
+      * If \p field is a first field, then return 0
       */
-    void moveField(SCnFieldItem *field, SCnFieldItem *afterField);
+    SCnFieldItem* nextField(SCnFieldItem *field);
+
+    /*! Get pointer to field, that located before specified \p field
+      * @param field Pointer to scn-field for get previous
+      * @return Return pointer to scn-field, that located before \p field
+      * If \p field is a last field, then return 0
+      */
+    SCnFieldItem* prevField(SCnFieldItem *field);
 
     //! Select next field after specified \p field
     void selectNextField(SCnFieldItem *field);
@@ -62,18 +71,18 @@ private:
     //! Unselect all selected items
     void unselectItems();
 
-protected:
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *event);
-
-private:
-    /*! Recalculate all fields positions
-      */
+    //! Recalculate all fields positions
     void updateFieldsPositions();
 
 protected:
+    void keyPressEvent(QKeyEvent *event);
+
     //! Remove all fields from scene
     void removeAllFields();
+
+public:
+    //! Nofification about item change
+    void itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType changeType);
 
 protected:
     typedef QVector<SCnFieldItem*> FieldItems;
@@ -86,8 +95,6 @@ protected:
 signals:
 
 public slots:
-    //! Nofification about item change
-    void itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType changeType);
 };
 
 #endif // SCNEDITOR_H
