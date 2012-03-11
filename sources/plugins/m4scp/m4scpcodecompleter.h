@@ -24,7 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define M4SCPCODECOMPLETER_H
 
 #include <QCompleter>
-//#include <QMap>
+#include <QTextCursor>
+#include <QPlainTextEdit>
+#include <QStandardItemModel>
 
 class M4SCpCodeCompleter : public QCompleter
 {
@@ -38,13 +40,22 @@ public:
       */
     void initDictionary();
 
+    QList<QStandardItem *> updateVariables(const QString text, QTextCursor cursor);
+
+
 private:
+    QObject *parent;
+    QStandardItemModel *globalModel;
+    QStandardItemModel *atributesModel;
+    QStandardItemModel *ordinalsModel;
 
+    int atributesModelLength;
 
-signals:
-
+    inline bool isGlobal(const QString text, int cursorPos);
+    inline bool isAtributeOrVariable(const QString text, int cursorPos);
+    inline bool isCommentOrProcedure(const QString text, int cursorPos);
 public slots:
-
+    void changeModel();
 };
 
 #endif // M4SCPCODECOMPLETER_H

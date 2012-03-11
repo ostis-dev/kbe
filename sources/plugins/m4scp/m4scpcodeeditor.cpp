@@ -53,6 +53,7 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     mCompleter->setCaseSensitivity(Qt::CaseSensitive);
     mCompleter->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 
+    connect(this, SIGNAL(textChanged()), mCompleter, SLOT(changeModel()));
     connect(mCompleter, SIGNAL(activated(QModelIndex)), this, SLOT(insertCompletion(QModelIndex)));
 }
 
