@@ -26,15 +26,30 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QKeyEvent>
 #include <QGraphicsView>
+#include <QDebug>
 
 SCnEditorScene::SCnEditorScene(QObject *parent) :
     QGraphicsScene(parent),
     mLevelOffset(30),
     mLevelDistance(10)
 {
-    SCnFieldItem *item = new SCnFieldGlobalIdtf(this);
-    item->setValue("test");
-    appendField(item);
+    SCnFieldItem *pitem = new SCnFieldGlobalIdtf(this);
+    pitem->setValue("test");
+    appendField(pitem);
+
+    for (quint32 i = 0; i < 10; i++)
+    {
+        SCnFieldItem *item = new SCnFieldGlobalIdtf(pitem);
+        item->setValue(QString("test %1").arg(i));
+        item->setParentItem(pitem);
+
+        for (quint32 j = 0; j < 10; j++)
+        {
+            SCnFieldItem *jitem = new SCnFieldGlobalIdtf(pitem);
+            jitem->setValue(QString("test %1_%2").arg(i).arg(j));
+            jitem->setParentItem(item);
+        }
+    }
 }
 
 SCnEditorScene::~SCnEditorScene()
@@ -198,8 +213,13 @@ void SCnEditorScene::updateFieldsPositions()
 
 void SCnEditorScene::itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType changeType)
 {
-    if (changeType == SCnFieldItem::StateChanged)
+    switch (changeType)
+    {
+
+    case SCnFieldItem::StateChanged:
+    case SCnFieldItem::BoundChanged:
         updateFieldsPositions();
+    };
 }
 
 void SCnEditorScene::keyPressEvent(QKeyEvent *event)
@@ -220,9 +240,10 @@ void SCnEditorScene::keyPressEvent(QKeyEvent *event)
                     selectNextField(field);
                 if (event->key() == Qt::Key_Up)
                     selectPrevField(field);
+
             }
 
-            // chnage level
+            // change level
 
         }
     }
