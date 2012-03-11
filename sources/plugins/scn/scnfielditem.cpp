@@ -23,6 +23,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scnfielditem.h"
 #include "scneditorscene.h"
 
+// change to item that has biggest Type value
+#include "scnfieldglobalidtf.h"
+
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
@@ -48,6 +51,11 @@ SCnFieldItem::~SCnFieldItem()
 
 }
 
+bool SCnFieldItem::isSCnFieldType(int type)
+{
+    return (type >= Type) && (type <= SCnFieldGlobalIdtf::Type);
+}
+
 void SCnFieldItem::setValue(const QString &value)
 {
     mValue = value;
@@ -62,18 +70,12 @@ void SCnFieldItem::updateOnChilds()
 
     foreach(child, _childItems)
     {
-        SCnFieldItem *item = qgraphicsitem_cast<SCnFieldItem*>(child);
-        if (item == 0) continue; // do nothing
+        if (!isSCnFieldType(child->type())) return; // skip non scn-fields
+        SCnFieldItem *item = static_cast<SCnFieldItem*>(child);
 
         item->setPos(30, offset);
         offset += 10 + item->boundingRect().height();
     }
-
-    updateControls();
-}
-
-void SCnFieldItem::updateControls()
-{
 
 }
 
@@ -127,7 +129,6 @@ QVariant SCnFieldItem::itemChange(GraphicsItemChange change, const QVariant &val
                 mState = StateSelected;
         }
 
-        updateControls();
         update();
     }
 
@@ -136,7 +137,7 @@ QVariant SCnFieldItem::itemChange(GraphicsItemChange change, const QVariant &val
         updateOnChilds();
     }
 
-    return value;
+    return QGraphicsItem::itemChange(change, value);
 }
 
 void SCnFieldItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

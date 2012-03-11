@@ -34,7 +34,7 @@ public:
     explicit SCnFieldGlobalIdtf(QObject *parent = 0);
     virtual ~SCnFieldGlobalIdtf();
 
-    enum { Type = UserType + 1 };
+    enum { Type = UserType + 2 };
     int type() const { return Type; }
 
 protected:

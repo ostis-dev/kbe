@@ -35,8 +35,6 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView = new QGraphicsView(this);
     mEditorScene = new SCnEditorScene();
 
-    mEditorScene->setSceneRect(0, 0, 1024, 1024);
-
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     mEditorView->setScene(mEditorScene);
@@ -46,9 +44,14 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
     mEditorView->setRenderHint(QPainter::Antialiasing);
     mEditorView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    mEditorView->setResizeAnchor(QGraphicsView::AnchorViewCenter);
+    mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
+
+    mEditorView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     //mEditorView->setDragMode(QGraphicsView::RubberBandDrag);
+
+    if (!mEditorScene->items().empty())
+        mEditorView->centerOn(mEditorScene->items().first());
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(mEditorView);
