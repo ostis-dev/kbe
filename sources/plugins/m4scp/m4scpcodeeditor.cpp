@@ -21,6 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "m4scpcodeeditor.h"
+#include "blockData.h"
 #include "m4scpcodecompleter.h"
 #include "m4scpsyntax.h"
 
@@ -35,15 +36,20 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     QPlainTextEdit(parent),
     startSelectionBlockNumber(-1),
     endSelectionBlockNumber(-1),
+    lineNumberAreaVisible(true),
+    foldAreaVisible(true),
     mCompleter(0)
+
 {
-    lineNumberArea = new LineNumberArea(this);
+    setLineWrapMode(QPlainTextEdit::NoWrap);
+    extraArea = new ExtraArea(this);
 
-    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth()));
-    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateExtraAreaWidth()));
+    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateExtraArea(QRect,int)));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(changeSelection()));
+    connect(this, SIGNAL(textChanged()),this,SLOT(updateBlockLevels()));
 
-    updateLineNumberAreaWidth();
+    updateExtraAreaWidth();
 
     // create auto completer
     mCompleter = new M4SCpCodeCompleter(this);
@@ -58,11 +64,11 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
 
 M4SCpCodeEditor::~M4SCpCodeEditor()
 {
-    delete lineNumberArea;
+    delete extraArea;
     delete mCompleter;
 }
 
-int M4SCpCodeEditor::lineNumberAreaWidth()
+int M4SCpCodeEditor::extraAreaWidth()
 {
     int digits = 1;
     int max = qMax(1, blockCount());
@@ -71,25 +77,27 @@ int M4SCpCodeEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+    int space = lineNumberAreaVisible ? 3 + fontMetrics().width(QLatin1Char('9')) * digits : 0;
+
+    space += foldAreaVisible ? foldAreaWidht: 0;
 
     return space;
 }
 
-void M4SCpCodeEditor::updateLineNumberAreaWidth()
+void M4SCpCodeEditor::updateExtraAreaWidth()
 {
-    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+    setViewportMargins(extraAreaWidth(), 0, 0, 0);
 }
 
-void M4SCpCodeEditor::updateLineNumberArea(const QRect &rect, int dy)
+void M4SCpCodeEditor::updateExtraArea(const QRect &rect, int dy)
 {
     if (dy)
-        lineNumberArea->scroll(0, dy);
+        extraArea->scroll(0, dy);
     else
-        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+        extraArea->update(0, rect.y(), extraArea->width(), rect.height());
 
     if (rect.contains(viewport()->rect()))
-        updateLineNumberAreaWidth();
+        updateExtraAreaWidth();
 }
 
 QString M4SCpCodeEditor::textUnderCursor()
@@ -105,11 +113,18 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
     QPlainTextEdit::resizeEvent(e);
 
     QRect cr = contentsRect();
-    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+    extraArea->setGeometry(QRect(cr.left(), cr.top(), extraAreaWidth(), cr.height()));
 }
 
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
+    if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return){
+        //TODO
+        moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
+        QPlainTextEdit::keyPressEvent(e);
+        return;
+    }
+
     if (e->modifiers() == Qt::ShiftModifier && (e->key() == Qt::Key_PageDown || Qt::Key_PageUp)) {
         QPlainTextEdit::keyPressEvent(e);
         emit selectionChanged();
@@ -162,32 +177,50 @@ void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
     mCompleter->complete(cr);
 }
 
-void M4SCpCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
+void M4SCpCodeEditor::extraAreaPaintEvent(QPaintEvent *event)
 {
-    QPainter painter(lineNumberArea);
-    painter.fillRect(event->rect(), Qt::lightGray);
-    QTextBlock block = firstVisibleBlock();
 
+    QPainter painter(extraArea);
+    painter.fillRect(event->rect(), Qt::lightGray);
+
+    QTextBlock block = firstVisibleBlock();
+    BlockData *blockData;
+
+    int level=9999,curLevel;
     int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
 
-    int bottom = top + (int) blockBoundingRect(block).height();;
+    int bottom = top + (int) blockBoundingRect(block).height();
     while (block.isValid() && top <= event->rect().bottom()) {
 
+        blockData=BlockData::data(block);
+
         if (block.isVisible() && bottom >= event->rect().top()) {
-            QString number = QString::number(block.blockNumber() + 1);
-            painter.setPen(Qt::black);
-            if (block.blockNumber() <= endSelectionBlockNumber &&
-                block.blockNumber() >= startSelectionBlockNumber &&
-                    startSelectionBlockNumber != -1 && endSelectionBlockNumber != -1) {
-                painter.setBackground(QBrush(Qt::darkGray));
-                painter.setBackgroundMode(Qt::OpaqueMode);
+
+            if(lineNumberAreaVisible){
+
+                QString number = QString::number(block.blockNumber() + 1);
+                painter.setPen(Qt::black);
+                if (block.blockNumber() <= endSelectionBlockNumber &&
+                    block.blockNumber() >= startSelectionBlockNumber &&
+                        startSelectionBlockNumber != -1 && endSelectionBlockNumber != -1) {
+                    painter.setBackground(QBrush(Qt::darkGray));
+                    painter.setBackgroundMode(Qt::OpaqueMode);
+                }
+                else {
+                    painter.setBackground(QBrush(Qt::lightGray));
+                    painter.setBackgroundMode(Qt::OpaqueMode);
+                }
+                painter.drawText(0, top, extraArea->width()- (foldAreaVisible ? foldAreaWidht :0), fontMetrics().height(),
+                                 Qt::AlignRight, number);
             }
-            else {
-                painter.setBackground(QBrush(Qt::lightGray));
-                painter.setBackgroundMode(Qt::OpaqueMode);
+
+            if(foldAreaVisible){
+                curLevel=blockData->getFoldingLevel();
+                if(curLevel>level){
+                    drawIcon(&painter, extraAreaWidth()-foldAreaWidht, top+2, blockData->isFolded() );
+                }
+                level=curLevel;
             }
-            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
-                             Qt::AlignRight, number);
         }
 
         block = block.next();
@@ -219,3 +252,100 @@ void M4SCpCodeEditor::changeSelection() {
         endSelectionBlockNumber = -1;
     }
 }
+
+void M4SCpCodeEditor::updateBlockLevels(){
+    //TODO
+
+    QString text;
+    int i, level=0;
+    for(QTextBlock it=document()->begin();it!=document()->end();it=it.next()){
+        text=it.text();
+        for(i=0;i<text.length();i++){
+            if (text[i]=='(') {
+                level++;
+            }
+            if (text[i]==')'&& level>0) {
+                level--;
+            }
+        }
+        BlockData::data(it)->setFoldingLevel(level);
+    }
+}
+
+QRect M4SCpCodeEditor::drawIcon(QPainter *painter, int x,int y, bool folded){
+
+    QRect iconRect(x,y+2,9,9);
+
+    painter->drawRect(iconRect);
+    painter->drawLine(x,y+7,x+9,y+7);
+
+    if(folded){
+        painter->drawLine(x+5,y+2,x+5,y+11);
+    }
+
+    return iconRect;
+}
+
+void M4SCpCodeEditor::foldOrUnfold(int blockNumber)
+{
+    QTextBlock block;
+    QTextBlock tempBlock=document()->findBlockByNumber(blockNumber);
+    BlockData *bd=BlockData::data(tempBlock);
+
+    int level,curLevel;
+
+    level=curLevel=bd->getFoldingLevel();
+    if(!level) return;
+    bool state=bd->isFolded();
+
+    for(int i=0;i<2;i++){
+
+        block=tempBlock;
+        bd=BlockData::data(tempBlock);
+        curLevel=level;
+
+        while(level<=curLevel && block.isValid()){
+//            if(curLevel>level && state && bd->isFolded()){
+//            }
+            bd->setFolded(!state);
+            block.setLineCount(state?1:0);
+            block.setVisible(state);
+            block = i ? block.previous() : block.next();
+            bd=BlockData::data(block);
+            curLevel=bd->getFoldingLevel();
+        }
+    }
+    block=block.next();
+    block.setLineCount(1);
+    block.setVisible(true);
+
+    if(!state) moveCursorFromFoldedBlocks();
+}
+
+void M4SCpCodeEditor::moveCursorFromFoldedBlocks()
+{
+    QTextCursor cursor= textCursor();
+    QTextBlock block=cursor.block();
+    if(block.isVisible()) return;
+
+    while(!block.isVisible()){
+          block=block.previous();
+          moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
+    }
+}
+
+void M4SCpCodeEditor::extraAreaMousePressEvent(QMouseEvent *event){
+
+    QTextCursor cursor=cursorForPosition(QPoint(0, event->pos().y()));
+    if(event->pos().x() > (extraArea->width()-foldAreaWidht) ){
+
+        foldOrUnfold(cursor.blockNumber());
+        viewport()->update();
+        extraArea->update();
+    }
+}
+
+void M4SCpCodeEditor::extraAreaMouseMoveEvent(QMouseEvent *event){
+
+}
+

@@ -22,10 +22,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "gwffileloader.h"
 
-#include "scgdefaultobjectbuilder.h"
+#include "../scgdefaultobjectbuilder.h"
 #include "gwfobjectinforeader.h"
-#include "scgobject.h"
-#include "scgscene.h"
+#include "../scgobject.h"
+#include "../scgscene.h"
 
 #include <QMessageBox>
 #include <QApplication>

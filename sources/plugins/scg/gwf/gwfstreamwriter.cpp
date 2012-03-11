@@ -20,10 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 #include "gwfstreamwriter.h"
-#include "scgnode.h"
-#include "scgpair.h"
-#include "scgcontour.h"
-#include "scgbus.h"
+#include "../scgnode.h"
+#include "../scgpair.h"
+#include "../scgcontour.h"
+#include "../scgbus.h"
 
 #include <QTextCodec>
 
