@@ -22,16 +22,18 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgcontour.h"
 #include "scgalphabet.h"
-
 #include "pointgraphicsitem.h"
 #include "scgpair.h"
 #include "scgcontour.h"
-
+#include "gwf/gwfstreamwriter.h"
+#include "gwf/gwfobjectinforeader.h"
+#include "scgdefaultobjectbuilder.h"
 #include <QColor>
 #include <QGraphicsScene>
+#include <QGraphicsItem>
 
 SCgContour::SCgContour() :
-        mColorBack(QColor(250, 250, 250, 224))
+    mColorBack(QColor(250, 250, 250, 224))
 {
     setFlag(QGraphicsItem::ItemIsMovable, true);
     //setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
@@ -78,7 +80,7 @@ void SCgContour::setPoints(const PointFVector &points)
         return;
 
     // map scene points into local coordinates
-/*
+    /*
     PointFVector pts = mapToScene(mPoints);
     setPos(QPolygonF(pts).boundingRect().center());
     mPoints = mapFromScene(pts);
@@ -203,3 +205,49 @@ void SCgContour::changePointPosition(int pointIndex, const QPointF& newPos)
     updatePosition();
 }
 
+void SCgContour::clone(SCgObjectList& objList) {
+    QList<QGraphicsItem* > contourChildren;
+    contourChildren.append(getAllContoursChildren());
+    QByteArray cloneData;
+    GwfStreamWriter writer(&cloneData);
+    ////////////////////////////////////
+    writer.startWriting();
+
+    foreach (QGraphicsItem *item, contourChildren)
+        if(SCgObject::isSCgObjectType(item->type()) )
+            writer.writeObject(static_cast<SCgObject*>(item));
+
+    writer.finishWriting();
+    ///////////////////////////////////
+    QDomDocument document;
+    document.setContent(cloneData);
+    GwfObjectInfoReader reader;
+    reader.read(document);
+    //Place objects to scene
+    DefaultSCgObjectBuilder objectBuilder(scene());
+    objectBuilder.buildObjects(reader.objectsInfo());
+    SCgObjectList tmpList = objectBuilder.objects();
+    // make clone of current  contour
+    SCgContour *contour = new SCgContour;
+    contour->setPoints(this->points());
+    contour->setPos(this->pos());
+    objList.append(contour);
+    foreach(SCgObject *o, tmpList)
+        if (!o->parentItem()) o->setParentItem(contour);
+    objList << objectBuilder.objects();
+    tmpList.clear();
+    contourChildren.clear();
+}
+
+QList<QGraphicsItem* > SCgContour::getAllContoursChildren() {
+    QList<QGraphicsItem* > children = this->childItems();
+    QList<QGraphicsItem* > resultList;
+    resultList.append(children);
+    foreach (QGraphicsItem *item, children) {
+        if (item->type() == Type) {
+            QList<QGraphicsItem* > list = qgraphicsitem_cast<SCgContour*>(item)->getAllContoursChildren();
+            resultList.append(list);
+        }
+    }
+    return resultList;
+}

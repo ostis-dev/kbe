@@ -21,12 +21,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgnode.h"
-
 #include "scgcontentfactory.h"
 #include "scgcontentviewer.h"
 #include "scgbus.h"
 #include "scgview.h"
-
+#include "scgdefaultobjectbuilder.h"
+#include "scgobjectsinfo.h"
 #include <QPainter>
 #include <QVector2D>
 #include <QGraphicsScene>
@@ -51,11 +51,11 @@ SCgNode::~SCgNode()
     //Q_ASSERT(!mBus);    // must be deleted before
     if (mBus)
     {
-    	mBus->setOwner(0);
-    	mBus = 0;
+        mBus->setOwner(0);
+        mBus = 0;
     }
     if (mContentViewer)
-    	delete mContentViewer;
+        delete mContentViewer;
 }
 
 void SCgNode::setTypeAlias(const QString &typeAlias)
@@ -90,7 +90,6 @@ QRectF SCgNode::boundingRect() const
     }else
     {
         Q_ASSERT(mContentViewer);
-
         QSizeF size = mContentViewer->size();
         res = QRectF(0, 0, size.width(), size.height());
         res.moveCenter(QPointF(0.f, 0.f));
@@ -156,7 +155,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
         mContentViewer->hide();
 
     if(mBus)
-    	mBus->del(delList);
+        mBus->del(delList);
 
     SCgObject::del(delList);
 }
@@ -164,7 +163,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
 void SCgNode::undel(SCgScene* scene)
 {
     if(mBus)
-    	mBus->undel(scene);
+        mBus->undel(scene);
 
     SCgObject::undel(scene);
     if(mContentVisible)
@@ -333,4 +332,38 @@ SCgBus* SCgNode::bus() const
 void SCgNode::setBus(SCgBus *bus)
 {
     mBus = bus;
+}
+
+void SCgNode::clone(SCgObjectList &objList) {
+    SCgNode* obj = new SCgNode;
+    obj->mTypeAlias = this->typeAlias();
+    if (!this->idtfValue().isEmpty()) {
+        obj->setIdtfValue(this->idtfValue());
+    }
+    if (this->mContentViewer) {
+        ContInfo info;
+        this->contentInfo(info);
+        obj->setContent(info.mimeType, info.data, info.fileName, info.type);
+        obj->updateContentViewer();
+    }
+    if (this->mContentVisible) obj->showContent();
+    obj->updateType();
+    obj->setDead(true);
+    obj->setPos(this->pos());
+    objList.append(obj);
+//    AbstractSCgObjectBuilder::TypeToObjectsMap map;
+//    AbstractSCgObjectBuilder::ObjectInfoList list = map.value(SCgNode::Type);
+//    SCgNodeInfo *info = new SCgNodeInfo;
+//    info->typeAliasRef() = this->typeAlias();
+//    info->idtfValueRef() = this->idtfValue();
+//    info->idRef() = QString::number(this->id());
+//    info->parentIdRef() = QString::number(this->parentId());
+//    info->posRef() = this->pos();
+//    info->haveBusRef() = this->bus() ? true : false;
+//    info->contentTypeRef() = this->contentType();
+//    info->contentMimeTypeRef() = this->contentMimeType();
+//    info->contentFilenameRef() = this->contentFileName();
+//    info->contentDataRef() = this->contentData();
+//    list.append(info);
+//    objMap[SCgNode::Type].append(info);
 }
