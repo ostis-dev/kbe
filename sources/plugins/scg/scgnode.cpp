@@ -25,8 +25,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontentviewer.h"
 #include "scgbus.h"
 #include "scgview.h"
-#include "scgdefaultobjectbuilder.h"
-#include "scgobjectsinfo.h"
 #include <QPainter>
 #include <QVector2D>
 #include <QGraphicsScene>
