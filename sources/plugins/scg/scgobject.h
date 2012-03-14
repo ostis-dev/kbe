@@ -27,7 +27,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItem>
 
 #include "scgalphabet.h"
-#include "scgabstractobjectbuilder.h"
 
 class SCgScene;
 
