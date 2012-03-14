@@ -349,19 +349,4 @@ void SCgNode::clone(SCgObjectList &objList) {
     obj->setDead(true);
     obj->setPos(this->pos());
     objList.append(obj);
-//    AbstractSCgObjectBuilder::TypeToObjectsMap map;
-//    AbstractSCgObjectBuilder::ObjectInfoList list = map.value(SCgNode::Type);
-//    SCgNodeInfo *info = new SCgNodeInfo;
-//    info->typeAliasRef() = this->typeAlias();
-//    info->idtfValueRef() = this->idtfValue();
-//    info->idRef() = QString::number(this->id());
-//    info->parentIdRef() = QString::number(this->parentId());
-//    info->posRef() = this->pos();
-//    info->haveBusRef() = this->bus() ? true : false;
-//    info->contentTypeRef() = this->contentType();
-//    info->contentMimeTypeRef() = this->contentMimeType();
-//    info->contentFilenameRef() = this->contentFileName();
-//    info->contentDataRef() = this->contentData();
-//    list.append(info);
-//    objMap[SCgNode::Type].append(info);
 }
