@@ -25,11 +25,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <memory>
 
-#include "scgobjectsinfo.h"
-#include "scgnode.h"
-#include "scgbus.h"
-#include "scgcontour.h"
-#include "scgpair.h"
+#include "../scgobjectsinfo.h"
+#include "../scgnode.h"
+#include "../scgbus.h"
+#include "../scgcontour.h"
+#include "../scgpair.h"
 
 GwfObjectInfoReader::GwfObjectInfoReader(bool isOwner):mIsOwner(isOwner)
 {
