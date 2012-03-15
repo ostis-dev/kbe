@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "m4scpcodeeditor.h"
-#include "m4scpblockData.h"
+#include "m4scpblockdata.h"
 #include "m4scpcodecompleter.h"
 #include "m4scpsyntax.h"
 
