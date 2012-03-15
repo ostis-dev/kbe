@@ -221,9 +221,9 @@ void M4SCpCodeEditor::extraAreaPaintEvent(QPaintEvent *event)
                     drawIcon(&painter,x, top+2, blockData->isFolded() );
                 }else
                     if(curLevel>0)
-                        painter.drawLine(x+5,top,x+5,bottom);
+                        painter.drawLine(x+7,top,x+7,bottom);
                 if(curLevel<level && level>0 && block.previous().isVisible()){
-                    painter.drawLine(x+5,top,x+foldAreaWidht,top);
+                    painter.drawLine(x+7,top,x+foldAreaWidht,top);
                 }
                 level=curLevel;
             }
@@ -280,13 +280,13 @@ void M4SCpCodeEditor::updateBlockLevels(){
 
 QRect M4SCpCodeEditor::drawIcon(QPainter *painter, int x,int y, bool folded){
 
-    QRect iconRect(x,y+2,9,9);
+    QRect iconRect(x+1,y+1,12,12);
 
     painter->drawRect(iconRect);
-    painter->drawLine(x,y+7,x+9,y+7);
+    painter->drawLine(x+3,y+7,x+11,y+7);
 
     if(folded){
-        painter->drawLine(x+5,y+2,x+5,y+11);
+        painter->drawLine(x+7,y+3,x+7,y+11);
     }
 
     return iconRect;
@@ -343,11 +343,16 @@ void M4SCpCodeEditor::moveCursorFromFoldedBlocks()
 void M4SCpCodeEditor::extraAreaMousePressEvent(QMouseEvent *event){
 
     QTextCursor cursor=cursorForPosition(QPoint(0, event->pos().y()));
-    if(event->pos().x() > (extraArea->width()-foldAreaWidht) ){
+    if(event->pos().x() > (extraArea->width()-foldAreaWidht)  && foldAreaVisible ){
 
         foldOrUnfold(cursor.blockNumber());
         viewport()->update();
         extraArea->update();
     }
+    if(event->pos().x() < (extraArea->width() - (foldAreaVisible ? foldAreaWidht : 0)) && lineNumberAreaVisible ){
+        setTextCursor(cursor);
+        moveCursor(QTextCursor::EndOfBlock,QTextCursor::KeepAnchor);
+    }
+
 }
 

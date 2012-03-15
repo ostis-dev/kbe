@@ -68,7 +68,7 @@ private:
     bool lineNumberAreaVisible;
 
     bool foldAreaVisible;
-    const static int foldAreaWidht=11;
+    const static int foldAreaWidht=15;
 
     //! Pointer to code completer
     M4SCpCodeCompleter *mCompleter;
