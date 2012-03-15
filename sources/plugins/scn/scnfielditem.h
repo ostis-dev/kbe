@@ -45,7 +45,8 @@ public:
     {
         ParentChanged,
         ValueChanged,
-        StateChanged
+        StateChanged,
+        BoundChanged
     };
 
     enum FieldState
@@ -56,9 +57,12 @@ public:
         StateSelected
     };
 
-    enum { Type = UserType + 2 };
+    enum { Type = UserType + 1 };
 
     int type() const { return Type; }
+
+    //! Check if specified item type is an scn field item
+    static bool isSCnFieldType(int type);
 
 public:
     //! Return true, if field is empty; otherwise - return flase
@@ -73,8 +77,6 @@ public:
     virtual qreal childsOffset() const = 0;
     //! Update on childs changed. Called when any child changed, or added/removed
     virtual void updateOnChilds();
-    //! Update controls positions, state and etc.
-    virtual void updateControls();
 
     //! Return current state
     FieldState state() const { return mState; }
