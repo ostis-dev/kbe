@@ -123,7 +123,10 @@ public:
     //! Check if pair is temporary
     bool isTemp() const { return mTemporary; }
 
-
+    /*! Return a copy of pair and copies of it's begin&end elements
+    * @see SCgObject::clone
+    */
+    void clone(SCgObjectList& objList);
 private:
     SCgObject *mBeginObject;
     float mBeginDot;

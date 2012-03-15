@@ -21,7 +21,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgbus.h"
-
 #include "scgalphabet.h"
 #include "scgnode.h"
 #include "pointgraphicsitem.h"
@@ -258,4 +257,15 @@ void SCgBus::changePointPosition(int pointIndex, const QPointF& newPos)
         updateShape();
         else
             updatePosition();
+}
+
+void SCgBus::clone(SCgObjectList& objList) {
+    SCgBus *obj = new SCgBus;
+    objList.append(obj);
+    int ownerIndex = objList.count();
+    owner()->clone(objList);
+    obj->setOwner(qgraphicsitem_cast<SCgNode*>(objList.at(ownerIndex)));
+    obj->setPoints(this->points());
+    if (!this->idtfValue().isEmpty())
+        obj->setIdtfValue(this->idtfValue());
 }

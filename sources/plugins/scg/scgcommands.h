@@ -243,6 +243,38 @@ private slots:
 };
 
 
+class SCgCommandClone : public QObject, public SCgBaseCommand {
+    Q_OBJECT
+public:
+    /**
+    * @brief Constructor
+    * @param scene      Pointer to graphics scene that will be used for working
+    * @param objectList List of cloned objects
+    * @param c          Pointer to parent contour
+    * @param parent     Pointer to parent undo command
+    */
+    explicit SCgCommandClone(SCgScene *scene,
+                             QList<SCgObject*> objectList,
+                             SCgContour *c,
+                             QUndoCommand *parent = 0);
+
+    //! Destructor
+    virtual ~SCgCommandClone();
+
+protected:
+    //! @see QUndoCommand::undo
+    void undo();
+    //! @see QUndoCommand::redo
+    void redo();
+    //! List of cloned objects
+    QList<SCgObject*> mList;
+    //! Pointer to parent contour
+    SCgContour* mParent;
+
+private slots:
+    void objectFromListDestroyed(QObject *obj);
+};
+
 /*! Object identification change command
   */
 class SCgCommandObjectIdtfChange : public SCgBaseCommand

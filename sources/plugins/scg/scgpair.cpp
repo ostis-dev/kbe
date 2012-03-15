@@ -23,19 +23,18 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpair.h"
 #include "scgbus.h"
 #include "pointgraphicsitem.h"
-
 #include <QPainter>
 #include <QVector2D>
 
 SCgPair::SCgPair() :
-        mBeginObject(0),
-        mBeginDot(0.f),
-        mEndObject(0),
-        mEndDot(0.f),
-        mEndArrow(false),
-        mPosType(SCgAlphabet::PosUnknown),
-        mOrient(false),
-        mTemporary(false)
+    mBeginObject(0),
+    mBeginDot(0.f),
+    mEndObject(0),
+    mEndDot(0.f),
+    mEndArrow(false),
+    mPosType(SCgAlphabet::PosUnknown),
+    mOrient(false),
+    mTemporary(false)
 {
     mPoints.push_back(QPointF());
     mPoints.push_back(QPointF());
@@ -133,10 +132,10 @@ void SCgPair::updatePosition()
         mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
         mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
     }else
-        {
-            mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
-            mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
-        }
+    {
+        mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
+        mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
+    }
 
     // change parent item for the pair if parent's item for begin or end objects was changed
     if (mBeginObject->isSelected() && mBeginObject->parentItem() != parentItem())
@@ -384,4 +383,24 @@ void SCgPair::updateType()
     mPosType = SCgAlphabet::getInstance().aliasToPositiveCode(sl[2]);
     mTemporary = (sl[3] == "temp");
     mOrient = (sl[4] == "orient");
+}
+
+void SCgPair::clone(SCgObjectList& objList) {
+    SCgPair *obj = new SCgPair;
+    objList.append(obj);
+    int beginObjectIndex = objList.count();
+    this->getBeginObject()->clone(objList);
+    int endObjectIndex = objList.count();
+    this->getEndObject()->clone(objList);
+    obj->setBeginObject(objList.at(beginObjectIndex));
+    obj->setEndObject(objList.at(endObjectIndex));
+    obj->setBeginDot(this->getBeginDot());
+    obj->setEndDot(this->getEndDot());
+    obj->setPoints(this->points());
+    obj->setPos(this->pos());
+    obj->updatePosition();
+    obj->setTypeAlias(this->typeAlias());
+    if (!this->idtfValue().isEmpty())
+        obj->setIdtfValue(this->idtfValue());
+    obj->setDead(true);
 }

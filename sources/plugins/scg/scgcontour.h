@@ -88,12 +88,19 @@ public:
     //! @see SCgPointObject::changePointPosition(int pointIndex, const QPointF& newPos)
     void changePointPosition(int pointIndex, const QPointF& newPos);
 
+    /*! Returned a copy of contour and it's child elements
+    * @sa SCgObject::clone
+    */
+    void clone(SCgObjectList& objList);
 protected:
     //! Contour shape
     QPainterPath mShape;
 
     //! Background color
     QColor mColorBack;
+
+private:
+    QList<QGraphicsItem* > getAllContoursChildren();
 };
 
 #endif // SCGCONTOUR_H

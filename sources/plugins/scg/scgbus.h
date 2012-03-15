@@ -92,6 +92,10 @@ public:
 
     SCgObject* objectWithRole(IncidentRole role) const;
 
+    /*! Returned a copy of bus and it's owner
+    * @sa SCgObject::clone
+    */
+    void clone(SCgObjectList& objList);
 private:
     //! Path that represents shape
     QPainterPath mShape;

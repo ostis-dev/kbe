@@ -354,6 +354,59 @@ void SCgCommandInsert::undo()
 
     SCgBaseCommand::undo();
 }
+//--------------------
+SCgCommandClone::SCgCommandClone(SCgScene *scene, QList<SCgObject *> objectList, SCgContour *c, QUndoCommand *parent) :
+    SCgBaseCommand(scene, 0, parent),
+    mList(objectList),
+    mParent(c)
+{
+    foreach(SCgObject* obj, mList)
+        connect(obj, SIGNAL(destroyed(QObject*)), this, SLOT(objectFromListDestroyed(QObject*)));
+
+    setText(QObject::tr("Clone"));
+}
+
+SCgCommandClone::~SCgCommandClone() {
+    foreach (SCgObject* obj, mList) {
+        delete obj;
+        obj = 0;
+    }
+}
+
+void SCgCommandClone::objectFromListDestroyed(QObject *obj) {
+    mList.removeOne(static_cast<SCgObject*>(obj));
+}
+
+void SCgCommandClone::redo() {
+    SCgBaseCommand::redo();
+
+    QList<SCgObject*>::iterator it;
+    for (it = mList.begin(); it != mList.end(); ++it)
+    {
+        SCgObject *object = *it;
+
+        object->setDead(false);
+        if(object->scene() != mScene)
+            mScene->addItem(object);
+
+        object->setParentItem(mParent);
+        object->updatePosition();
+    }
+}
+
+void SCgCommandClone::undo() {
+    QList<SCgObject*>::iterator it;
+    for (it = mList.begin(); it != mList.end(); ++it)
+    {
+        SCgObject *object = *it;
+        object->setDead(true);
+        object->setParentItem(0);
+        mScene->removeItem(object);
+    }
+
+    SCgBaseCommand::undo();
+}
+
 // -------------------
 SCgCommandObjectIdtfChange::SCgCommandObjectIdtfChange(SCgScene *scene,
                                                        SCgObject *object,

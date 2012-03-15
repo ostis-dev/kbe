@@ -111,6 +111,8 @@ public:
      */
     static int indexForPoint(const PointFVector& v, const QPointF& point,bool closed = false);
 
+    void clone(SCgObjectList& objList) { return ; }
+
 protected:
     //! Factory method;
     virtual PointGraphicsItem* createPointItem(int pointIndex) = 0;

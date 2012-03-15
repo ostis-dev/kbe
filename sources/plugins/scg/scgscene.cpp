@@ -36,6 +36,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "event_handling/SCgContourModeEventHandler.h"
 #include "event_handling/SCgSelectModeEventHandler.h"
 #include "event_handling/SCgInsertModeEventHandler.h"
+#include "event_handling/SCgCloneModeEventHandler.h"
 
 #include <QUrl>
 #include <QFile>
@@ -64,6 +65,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneEventHandlers[Mode_Contour] = new SCgContourModeEventHandler(this);
     mSceneEventHandlers[Mode_Select] = new SCgSelectModeEventHandler(this);
     mSceneEventHandlers[Mode_InsertTemplate] = new SCgInsertModeEventHandler(this);
+    mSceneEventHandlers[Mode_Clone] = new SCgCloneModeEventHandler(this);
 
     setEditMode(Mode_Select);
     // grid foreground
@@ -185,6 +187,8 @@ void SCgScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void SCgScene::keyPressEvent(QKeyEvent *event)
 {
     Q_ASSERT(mEventHandler);
+    if (event->modifiers() == Qt::ShiftModifier && mEventHandler->mode() == Mode_Select)
+        setEditMode(Mode_Clone);
     mEventHandler->keyPress(event);
     if(!event->isAccepted())
         QGraphicsScene::keyPressEvent(event);
@@ -436,6 +440,41 @@ void SCgScene::pasteCommand(SCgContour* parent)
     mInsertedObjectGroup = 0;
 
     mUndoStack->push(new SCgCommandInsert(this,objList,parent,0));
+
+    setEditMode(mPreviousEditMode);
+}
+
+void SCgScene::cloneTemplate(const QList<SCgObject*>& list) {
+    QList<QGraphicsItem*> withoutChilds;
+    foreach(SCgObject* obj, list)
+        if (!obj->parentItem())
+            withoutChilds.append(obj);
+
+    if(!withoutChilds.empty())
+    {
+        mInsertedObjectGroup = createItemGroup(withoutChilds);
+
+        QGraphicsView* v = views().at(0);
+        QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
+        mInsertedObjectGroup->setPos(p);
+        mInsertedObjectGroup->setOpacity(0.5);
+    }
+
+}
+
+void SCgScene::cloneCommand(SCgContour *parent) {
+    Q_ASSERT(mEventHandler->mode() == Mode_Clone && mInsertedObjectGroup);
+
+    QList<SCgObject*> objList;
+    QList<QGraphicsItem*> childList = mInsertedObjectGroup->childItems();
+    foreach(QGraphicsItem* it, childList)
+        if(SCgObject::isSCgObjectType(it->type()))
+            objList.append(static_cast<SCgObject*>(it));
+
+    destroyItemGroup(mInsertedObjectGroup);
+    mInsertedObjectGroup = 0;
+
+    mUndoStack->push(new SCgCommandClone(this, objList, parent, 0));
 
     setEditMode(mPreviousEditMode);
 }

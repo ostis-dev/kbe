@@ -60,6 +60,7 @@ public:
         Mode_Bus,
         Mode_Contour,
         Mode_InsertTemplate,
+        Mode_Clone,
 
         // Don't use it. (Used to know count of all edit modes)
         Mode_Count
@@ -285,6 +286,10 @@ public:
      */
     void pasteTemplate(const QList<SCgObject*>& list);
 
+    void cloneTemplate(const QList<SCgObject*>& list);
+
+    void cloneCommand(SCgContour* parent);
+
 private:
     QVector<SCgEventHandler*> mSceneEventHandlers;
     //! Current edit mode
@@ -311,6 +316,7 @@ private:
 
 private:
     friend class SCgInsertModeEventHandler;
+    friend class SCgCloneModeEventHandler;
 
     /*! Paste objects command.
      * @param items Inserted objects.

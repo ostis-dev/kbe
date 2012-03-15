@@ -107,6 +107,10 @@ public:
     //! Update (repaint) connected objects
     void updateConnected();
 
+    /*! Return a copy of node including it's content. Unable to execute while content is visible
+    * @see SCgObject::clone
+    */
+    void clone(SCgObjectList& objList);
 protected:
     /*! Set scg-bus.
         \param bus  Pointer to scg-bus.

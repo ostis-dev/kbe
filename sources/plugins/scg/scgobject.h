@@ -135,6 +135,7 @@ protected:
       */
     virtual void objectDelete(SCgObject *object) = 0;
 
+
 public:
     /*! Check if object is dead.
       Dead object means that it removed from scene, but still available in memory.
@@ -171,6 +172,12 @@ public:
     {
         return ((SCgObject*)this->parentItem())->id();
     }
+
+    /**
+      * @brief Get full copy of SCgObject. Returned result depends on type of SCgObject
+      * @param objList Reference to the list of objects that have been cloned
+      */
+    virtual void clone(SCgObjectList& objMap) = 0;
 
 protected:
     //! Main color
