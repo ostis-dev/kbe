@@ -39,7 +39,6 @@ public:
     
     void extraAreaPaintEvent(QPaintEvent *event);
     void extraAreaMousePressEvent(QMouseEvent *event);
-    void extraAreaMouseMoveEvent(QMouseEvent *event);
     int extraAreaWidth();
 
 protected:
@@ -98,9 +97,6 @@ protected:
     }
     void mousePressEvent(QMouseEvent *event){
         codeEditor->extraAreaMousePressEvent( event);
-    }
-    void mouseMoveEvent(QMouseEvent *event){
-        codeEditor->extraAreaMouseMoveEvent(event);
     }
 
 private:

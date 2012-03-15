@@ -21,7 +21,7 @@ HEADERS += \
     m4scpcodecompleter.h \
     m4scpplugin.h \
     m4scpcodeanalyzer.h \
-    blockdata.h
+    m4scpblockdata.h
 
 SOURCES += \
     m4scpwindow.cpp \

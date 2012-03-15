@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "m4scpcodeeditor.h"
-#include "blockData.h"
+#include "m4scpblockData.h"
 #include "m4scpcodecompleter.h"
 #include "m4scpsyntax.h"
 
@@ -216,8 +216,14 @@ void M4SCpCodeEditor::extraAreaPaintEvent(QPaintEvent *event)
 
             if(foldAreaVisible){
                 curLevel=blockData->getFoldingLevel();
+                int x=extraAreaWidth()-foldAreaWidht;
                 if(curLevel>level){
-                    drawIcon(&painter, extraAreaWidth()-foldAreaWidht, top+2, blockData->isFolded() );
+                    drawIcon(&painter,x, top+2, blockData->isFolded() );
+                }else
+                    if(curLevel>0)
+                        painter.drawLine(x+5,top,x+5,bottom);
+                if(curLevel<level && level>0 && block.previous().isVisible()){
+                    painter.drawLine(x+5,top,x+foldAreaWidht,top);
                 }
                 level=curLevel;
             }
@@ -343,9 +349,5 @@ void M4SCpCodeEditor::extraAreaMousePressEvent(QMouseEvent *event){
         viewport()->update();
         extraArea->update();
     }
-}
-
-void M4SCpCodeEditor::extraAreaMouseMoveEvent(QMouseEvent *event){
-
 }
 
