@@ -20,7 +20,8 @@ HEADERS += \
     m4scpcodeeditor.h \
     m4scpcodecompleter.h \
     m4scpplugin.h \
-    m4scpcodeanalyzer.h
+    m4scpcodeanalyzer.h \
+    m4scpblockdata.h
 
 SOURCES += \
     m4scpwindow.cpp \
