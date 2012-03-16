@@ -61,7 +61,8 @@ HEADERS += \
     scgplugin.h \
     scgfindwidget.h \
     scgundoviewmodel.h \
-    scgundoview.h
+    scgundoview.h \
+    event_handling/SCgCloneModeEventHandler.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -111,4 +112,15 @@ SOURCES += \
     scgplugin.cpp \
     scgfindwidget.cpp \
     scgundoviewmodel.cpp \
-    scgundoview.cpp
+    scgundoview.cpp \
+    event_handling/SCgCloneModeEventHandler.cpp
+
+
+
+
+
+
+
+
+
+

@@ -60,6 +60,7 @@ public:
         Mode_Bus,
         Mode_Contour,
         Mode_InsertTemplate,
+        Mode_Clone,
 
         // Don't use it. (Used to know count of all edit modes)
         Mode_Count
@@ -278,27 +279,22 @@ public:
     //! Adds given command @p cmd to scene's undoStack.
     void addCommandToStack(SCgBaseCommand* cmd);
 
-    /*! Initiates insertion command.
-     * All given items must be on the scene.
-     * If user will cancel insert operation, all objects will be deleted.
-     * @param list List of inserted objects;
-     */
-    void pasteTemplate(const QList<SCgObject*>& list);
 
     //! Returned previous edit mode
     EditMode previousMode() const;
 
-    //! Clean set of objects which have been prepared for insert
-    void cleanInsertedObjects();
-
     /*! Paste objects command.
-     * @param items Inserted objects.
-     * @param parent parent contour.
+     * @param itemList List of inserted objects
+     * @param parent Parent contour.
      */
-    void pasteCommand(SCgContour* parent);
+    void pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
 
-    //! Returned objects for inserting as one object
-    QGraphicsItemGroup* insertedObjects();
+    /*! Clone objects command.
+     * @param itemList List of inserted objects
+     * @param parent Parent contour.
+     */
+    void cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
+
 private:
     QVector<SCgEventHandler*> mSceneEventHandlers;
     //! Current edit mode
@@ -324,8 +320,6 @@ private:
     QPointF mCursor;
 
 private:
-    //! inserted objects
-    QGraphicsItemGroup* mInsertedObjectGroup;
     //! previous edit mode
     EditMode mPreviousEditMode;
 

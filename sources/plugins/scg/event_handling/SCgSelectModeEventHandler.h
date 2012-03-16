@@ -47,8 +47,6 @@ public:
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 
-    void keyPress(QKeyEvent *event);
-
     virtual SCgScene::EditMode mode()
     {
         return SCgScene::Mode_Select;

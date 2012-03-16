@@ -69,6 +69,12 @@ public:
     //! @return edit mode corresponding to this handler
     virtual SCgScene::EditMode mode() = 0;
 
+    //! Activate current event handler. Need to be overridden in subclasses.
+    virtual void activate() {return; }
+
+    //! Deactivate current event handler. Need to be overridden in subclasses.
+    virtual void deactivate() {return; }
+
 protected:
     //! goes through all ancestors and checks if one of them movable and selected
     static bool movableAncestorIsSelected(const QGraphicsItem* item);

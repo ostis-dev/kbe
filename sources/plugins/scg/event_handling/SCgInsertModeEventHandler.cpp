@@ -22,9 +22,17 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SCgInsertModeEventHandler.h"
 #include "../scgcontour.h"
+#include "../gwf/gwfobjectinforeader.h"
+#include "../scgtemplateobjectbuilder.h"
+#include "../scgwindow.h"
+#include <QDomDocument>
+#include <QGraphicsView>
+#include <QApplication>
+#include <QClipboard>
 
 SCgInsertModeEventHandler::SCgInsertModeEventHandler(SCgScene* parent):
-                                                            SCgEventHandler(parent)
+    SCgEventHandler(parent),
+    mInsertedObjectGroup(0)
 {
 }
 
@@ -40,14 +48,15 @@ void SCgInsertModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
     SCgContour* parent = 0;
     if (underMouseObj && underMouseObj->type() == SCgContour::Type)
         parent = static_cast<SCgContour*>(underMouseObj);
-    mScene->pasteCommand(parent);
+    mScene->pasteCommand(mInsertedObjectGroup->childItems(), parent);
+    clean();
 }
 
 void SCgInsertModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     SCgEventHandler::mouseMove(event);
-    if(mScene->insertedObjects())
-        mScene->insertedObjects()->setPos(event->scenePos());
+    if (mInsertedObjectGroup)
+        mInsertedObjectGroup->setPos(event->scenePos());
 }
 
 void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
@@ -64,5 +73,58 @@ void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
 void SCgInsertModeEventHandler::clean()
 {
     SCgEventHandler::clean();
-    mScene->cleanInsertedObjects();
+    if (mInsertedObjectGroup)
+    {
+        delete mInsertedObjectGroup;
+        mInsertedObjectGroup = 0;
+    }
+}
+
+void SCgInsertModeEventHandler::activate() {
+    if (mInsertedObjectGroup)
+    {
+        delete mInsertedObjectGroup;
+        mInsertedObjectGroup = 0;
+    }
+
+    const QMimeData* data = QApplication::clipboard()->mimeData();
+    if(data->hasFormat(SCgWindow::SupportedPasteMimeType))
+    {
+        QDomDocument document;
+
+        if (!document.setContent(data->data(SCgWindow::SupportedPasteMimeType)))
+            return;
+
+        // Read document
+        GwfObjectInfoReader reader;
+        if (! reader.read(document))
+            return;
+
+        //Place objects to scene
+        TemplateSCgObjectsBuilder objectBuilder(mScene);
+        objectBuilder.buildObjects(reader.objectsInfo());
+
+        QList<SCgObject*> list = objectBuilder.objects();
+        QList<QGraphicsItem*> withoutChilds;
+        foreach(SCgObject* obj, list)
+            if (!obj->parentItem())
+                withoutChilds.append(obj);
+
+        if(!withoutChilds.empty())
+        {
+            mInsertedObjectGroup = mScene->createItemGroup(withoutChilds);
+
+            QGraphicsView* v = mScene->views().at(0);
+            QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
+            mInsertedObjectGroup->setPos(p);
+            mInsertedObjectGroup->setOpacity(0.5);
+        }
+    }
+    else mScene->setEditMode(mScene->previousMode());
+
+
+}
+
+void SCgInsertModeEventHandler::deactivate() {
+    clean();
 }

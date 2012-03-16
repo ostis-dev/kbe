@@ -94,6 +94,8 @@ void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
     }
+    if (mScene->selectedItems().count() > 0 && event->modifiers() == Qt::ShiftModifier)
+        mScene->setEditMode(SCgScene::Mode_Clone);
 }
 
 void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
@@ -170,41 +172,6 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
         mScene->moveSelectedCommand(mUndoInfo);
         mIsItemsMoved = false;
         mUndoInfo.clear();
-    }
-}
-
-void SCgSelectModeEventHandler::keyPress(QKeyEvent *event) {
-    SCgEventHandler::keyPress(event);
-    if (event->modifiers() == Qt::ShiftModifier) {
-        QList<QGraphicsItem*> itemList = mScene->selectedItems();
-        QByteArray clonedData;
-        GwfStreamWriter writer(&clonedData);
-        writer.startWriting();
-        if (itemList.isEmpty())
-            return;
-
-        foreach (QGraphicsItem *item, itemList)
-            if(SCgObject::isSCgObjectType(item->type()) )
-                writer.writeObject(static_cast<SCgObject*>(item));
-
-        writer.finishWriting();
-        QDomDocument document;
-
-        if (!document.setContent(clonedData))
-            return;
-
-        // Read document
-        GwfObjectInfoReader reader;
-        if (! reader.read(document))
-            return;
-
-        //Place objects to scene
-        TemplateSCgObjectsBuilder objectBuilder(mScene);
-        objectBuilder.buildObjects(reader.objectsInfo());
-
-        mScene->pasteTemplate(objectBuilder.objects());
-
-        event->accept();
     }
 }
 

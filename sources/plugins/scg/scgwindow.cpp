@@ -432,25 +432,7 @@ void SCgWindow::copy() const
 
 void SCgWindow::paste() const
 {
-    const QMimeData* data = QApplication::clipboard()->mimeData();
-    if(data->hasFormat(SupportedPasteMimeType))
-    {
-        QDomDocument document;
-
-        if (!document.setContent(data->data(SupportedPasteMimeType)))
-            return;
-
-        // Read document
-        GwfObjectInfoReader reader;
-        if (! reader.read(document))
-            return;
-
-        //Place objects to scene
-        TemplateSCgObjectsBuilder objectBuilder(mView->scene());
-        objectBuilder.buildObjects(reader.objectsInfo());
-
-        static_cast<SCgScene*>(mView->scene())->pasteTemplate(objectBuilder.objects());
-    }
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_InsertTemplate);
 }
 
 void SCgWindow::deleteSelected()
