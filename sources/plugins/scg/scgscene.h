@@ -285,6 +285,20 @@ public:
      */
     void pasteTemplate(const QList<SCgObject*>& list);
 
+    //! Returned previous edit mode
+    EditMode previousMode() const;
+
+    //! Clean set of objects which have been prepared for insert
+    void cleanInsertedObjects();
+
+    /*! Paste objects command.
+     * @param items Inserted objects.
+     * @param parent parent contour.
+     */
+    void pasteCommand(SCgContour* parent);
+
+    //! Returned objects for inserting as one object
+    QGraphicsItemGroup* insertedObjects();
 private:
     QVector<SCgEventHandler*> mSceneEventHandlers;
     //! Current edit mode
@@ -310,13 +324,6 @@ private:
     QPointF mCursor;
 
 private:
-    friend class SCgInsertModeEventHandler;
-
-    /*! Paste objects command.
-     * @param items Inserted objects.
-     * @param parent parent contour.
-     */
-    void pasteCommand(SCgContour* parent);
     //! inserted objects
     QGraphicsItemGroup* mInsertedObjectGroup;
     //! previous edit mode

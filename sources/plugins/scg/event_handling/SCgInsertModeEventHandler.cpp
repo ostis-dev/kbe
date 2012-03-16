@@ -46,8 +46,8 @@ void SCgInsertModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
 void SCgInsertModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     SCgEventHandler::mouseMove(event);
-    if(mScene->mInsertedObjectGroup)
-        mScene->mInsertedObjectGroup->setPos(event->scenePos());
+    if(mScene->insertedObjects())
+        mScene->insertedObjects()->setPos(event->scenePos());
 }
 
 void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
@@ -56,7 +56,7 @@ void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
     if(event->key() == Qt::Key_Escape)
     {
         clean();
-        mScene->setEditMode(mScene->mPreviousEditMode);
+        mScene->setEditMode(mScene->previousMode());
         event->accept();
     }
 }
@@ -64,10 +64,5 @@ void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
 void SCgInsertModeEventHandler::clean()
 {
     SCgEventHandler::clean();
-    if (mScene->mInsertedObjectGroup)
-    {
-        delete(mScene->mInsertedObjectGroup);
-        mScene->mInsertedObjectGroup = 0;
-    }
+    mScene->cleanInsertedObjects();
 }
-

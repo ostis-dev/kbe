@@ -185,6 +185,8 @@ void SCgScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void SCgScene::keyPressEvent(QKeyEvent *event)
 {
     Q_ASSERT(mEventHandler);
+//    if (event->modifiers() == Qt::ShiftModifier && mEventHandler->mode() == Mode_Select)
+//        setEditMode(Mode_Clone);
     mEventHandler->keyPress(event);
     if(!event->isAccepted())
         QGraphicsScene::keyPressEvent(event);
@@ -434,10 +436,25 @@ void SCgScene::pasteCommand(SCgContour* parent)
 
     destroyItemGroup(mInsertedObjectGroup);
     mInsertedObjectGroup = 0;
-
     mUndoStack->push(new SCgCommandInsert(this,objList,parent,0));
 
     setEditMode(mPreviousEditMode);
+}
+
+SCgScene::EditMode SCgScene::previousMode() const {
+    return mPreviousEditMode;
+}
+
+void SCgScene::cleanInsertedObjects() {
+    if (mInsertedObjectGroup)
+    {
+        delete mInsertedObjectGroup;
+        mInsertedObjectGroup = 0;
+    }
+}
+
+QGraphicsItemGroup* SCgScene::insertedObjects() {
+    return mInsertedObjectGroup;
 }
 
 SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgBaseCommand* parentCmd, bool addToStack)

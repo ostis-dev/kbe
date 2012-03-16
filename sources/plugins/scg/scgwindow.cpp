@@ -35,7 +35,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
-#include <QDebug>
 
 #include "scglayoutmanager.h"
 #include "scgarrangervertical.h"
