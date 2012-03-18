@@ -35,24 +35,35 @@ public:
     /*! @defgroup mouseEvendHandling Mouse Events
      *  @{
      */
-    void mousePress(QGraphicsSceneMouseEvent *event);
+    virtual void mousePress(QGraphicsSceneMouseEvent *event);
 
-    void mouseMove(QGraphicsSceneMouseEvent *event);
+    virtual void mouseMove(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 
     /*! @defgroup keyboardEvendHandling Keyboard Events
      *  @{
      */
-    void keyPress(QKeyEvent *event);
+    virtual void keyPress(QKeyEvent *event);
     /*! @}*/
 
     //! Cleans current edit state.
-    void clean();
+    virtual void clean();
 
     virtual SCgScene::EditMode mode()
     {
         return SCgScene::Mode_InsertTemplate;
     }
+
+    //! @sa SCgEventHandler::deactivate()
+    virtual void activate();
+
+    //! @sa SCgEventHandler::deactivate()
+    virtual void deactivate();
+
+protected:
+    //! Inserted objects
+    QGraphicsItemGroup* mInsertedObjectGroup;
+
 };
 
 #endif /* SCGINSERTMODEEVENTHANDLER_H_ */

@@ -21,21 +21,24 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "SCgSelectModeEventHandler.h"
 #include "../scgcontour.h"
-#include <QUndoStack>
+#include "../gwf/gwffilewriter.h"
+#include "../gwf/gwfobjectinforeader.h"
+#include "../scgtemplateobjectbuilder.h"
+#include <QDomDocument>
 #include "../scgnode.h"
 #include "../scgbus.h"
 #include "../pointgraphicsitem.h"
 
 SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
-                                            mIsItemsMoved(false),
-                                            mCurrentPointObject(0)
+    mIsItemsMoved(false),
+    mCurrentPointObject(0)
 {
 
 }
 
 SCgSelectModeEventHandler::~SCgSelectModeEventHandler()
 {
-//    clean();
+    //    clean();
 }
 
 void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
@@ -54,15 +57,15 @@ void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event
                 mScene->addPointCommand(mCurrentPointObject,itemPoint);
             event->accept();
         }else
-        // check if there are no any items under mouse and create scg-node
-        if (item == 0 || item->type() == SCgContour::Type)
-        {
-            SCgContour *contour = 0;
-            if (item != 0 && item->type() == SCgContour::Type)
-                contour = static_cast<SCgContour*>(item);
-            mScene->createNodeCommand(mousePos, contour);
-            event->accept();
-        }
+            // check if there are no any items under mouse and create scg-node
+            if (item == 0 || item->type() == SCgContour::Type)
+            {
+                SCgContour *contour = 0;
+                if (item != 0 && item->type() == SCgContour::Type)
+                    contour = static_cast<SCgContour*>(item);
+                mScene->createNodeCommand(mousePos, contour);
+                event->accept();
+            }
     }
     SCgEventHandler::mouseDoubleClick(event);
 }
@@ -91,6 +94,8 @@ void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
     }
+    if (mScene->selectedItems().count() > 0 && event->modifiers() == Qt::ShiftModifier)
+        mScene->setEditMode(SCgScene::Mode_Clone);
 }
 
 void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
@@ -130,7 +135,7 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
             QGraphicsItem *item = it.key();
             SCgContour *newParent = 0;
             switch(item->type()) {
-                case PointGraphicsItem::Type : case IncidencePointGraphicsItem::Type : {
+            case PointGraphicsItem::Type : case IncidencePointGraphicsItem::Type : {
                 // exclude PointGraphicsItem's object, because it always has a parent item
                 it.value().second.second = item->pos();
                 continue;
@@ -140,8 +145,8 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
                 break;
             }
             case SCgBus::Type : {
-                 SCgNode* node = qgraphicsitem_cast<SCgBus*>(item)->owner();
-                 newParent = findNearestParentContour(node);
+                SCgNode* node = qgraphicsitem_cast<SCgBus*>(item)->owner();
+                newParent = findNearestParentContour(node);
             }
             default : break;
             }

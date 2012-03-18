@@ -355,6 +355,25 @@ void SCgCommandInsert::undo()
     SCgBaseCommand::undo();
 }
 // -------------------
+SCgCommandClone::SCgCommandClone(SCgScene *scene,
+                                 QList<SCgObject *> objList,
+                                 SCgContour *parentContour,
+                                 QUndoCommand *parent) :
+    SCgCommandInsert(scene, objList, parentContour, parent) {
+    setText(QObject::tr("Clone"));
+}
+
+SCgCommandClone::~SCgCommandClone() {}
+
+void SCgCommandClone::redo() {
+    SCgCommandInsert::redo();
+}
+
+void SCgCommandClone::undo() {
+    SCgCommandInsert::undo();
+}
+
+// -------------------
 SCgCommandObjectIdtfChange::SCgCommandObjectIdtfChange(SCgScene *scene,
                                                        SCgObject *object,
                                                        const QString &newIdtf,
