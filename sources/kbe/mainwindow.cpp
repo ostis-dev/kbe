@@ -35,6 +35,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QStyleFactory>
 #include <QSignalMapper>
 #include <QFileDialog>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QListWidget>
+#include <QLabel>
+#include <QPushButton>
 #include <QUndoGroup>
 #include <QMessageBox>
 #include <QUrl>
@@ -299,8 +304,38 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
 
 void MainWindow::fileNew()
 {
-    if (PluginManager::instance()->supportedFilesExt().size() > 0)
-        createSubWindow(*PluginManager::instance()->supportedFilesExt().begin());
+    if (PluginManager::instance()->supportedFilesExt().size() > 0) {
+        QDialog *fileNewDlg = new QDialog(this);
+        QVBoxLayout *lay = new QVBoxLayout;
+        QLabel *lab = new QLabel(tr("List of available formats:"));
+
+        QListWidget *w = new QListWidget;
+        w->setSelectionMode(QAbstractItemView::SingleSelection);
+        w->setIconSize(QSize(16, 16));
+        foreach (QString ext, PluginManager::instance()->supportedFilesExt()) {
+            w->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
+        }
+
+        QHBoxLayout *buttonLay = new QHBoxLayout;
+        QPushButton *butOk = new QPushButton(tr("OK"));
+        QPushButton *butCancel = new QPushButton(tr("Cancel"));
+        connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
+        connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
+        buttonLay->addWidget(butOk, 1, Qt::AlignRight);
+        buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
+
+        lay->addWidget(lab);
+        lay->addWidget(w);
+        lay->addLayout(buttonLay);
+        fileNewDlg->setLayout(lay);
+        int dlgResult = fileNewDlg->exec();
+        if (dlgResult == QDialog::Accepted) {
+            QString str = w->selectedItems().at(0)->text();
+            QString format = str.mid(0, str.indexOf(" "));
+            createSubWindow(format);
+        }
+
+    }
 }
 
 void MainWindow::fileOpen()
