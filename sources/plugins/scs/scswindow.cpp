@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scsfileloader.h"
 #include "scsfilewriter.h"
 #include "scshighlightingrulespool.h"
+#include "scscodeeditor.h"
+#include "scssyntaxhighlighter.h"
 
 #include <QHBoxLayout>
 #include <QIcon>
@@ -39,14 +41,14 @@ SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
     mHighlighter(0),
     mIsSaved(false)
 {
-    mEditor = new CodeEditor();
+    mEditor = new SCsCodeEditor();
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
     mEditor->setFont(font);
     mEditor->setPalette(QPalette(QPalette::Background, Qt::white));
     mEditor->setTabStopWidth(20);
 
-    mHighlighter = new SyntaxHighlighter(mEditor->document(), SCsHighlightingRulesPool::getInstance()->getRules());
+    mHighlighter = new SCsSyntaxHighlighter(mEditor->document(), SCsHighlightingRulesPool::getInstance()->getRules());
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(this->mEditor);
     setLayout(layout);

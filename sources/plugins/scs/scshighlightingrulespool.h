@@ -24,8 +24,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCSHIGHLIGHTINGRULESPOOL_H
 
 #include <QList>
-#include "abstracthighlightingrule.h"
-#include "multilinecommenthighlightingrule.h"
+#include "scsabstracthighlightingrule.h"
+#include "scsmultilinecommenthighlightingrule.h"
 
 class SCsHighlightingRulesPool
 {
@@ -39,7 +39,7 @@ public:
         return SCsHighlightingRulesPool::instance;
     }
 
-    QList<AbstractHighlightingRule*> getRules();
+    QList<SCsAbstractHighlightingRule*> getRules();
 
     ~SCsHighlightingRulesPool();
 private:
@@ -47,7 +47,7 @@ private:
     void initiScNodesRules();
 
     SCsHighlightingRulesPool();
-    QList<AbstractHighlightingRule*> rules;
+    QList<SCsAbstractHighlightingRule*> rules;
     static SCsHighlightingRulesPool* instance;
 };
 

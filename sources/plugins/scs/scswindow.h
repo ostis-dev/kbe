@@ -24,8 +24,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCSWINDOW_H
 
 #include "interfaces/editorinterface.h"
-#include "codeeditor.h"
-#include "syntaxhighlighter.h"
+#include "scscodeeditor.h"
+#include "scssyntaxhighlighter.h"
 
 #include <QWidget>
 
@@ -76,8 +76,8 @@ public:
 
 private:
 
-    CodeEditor *mEditor;
-    SyntaxHighlighter *mHighlighter;
+    SCsCodeEditor *mEditor;
+    SCsSyntaxHighlighter *mHighlighter;
     bool mIsSaved;
 
 };
