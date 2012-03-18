@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body bgcolor="#000033" dir="ltr" lang="en-US" link="#ffff00" text="#ccccff">
+
+<p class="header" align="center"><img alt="" src="ostis-logo.png"></p>
+<p class="header" align="center">OSTIS (Open Semantic Technology for Intelligent Systems)</p>
+<p class="header" align="center">Knowledge Base source Editor</p>
+<p class="header" align="center">Coding standards</p>
+
+<hr width="90%">
+This document describes the coding standards all developers are expected to adhere to when writing code for the KBE project. 
+
+<p class="header">Files</p>
+<ol>
+	<li>All source files must begin with the standard KBE copyright statement:
+		<pre>
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2010 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+		</pre>
+	</li>
+	<li>All classes should be declared in their own header file using the .h extension. Files of kbe core should has name: 
+	<pre>&lt;classname&gt;.h</pre>For example: <pre>mainwindow.h</pre>
+	Name of files that are a part of any plugin should has name:
+	<pre>&lt;puginname&gt;&lt;classname&gt;.h</pre>
+	For example:
+	<pre>scgobject.h; m4scpeditor.h</pre>
+	</li>
+	<li>Implementations should be placed in a source file called the same name as the class but with an extension of .cpp.</li>
+	<li>File names should not contain spaces, although they should be underscore.</li>
+	<li>All header files should have include guards implemented via preprocessor #ifdef/#endif commands. We do not want any pragma rubbish used for this as it's worse than useless as far as being portable goes. The macro used to control the header should be based upon the filename.
+	For example:
+	<pre>
+#ifndef SCSWINDOW_H
+#define SCSWINDOW_H
+...
+#endif</pre>
+	</li>
+	<li>Please ensure that all files have a newline at the end of them. Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to includes. Plus it gives loads of annoying warnings on gcc :)</li>
+	<li>Wherever possible header files should contain <a href="http://www.doxygen.org">Doxygen</a> documentation for all classes, data and functions. There will be very few, if any, exceptions to this rule.</li>
+	<li>The general content of a header file should be in the following order:
+		<ul>
+			<li>File header (license)</li>
+			<li>Include guard</li>
+			<li>#include statements (grouped according to library where appropriate)</li>
+			<li>Preprocessor macro defines (especially try to avoid these in headers)</li>
+			<li>Class forward references</li>
+			<li>Global declarations</li>
+			<li>Class declarations</li>
+		</ul>
+	</li>
+	<li>The general content of a source file should be in the following order:
+		<ul>
+			<li>File header</li>
+			<li>#include statements (grouped according to library where appropriate)</li>
+			<li>Preprocessor macro defines (avoid where possible)</li>
+			<li>Global definitions</li>
+			<li>Class static data definitions</li>
+			<li>Class member function definitions</li>
+		</ul>
+	</li>
+</ol>
+
+<p class="header">Portablity</p>
+<ol>
+	<li>All code must be cross platform, ANSI C++. No dependencies on platform-specific headers and / or types are allowed (the only exception is when dealing with platform-specific features like windowing, which must be implemented for each platform separately).</li>
+	<li>If you serialise / deserialise any data, subclass from Serializer and use its methods, it will insulate you from endianness issues. If you need to serialise any types it doesn't already handle, make sure you deal with endianness issues in the same way Serializer does (ie use native endianness by default but detect the inverse on reading and perform flipping if required).</li>
+</ol>
+
+<p class="header">C++ Standards compliance</p>
+<ol>
+	<li>Always prefer the QT over custom or stl containers / algorithms.</li>
+	<li>Always prefer C++ techniques over C:
+		<ul>
+			<li>Avoid C-strings (char* and functions like sprintf, strcpy, use Ogre::String)</li>
+			<li>Avoid old I/O routines (fopen et al, use &lt;iostream&gt;)</li>
+			<li>Use abstract classes or templates not void*</li>
+			<li>Use overloaded methods not varargs.</li>
+		</ul>
+	</li>
+	<li>Use the <a href="http://www.boost.org/libs/serialization/doc/pimpl.html">PImpl idiom</a> to reduce dependencies between classes.</li>
+	<li>Always use <a href="http://www.cprogramming.com/tutorial/const_correctness.html">const-correctness</a>. Methods taking non-primitive types as parameters should generally take them as const references, methods returning non-primitive types should generally return them as const references. Declare all methods that do not modify internal state 'const'. For lazy-update getter methods, declare the internal state which is lazy-updated 'mutable'.</li>
+	<li>Prefer 'protected' over 'private' to encourage specialisation where appropriate</li>
+	<li>Always declare destructors 'virtual' unless the class you are writing should not have any vtable (no other virtual methods).</li>
+	<li>Avoid non-const by-ref parameters unless you have no other option. We prefer not to have in/our parameters since they are less intuitive.</li>
+</ol>
+
+<p class="header">Naming conventions & Documentation</p>
+<ol>
+	<li>Classes, types and structures must be title case (MyNewClass)</li>
+	<li>Methods and local variables must be camel case (myNewMethod)</li>
+	<li>Member variables should be prefixed with 'm' (mInstanceVar), static member variables should be prefixed 'ms' (msStaticMemberVar). Do not use any other prefixing such as Hungarian notation</li>
+	<li>Preprocessor macros must be all upper case</li>
+	<li>Get-functions should be named in Qt style:
+	<pre>QPoint point()</pre>
+	instead of:
+	<pre>QPoint getPoint()</pre>
+	</li>
+	<li>Enums should be named in title case, enum values should be all upper case
+	For example:
+	<pre>
+typedef enum
+{
+	Const   = 0,
+	Var,
+	Meta,
+	ConstUnknown
+}SCgConstType;
+	</pre>
+	</li>
+	<li>All classes and methods must be fully documented in English using <a href="http://www.doxygen.org">Doxygen</a>-compatible comments. Use the @param and @returns directives to define inputs and outputs clearly, and @note to indicate points of interest</li>
+	<li>Use verbose, descriptive names for classes, methods, variables - everything except trival counters. Code should be self-describing, don't be obtuse</li>
+</ol>
+
+<p class="header">Style issues</p>
+<ol>
+	<li>Any and all braces opening a code block should be on their own line, and not attached to the control structure that came before. That is, like this
+	<pre>
+void MyClass::do()
+{
+	...
+	for (quint32 i = 0; i < 10; i++)
+	{
+		...
+	}
+	...
+}
+	</pre>
+	but not like this:
+	<pre>
+void MyClass::do(){
+	...
+	for (quint32 i = 0; i < 10; i++){
+		...
+	}
+	...
+}
+	</pre>
+	</li>
+	
+	<li>The general layout of a function definition (in the .cpp source file) should have the return type on the same line, such as this: 
+	<pre>
+QString SomeClass::getString()
+{
+    return ...;
+}
+	</pre>
+	</li>
+	
+	<li>Having multiple statements on a single line is not allowed, even for control structures. Each statement should be on its own line. Code should be like this:
+	<pre>
+if (x == 0)
+    x = 1;
+
+x = 2;
+x += y;
+	</pre>
+	Code should not be like this:
+	<pre>
+if (x == 0) x = 1;
+
+x = 2; x += y;
+	</pre>
+	</li>
+	
+	<li>There should be a space between a control statement and its control expression. Use this:
+	<pre>
+if (something)
+    x = y;
+	</pre>
+	Not this:
+	<pre>
+if(something)
+    x = y;
+	</pre>
+	</li>
+	
+	<li>When calling a function, there should be no space between the function name and the parenthesis containing the arguments. So, like this:
+	<pre>
+an_object->callFunction(x, y, x);
+	</pre>
+	Not like this:
+	<pre>
+an_object->callFunction (x, y, x);
+	</pre>
+	</li>
+	
+	<li>There should generally not be spaces around parenthesis (unless otherwise excepted above). Code should look like this:
+	<pre>
+a = calculate((x + y) * z);
+	</pre>
+	Not like this:
+	<pre>
+a = calculate( ( x + y ) * z );
+	</pre>
+	</li>
+	
+	<li>There should be spaces both sides of virtually all operators, except the comma which just has one following it. An example of correct usage is:
+	<pre>
+a = calculate((x + y) * z);
+b = doSomething(a, x, y);
+	</pre>
+	Not anything like these:
+	<pre>
+a = calculate((x+y)*z);
+b=doSomething(a,x , y);
+	</pre>
+	</li>
+	
+	<li>Class declarations should not have the protection level specifiers indented. It should be like this: 
+	<pre>
+class SomeClass
+{
+public:
+    SomeClass();
+};
+	</pre>
+	rather than like this: 
+	<pre>
+class SomeClass
+{
+    public:
+        SomeClass();
+};
+	</pre>
+	</li>
+	<li>Use typedefs to declare template-based types that you use to avoid ugliness e.g.
+	<pre>typedef std::list<MyType*> MyTypeList;</pre>
+	</li>
+	<li>Always insert spaces in between operators and operands (x + y, not x+y).
+	For example:
+	<pre>x = (5 * y) + 10;</pre>
+	</li>
+	<li>Use parenthesis to make the operator precedence unambiguous, even when it is not required ((x * y) + 1, not x * y + 1)</li>
+	<li>Code within functions should be split into logical groups by the use of blank lines where appropriate. Generally any control structure (if, while, case, do and so on) should be both preceded and followed by a blank line</li>
+	<li>When commenting, write the comment first; always put it before the line or block it pertains to. This helps to ensure the comment indicates the intent of the code that you then write, rather than parrotting what is obvious from the code, which tends to happen when adding comments afterwards - we can already see what the code does, what we're interested in is it's purpose; the why as opposed to the what</li>
+	<li>String and/or character literals should not appear in production code; use constant definitions instead</li>
+	<li>Magic numbers should not appear in production code; use constant definitions instead. In general the only number that may appear in production code is 0</li>
+	<li>Use of NULL is not allowed; use 0 instead. NULL is just a macro definition and does not exist in any other form in the C++ language, so it should not be used</li>
+	<li>When defining class constructors, use of member initialiser lists is to be strongly preferred over the use of assignments in the constructor body</li>
+	<li>Only use C++ style casts. C style casts should not be used. Or better yet, find a way not to use the cast at all</li>
+</ol>
+
+<p class="header">Error handling</p>
+<ol>
+	<li>Whenever you make an assumption in your code, verify it with an Q_ASSERT()</li>
+</ol>
+
+<p class="header">Design issues</p>
+<ol>
+	<li>Use existing design patterns and identify them by their well known names. A good starting reference is the 'Gang of Four' book</li>
+	<li>Use strong encapsulation. Top-level interfaces should hide implementations and not require the user of the library to understand internals. Avoid public attributes except in structs</li>
+	<li>Don't use 'friend' if you can avoid it. Where classes need to collaborate on an internal implementation, prefix the methods they use to communicate with '_' (this is our demarcation for 'recommended for internal use only'). This can also be used to expose advanced functionality only intended for very skilled users</li>
+</ol>
+
+<hr width="90%">
+<p align="center">Copyright &copy; 2010 by The OSTIS Team
+<script>
+<!--//hide script from old browsers
+document.write( "Last modified "+ document.lastModified );
+//end hiding contents -->
+</script></p>
+
+</body>
