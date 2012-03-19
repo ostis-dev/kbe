@@ -77,7 +77,7 @@ QList<QWidget*> SCsWindow::widgetsForDocks()
 QStringList SCsWindow::supportedFormatsExt() const
 {
     QStringList res;
-    res << "m4scp";
+    res << "scs";
     return res;
 }
 
