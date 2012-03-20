@@ -147,6 +147,15 @@ QStringList SCgScene::idtfList()
     return mIdtfList;
 }
 
+QList<SCgObject*> SCgScene::getItems(int type) const {
+    QList<QGraphicsItem*> allItems = items();
+    QList<SCgObject*> resultList;
+    foreach (QGraphicsItem* item, allItems)
+        if (item->type() == type) resultList.append(static_cast<SCgObject*>(item));
+    return resultList;
+}
+
+
 void SCgScene::setIdtfDirtyFlag()
 {
     mIsIdtfModelDirty = true;

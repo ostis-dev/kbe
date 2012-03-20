@@ -250,6 +250,66 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
             mScene->moveSelectedCommand(undoInfo);
         }
     }
+    else
+        if (event->key()>= Qt::Key_Left && event->key() <= Qt::Key_Down && mScene->selectedItems().size() == 1)
+        {
+            QGraphicsItem* currentSelectedItem = mScene->selectedItems().at(0);
+
+            int objType = currentSelectedItem->type();
+            QList<SCgObject*> itemsList = mScene->getItems(objType);
+            QGraphicsItem* nextSelectedItem = 0;
+            for (int i = 0; i < itemsList.size(); ++i)
+            {
+                qreal x0 = 0, y0 = 0, x1 = 0, x2 = 0, y1 = 0, y2 = 0, r1 = 0, r2 = 0;
+                if (nextSelectedItem) {
+                    x1 = nextSelectedItem->scenePos().x();
+                    y1 = nextSelectedItem->scenePos().y();
+                    r1 = (nextSelectedItem->scenePos() - currentSelectedItem->scenePos()).manhattanLength();
+                }
+                x0 = currentSelectedItem->scenePos().x();
+                y0 = currentSelectedItem->scenePos().y();
+                x2 = itemsList.at(i)->scenePos().x();
+                y2 = itemsList.at(i)->scenePos().y();
+                r2 = (itemsList.at(i)->scenePos() - currentSelectedItem->scenePos()).manhattanLength();
+                if (itemsList.at(i) == currentSelectedItem) continue;
+                switch(event->key())
+                {
+                case Qt::Key_Left :
+                {
+                    if (x1 && r2 < r1 && x2 >= x1 && x2 <= x0)
+                            nextSelectedItem = itemsList.at(i);
+                    else if (!x1 && x2 < x0) nextSelectedItem = itemsList.at(i);
+                    break;
+                }
+                case Qt::Key_Right :
+                {
+                    if (x1 && r2 < r1 && x2 <= x1 && x2 >= x0)
+                            nextSelectedItem = itemsList.at(i);
+                    else if (!x1 && x2 > x0) nextSelectedItem = itemsList.at(i);
+                    break;
+                }
+                case Qt::Key_Up :
+                {
+                    if (y1 && r2 < r1 && y2 >= y1 && y2 <= y0)
+                            nextSelectedItem = itemsList.at(i);
+                    else if (!y1 && y2 < y0) nextSelectedItem = itemsList.at(i);
+                    break;
+                }
+                case Qt::Key_Down :
+                {
+                    if (y1 && r2 < r1 && y2 <= y1 && y2 >= y0)
+                            nextSelectedItem = itemsList.at(i);
+                    else if (!y1 && y2 > y0) nextSelectedItem = itemsList.at(i);
+                    break;
+                }
+                }
+            }
+            if (nextSelectedItem)
+            {
+                currentSelectedItem->setSelected(false);
+                nextSelectedItem->setSelected(true);
+            }
+        }
 }
 
 void SCgEventHandler::keyRelease(QKeyEvent *event)

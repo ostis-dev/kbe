@@ -130,6 +130,13 @@ public:
     //! @return List of used identifiers on this scene.
     QStringList idtfList();
 
+    /**
+    * @brief Gets all items with a given type which added to the scene
+    * @param type Type of objects that need to be selected from the scene
+    * @return List of selected objects
+    */
+    QList<SCgObject*> getItems(int type) const;
+
     /*! Create SCg-node.
         @param pos    SCg-node position.
         @return Created SCg-node
