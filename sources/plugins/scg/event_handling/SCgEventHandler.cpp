@@ -138,7 +138,7 @@ void SCgEventHandler::startLineCreation(const QPointF &point)
         if(mObjectAtFirstPoint->type() == SCgNode::Type || mObjectAtFirstPoint->type() == SCgContour::Type )
             mLinePoints.push_back(mObjectAtFirstPoint->scenePos());
         else
-            mLinePoints.push_back(mObjectAtFirstPoint->cross(point, mObjectAtFirstPoint->dotPos(point) ));
+            mLinePoints.push_back(mObjectAtFirstPoint->cross(point, mObjectAtFirstPoint->dotPos(point)));
 
         if (curr_mode == SCgScene::Mode_Contour)
         {
@@ -147,7 +147,8 @@ void SCgEventHandler::startLineCreation(const QPointF &point)
         }
         else
             parent = mObjectAtFirstPoint->parentItem();
-    } else
+    }
+    else
         mLinePoints.push_back(point);
 
     mLastLineItem = new QGraphicsLineItem(parent);
@@ -256,7 +257,7 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
             QGraphicsItem* currentSelectedItem = mScene->selectedItems().at(0);
 
             int objType = currentSelectedItem->type();
-            QList<SCgObject*> itemsList = mScene->getItems(objType);
+            QList<SCgObject*> itemsList = mScene->itemsByType(objType);
             QGraphicsItem* nextSelectedItem = 0;
             for (int i = 0; i < itemsList.size(); ++i)
             {
@@ -276,28 +277,28 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
                 {
                 case Qt::Key_Left :
                 {
-                    if (x1 && r2 < r1 && x2 >= x1 && x2 <= x0)
+                    if (x1 && r2 < r1 && x2 <= x0)
                             nextSelectedItem = itemsList.at(i);
                     else if (!x1 && x2 < x0) nextSelectedItem = itemsList.at(i);
                     break;
                 }
                 case Qt::Key_Right :
                 {
-                    if (x1 && r2 < r1 && x2 <= x1 && x2 >= x0)
+                    if (x1 && r2 < r1 && x2 >= x0)
                             nextSelectedItem = itemsList.at(i);
                     else if (!x1 && x2 > x0) nextSelectedItem = itemsList.at(i);
                     break;
                 }
                 case Qt::Key_Up :
                 {
-                    if (y1 && r2 < r1 && y2 >= y1 && y2 <= y0)
+                    if (y1 && r2 < r1 && y2 <= y0)
                             nextSelectedItem = itemsList.at(i);
                     else if (!y1 && y2 < y0) nextSelectedItem = itemsList.at(i);
                     break;
                 }
                 case Qt::Key_Down :
                 {
-                    if (y1 && r2 < r1 && y2 <= y1 && y2 >= y0)
+                    if (y1 && r2 < r1 && y2 >= y0)
                             nextSelectedItem = itemsList.at(i);
                     else if (!y1 && y2 > y0) nextSelectedItem = itemsList.at(i);
                     break;

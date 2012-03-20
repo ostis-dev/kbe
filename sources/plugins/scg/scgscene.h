@@ -135,7 +135,7 @@ public:
     * @param type Type of objects that need to be selected from the scene
     * @return List of selected objects
     */
-    QList<SCgObject*> getItems(int type) const;
+    QList<SCgObject*> itemsByType(int type) const;
 
     /*! Create SCg-node.
         @param pos    SCg-node position.
@@ -354,6 +354,8 @@ signals:
 
 public slots:
     void setIdtfDirtyFlag();
+private slots:
+    void ensureSelectedItemVisible();
 };
 
 #endif // SCGSCENE_H
