@@ -56,7 +56,8 @@ void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event
             if(p.contains(itemPoint))
                 mScene->addPointCommand(mCurrentPointObject,itemPoint);
             event->accept();
-        }else
+        }
+        else
             // check if there are no any items under mouse and create scg-node
             if (item == 0 || item->type() == SCgContour::Type)
             {
@@ -94,8 +95,6 @@ void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
     }
-//    if (mScene->selectedItems().count() > 0 && event->modifiers() == Qt::ShiftModifier)
-//        mScene->setEditMode(SCgScene::Mode_Clone);
 }
 
 void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
@@ -133,16 +132,20 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         //Store finish positions (after items moving)
         SCgScene::ItemUndoInfo::iterator it = mUndoInfo.begin();
-        for(; it != mUndoInfo.end(); ++it) {
+        for(; it != mUndoInfo.end(); ++it)
+        {
             QGraphicsItem *item = it.key();
             SCgContour *newParent = 0;
-            switch(item->type()) {
-            case PointGraphicsItem::Type : case IncidencePointGraphicsItem::Type : {
+            switch(item->type())
+            {
+            case PointGraphicsItem::Type : case IncidencePointGraphicsItem::Type :
+            {
                 // exclude PointGraphicsItem's object, because it always has a parent item
                 it.value().second.second = item->pos();
                 continue;
             }
-            case SCgNode::Type : case SCgContour::Type : {
+            case SCgNode::Type : case SCgContour::Type :
+            {
                 newParent = findNearestParentContour(item);
                 break;
             }
@@ -154,20 +157,25 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
             }
             QGraphicsItem *oldParent = item->parentItem();
             if (newParent) {// mapped item coordinates to new parent item
-                if (oldParent) it.value().second.second = oldParent->mapToItem(newParent, item->pos());
-                else it.value().second.second = newParent->mapFromScene(item->pos());
+                if (oldParent)
+                    it.value().second.second = oldParent->mapToItem(newParent, item->pos());
+                else
+                    it.value().second.second = newParent->mapFromScene(item->pos());
 
                 it.value().second.first = newParent;
                 item->setParentItem(newParent);
             }
-            else {
+            else
+            {
                 // we need check if items under cursor contain old parent item
-                if (mScene->itemAt(item->scenePos()) != oldParent){
+                if (mScene->itemAt(item->scenePos()) != oldParent)
+                {
                     it.value().second.second = item->scenePos();
                     item->setParentItem(0);
                     it.value().second.first = 0;
                 }
-                else it.value().second.second = item->pos();
+                else
+                    it.value().second.second = item->pos();
             }
         }
         //______________________________________________________//
@@ -187,18 +195,21 @@ void SCgSelectModeEventHandler::clean()
     mCurrentPointObject = 0;
 }
 
-SCgContour* SCgSelectModeEventHandler::findNearestParentContour(QGraphicsItem *item) {
+SCgContour* SCgSelectModeEventHandler::findNearestParentContour(QGraphicsItem *item)
+{
     // get list of items, which have the same position
     QList<QGraphicsItem*> itemList = mScene->items(item->scenePos(), Qt::ContainsItemShape, Qt::AscendingOrder);
     // if item is a SCgNode we will move it to the end of the list
-    if (item->type() == SCgNode::Type) {
+    if (item->type() == SCgNode::Type)
+    {
         itemList.removeOne(item);
         itemList.push_back(item);
     }
     int index = itemList.indexOf(item);
     SCgContour *newParent = 0;
     // find nearest SCgContour according to stack order
-    do {
+    do
+    {
         if (index <= 0) break;
         QGraphicsItem *tmpItem = itemList.at(--index);
         if (!item->childItems().contains(tmpItem) && tmpItem->type() == SCgContour::Type)
