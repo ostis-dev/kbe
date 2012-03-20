@@ -94,8 +94,8 @@ void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
     }
-    if (mScene->selectedItems().count() > 0 && event->modifiers() == Qt::ShiftModifier)
-        mScene->setEditMode(SCgScene::Mode_Clone);
+//    if (mScene->selectedItems().count() > 0 && event->modifiers() == Qt::ShiftModifier)
+//        mScene->setEditMode(SCgScene::Mode_Clone);
 }
 
 void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
@@ -122,6 +122,8 @@ void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
                 mCurrentPointObject = 0;
         }
     }
+    if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
+        mScene->setEditMode(SCgScene::Mode_Clone);
 }
 
 void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
