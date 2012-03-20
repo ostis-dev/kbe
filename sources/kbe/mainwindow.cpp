@@ -304,7 +304,8 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
 
 void MainWindow::fileNew()
 {
-    if (PluginManager::instance()->supportedFilesExt().size() > 0) {
+    if (PluginManager::instance()->supportedFilesExt().size() > 0)
+    {
         QDialog *fileNewDlg = new QDialog(this);
         QVBoxLayout *lay = new QVBoxLayout;
         QLabel *lab = new QLabel(tr("List of available formats:"));
@@ -312,12 +313,14 @@ void MainWindow::fileNew()
         QListWidget *w = new QListWidget;
         w->setSelectionMode(QAbstractItemView::SingleSelection);
         w->setIconSize(QSize(16, 16));
-        foreach (QString ext, PluginManager::instance()->supportedFilesExt()) {
+        foreach (QString ext, PluginManager::instance()->supportedFilesExt())
+        {
             w->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
         }
-
         QHBoxLayout *buttonLay = new QHBoxLayout;
         QPushButton *butOk = new QPushButton(tr("OK"));
+        if (w->count() > 0) w->item(0)->setSelected(true);
+        else butOk->setEnabled(false);
         QPushButton *butCancel = new QPushButton(tr("Cancel"));
         connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
         connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
@@ -329,7 +332,8 @@ void MainWindow::fileNew()
         lay->addLayout(buttonLay);
         fileNewDlg->setLayout(lay);
         int dlgResult = fileNewDlg->exec();
-        if (dlgResult == QDialog::Accepted) {
+        if (dlgResult == QDialog::Accepted)
+        {
             QString str = w->selectedItems().at(0)->text();
             QString format = str.mid(0, str.indexOf(" "));
             createSubWindow(format);
