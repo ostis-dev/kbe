@@ -69,7 +69,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     setEditMode(Mode_Select);
     // grid foreground
     //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
-    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
+//    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
 }
 
 SCgScene::~SCgScene()

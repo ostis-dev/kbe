@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "SCgEventHandler.h"
 #include <QPainterPath>
+#include <QGraphicsView>
 #include "../scgcontour.h"
 #include "../scgnode.h"
 
@@ -309,6 +310,7 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
             {
                 currentSelectedItem->setSelected(false);
                 nextSelectedItem->setSelected(true);
+                mScene->views().at(0)->ensureVisible(nextSelectedItem);
             }
         }
 }
