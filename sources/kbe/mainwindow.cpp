@@ -319,8 +319,10 @@ void MainWindow::fileNew()
         }
         QHBoxLayout *buttonLay = new QHBoxLayout;
         QPushButton *butOk = new QPushButton(tr("OK"));
-        if (w->count() > 0) w->item(0)->setSelected(true);
-        else butOk->setEnabled(false);
+        if (w->count() > 0)
+            w->item(0)->setSelected(true);
+        else
+            butOk->setEnabled(false);
         QPushButton *butCancel = new QPushButton(tr("Cancel"));
         connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
         connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
