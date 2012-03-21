@@ -130,6 +130,13 @@ public:
     //! @return List of used identifiers on this scene.
     QStringList idtfList();
 
+    /**
+    * @brief Gets all items with a given type which added to the scene
+    * @param type Type of objects that need to be selected from the scene
+    * @return List of selected objects
+    */
+    QList<SCgObject*> itemsByType(int type) const;
+
     /*! Create SCg-node.
         @param pos    SCg-node position.
         @return Created SCg-node
@@ -347,6 +354,8 @@ signals:
 
 public slots:
     void setIdtfDirtyFlag();
+private slots:
+    void ensureSelectedItemVisible();
 };
 
 #endif // SCGSCENE_H
