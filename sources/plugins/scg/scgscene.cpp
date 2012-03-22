@@ -69,7 +69,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     setEditMode(Mode_Select);
     // grid foreground
     //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
-
+//    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
 }
 
 SCgScene::~SCgScene()
@@ -146,6 +146,15 @@ QStringList SCgScene::idtfList()
 
     return mIdtfList;
 }
+
+QList<SCgObject*> SCgScene::itemsByType(int type) const {
+    QList<QGraphicsItem*> allItems = items();
+    QList<SCgObject*> resultList;
+    foreach (QGraphicsItem* item, allItems)
+        if (item->type() == type) resultList.append(static_cast<SCgObject*>(item));
+    return resultList;
+}
+
 
 void SCgScene::setIdtfDirtyFlag()
 {
@@ -796,4 +805,9 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
                                  tr("Current file's extention doesn't supported"));
         event->ignore();
     }
+}
+
+void SCgScene::ensureSelectedItemVisible() {
+    if (!selectedItems().isEmpty())
+        views().at(0)->ensureVisible(selectedItems().at(0));
 }
