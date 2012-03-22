@@ -304,20 +304,25 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
 
 void MainWindow::fileNew()
 {
-    if (PluginManager::instance()->supportedFilesExt().size() > 0) {
+    if (PluginManager::instance()->supportedFilesExt().size() > 0)
+    {
         QDialog *fileNewDlg = new QDialog(this);
         QVBoxLayout *lay = new QVBoxLayout;
         QLabel *lab = new QLabel(tr("List of available formats:"));
 
-        QListWidget *w = new QListWidget;
-        w->setSelectionMode(QAbstractItemView::SingleSelection);
-        w->setIconSize(QSize(16, 16));
-        foreach (QString ext, PluginManager::instance()->supportedFilesExt()) {
-            w->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
+        QListWidget *availableTypesList = new QListWidget;
+        availableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
+        availableTypesList->setIconSize(QSize(16, 16));
+        foreach (QString ext, PluginManager::instance()->supportedFilesExt())
+        {
+            availableTypesList->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
         }
-
         QHBoxLayout *buttonLay = new QHBoxLayout;
         QPushButton *butOk = new QPushButton(tr("OK"));
+        if (availableTypesList->count() > 0)
+            availableTypesList->item(0)->setSelected(true);
+        else
+            butOk->setEnabled(false);
         QPushButton *butCancel = new QPushButton(tr("Cancel"));
         connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
         connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
@@ -325,12 +330,13 @@ void MainWindow::fileNew()
         buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
 
         lay->addWidget(lab);
-        lay->addWidget(w);
+        lay->addWidget(availableTypesList);
         lay->addLayout(buttonLay);
         fileNewDlg->setLayout(lay);
         int dlgResult = fileNewDlg->exec();
-        if (dlgResult == QDialog::Accepted) {
-            QString str = w->selectedItems().at(0)->text();
+        if (dlgResult == QDialog::Accepted)
+        {
+            QString str = availableTypesList->selectedItems().at(0)->text();
             QString format = str.mid(0, str.indexOf(" "));
             createSubWindow(format);
         }
