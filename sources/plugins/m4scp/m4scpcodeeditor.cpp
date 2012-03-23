@@ -119,7 +119,6 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
     if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return){
-        //TODO
         moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
         QPlainTextEdit::keyPressEvent(e);
         return;
@@ -261,7 +260,7 @@ void M4SCpCodeEditor::changeSelection() {
 
 void M4SCpCodeEditor::updateBlockLevels()
 {
-    //TODO  Эта функция устанавливает уровни сворачивания блоков текста
+    //TODO  redefine this method in analyzer
 
     QString text;
     int i, level=0;
