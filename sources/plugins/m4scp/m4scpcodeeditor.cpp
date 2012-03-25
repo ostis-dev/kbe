@@ -119,7 +119,6 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
     if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return){
-        //TODO
         moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
         QPlainTextEdit::keyPressEvent(e);
         return;
@@ -186,7 +185,7 @@ void M4SCpCodeEditor::extraAreaPaintEvent(QPaintEvent *event)
     QTextBlock block = firstVisibleBlock();
     BlockData *blockData;
 
-    int level=9999,curLevel;
+    int level=0,curLevel;
     int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
 
     int bottom = top + (int) blockBoundingRect(block).height();
@@ -259,8 +258,9 @@ void M4SCpCodeEditor::changeSelection() {
     }
 }
 
-void M4SCpCodeEditor::updateBlockLevels(){
-    //TODO
+void M4SCpCodeEditor::updateBlockLevels()
+{
+    //TODO  redefine this method in analyzer
 
     QString text;
     int i, level=0;
@@ -278,7 +278,8 @@ void M4SCpCodeEditor::updateBlockLevels(){
     }
 }
 
-QRect M4SCpCodeEditor::drawIcon(QPainter *painter, int x,int y, bool folded){
+QRect M4SCpCodeEditor::drawIcon(QPainter *painter, int x,int y, bool folded)
+{
 
     QRect iconRect(x+1,y+1,12,12);
 
@@ -294,9 +295,8 @@ QRect M4SCpCodeEditor::drawIcon(QPainter *painter, int x,int y, bool folded){
 
 void M4SCpCodeEditor::foldOrUnfold(int blockNumber)
 {
-    QTextBlock block;
-    QTextBlock tempBlock=document()->findBlockByNumber(blockNumber);
-    BlockData *bd=BlockData::data(tempBlock);
+    QTextBlock block=document()->findBlockByNumber(blockNumber);
+    BlockData *bd=BlockData::data(block);
 
     int level,curLevel;
 
@@ -304,27 +304,37 @@ void M4SCpCodeEditor::foldOrUnfold(int blockNumber)
     if(!level) return;
     bool state=bd->isFolded();
 
-    for(int i=0;i<2;i++){
-
-        block=tempBlock;
-        bd=BlockData::data(tempBlock);
-        curLevel=level;
-
-        while(level<=curLevel && block.isValid()){
-//            if(curLevel>level && state && bd->isFolded()){
-//            }
-            bd->setFolded(!state);
-            block.setLineCount(state?1:0);
-            block.setVisible(state);
-            block = i ? block.previous() : block.next();
-            bd=BlockData::data(block);
-            curLevel=bd->getFoldingLevel();
-        }
+    while(block.previous().isValid())
+    {
+         bd=BlockData::data(block.previous());
+         curLevel=bd->getFoldingLevel();
+         if(level>curLevel) break;
+         block =  block.previous();
     }
-    block=block.next();
-    block.setLineCount(1);
-    block.setVisible(true);
 
+    curLevel=level;
+    BlockData::data(block)->setFolded(!state);
+
+    while (block.next().isValid())
+    {
+        block=block.next();
+        bd=BlockData::data(block);
+        curLevel=bd->getFoldingLevel();
+
+        if(curLevel<level)
+            break;
+
+        if(curLevel>level)
+        {
+            if(BlockData::data(block.previous())->getFoldingLevel() >= curLevel
+                    && bd->isFolded())
+                continue;
+        }else
+            bd->setFolded(!state);
+
+        block.setLineCount(state ? 1 : 0 );
+        block.setVisible(state);
+    }
     if(!state) moveCursorFromFoldedBlocks();
 }
 
@@ -332,24 +342,30 @@ void M4SCpCodeEditor::moveCursorFromFoldedBlocks()
 {
     QTextCursor cursor= textCursor();
     QTextBlock block=cursor.block();
-    if(block.isVisible()) return;
 
-    while(!block.isVisible()){
+    if(block.isVisible())
+        return;
+
+    while(!block.isVisible())
+    {
           block=block.previous();
           moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
     }
 }
 
-void M4SCpCodeEditor::extraAreaMousePressEvent(QMouseEvent *event){
+void M4SCpCodeEditor::extraAreaMousePressEvent(QMouseEvent *event)
+{
 
     QTextCursor cursor=cursorForPosition(QPoint(0, event->pos().y()));
-    if(event->pos().x() > (extraArea->width()-foldAreaWidht)  && foldAreaVisible ){
+    if(event->pos().x() > (extraArea->width()-foldAreaWidht)  && foldAreaVisible )
+    {
 
         foldOrUnfold(cursor.blockNumber());
         viewport()->update();
         extraArea->update();
     }
-    if(event->pos().x() < (extraArea->width() - (foldAreaVisible ? foldAreaWidht : 0)) && lineNumberAreaVisible ){
+    if(event->pos().x() < (extraArea->width() - (foldAreaVisible ? foldAreaWidht : 0)) && lineNumberAreaVisible )
+    {
         setTextCursor(cursor);
         moveCursor(QTextCursor::EndOfBlock,QTextCursor::KeepAnchor);
     }
