@@ -27,7 +27,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpair.h"
 #include "scgbus.h"
 #include "scgcontour.h"
-#include "scgcommands.h"
 #include "pointgraphicsitem.h"
 #include "scgcontentfactory.h"
 
@@ -37,6 +36,26 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "event_handling/SCgSelectModeEventHandler.h"
 #include "event_handling/SCgInsertModeEventHandler.h"
 #include "event_handling/SCgCloneModeEventHandler.h"
+
+#include "commands/scgbasecommand.h"
+#include "commands/scgcommandchangeincedentobject.h"
+#include "commands/scgcommandclone.h"
+#include "commands/scgcommandcontentchange.h"
+#include "commands/scgcommandcontentvisibility.h"
+#include "commands/scgcommandcreatebus.h"
+#include "commands/scgcommandcreatecontour.h"
+#include "commands/scgcommandcreatenode.h"
+#include "commands/scgcommandcreatepair.h"
+#include "commands/scgcommanddeletecontour.h"
+#include "commands/scgcommandinsert.h"
+#include "commands/scgcommandobjectdelete.h"
+#include "commands/scgcommandobjectidftchange.h"
+#include "commands/scgcommandobjectmove.h"
+#include "commands/scgcommandobjecttypechage.h"
+#include "commands/scgcommandpointmove.h"
+#include "commands/scgcommandobjecttypechage.h"
+#include "commands/scgcommandselectedobjectmove.h"
+#include "commands/scgcommandpointschange.h"
 
 #include <QUrl>
 #include <QFile>
