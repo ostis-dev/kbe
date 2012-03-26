@@ -147,4 +147,4 @@ SOURCES += \
     commands/scgcommandclone.cpp \
     commands/scgcommandchangeincedentobject.cpp \
     commands/scgbasecommand.cpp \
-    commands/scfcommandcreatnode.cpp
+    commands/scgcommandcreatenode.cpp
