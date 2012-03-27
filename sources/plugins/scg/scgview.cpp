@@ -243,7 +243,6 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 
             QMenu* constSub = menu->addMenu(tr("Const"));
             QMenu* varSub = menu->addMenu(tr("Var"));
-            QMenu* metaSub = menu->addMenu(tr("Meta"));
 
             QString stype;
             SCgAlphabet::SCgObjectTypesMap types;
@@ -262,9 +261,6 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             for (iter = types.begin(); iter != types.end(); ++iter)
                 varSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
             types.clear();
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Meta, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                metaSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
         }
     }
     mContextMenu->addActions(mActionsList);

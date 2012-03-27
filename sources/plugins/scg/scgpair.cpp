@@ -34,8 +34,8 @@ SCgPair::SCgPair() :
         mEndDot(0.f),
         mEndArrow(false),
         mPosType(SCgAlphabet::PosUnknown),
-        mOrient(false),
-        mTemporary(false)
+        mPermType(SCgAlphabet::PermUnknown),
+        mOrient(false)
 {
     mPoints.push_back(QPointF());
     mPoints.push_back(QPointF());
@@ -374,14 +374,14 @@ void SCgPair::updateType()
 {
     mConstType = SCgAlphabet::ConstUnknown;
     mPosType = SCgAlphabet::PosUnknown;
+    mPermType = SCgAlphabet::PermUnknown;
     mOrient = false;
-    mTemporary = false;
 
     /* updating information based on type alias */
     QStringList sl = mTypeAlias.split("/");
 
     mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
     mPosType = SCgAlphabet::getInstance().aliasToPositiveCode(sl[2]);
-    mTemporary = (sl[3] == "temp");
+    mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[3]);
     mOrient = (sl[4] == "orient");
 }

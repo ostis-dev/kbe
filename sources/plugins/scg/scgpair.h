@@ -118,10 +118,11 @@ public:
 
     //! Get positive type
     SCgAlphabet::SCgPosType getPosType() const { return mPosType; }
+    //! Get permanency type
+    SCgAlphabet::SCgPermType getPermType() const { return mPermType; }
     //! Check if pair is orient
     bool isOrient() const   { return mOrient; }
-    //! Check if pair is temporary
-    bool isTemp() const { return mTemporary; }
+
 
 
 private:
@@ -139,10 +140,10 @@ private:
 
     //! Positive type
     SCgAlphabet::SCgPosType mPosType;
+    //! Permanency type
+    SCgAlphabet::SCgPermType mPermType;
     //! Orientation flag
     bool mOrient;
-    //! Temporary flag
-    bool mTemporary;
 
 };
 

@@ -81,12 +81,7 @@ QRectF SCgNode::boundingRect() const
 
     if (!mContentVisible)
     {
-
-        if (mConstType == SCgAlphabet::Meta)
-            res = QRectF(-mSize.width() / 2.f - 1.f, -mSize.height() / 2.f - 1.f, mSize.width() + 2.f, mSize.height() + 2.f);
-        else
-            res = QRectF(-mSize.width() / 2.f, -mSize.height() / 2.f, mSize.width(), mSize.height());
-
+        res = QRectF(-mSize.width() / 2.f, -mSize.height() / 2.f, mSize.width(), mSize.height());
     }else
     {
         Q_ASSERT(mContentViewer);
@@ -119,10 +114,6 @@ QPainterPath SCgNode::shape() const
 
         case SCgAlphabet::Var:
             path.addRect(boundRect);
-            break;
-
-        case SCgAlphabet::Meta:
-            path.addPolygon(matrix.rotate(45.f).mapToPolygon(boundRect.toRect()));
             break;
 
         default:
