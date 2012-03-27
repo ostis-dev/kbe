@@ -138,7 +138,9 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
             SCgContour *newParent = 0;
             switch(item->type())
             {
-            case PointGraphicsItem::Type : case IncidencePointGraphicsItem::Type :
+            case PointGraphicsItem::Type :
+            case IncidencePointGraphicsItem::Type :
+            case SCgTextItem::Type :
             {
                 // exclude PointGraphicsItem's object, because it always has a parent item
                 it.value().second.second = item->pos();
