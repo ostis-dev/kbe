@@ -33,7 +33,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QCursor>
 #include <QVector2D>
-#include <QGraphicsTextItem>
 #include <QGraphicsScene>
 #include <QApplication>
 
@@ -213,7 +212,7 @@ void SCgObject::setIdtfValue(const QString &idtf)
     {
         if (!mTextItem)
         {
-            mTextItem = new QGraphicsTextItem;
+            mTextItem = new SCgTextItem;
 
             QFont font("Times New Roman [Arial]", 10, 10, false);
             font.setBold(true);
@@ -221,8 +220,8 @@ void SCgObject::setIdtfValue(const QString &idtf)
 
             mTextItem->setFont(font);
             mTextItem->setParentItem(this);
-            mTextItem->setZValue(5);
-            mTextItem->setDefaultTextColor(QColor(0, 64, 164));
+            mTextItem->setZValue(7);
+            mTextItem->setDefaultTextColor(scg_cfg_get_value_color(scg_text_element_color_normal));
             //scene()->addItem(mTextItem);
         }
         mTextItem->setPlainText(mIdtfValue);

@@ -47,12 +47,14 @@ HEADERS += \
     scgalphabet.h \
     scgabstractobjectbuilder.h \
     pointgraphicsitem.h \
+    scgtextitem.h \
     event_handling/SCgSelectModeEventHandler.h \
     event_handling/SCgPairModeEventHandler.h \
     event_handling/SCgInsertModeEventHandler.h \
     event_handling/SCgEventHandler.h \
     event_handling/SCgContourModeEventHandler.h \
     event_handling/SCgBusModeEventHandler.h \
+    event_handling/SCgCloneModeEventHandler.h \
     gwf/gwfstreamwriter.h \
     gwf/gwfobjectinforeader.h \
     gwf/gwffilewriter.h \
@@ -61,7 +63,6 @@ HEADERS += \
     scgfindwidget.h \
     scgundoviewmodel.h \
     scgundoview.h \
-    event_handling/SCgCloneModeEventHandler.h \
     commands/scgcommandselectedobjectmove.h \
     commands/scgcommandpointschange.h \
     commands/scgcommandpointmove.h \
@@ -79,7 +80,8 @@ HEADERS += \
     commands/scgcommandcontentchange.h \
     commands/scgcommandclone.h \
     commands/scgcommandchangeincedentobject.h \
-    commands/scgbasecommand.h
+    commands/scgbasecommand.h \
+    commands/scgcommandidtfmove.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -115,12 +117,14 @@ SOURCES += \
     scgalphabet.cpp \
     scgabstractobjectbuilder.cpp \
     pointgraphicsitem.cpp \
+    scgtextitem.cpp \
     event_handling/SCgSelectModeEventHandler.cpp \
     event_handling/SCgPairModeEventHandler.cpp \
     event_handling/SCgInsertModeEventHandler.cpp \
     event_handling/SCgEventHandler.cpp \
     event_handling/SCgContourModeEventHandler.cpp \
     event_handling/SCgBusModeEventHandler.cpp \
+    event_handling/SCgCloneModeEventHandler.cpp \
     gwf/gwfstreamwriter.cpp \
     gwf/gwfobjectinforeader.cpp \
     gwf/gwffilewriter.cpp \
@@ -129,7 +133,6 @@ SOURCES += \
     scgfindwidget.cpp \
     scgundoviewmodel.cpp \
     scgundoview.cpp \
-    event_handling/SCgCloneModeEventHandler.cpp \
     commands/scgcommandselectedobjectmove.cpp \
     commands/scgcommandpointschange.cpp \
     commands/scgcommandpointmove.cpp \
@@ -147,4 +150,7 @@ SOURCES += \
     commands/scgcommandclone.cpp \
     commands/scgcommandchangeincedentobject.cpp \
     commands/scgbasecommand.cpp \
-    commands/scgcommandcreatenode.cpp
+    commands/scgcommandcreatenode.cpp \
+    commands/scgcommandidtfmove.cpp
+
+

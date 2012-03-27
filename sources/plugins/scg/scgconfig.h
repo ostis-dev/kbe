@@ -30,6 +30,9 @@
 #define scg_key_element_color_normal QString("element/color/normal")
 #define scg_key_element_color_selected QString("element/color/selected")
 #define scg_key_element_color_highlight QString("element/color/highlight")
+#define scg_text_element_color_normal QString("text/color/normal")
+#define scg_text_element_color_selected QString("text/color/selected")
+#define scg_text_element_color_highlight QString("text/color/highlight")
 
 class SCgConfig : public QObject
 {
