@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItem>
 
 #include "scgalphabet.h"
+#include "scgtextitem.h"
 
 class SCgScene;
 
@@ -186,7 +187,7 @@ protected:
     QString mIdtfValue;
 
     //! Text item
-    QGraphicsTextItem *mTextItem;
+    SCgTextItem *mTextItem;
 
     //! Dead flag
     bool mIsDead;
@@ -196,7 +197,7 @@ protected:
 
 protected:
     friend class GwfStreamWriter;
-    const QGraphicsTextItem* textItem() const{return mTextItem;}
+    const SCgTextItem* textItem() const{return mTextItem;}
 
 };
 
