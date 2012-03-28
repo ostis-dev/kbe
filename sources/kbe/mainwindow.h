@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 #include "extendedtabwidget.h"
 #include "interfaces/editorinterface.h"
+#include "feedbackwidget.h"
 
 namespace Ui {
     class MainWindow;
@@ -185,6 +186,8 @@ public slots:
     void updateDockWidgets(bool hide);
 
     void closeEvent(QCloseEvent *event);
+
+    void sendLetterToDevelopers();
 };
 
 #endif // MAINWINDOW_H

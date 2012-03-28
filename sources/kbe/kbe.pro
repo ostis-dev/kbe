@@ -11,6 +11,9 @@ CONFIG (debug) {
         TARGET = kbe
 }
 
+QT += core gui\
+       network
+
 TEMPLATE = app
 
 SOURCES += \
@@ -18,7 +21,9 @@ SOURCES += \
     main.cpp \
     extendedtabwidget.cpp \
     config.cpp \
-    pluginmanager.cpp
+    pluginmanager.cpp \
+    smtp.cpp \
+    feedbackwidget.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -27,7 +32,9 @@ HEADERS += version.h \
     config.h \
     interfaces/plugininterface.h \
     pluginmanager.h \
-    interfaces/editorinterface.h
+    interfaces/editorinterface.h \
+    smtp.h \
+    feedbackwidget.h
 
 FORMS += mainwindow.ui
 

@@ -176,6 +176,8 @@ void MainWindow::createActions()
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
+
+    connect(ui->actionFeedback,SIGNAL(triggered()),this,SLOT(sendLetterToDevelopers()));
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
@@ -704,4 +706,12 @@ void MainWindow::dropEvent(QDropEvent *event)
             load(fileName);
     }
     event->acceptProposedAction();
+}
+
+void MainWindow::sendLetterToDevelopers()
+{
+    //Feed *letterWindow = new LetterWindow();
+    //letterWindow->exec();
+    FeedbackWidget *feedbackWidget = new FeedbackWidget();
+    feedbackWidget->exec();
 }
