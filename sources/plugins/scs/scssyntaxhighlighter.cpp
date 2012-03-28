@@ -25,12 +25,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCsSyntaxHighlighter::SCsSyntaxHighlighter(QTextDocument *parent, QList<SCsAbstractHighlightingRule*> highlightingRules)
     : QSyntaxHighlighter(parent)
 {
-    this->mHighlightingRules = highlightingRules;
+    mHighlightingRules = highlightingRules;
 }
 
 void SCsSyntaxHighlighter::highlightBlock(const QString &text)
 {
-    foreach (SCsAbstractHighlightingRule* rule, this->mHighlightingRules)
+    foreach (SCsAbstractHighlightingRule* rule, mHighlightingRules)
     {
         rule->assignFormat(this, text);
     }
@@ -38,15 +38,15 @@ void SCsSyntaxHighlighter::highlightBlock(const QString &text)
 
 void SCsSyntaxHighlighter::setFormating(int index, int length, QTextCharFormat format)
 {
-    this->setFormat(index, length, format);
+    setFormat(index, length, format);
 }
 
 void SCsSyntaxHighlighter::setCurBlockState(int state)
 {
-    this->setCurrentBlockState(state);
+    setCurrentBlockState(state);
 }
 
 int SCsSyntaxHighlighter::prevBlockState()
 {
-    return this->previousBlockState();
+    return previousBlockState();
 }

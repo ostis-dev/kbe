@@ -25,8 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCsMultiLineCommentHighlightingRule::SCsMultiLineCommentHighlightingRule(QRegExp start, QRegExp end, QTextCharFormat format)
     : SCsAbstractHighlightingRule(format)
 {
-    this->mStart = start;
-    this->mEnd = end;
+    mStart = start;
+    mEnd = end;
 }
 
 void SCsMultiLineCommentHighlightingRule::assignFormat(SCsSyntaxHighlighter *highlighter, const QString &text)
@@ -35,11 +35,11 @@ void SCsMultiLineCommentHighlightingRule::assignFormat(SCsSyntaxHighlighter *hig
 
      int startIndex = 0;
      if (highlighter->prevBlockState() != 1)
-         startIndex = text.indexOf(this->mStart);
+         startIndex = text.indexOf(mStart);
 
      while (startIndex >= 0)
      {
-        int endIndex = text.indexOf(this->mEnd, startIndex);
+        int endIndex = text.indexOf(mEnd, startIndex);
         int commentLength;
         if (endIndex == -1)
         {
@@ -49,11 +49,11 @@ void SCsMultiLineCommentHighlightingRule::assignFormat(SCsSyntaxHighlighter *hig
         else
         {
             commentLength = endIndex - startIndex
-                            +this->mEnd.matchedLength();
+                            +mEnd.matchedLength();
         }
 
-        highlighter->setFormating(startIndex, commentLength, this->format());
-        startIndex = text.indexOf(this->mStart,
+        highlighter->setFormating(startIndex, commentLength, format());
+        startIndex = text.indexOf(mStart,
                                   startIndex + commentLength);
      }
 }

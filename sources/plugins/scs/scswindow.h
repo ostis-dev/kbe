@@ -80,6 +80,9 @@ private:
     SCsSyntaxHighlighter *mHighlighter;
     bool mIsSaved;
 
+private slots:
+    //! Content text changed slot
+    void textChanged();
 };
 
 class SCsWindowFactory : public QObject,

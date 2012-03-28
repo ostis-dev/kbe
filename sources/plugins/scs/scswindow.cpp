@@ -49,14 +49,16 @@ SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
 
     mHighlighter = new SCsSyntaxHighlighter(mEditor->document(), SCsHighlightingRulesPool::getInstance()->rules());
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->addWidget(this->mEditor);
+    layout->addWidget(mEditor);
     setLayout(layout);
+
+    connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 
 SCsWindow::~SCsWindow()
 {
-    delete this->mHighlighter;
-    delete this->mEditor;
+    delete mHighlighter;
+    delete mEditor;
 }
 
 QWidget* SCsWindow::widget()
@@ -87,9 +89,12 @@ bool SCsWindow::loadFromFile(const QString &fileName)
 
     if(loader.load(fileName, mEditor->document()))
     {
-        this->mFileName = fileName;
-        this->setWindowTitle(this->mFileName + "[*]");
-        this->mIsSaved = true;
+        mFileName = fileName;
+        setWindowTitle(mFileName + "[*]");
+        mIsSaved = true;
+
+        emitEvent(EditorObserverInterface::ContentLoaded);
+
         return true;
     }
 
@@ -105,6 +110,9 @@ bool SCsWindow::saveToFile(const QString &fileName)
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
         mIsSaved = true;
+
+        emitEvent(EditorObserverInterface::ContentSaved);
+
         return true;
     }
     else
@@ -113,7 +121,7 @@ bool SCsWindow::saveToFile(const QString &fileName)
 
 bool SCsWindow::isSaved() const
 {
-    return this->mIsSaved;
+    return mIsSaved;
 }
 
 void SCsWindow::_update()
@@ -131,6 +139,14 @@ QIcon SCsWindow::findIcon(const QString &iconName)
     return QIcon(":/media/icons/" + iconName);
 }
 
+void SCsWindow::textChanged()
+{
+    mIsSaved = false;
+    emitEvent(EditorObserverInterface::ContentChanged);
+}
+
+
+// ---------------------
 SCsWindowFactory::SCsWindowFactory(QObject *parent) :
     QObject(parent)
 {

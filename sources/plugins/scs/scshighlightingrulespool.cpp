@@ -42,33 +42,33 @@ SCsHighlightingRulesPool::SCsHighlightingRulesPool()
     commaFormat.setForeground(brush);
     commaFormat.setFontWeight(QFont::Bold);
     QRegExp pattern = QRegExp("[\\.,;:=]");
-    this->mRules.append(new SCsStdHighlightingRule(pattern, commaFormat));
+    mRules.append(new SCsStdHighlightingRule(pattern, commaFormat));
 
-    this->initiScNodesRules();
-    this->initScArcRules();
+    initiScNodesRules();
+    initScArcRules();
 
     QTextCharFormat format;
-    format.setForeground(Qt::darkGreen);
+    format.setForeground(QBrush(QColor(0, 128, 0)));
     pattern = QRegExp("\".*\"");
-    this->mRules.append(new SCsStdHighlightingRule(pattern, format));
+    mRules.append(new SCsStdHighlightingRule(pattern, format));
 
     pattern = QRegExp("/\".*\"/");
-    format.setForeground(Qt::green);
-    this->mRules.append(new SCsStdHighlightingRule(pattern, format));
+    format.setForeground(QBrush(QColor(0, 164, 0)));
+    mRules.append(new SCsStdHighlightingRule(pattern, format));
 
     format.setForeground(Qt::blue);
     pattern = QRegExp("#include");
-    this->mRules.append(new SCsStdHighlightingRule(pattern, format));
+    mRules.append(new SCsStdHighlightingRule(pattern, format));
 
     format.setForeground(Qt::gray);
     QRegExp start = QRegExp("//");
     QRegExp end = QRegExp("\\n");
-    this->mRules.append(new SCsMultiLineCommentHighlightingRule(start, end, format));
+    mRules.append(new SCsMultiLineCommentHighlightingRule(start, end, format));
 
     format.setForeground(Qt::gray);
     start = QRegExp("/\\*");
     end = QRegExp("\\*/");
-    this->mRules.append(new SCsMultiLineCommentHighlightingRule(start, end, format));
+    mRules.append(new SCsMultiLineCommentHighlightingRule(start, end, format));
 
 }
 
@@ -78,39 +78,39 @@ void SCsHighlightingRulesPool::initiScNodesRules()
 
     // SCs link
     format.setForeground(QColor(0, 0, 139));// const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("$[A-Za-z]+[_]*[A-Za-z]*"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("$[A-Za-z]+[_]*[A-Za-z]*"), format));
     format.setForeground(QColor(0, 0, 205));// var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("$_[A-Za-z]+[_]*[A-Za-z]*"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("$_[A-Za-z]+[_]*[A-Za-z]*"), format));
     format.setForeground(QColor(0, 0, 238));// meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("$__[A-Za-z]+[_]*[A-Za-z]*"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("$__[A-Za-z]+[_]*[A-Za-z]*"), format));
 
     // Attr
     format.setForeground(QColor(205, 205, 0));// const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z_]+:"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z_]+:"), format));
     format.setForeground(QColor(238, 238, 0));// var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z_]+::"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z_]+::"), format));
     format.setForeground(QColor(255, 255, 0));// meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z_]+:::"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z_]+:::"), format));
 
     // Set
     format.setForeground(QColor(255, 127, 0));// const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("[{}]"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("[{}]"), format));
     format.setForeground(QColor(238, 118, 0));// var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\{\\."), format));
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\}"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\{\\."), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\}"), format));
     format.setForeground(QColor(205, 102, 0));// meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\{\\.\\."), format));
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\.\\}"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\{\\.\\."), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\.\\}"), format));
 
     // Contour
     format.setForeground(QColor(122, 55, 139));// const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("[\\[\\]]"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("[\\[\\]]"), format));
     format.setForeground(QColor(180, 82, 205));// var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\[\\."), format));
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\]"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\[\\."), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\]"), format));
     format.setForeground(QColor(209, 95, 238));// meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\[\\.\\."), format));
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\.\\]"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\[\\.\\."), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\.\\.\\]"), format));
 
 }
 
@@ -120,33 +120,33 @@ void SCsHighlightingRulesPool::initScArcRules()
 
     // Pos
     format.setForeground(QColor(102, 205, 0)); // const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\-\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\-\\>"), format));
     format.setForeground(QColor(118, 238, 0)); // var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\-\\>\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\-\\>\\>"), format));
     format.setForeground(QColor(127, 255, 0)); // meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("\\-\\>\\>\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("\\-\\>\\>\\>"), format));
 
     // Neg
     format.setForeground(QColor(205, 0, 0)); // const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("/\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("/\\>"), format));
     format.setForeground(QColor(238, 0, 0)); // var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("/\\>\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("/\\>\\>"), format));
     format.setForeground(QColor(255, 0, 0)); // meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("/\\>\\>\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("/\\>\\>\\>"), format));
 
     // Fuzzy
     format.setForeground(QColor(205, 205, 0)); // const
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("~\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("~\\>"), format));
     format.setForeground(QColor(238, 238, 0)); // var
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("~\\>\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("~\\>\\>"), format));
     format.setForeground(QColor(255, 255, 0)); // meta
-    this->mRules.append(new SCsStdHighlightingRule(QRegExp("~\\>\\>\\>"), format));
+    mRules.append(new SCsStdHighlightingRule(QRegExp("~\\>\\>\\>"), format));
 
 }
 
 QList<SCsAbstractHighlightingRule*> SCsHighlightingRulesPool::rules()
 {
-    return this->mRules;
+    return mRules;
 }
 
 SCsHighlightingRulesPool::~SCsHighlightingRulesPool()

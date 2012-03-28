@@ -51,18 +51,18 @@ class SCsLineNumberArea : public QWidget
 public:
     SCsLineNumberArea(SCsCodeEditor *editor) : QWidget(editor)
     {
-        this->mCodeEditor = editor;
+        mCodeEditor = editor;
     }
 
     QSize sizeHint() const
     {
-        return QSize(this->mCodeEditor->lineNumberAreaWidth(), 0);
+        return QSize(mCodeEditor->lineNumberAreaWidth(), 0);
     }
 
 protected:
     void paintEvent(QPaintEvent *event)
     {
-        this->mCodeEditor->lineNumberAreaPaintEvent(event);
+        mCodeEditor->lineNumberAreaPaintEvent(event);
     }
 
 private:

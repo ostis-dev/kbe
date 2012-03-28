@@ -28,7 +28,7 @@ SCsAbstractHighlightingRule::SCsAbstractHighlightingRule()
 
 SCsAbstractHighlightingRule::SCsAbstractHighlightingRule(QTextCharFormat format)
 {
-    this->mFormat = format;
+    mFormat = format;
 }
 
 SCsAbstractHighlightingRule::~SCsAbstractHighlightingRule()
@@ -43,10 +43,10 @@ void SCsAbstractHighlightingRule::assignFormat(SCsSyntaxHighlighter *highlighter
 
 void SCsAbstractHighlightingRule::setFormat(QTextCharFormat format)
 {
-    this->mFormat = format;
+    mFormat = format;
 }
 
 QTextCharFormat SCsAbstractHighlightingRule::format()
 {
-    return this->mFormat;
+    return mFormat;
 }

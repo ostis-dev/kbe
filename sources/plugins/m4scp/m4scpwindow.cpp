@@ -54,6 +54,8 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(mEditor);
     setLayout(layout);
+
+    connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 
 M4SCpWindow::~M4SCpWindow()
@@ -93,6 +95,9 @@ bool M4SCpWindow::loadFromFile(const QString &fileName)
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
         mIsSaved = true;
+
+        emitEvent(EditorObserverInterface::ContentLoaded);
+
         return true;
     }
 
@@ -109,6 +114,9 @@ bool M4SCpWindow::saveToFile(const QString &fileName)
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
         mIsSaved = true;
+
+        emitEvent(EditorObserverInterface::ContentSaved);
+
         return true;
     }else
         return false;
@@ -132,6 +140,12 @@ QIcon M4SCpWindow::icon() const
 QIcon M4SCpWindow::findIcon(const QString &iconName)
 {
     return QIcon(":/media/icons/" + iconName);
+}
+
+void M4SCpWindow::textChanged()
+{
+    mIsSaved = false;
+    emitEvent(EditorObserverInterface::ContentChanged);
 }
 
 
