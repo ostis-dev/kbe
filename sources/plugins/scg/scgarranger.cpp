@@ -22,7 +22,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgarranger.h"
 
-#include "scgcommands.h"
 #include "scgview.h"
 #include "scgobject.h"
 #include "scgpair.h"

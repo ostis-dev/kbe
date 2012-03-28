@@ -29,10 +29,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgAlphabet* SCgAlphabet::mInstance = 0;
 
-QVector<qreal> SCgAlphabet::varThinDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::metaThinDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::varFatDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::metaFatDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msVarThinDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msVarFatDashPattern = QVector<qreal>();
 QMap<int, QPixmap*> SCgAlphabet::mTemporaryPixmap;
 
 
@@ -56,37 +54,35 @@ SCgAlphabet& SCgAlphabet::getInstance()
 
 void SCgAlphabet::initialize()
 {
-    constTypes["const"] = Const;
-    constTypes["var"] = Var;
-    constTypes["meta"] = Meta;
+    mConstTypes["const"] = Const;
+    mConstTypes["var"] = Var;
 
     mAlias2ConstType.push_back("const");
     mAlias2ConstType.push_back("var");
-    mAlias2ConstType.push_back("meta");
 
-    posTypes["pos"] = Positive;
-    posTypes["neg"] = Negative;
-    posTypes["fuz"] = Fuzzy;
+    mPosTypes["pos"] = Positive;
+    mPosTypes["neg"] = Negative;
+    mPosTypes["fuz"] = Fuzzy;
 
-    structTypes["not_define"] = NotDefine;
-    structTypes["general_node"] = General;
-    structTypes["predmet"] = Predmet;
-    structTypes["nopredmet"] = NoPredmet;
-    structTypes["symmetry"] = Symmetry;
-    structTypes["asymmetry"] = Asymmetry;
-    structTypes["attribute"] = Attribute;
-    structTypes["relation"] = Relation;
-    structTypes["atom"] = Atom;
-    structTypes["group"] = Group;
+    mPermTypes["perm"] = Permanent;
+    mPermTypes["temp"] = Temporary;
+    mPermTypes["any"] = PermAny;
+
+    mStructTypes["not_define"] = NotDefine;
+    mStructTypes["general_node"] = General;
+    mStructTypes["predmet"] = Predmet;
+    mStructTypes["nopredmet"] = NoPredmet;
+    mStructTypes["symmetry"] = Symmetry;
+    mStructTypes["asymmetry"] = Asymmetry;
+    mStructTypes["attribute"] = Attribute;
+    mStructTypes["relation"] = Relation;
+    mStructTypes["atom"] = Atom;
+    mStructTypes["group"] = Group;
 
     // initiliaze patterns
-    varThinDashPattern  << 16 / lineWidthThin() << 12 / lineWidthThin();
-    metaThinDashPattern << 16 / lineWidthThin() << 5 / lineWidthThin()
-                        << 2 / lineWidthThin() << 5 / lineWidthThin();
+    msVarThinDashPattern  << 16 / lineWidthThin() << 12 / lineWidthThin();
 
-    varFatDashPattern   << 8 / lineWidthFatIn() << 23 / lineWidthFatIn();
-    metaFatDashPattern  << 1 / lineWidthFatIn() << 6 / lineWidthFatIn()
-                        << 1 / lineWidthFatIn() << 23 / lineWidthFatIn();
+    msVarFatDashPattern   << 8 / lineWidthFatIn() << 23 / lineWidthFatIn();
 
     QSize size(24, 24);
 
@@ -112,16 +108,6 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/var/atom"] = createNodeIcon(size, Var, Atom);
     mObjectTypes["node/var/group"] = createNodeIcon(size, Var, Group);
 
-    mObjectTypes["node/meta/not_define"] = createNodeIcon(size, Meta, NotDefine);
-    mObjectTypes["node/meta/general_node"] = createNodeIcon(size, Meta, General);
-    mObjectTypes["node/meta/predmet"] = createNodeIcon(size, Meta, Predmet);
-    mObjectTypes["node/meta/nopredmet"] = createNodeIcon(size, Meta, NoPredmet);
-    mObjectTypes["node/meta/symmetry"] = createNodeIcon(size, Meta, Symmetry);
-    mObjectTypes["node/meta/asymmetry"] = createNodeIcon(size, Meta, Asymmetry);
-    mObjectTypes["node/meta/attribute"] = createNodeIcon(size, Meta, Attribute);
-    mObjectTypes["node/meta/relation"] = createNodeIcon(size, Meta, Relation);
-    mObjectTypes["node/meta/atom"] = createNodeIcon(size, Meta, Atom);
-    mObjectTypes["node/meta/group"] = createNodeIcon(size, Meta, Group);
 
     QSize pairSize(32, 8);
 
@@ -143,14 +129,6 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/var/-/-/-"] = createPairIcon(pairSize, "pair/var/-/-/-");
     mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
 
-    mObjectTypes["pair/meta/pos/-/orient"] = createPairIcon(pairSize, "pair/meta/pos/-/orient");
-    mObjectTypes["pair/meta/neg/-/orient"] = createPairIcon(pairSize, "pair/meta/neg/-/orient");
-    mObjectTypes["pair/meta/fuz/-/orient"] = createPairIcon(pairSize, "pair/meta/fuz/-/orient");
-    mObjectTypes["pair/meta/pos/temp/orient"] = createPairIcon(pairSize, "pair/meta/pos/temp/orient");
-    mObjectTypes["pair/meta/neg/temp/orient"] = createPairIcon(pairSize, "pair/meta/neg/temp/orient");
-    mObjectTypes["pair/meta/fuz/temp/orient"] = createPairIcon(pairSize, "pair/meta/fuz/temp/orient");
-    mObjectTypes["pair/meta/-/-/-"] = createPairIcon(pairSize, "pair/meta/-/-/-");
-    mObjectTypes["pair/meta/-/-/orient"] = createPairIcon(pairSize, "pair/meta/-/-/orient");
 }
 
 QPixmap* SCgAlphabet::getTempPixmap(QColor color)
@@ -284,26 +262,34 @@ void SCgAlphabet::getObjectTypes(const QString &object_name, const SCgConstType 
 
 SCgAlphabet::SCgConstType SCgAlphabet::aliasToConstCode(const QString &alias) const
 {
-    if (!constTypes.contains(alias))
+    if (!mConstTypes.contains(alias))
         return ConstUnknown;
 
-    return constTypes[alias];
+    return mConstTypes[alias];
 }
 
 SCgAlphabet::SCgNodeStructType SCgAlphabet::aliasToStructCode(const QString &alias) const
 {
-    if (!structTypes.contains(alias))
+    if (!mStructTypes.contains(alias))
         return StructUnknown;
 
-    return structTypes[alias];
+    return mStructTypes[alias];
 }
 
 SCgAlphabet::SCgPosType SCgAlphabet::aliasToPositiveCode(const QString &alias) const
 {
-    if (!posTypes.contains(alias))
+    if (!mPosTypes.contains(alias))
         return PosUnknown;
 
-    return posTypes[alias];
+    return mPosTypes[alias];
+}
+
+SCgAlphabet::SCgPermType SCgAlphabet::aliasToPermanencyCode(const QString &alias) const
+{
+    if (!mPermTypes.contains(alias))
+        return PermUnknown;
+
+    return mPermTypes[alias];
 }
 
 void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect,
@@ -334,24 +320,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
         paintStruct(painter, color, bound, type_struct);
     }else
     {
-        if (type == Meta)
-        {
-            painter->save();
-
-            painter->rotate(45.f);
-            painter->scale(0.85f, 0.85f);
-            painter->drawRect(bound.adjusted(2, 2, -2, -2));
-
-            painter->rotate(-45.f);
-            QPainterPath clipPath;
-            QMatrix matrix;
-            clipPath.addPolygon(matrix.rotate(45.f).mapToPolygon(bound.toRect().adjusted(1,1,-1,-1)));
-            painter->setClipPath(clipPath, Qt::UniteClip);
-            paintStruct(painter, color, bound, type_struct);
-
-            painter->restore();
-
-        }else
+        if (type == Var)
         {
             painter->scale(0.9f, 0.9f);
             painter->drawRect(bound);
@@ -478,7 +447,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     // get type data
     SCgPosType posType = pair->getPosType();
     SCgConstType constType = pair->getConstType();
-    bool isTemp = pair->isTemp();
+    SCgPermType permType = pair->getPermType();
 
     // get line width
     float width = lineWidthFat();
@@ -493,12 +462,10 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     // draw all cases
     if (posType != PosUnknown)
     {
-        if (!isTemp)
+        if (permType != Temporary)
         {
             if (constType == Var)
-                pen.setDashPattern(varThinDashPattern);
-            else if (constType == Meta)
-                pen.setDashPattern(metaThinDashPattern);
+                pen.setDashPattern(msVarThinDashPattern);
 
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
@@ -604,35 +571,24 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             painter->drawPolyline(&(points[0]), points.size());
 
             pen.setWidthF(lineWidthFatIn());
-            pen.setDashPattern(varFatDashPattern);
+            pen.setDashPattern(msVarFatDashPattern);
             pen.setDashOffset(11 / lineWidthFatIn());
             pen.setColor(QColor(255, 255, 255));
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
         }else
-            if (constType == Meta)
+        {
+            if (constType == Const)
             {
                 painter->setPen(pen);
                 painter->drawPolyline(&(points[0]), points.size());
 
                 pen.setWidthF(lineWidthFatIn());
-                pen.setDashPattern(metaFatDashPattern);
-                pen.setDashOffset(16 / lineWidthFatIn());
-                pen.setColor(QColor(255, 255, 255));
+                pen.setColor(Qt::white);
                 painter->setPen(pen);
                 painter->drawPolyline(&(points[0]), points.size());
-            }else
-                if (constType == Const)
-                {
-                    painter->setPen(pen);
-                    painter->drawPolyline(&(points[0]), points.size());
-
-                    pen.setWidthF(lineWidthFatIn());
-                    pen.setColor(Qt::white);
-                    painter->setPen(pen);
-                    painter->drawPolyline(&(points[0]), points.size());
-                }
-
+            }
+        }
     }
 }
 

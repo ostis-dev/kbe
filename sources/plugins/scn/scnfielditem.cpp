@@ -160,6 +160,16 @@ void SCnFieldItem::startEdit()
     update();
 }
 
+void SCnFieldItem::applyEdit()
+{
+
+}
+
+void SCnFieldItem::cancelEdit()
+{
+
+}
+
 void SCnFieldItem::changed(SCnFieldItem *field, SCnFieldItem::ChangeType changeType)
 {
     if (mEditorScene != 0)

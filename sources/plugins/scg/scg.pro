@@ -38,7 +38,6 @@ HEADERS += \
     scgcontentchangedialog.h \
     scgcontent.h \
     scgconfig.h \
-    scgcommands.h \
     scgbus.h \
     scgarrangervertical.h \
     scgarrangertuple.h \
@@ -48,12 +47,14 @@ HEADERS += \
     scgalphabet.h \
     scgabstractobjectbuilder.h \
     pointgraphicsitem.h \
+    scgtextitem.h \
     event_handling/SCgSelectModeEventHandler.h \
     event_handling/SCgPairModeEventHandler.h \
     event_handling/SCgInsertModeEventHandler.h \
     event_handling/SCgEventHandler.h \
     event_handling/SCgContourModeEventHandler.h \
     event_handling/SCgBusModeEventHandler.h \
+    event_handling/SCgCloneModeEventHandler.h \
     gwf/gwfstreamwriter.h \
     gwf/gwfobjectinforeader.h \
     gwf/gwffilewriter.h \
@@ -62,7 +63,25 @@ HEADERS += \
     scgfindwidget.h \
     scgundoviewmodel.h \
     scgundoview.h \
-    event_handling/SCgCloneModeEventHandler.h
+    commands/scgcommandselectedobjectmove.h \
+    commands/scgcommandpointschange.h \
+    commands/scgcommandpointmove.h \
+    commands/scgcommandobjecttypechage.h \
+    commands/scgcommandobjectmove.h \
+    commands/scgcommandobjectidftchange.h \
+    commands/scgcommandobjectdelete.h \
+    commands/scgcommandinsert.h \
+    commands/scgcommanddeletecontour.h \
+    commands/scgcommandcreatepair.h \
+    commands/scgcommandcreatenode.h \
+    commands/scgcommandcreatecontour.h \
+    commands/scgcommandcreatebus.h \
+    commands/scgcommandcontentvisibility.h \
+    commands/scgcommandcontentchange.h \
+    commands/scgcommandclone.h \
+    commands/scgcommandchangeincedentobject.h \
+    commands/scgbasecommand.h \
+    commands/scgcommandidtfmove.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -89,7 +108,6 @@ SOURCES += \
     scgcontentchangedialog.cpp \
     scgcontent.cpp \
     scgconfig.cpp \
-    scgcommands.cpp \
     scgbus.cpp \
     scgarrangervertical.cpp \
     scgarrangertuple.cpp \
@@ -99,12 +117,14 @@ SOURCES += \
     scgalphabet.cpp \
     scgabstractobjectbuilder.cpp \
     pointgraphicsitem.cpp \
+    scgtextitem.cpp \
     event_handling/SCgSelectModeEventHandler.cpp \
     event_handling/SCgPairModeEventHandler.cpp \
     event_handling/SCgInsertModeEventHandler.cpp \
     event_handling/SCgEventHandler.cpp \
     event_handling/SCgContourModeEventHandler.cpp \
     event_handling/SCgBusModeEventHandler.cpp \
+    event_handling/SCgCloneModeEventHandler.cpp \
     gwf/gwfstreamwriter.cpp \
     gwf/gwfobjectinforeader.cpp \
     gwf/gwffilewriter.cpp \
@@ -113,14 +133,24 @@ SOURCES += \
     scgfindwidget.cpp \
     scgundoviewmodel.cpp \
     scgundoview.cpp \
-    event_handling/SCgCloneModeEventHandler.cpp
-
-
-
-
-
-
-
-
+    commands/scgcommandselectedobjectmove.cpp \
+    commands/scgcommandpointschange.cpp \
+    commands/scgcommandpointmove.cpp \
+    commands/scgcommandobjecttypechange.cpp \
+    commands/scgcommandobjectmove.cpp \
+    commands/scgcommandobjectidtfchange.cpp \
+    commands/scgcommandobjectdelete.cpp \
+    commands/scgcommandinsert.cpp \
+    commands/scgcommanddeletecontour.cpp \
+    commands/scgcommandcreatepair.cpp \
+    commands/scgcommandcreatecontour.cpp \
+    commands/scgcommandcreatebus.cpp \
+    commands/scgcommandcontentvisibility.cpp \
+    commands/scgcommandcontentchange.cpp \
+    commands/scgcommandclone.cpp \
+    commands/scgcommandchangeincedentobject.cpp \
+    commands/scgbasecommand.cpp \
+    commands/scgcommandcreatenode.cpp \
+    commands/scgcommandidtfmove.cpp
 
 
