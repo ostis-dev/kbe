@@ -102,42 +102,42 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["node/meta/group"] = "node/meta/group";
 
     // pairs
-    mGWFType2TypeAlias["arc/const/pos"] = "pair/const/pos/-/orient";
-    mGWFType2TypeAlias["arc/var/pos"] = "pair/var/pos/-/orient";
-    mGWFType2TypeAlias["arc/meta/pos"] = "pair/meta/pos/-/orient";
+    mGWFType2TypeAlias["arc/const/pos"] = "pair/const/pos/perm/orient/accessory";
+    mGWFType2TypeAlias["arc/var/pos"] = "pair/var/pos/perm/orient/accessory";
+    mGWFType2TypeAlias["arc/meta/pos"] = "pair/meta/pos/perm/orient/accessory";
 
-    mGWFType2TypeAlias["arc/const/neg"] = "pair/const/neg/-/orient";
-    mGWFType2TypeAlias["arc/var/neg"] = "pair/var/neg/-/orient";
-    mGWFType2TypeAlias["arc/meta/neg"] = "pair/meta/neg/-/orient";
+    mGWFType2TypeAlias["arc/const/neg"] = "pair/const/neg/perm/orient/accessory";
+    mGWFType2TypeAlias["arc/var/neg"] = "pair/var/neg/perm/orient/accessory";
+    mGWFType2TypeAlias["arc/meta/neg"] = "pair/meta/neg/perm/orient/accessory";
 
-    mGWFType2TypeAlias["arc/const/fuz"] = "pair/const/fuz/-/orient";
-    mGWFType2TypeAlias["arc/var/fuz"] = "pair/var/fuz/-/orient";
-    mGWFType2TypeAlias["arc/meta/fuz"] = "pair/meta/fuz/-/orient";
+    mGWFType2TypeAlias["arc/const/fuz"] = "pair/const/fuz/perm/orient/accessory";
+    mGWFType2TypeAlias["arc/var/fuz"] = "pair/var/fuz/perm/orient/accessory";
+    mGWFType2TypeAlias["arc/meta/fuz"] = "pair/meta/fuz/perm/orient/accessory";
 
-    mGWFType2TypeAlias["arc/const/pos/temp"] = "pair/const/pos/temp/orient";
-    mGWFType2TypeAlias["arc/var/pos/temp"] = "pair/var/pos/temp/orient";
-    mGWFType2TypeAlias["arc/meta/pos/temp"] = "pair/meta/pos/temp/orient";
+    mGWFType2TypeAlias["arc/const/pos/temp"] = "pair/const/pos/temp/orient/accessory";
+    mGWFType2TypeAlias["arc/var/pos/temp"] = "pair/var/pos/temp/orient/accessory";
+    mGWFType2TypeAlias["arc/meta/pos/temp"] = "pair/meta/pos/temp/orient/accessory";
 
-    mGWFType2TypeAlias["arc/const/neg/temp"] = "pair/const/neg/temp/orient";
-    mGWFType2TypeAlias["arc/var/neg/temp"] = "pair/var/neg/temp/orient";
-    mGWFType2TypeAlias["arc/meta/neg/temp"] = "pair/meta/neg/temp/orient";
+    mGWFType2TypeAlias["arc/const/neg/temp"] = "pair/const/neg/temp/orient/accessory";
+    mGWFType2TypeAlias["arc/var/neg/temp"] = "pair/var/neg/temp/orient/accessory";
+    mGWFType2TypeAlias["arc/meta/neg/temp"] = "pair/meta/neg/temp/orient/accessory";
 
-    mGWFType2TypeAlias["arc/const/fuz/temp"] = "pair/const/fuz/temp/orient";
-    mGWFType2TypeAlias["arc/var/fuz/temp"] = "pair/var/fuz/temp/orient";
-    mGWFType2TypeAlias["arc/meta/fuz/temp"] = "pair/meta/fuz/temp/orient";
+    mGWFType2TypeAlias["arc/const/fuz/temp"] = "pair/const/fuz/temp/orient/accessory";
+    mGWFType2TypeAlias["arc/var/fuz/temp"] = "pair/var/fuz/temp/orient/accessory";
+    mGWFType2TypeAlias["arc/meta/fuz/temp"] = "pair/meta/fuz/temp/orient/accessory";
 
-    mGWFType2TypeAlias["pair/const/synonym"] = "pair/const/-/-/-";
-    mGWFType2TypeAlias["pair/var/noorient"] = "pair/var/-/-/-";
-    mGWFType2TypeAlias["pair/meta/noorient"] = "pair/meta/-/-/-";
+    mGWFType2TypeAlias["pair/const/synonym"] = "pair/const/-/-/noorien";
+    mGWFType2TypeAlias["pair/var/noorient"] = "pair/var/-/-/noorien";
+    mGWFType2TypeAlias["pair/meta/noorient"] = "pair/meta/-/-/noorien";
 
     mGWFType2TypeAlias["pair/const/orient"] = "pair/const/-/-/orient";
     mGWFType2TypeAlias["pair/var/orient"] = "pair/var/-/-/orient";
     mGWFType2TypeAlias["pair/meta/orient"] = "pair/meta/-/-/orient";
 
     //deprecated. For supporting old format.
-    mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/-/-";
+    mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/-/noorien";
     mGWFType2TypeAlias["pair/rail/orient"] = "pair/var/-/-/orient";
-    mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/meta/-/-/-";
+    mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/meta/-/-/noorien";
     mGWFType2TypeAlias["pair/rail2/orient"] = "pair/meta/-/-/orient";
 }
 
@@ -219,7 +219,7 @@ bool GwfObjectInfoReader::read(const QDomDocument& document)
 
 bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo* info)
 {
-    if(info->objectType() == SCgPair::Type||info->objectType() == SCgNode::Type)
+    if(info->objectType() == SCgPair::Type || info->objectType() == SCgNode::Type)
     {
         QString& type = info->typeAliasRef();
         if (getAttributeString(element, "type", type))

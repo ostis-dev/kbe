@@ -87,34 +87,34 @@ void GwfStreamWriter::createTypesMap()
     mTypeAlias2GWFType["node/meta/group"] = "node/meta/group";
 
     // pairs
-    mTypeAlias2GWFType["pair/const/pos/-/orient"] = "arc/const/pos";
-    mTypeAlias2GWFType["pair/var/pos/-/orient"] = "arc/var/pos";
-    mTypeAlias2GWFType ["pair/meta/pos/-/orient"] = "arc/meta/pos";
+    mTypeAlias2GWFType["pair/const/pos/perm/orient/accessory"] = "arc/const/pos";
+    mTypeAlias2GWFType["pair/var/pos/perm/orient/accessory"] = "arc/var/pos";
+    mTypeAlias2GWFType ["pair/meta/pos/perm/orient/accessory"] = "arc/meta/pos";
 
-    mTypeAlias2GWFType["pair/const/neg/-/orient"] = "arc/const/neg";
-    mTypeAlias2GWFType["pair/var/neg/-/orient"] = "arc/var/neg";
-    mTypeAlias2GWFType["pair/meta/neg/-/orient"] = "arc/meta/neg";
+    mTypeAlias2GWFType["pair/const/neg/perm/orient/accessory"] = "arc/const/neg";
+    mTypeAlias2GWFType["pair/var/neg/perm/orient/accessory"] = "arc/var/neg";
+    mTypeAlias2GWFType["pair/meta/neg/perm/orient/accessory"] = "arc/meta/neg";
 
-    mTypeAlias2GWFType["pair/const/fuz/-/orient"] = "arc/const/fuz" ;
-    mTypeAlias2GWFType["pair/var/fuz/-/orient"] = "arc/var/fuz";
-    mTypeAlias2GWFType["pair/meta/fuz/-/orient"] = "arc/meta/fuz";
+    mTypeAlias2GWFType["pair/const/fuz/perm/orient/accessory"] = "arc/const/fuz" ;
+    mTypeAlias2GWFType["pair/var/fuz/perm/orient/accessory"] = "arc/var/fuz";
+    mTypeAlias2GWFType["pair/meta/fuz/perm/orient/accessory"] = "arc/meta/fuz";
 
-    mTypeAlias2GWFType["pair/const/pos/temp/orient"] = "arc/const/pos/temp";
-    mTypeAlias2GWFType["pair/var/pos/temp/orient"] = "arc/var/pos/temp";
-    mTypeAlias2GWFType["pair/meta/pos/temp/orient"] = "arc/meta/pos/temp";
+    mTypeAlias2GWFType["pair/const/pos/temp/orient/accessory"] = "arc/const/pos/temp";
+    mTypeAlias2GWFType["pair/var/pos/temp/orient/accessory"] = "arc/var/pos/temp";
+    mTypeAlias2GWFType["pair/meta/pos/temp/orient/accessory"] = "arc/meta/pos/temp";
 
-    mTypeAlias2GWFType["pair/const/neg/temp/orient"] = "arc/const/neg/temp";
-    mTypeAlias2GWFType["pair/var/neg/temp/orient"] = "arc/var/neg/temp";
-    mTypeAlias2GWFType["pair/meta/neg/temp/orient"] = "arc/meta/neg/temp";
+    mTypeAlias2GWFType["pair/const/neg/temp/orient/accessory"] = "arc/const/neg/temp";
+    mTypeAlias2GWFType["pair/var/neg/temp/orient/accessory"] = "arc/var/neg/temp";
+    mTypeAlias2GWFType["pair/meta/neg/temp/orient/accessory"] = "arc/meta/neg/temp";
 
-    mTypeAlias2GWFType["pair/const/fuz/temp/orient"] = "arc/const/fuz/temp";
-    mTypeAlias2GWFType["pair/var/fuz/temp/orient"] = "arc/var/fuz/temp";
-    mTypeAlias2GWFType["pair/meta/fuz/temp/orient"] = "arc/meta/fuz/temp";
+    mTypeAlias2GWFType["pair/const/fuz/temp/orient/accessory"] = "arc/const/fuz/temp";
+    mTypeAlias2GWFType["pair/var/fuz/temp/orient/accessory"] = "arc/var/fuz/temp";
+    mTypeAlias2GWFType["pair/meta/fuz/temp/orient/accessory"] = "arc/meta/fuz/temp";
 
 
-    mTypeAlias2GWFType["pair/const/-/-/-"] = "pair/const/synonym";
-    mTypeAlias2GWFType["pair/var/-/-/-"] = "pair/var/noorient";
-    mTypeAlias2GWFType["pair/meta/-/-/-"] = "pair/meta/noorient";
+    mTypeAlias2GWFType["pair/const/-/-/noorien"] = "pair/const/synonym";
+    mTypeAlias2GWFType["pair/var/-/-/noorien"] = "pair/var/noorient";
+    mTypeAlias2GWFType["pair/meta/-/-/noorien"] = "pair/meta/noorient";
 
     mTypeAlias2GWFType["pair/const/-/-/orient"] = "pair/const/orient";
     mTypeAlias2GWFType["pair/var/-/-/orient"] = "pair/var/orient";

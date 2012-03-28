@@ -28,14 +28,17 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <math.h>
 
 #define LINE_THIN_WIDTH 2.f
-#define LINE_FAT_WIDTH 6.f
+#define LINE_FAT_WIDTH 8.f
 #define LINE_FATIN_WIDTH (LINE_FAT_WIDTH * 0.6f)
+
+#define LINE_MARK_LENGTH  5.f
 
 SCgAlphabet* SCgAlphabet::mInstance = 0;
 
 QVector<qreal> SCgAlphabet::msPermVarAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msPermVarNoAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempConstAccesDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempVarAccesDashPattern = QVector<qreal>();
 
 
 SCgAlphabet::SCgAlphabet(QObject *parent) :
@@ -85,7 +88,9 @@ void SCgAlphabet::initialize()
     // initiliaze patterns
     msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH << 12 / LINE_THIN_WIDTH;
     msPermVarNoAccesDashPattern << 8 / LINE_FATIN_WIDTH << 23 / LINE_FATIN_WIDTH;
-    msTempConstAccesDashPattern << 3 / LINE_THIN_WIDTH << 3 / LINE_THIN_WIDTH;
+    qreal temp_dash = 4 / LINE_THIN_WIDTH;
+    msTempConstAccesDashPattern << temp_dash << temp_dash;
+    msTempVarAccesDashPattern << temp_dash << temp_dash << temp_dash << 4 * temp_dash;
 
     QSize size(24, 24);
 
@@ -112,24 +117,24 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/var/group"] = createNodeIcon(size, Var, Group);
 
 
-    QSize pairSize(32, 8);
+    QSize pairSize(24, 24);
 
-    mObjectTypes["pair/const/pos/-/orient"] = createPairIcon(pairSize, "pair/const/pos/-/orient");
-    mObjectTypes["pair/const/neg/-/orient"] = createPairIcon(pairSize, "pair/const/neg/-/orient");
-    mObjectTypes["pair/const/fuz/-/orient"] = createPairIcon(pairSize, "pair/const/fuz/-/orient");
-    mObjectTypes["pair/const/pos/temp/orient"] = createPairIcon(pairSize, "pair/const/pos/temp/orient");
-    mObjectTypes["pair/const/neg/temp/orient"] = createPairIcon(pairSize, "pair/const/neg/temp/orient");
-    mObjectTypes["pair/const/fuz/temp/orient"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient");
-    mObjectTypes["pair/const/-/-/-"] = createPairIcon(pairSize, "pair/const/-/-/-");
+    mObjectTypes["pair/const/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/pos/perm/orient/accessory");
+    mObjectTypes["pair/const/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/accessory");
+    mObjectTypes["pair/const/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/accessory");
+    mObjectTypes["pair/const/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/pos/temp/orient/accessory");
+    mObjectTypes["pair/const/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/neg/temp/orient/accessory");
+    mObjectTypes["pair/const/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient/accessory");
+    mObjectTypes["pair/const/-/-/noorien"] = createPairIcon(pairSize, "pair/const/-/-/noorien");
     mObjectTypes["pair/const/-/-/orient"] = createPairIcon(pairSize, "pair/const/-/-/orient");
 
-    mObjectTypes["pair/var/pos/-/orient"] = createPairIcon(pairSize, "pair/var/pos/-/orient");
-    mObjectTypes["pair/var/neg/-/orient"] = createPairIcon(pairSize, "pair/var/neg/-/orient");
-    mObjectTypes["pair/var/fuz/-/orient"] = createPairIcon(pairSize, "pair/var/fuz/-/orient");
-    mObjectTypes["pair/var/pos/temp/orient"] = createPairIcon(pairSize, "pair/var/pos/temp/orient");
-    mObjectTypes["pair/var/neg/temp/orient"] = createPairIcon(pairSize, "pair/var/neg/temp/orient");
-    mObjectTypes["pair/var/fuz/temp/orient"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient");
-    mObjectTypes["pair/var/-/-/-"] = createPairIcon(pairSize, "pair/var/-/-/-");
+    mObjectTypes["pair/var/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/pos/perm/orient/accessory");
+    mObjectTypes["pair/var/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/accessory");
+    mObjectTypes["pair/var/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/accessory");
+    mObjectTypes["pair/var/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/pos/temp/orient/accessory");
+    mObjectTypes["pair/var/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/neg/temp/orient/accessory");
+    mObjectTypes["pair/var/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient/accessory");
+    mObjectTypes["pair/var/-/-/noorien"] = createPairIcon(pairSize, "pair/var/-/-/noorien");
     mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
 
 }
@@ -269,7 +274,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     // to draw not defined nodes we just need to scale them
     if (type_struct == NotDefine)
     {
-        painter->scale(0.35f, 0.35f);
+        painter->scale(0.3f, 0.3f);
         brush_color = color;
         brush_color.setAlpha(224);
     }
@@ -390,7 +395,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     Q_ASSERT(points.size() > 1);
 
     static float arrowLength = 10.f;
-    static float arrowWidth = 7.f;
+    static float arrowWidth = LINE_FAT_WIDTH;
 
     if (pair->isOrient())
     {
@@ -415,7 +420,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         painter->restore();
 
         // correct last point
-        points.last() -= QPointF((arrowLength + 3.f) * ::sin(angle), (arrowLength + 3.f) * ::cos(angle));
+        points.last() -= QPointF((arrowLength) * ::sin(angle), (arrowLength) * ::cos(angle));
     }
 
     // get type data
@@ -423,19 +428,19 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     SCgConstType constType = pair->getConstType();
     SCgPermType permType = pair->getPermType();
 
-    // get line width
-    float width = LINE_FAT_WIDTH;
-    if(posType != PosUnknown)
-        width = LINE_THIN_WIDTH;
-
     painter->setBrush(Qt::NoBrush);
 
     QPen pen(pair->color());
-    pen.setWidthF(width);
+    pen.setCapStyle(Qt::FlatCap);
+    pen.setJoinStyle(Qt::RoundJoin);
 
     // draw all cases
-    if (posType != PosUnknown)
-    {
+    if (pair->isAccessory())
+    {       
+        pen.setWidthF(LINE_THIN_WIDTH);
+        QPen markPen = pen;
+
+
         if (permType == Permanent && constType == Var)
             pen.setDashPattern(msPermVarAccesDashPattern);
 
@@ -443,6 +448,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         {
             if (constType == Const)
                 pen.setDashPattern(msTempConstAccesDashPattern);
+            else
+                pen.setDashPattern(msTempVarAccesDashPattern);
         }
 
         painter->setPen(pen);
@@ -451,12 +458,16 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         // draw negative lines
         if (posType == Negative)
         {
-            painter->setPen(pen);
+            painter->setPen(markPen);
 
             QPainterPath path = pair->shapeNormal();
             float length = path.length() - arrowLength - 3;
             int i = 0;
-            qreal l = 22.f;
+
+            qreal mult = (permType == Temporary) ? 28.f : 28.f;
+            qreal offset = (permType == Temporary) ? 20.f : 22.f;
+            qreal l = offset;
+
             while (l < length)
             {
                 qreal perc = path.percentAtLength(l);
@@ -464,21 +475,25 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                 painter->save();
                 painter->translate(path.pointAtPercent(perc));
                 painter->rotate(-path.angleAtPercent(perc));
-                painter->drawLine(0.f, -width * 1.5f, 0.f, width * 1.5f);
+                painter->drawLine(0.f, -LINE_MARK_LENGTH, 0.f, LINE_MARK_LENGTH);
                 painter->restore();
 
-                l = (++i) * 28.f + 22.f;
+                l = (++i) * mult + offset;
             }
 
         }else   // draw fuzzy lines
             if (posType == Fuzzy)
             {
-                painter->setPen(pen);
+                painter->setPen(markPen);
 
                 QPainterPath path = pair->shapeNormal();
                 float length = path.length() - arrowLength - 3;
                 int i = 0;
-                qreal l = 8.f;
+
+                qreal mult = (permType == Temporary) ? 28.f : 28.f;
+                qreal offset = (permType == Temporary) ? 20.f : 22.f;
+                qreal l = offset;
+
                 while (l < length)
                 {
                     qreal perc = path.percentAtLength(l);
@@ -488,17 +503,19 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                     painter->rotate(-path.angleAtPercent(perc));
 
                     if (i % 2 == 0)
-                        painter->drawLine(0.f, -width * 1.5f, 0.f, 0.f);
+                        painter->drawLine(0.f, -LINE_MARK_LENGTH, 0.f, 0.f);
                     else
-                        painter->drawLine(0.f, width * 1.5f, 0.f, 0.f);
+                        painter->drawLine(0.f, LINE_MARK_LENGTH, 0.f, 0.f);
                     painter->restore();
 
-                    l = (++i) * 28.f + 8.f;
+                    l = (++i) * mult + offset;
                 }
             }
 
-    }else
+    }else // draw binary pairs
     {
+        pen.setWidthF(LINE_FAT_WIDTH);
+
         if (constType == Var)
         {
             painter->setPen(pen);
