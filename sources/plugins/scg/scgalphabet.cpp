@@ -27,11 +27,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <math.h>
 
+#define LINE_THIN_WIDTH 2.f
+#define LINE_FAT_WIDTH 6.f
+#define LINE_FATIN_WIDTH (LINE_FAT_WIDTH * 0.6f)
+
 SCgAlphabet* SCgAlphabet::mInstance = 0;
 
-QVector<qreal> SCgAlphabet::msVarThinDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::msVarFatDashPattern = QVector<qreal>();
-QMap<int, QPixmap*> SCgAlphabet::mTemporaryPixmap;
+QVector<qreal> SCgAlphabet::msPermVarAccesDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msPermVarNoAccesDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempConstAccesDashPattern = QVector<qreal>();
 
 
 SCgAlphabet::SCgAlphabet(QObject *parent) :
@@ -47,7 +51,6 @@ SCgAlphabet& SCgAlphabet::getInstance()
         mInstance = new SCgAlphabet;
         mInstance->initialize();
     }
-
 
     return *mInstance;
 }
@@ -80,9 +83,9 @@ void SCgAlphabet::initialize()
     mStructTypes["group"] = Group;
 
     // initiliaze patterns
-    msVarThinDashPattern  << 16 / lineWidthThin() << 12 / lineWidthThin();
-
-    msVarFatDashPattern   << 8 / lineWidthFatIn() << 23 / lineWidthFatIn();
+    msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH << 12 / LINE_THIN_WIDTH;
+    msPermVarNoAccesDashPattern << 8 / LINE_FATIN_WIDTH << 23 / LINE_FATIN_WIDTH;
+    msTempConstAccesDashPattern << 3 / LINE_THIN_WIDTH << 3 / LINE_THIN_WIDTH;
 
     QSize size(24, 24);
 
@@ -129,40 +132,6 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/var/-/-/-"] = createPairIcon(pairSize, "pair/var/-/-/-");
     mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
 
-}
-
-QPixmap* SCgAlphabet::getTempPixmap(QColor color)
-{
-	int c_val = color.rgb();
-	if(mTemporaryPixmap.contains(c_val))
-		return mTemporaryPixmap.value(c_val);
-	else
-	{
-		QPixmap* temporaryPixmap = new QPixmap(51,5);
-
-		// Draw template for temporary pairs
-		temporaryPixmap->fill(Qt::transparent);
-		QPainter tempPainter(temporaryPixmap);
-
-        tempPainter.setRenderHint(QPainter::Antialiasing);
-
-		tempPainter.setPen(QPen(QBrush(color),2.45));
-		tempPainter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
-
-		int h_2 = temporaryPixmap->height() / 2 + 1;
-		int w = temporaryPixmap->width()+1;
-		////////////////
-		//drawing points
-		tempPainter.drawPoint(0,h_2);
-		for(int i = 0; i < w ; ++i)
-			tempPainter.drawPoint(i,  h_2 - (h_2 - 0.5) * sin( 2 * M_PI * i / w) );
-
-		////////////////
-		tempPainter.end();
-		mTemporaryPixmap[c_val] = temporaryPixmap;
-
-		return temporaryPixmap;
-	}
 }
 
 QIcon SCgAlphabet::createNodeIcon(const QSize &size, const SCgConstType &type_const,
@@ -296,14 +265,19 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
                             const SCgConstType &type, const SCgNodeStructType &type_struct)
 {
 
+    QColor brush_color =  QColor(255, 255, 255, 224);
     // to draw not defined nodes we just need to scale them
     if (type_struct == NotDefine)
-        painter->scale(0.3f, 0.3f);
+    {
+        painter->scale(0.35f, 0.35f);
+        brush_color = color;
+        brush_color.setAlpha(224);
+    }
 
 
     // drawing of border
     QPen pen = QPen(QBrush(color, Qt::SolidPattern), 4, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
-    QBrush brush = QBrush(QColor(255, 255, 255, 224), Qt::SolidPattern);
+    QBrush brush = QBrush(brush_color, Qt::SolidPattern);
     painter->setPen(pen);
     painter->setBrush(brush);
 
@@ -450,9 +424,9 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     SCgPermType permType = pair->getPermType();
 
     // get line width
-    float width = lineWidthFat();
+    float width = LINE_FAT_WIDTH;
     if(posType != PosUnknown)
-        width = lineWidthThin();
+        width = LINE_THIN_WIDTH;
 
     painter->setBrush(Qt::NoBrush);
 
@@ -462,57 +436,17 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     // draw all cases
     if (posType != PosUnknown)
     {
-        if (permType != Temporary)
+        if (permType == Permanent && constType == Var)
+            pen.setDashPattern(msPermVarAccesDashPattern);
+
+        if (permType == Temporary)
         {
-            if (constType == Var)
-                pen.setDashPattern(msVarThinDashPattern);
-
-            painter->setPen(pen);
-            painter->drawPolyline(&(points[0]), points.size());
-
-        }else // draw temporary pairs
-        {
-            QPixmap* tmp = getTempPixmap(pen.color());
-
-            QRect r = tmp->rect();
-            qreal pixmapWidth = r.width();
-
-            for(int i = 0; i<points.count() - 1; i++)
-            {
-                QPainterPath path;
-                path.moveTo(points[i]);
-                path.lineTo(points[i+1]);
-
-                QPainter::PixmapFragment* pf;
-
-                qreal length = path.length();
-                int amount = length/pixmapWidth + 1;
-                pf = new QPainter::PixmapFragment[amount];
-
-                qreal angle = path.angleAtPercent(0);
-                qreal perc = 0;
-                QPointF p(0,0);
-
-                for(int k = 0; k < amount - 1; ++k)
-                {
-                	perc = path.percentAtLength(pixmapWidth*(k+0.5));
-                	p = path.pointAtPercent(perc);
-                	pf[k] = QPainter::PixmapFragment::create(p,r,1,1,-angle,1);
-                }
-
-                qreal new_length = length - pixmapWidth*(amount-1);
-                if (!qFuzzyCompare(1 + 0.0, 1 + new_length))
-                {
-                    perc = path.percentAtLength(length - new_length/2 - 0.35);
-                    p = path.pointAtPercent(perc);
-                    pf[amount-1] = QPainter::PixmapFragment::create(p,r.adjusted(0,0,-r.width() + new_length,0),1,1,-angle,1);
-                }else
-                    amount -=1;
-                //NOTE: Qt 4.7 required.
-                painter->drawPixmapFragments(pf, amount, *tmp,QPainter::OpaqueHint);
-                delete[] pf;
-            }
+            if (constType == Const)
+                pen.setDashPattern(msTempConstAccesDashPattern);
         }
+
+        painter->setPen(pen);
+        painter->drawPolyline(&(points[0]), points.size());
 
         // draw negative lines
         if (posType == Negative)
@@ -522,7 +456,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             QPainterPath path = pair->shapeNormal();
             float length = path.length() - arrowLength - 3;
             int i = 0;
-            qreal l = 8.f;
+            qreal l = 22.f;
             while (l < length)
             {
                 qreal perc = path.percentAtLength(l);
@@ -533,7 +467,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                 painter->drawLine(0.f, -width * 1.5f, 0.f, width * 1.5f);
                 painter->restore();
 
-                l = (++i) * 28.f + 8.f;
+                l = (++i) * 28.f + 22.f;
             }
 
         }else   // draw fuzzy lines
@@ -570,9 +504,9 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
 
-            pen.setWidthF(lineWidthFatIn());
-            pen.setDashPattern(msVarFatDashPattern);
-            pen.setDashOffset(11 / lineWidthFatIn());
+            pen.setWidthF(LINE_FATIN_WIDTH);
+            pen.setDashPattern(msPermVarNoAccesDashPattern);
+            pen.setDashOffset(11 / LINE_FATIN_WIDTH);
             pen.setColor(QColor(255, 255, 255));
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
@@ -583,7 +517,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                 painter->setPen(pen);
                 painter->drawPolyline(&(points[0]), points.size());
 
-                pen.setWidthF(lineWidthFatIn());
+                pen.setWidthF(LINE_FATIN_WIDTH);
                 pen.setColor(Qt::white);
                 painter->setPen(pen);
                 painter->drawPolyline(&(points[0]), points.size());
@@ -608,7 +542,7 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
     SCgContour::PointFVector points = contour->points();
 
     QPen pen(contour->color());
-    pen.setWidthF(lineWidthThin());
+    pen.setWidthF(LINE_THIN_WIDTH);
     pen.setJoinStyle(Qt::RoundJoin);
 
     QBrush brush(contour->colorBack(), Qt::SolidPattern);
