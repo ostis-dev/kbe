@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/scn">
         <file>media/icons/add.png</file>
     </qresource>
 </RCC>

@@ -313,19 +313,20 @@ void MainWindow::fileNew()
         QListWidget *availableTypesList = new QListWidget;
         availableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
         availableTypesList->setIconSize(QSize(16, 16));
+
         foreach (QString ext, PluginManager::instance()->supportedFilesExt())
-        {
             availableTypesList->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
-        }
+
         QHBoxLayout *buttonLay = new QHBoxLayout;
         QPushButton *butOk = new QPushButton(tr("OK"));
+
         if (availableTypesList->count() > 0)
             availableTypesList->item(0)->setSelected(true);
         else
             butOk->setEnabled(false);
+
         QPushButton *butCancel = new QPushButton(tr("Cancel"));
-        connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
-        connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
+
         buttonLay->addWidget(butOk, 1, Qt::AlignRight);
         buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
 
@@ -333,6 +334,10 @@ void MainWindow::fileNew()
         lay->addWidget(availableTypesList);
         lay->addLayout(buttonLay);
         fileNewDlg->setLayout(lay);
+
+        connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
+        connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
+
         int dlgResult = fileNewDlg->exec();
         if (dlgResult == QDialog::Accepted)
         {

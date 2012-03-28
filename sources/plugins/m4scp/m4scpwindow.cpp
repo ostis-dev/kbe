@@ -139,7 +139,7 @@ QIcon M4SCpWindow::icon() const
 
 QIcon M4SCpWindow::findIcon(const QString &iconName)
 {
-    return QIcon(":/media/icons/" + iconName);
+    return QIcon(":/m4scp/media/icons/" + iconName);
 }
 
 void M4SCpWindow::textChanged()

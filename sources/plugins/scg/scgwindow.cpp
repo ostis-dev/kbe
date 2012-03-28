@@ -280,7 +280,7 @@ void SCgWindow::createToolBar()
 
 QIcon SCgWindow::findIcon(const QString &iconName)
 {
-    return QIcon(":/media/icons/" + iconName);
+    return QIcon(":/scg/media/icons/" + iconName);
 }
 
 QIcon SCgWindow::icon() const
