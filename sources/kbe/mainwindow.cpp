@@ -679,9 +679,10 @@ void MainWindow::windowWillBeClosed(QWidget* w)
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     // close all child windows
-    Widget2EditorInterfaceMap::iterator it;
-    while (!mWidget2EditorInterface.empty())
-        mTabWidget->close(0);
+    QList<QWidget*> widgets = mWidget2EditorInterface.keys();
+    QWidget *widget = 0;
+    foreach (widget, widgets)
+        mTabWidget->closeWindow(widget);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
