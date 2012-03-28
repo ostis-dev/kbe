@@ -77,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(mTabWidget, SIGNAL(currentChanged(int)),
             SLOT(subWindowHasChanged(int)), Qt::AutoConnection);
+    connect(mTabWidget, SIGNAL(tabBeforeClose(QWidget*)),
+            this, SLOT(windowWillBeClosed(QWidget*)));
 
     // creating actions
     createActions();
@@ -658,30 +660,28 @@ void MainWindow::windowWillBeClosed(QWidget* w)
                "There are no conversion to editor interface for a given window");
 
     it.value()->_setObserver(0);
+
+    // check if it saved
+    EditorInterface *editor = it.value();
+    if (!editor->isSaved())
+    {
+        if (QMessageBox::question(this, tr("Save changes"),
+                                  tr("Do you want to save changes in %1 ?").arg(editor->currentFileName()),
+                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+        {
+            fileSave(it.key());
+        }
+    }
+
     mWidget2EditorInterface.erase(it);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    int countActiveWindow = mTabWidget->subWindowList().size();
-    for (int i = 0; i < countActiveWindow; i++) {
-        if (!mTabWidget->closeWindow(mTabWidget->currentWidget()))
-        {
-            event->ignore();
-            updateMenu();
-            return;
-        }
-    }
-    event->accept();
-
-    QSettings settings;
-    QMap<QString, QByteArray>::const_iterator it = mStates.begin();
-    while(it != mStates.end())
-    {
-        settings.setValue(Config::settingsDocksGeometry + "/" + it.key(), it.value());
-        ++it;
-    }
-    settings.setValue(Config::settingsMainWindowGeometry, saveGeometry());
+    // close all child windows
+    Widget2EditorInterfaceMap::iterator it;
+    while (!mWidget2EditorInterface.empty())
+        mTabWidget->close(0);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
