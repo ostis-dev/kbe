@@ -89,8 +89,10 @@ void SCgAlphabet::initialize()
     // initiliaze patterns
     msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH
                               << 12 / LINE_THIN_WIDTH;
-    msPermVarNoAccesDashPattern << 8 / LINE_FATIN_WIDTH
-                                << 23 / LINE_FATIN_WIDTH;
+
+    msPermVarNoAccesDashPattern << 12 / LINE_FATIN_WIDTH
+                                << 16 / LINE_FATIN_WIDTH;
+
     qreal temp_dash = 2 / LINE_THIN_WIDTH;
     msTempConstAccesDashPattern << temp_dash
                                 << temp_dash
@@ -477,8 +479,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             float length = path.length() - arrowLength - 3;
             int i = 0;
 
-            qreal mult = (permType == Temporary) ? 28.f : 28.f;
-            qreal offset = (permType == Temporary) ? 20.f : 22.f;
+            qreal mult = 28.f;
+            qreal offset = 22.f;
             qreal l = offset;
 
             while (l < length)
@@ -503,8 +505,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                 float length = path.length() - arrowLength - 3;
                 int i = 0;
 
-                qreal mult = (permType == Temporary) ? 28.f : 28.f;
-                qreal offset = (permType == Temporary) ? 20.f : 22.f;
+                qreal mult = 28.f;
+                qreal offset = 22.f;
                 qreal l = offset;
 
                 while (l < length)
@@ -536,7 +538,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
             pen.setWidthF(LINE_FATIN_WIDTH);
             pen.setDashPattern(msPermVarNoAccesDashPattern);
-            pen.setDashOffset(11 / LINE_FATIN_WIDTH);
+            pen.setDashOffset(20);
             pen.setColor(QColor(255, 255, 255));
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
