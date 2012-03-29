@@ -35,6 +35,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QMenu>
+#include <QToolButton>
 
 #include "scglayoutmanager.h"
 #include "scgarrangervertical.h"
@@ -217,32 +218,38 @@ void SCgWindow::createToolBar()
     //
     mToolBar->addSeparator();
     //
+
+    QToolButton *alignButton = new QToolButton(mToolBar);
+    alignButton->setIcon(findIcon("tool-align.png"));
+    alignButton->setPopupMode(QToolButton::InstantPopup);
+    mToolBar->addWidget(alignButton);
+
     //Grid alignment
-    action = new QAction(findIcon("tool-align-grid.png"), tr("Grid alignment (5)"), mToolBar);
+    action = new QAction(findIcon("tool-align-grid.png"), tr("Grid alignment"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("5", "Grid alignment")));
-    mToolBar->addAction(action);
+    alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onGridAlignment()));
 
     // tuple alignment
-    action = new QAction(findIcon("tool-align-tuple.png"), tr("Tuple alignment (6)"), mToolBar);
+    action = new QAction(findIcon("tool-align-tuple.png"), tr("Tuple alignment"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("6", "Tuple alignment")));
-    mToolBar->addAction(action);
+    alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onTupleAlignment()));
 
     //Vertical alignment
-    action = new QAction(findIcon("tool-align-vert.png"), tr("Vertical alignment (7)"), mToolBar);
+    action = new QAction(findIcon("tool-align-vert.png"), tr("Vertical alignment"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("7", "Vertical alignment")));
-    mToolBar->addAction(action);
+    alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onVerticalAlignment()));
 
     //Horizontal alignment
-    action = new QAction(findIcon("tool-align-horz.png"), tr("Horizontal alignment (8)"), mToolBar);
+    action = new QAction(findIcon("tool-align-horz.png"), tr("Horizontal alignment"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("8", "Horizontal alignment")));
-    mToolBar->addAction(action);
+    alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onHorizontalAlignment()));
 
     //
