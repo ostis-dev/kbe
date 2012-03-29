@@ -212,7 +212,11 @@ bool MainWindow::checkSubWindowSavedState()
 EditorInterface *MainWindow::activeChild()
 {
     if (QWidget *activeSubWindow = mTabWidget->currentWidget())
-        return mWidget2EditorInterface[activeSubWindow];
+    {
+        Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(activeSubWindow);
+        if (it != mWidget2EditorInterface.end())
+            return *it;
+    }
     return 0;
 }
 
@@ -420,7 +424,11 @@ bool MainWindow::saveWindow(EditorInterface* window, QString& name, const QStrin
 
 void MainWindow::fileSave(QWidget* window)
 {
-    EditorInterface* childWindow = mWidget2EditorInterface[window];
+    EditorInterface* childWindow = 0;
+
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
 
     if(!childWindow)
         childWindow = activeChild();
@@ -443,7 +451,10 @@ void MainWindow::fileSave(QWidget* window)
 
 void MainWindow::fileSaveAs(QWidget* window)
 {
-    EditorInterface* childWindow = mWidget2EditorInterface[window];
+    EditorInterface* childWindow = 0;
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
 
     if(!childWindow)
         childWindow = activeChild();
@@ -639,6 +650,8 @@ void MainWindow::subWindowHasChanged(int index)
     QWidget* window = mTabWidget->widget(index);
     if (window)
     {
+        Q_ASSERT(mWidget2EditorInterface.contains(window));
+
         mLastActiveWindow = mWidget2EditorInterface[window];
 
         Q_ASSERT(mLastActiveWindow);
