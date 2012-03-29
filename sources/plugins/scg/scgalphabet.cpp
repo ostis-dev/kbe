@@ -31,7 +31,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define LINE_FAT_WIDTH 8.f
 #define LINE_FATIN_WIDTH (LINE_FAT_WIDTH * 0.6f)
 
-#define LINE_MARK_LENGTH  5.f
+#define LINE_MARK_NEG_LENGTH  4.f
+#define LINE_MARK_FUZ_LENGTH  5.f
 
 SCgAlphabet* SCgAlphabet::mInstance = 0;
 
@@ -86,11 +87,23 @@ void SCgAlphabet::initialize()
     mStructTypes["group"] = Group;
 
     // initiliaze patterns
-    msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH << 12 / LINE_THIN_WIDTH;
-    msPermVarNoAccesDashPattern << 8 / LINE_FATIN_WIDTH << 23 / LINE_FATIN_WIDTH;
-    qreal temp_dash = 4 / LINE_THIN_WIDTH;
-    msTempConstAccesDashPattern << temp_dash << temp_dash;
-    msTempVarAccesDashPattern << temp_dash << temp_dash << temp_dash << 4 * temp_dash;
+    msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH
+                              << 12 / LINE_THIN_WIDTH;
+    msPermVarNoAccesDashPattern << 8 / LINE_FATIN_WIDTH
+                                << 23 / LINE_FATIN_WIDTH;
+    qreal temp_dash = 2 / LINE_THIN_WIDTH;
+    msTempConstAccesDashPattern << temp_dash
+                                << temp_dash
+                                << temp_dash
+                                << temp_dash;
+    msTempVarAccesDashPattern << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << 7 * temp_dash;
 
     QSize size(24, 24);
 
@@ -475,7 +488,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                 painter->save();
                 painter->translate(path.pointAtPercent(perc));
                 painter->rotate(-path.angleAtPercent(perc));
-                painter->drawLine(0.f, -LINE_MARK_LENGTH, 0.f, LINE_MARK_LENGTH);
+                painter->drawLine(0.f, -LINE_MARK_NEG_LENGTH, 0.f, LINE_MARK_NEG_LENGTH);
                 painter->restore();
 
                 l = (++i) * mult + offset;
@@ -503,9 +516,9 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
                     painter->rotate(-path.angleAtPercent(perc));
 
                     if (i % 2 == 0)
-                        painter->drawLine(0.f, -LINE_MARK_LENGTH, 0.f, 0.f);
+                        painter->drawLine(0.f, -LINE_MARK_FUZ_LENGTH, 0.f, 0.f);
                     else
-                        painter->drawLine(0.f, LINE_MARK_LENGTH, 0.f, 0.f);
+                        painter->drawLine(0.f, LINE_MARK_FUZ_LENGTH, 0.f, 0.f);
                     painter->restore();
 
                     l = (++i) * mult + offset;
