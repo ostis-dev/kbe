@@ -1,304 +1,220 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <GWF version="1.6">
     <staticSector>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244363024" parent="0" x="480" y="30" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142177936" parent="0" x="735" y="255" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244362160" parent="0" x="345" y="30" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142145416" parent="0" x="270" y="255" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244361296" parent="0" x="645" y="375" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142179248" parent="0" x="480" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244360432" parent="0" x="525" y="375" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142178592" parent="0" x="270" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244359552" parent="0" x="825" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142177280" parent="0" x="525" y="255" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244358688" parent="0" x="705" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142176624" parent="0" x="480" y="255" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244357824" parent="0" x="645" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142175968" parent="0" x="480" y="210" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244356960" parent="0" x="525" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142175312" parent="0" x="270" y="210" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244356096" parent="0" x="480" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142174656" parent="0" x="735" y="210" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244355232" parent="0" x="345" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142174000" parent="0" x="525" y="210" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244354368" parent="0" x="825" y="330" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142173344" parent="0" x="735" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244353504" parent="0" x="705" y="330" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142172688" parent="0" x="525" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244352624" parent="0" x="645" y="330" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142172032" parent="0" x="480" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244351760" parent="0" x="525" y="330" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142171376" parent="0" x="270" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244322272" parent="0" x="480" y="330" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142170720" parent="0" x="735" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244321152" parent="0" x="345" y="330" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142170064" parent="0" x="525" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244348384" parent="0" x="825" y="270" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142169408" parent="0" x="480" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244347520" parent="0" x="705" y="270" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142168752" parent="0" x="270" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244346656" parent="0" x="645" y="270" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142168096" parent="0" x="735" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244345792" parent="0" x="525" y="270" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142167440" parent="0" x="525" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244344912" parent="0" x="480" y="270" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142166784" parent="0" x="480" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244344048" parent="0" x="345" y="270" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142166128" parent="0" x="270" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244343184" parent="0" x="480" y="375" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142165472" parent="0" x="735" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244342320" parent="0" x="345" y="375" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142164816" parent="0" x="525" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244341456" parent="0" x="480" y="225" haveBus="false">
+        <node type="node/meta/group" idtf="" shapeColor="0" id="142164200" parent="0" x="195" y="405" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244340592" parent="0" x="345" y="225" haveBus="false">
+        <node type="node/const/group" idtf="" shapeColor="0" id="142163504" parent="0" x="60" y="345" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244339728" parent="0" x="825" y="225" haveBus="false">
+        <node type="node/meta/relation" idtf="" shapeColor="0" id="142162888" parent="0" x="195" y="330" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244338864" parent="0" x="705" y="225" haveBus="false">
+        <node type="node/const/relation" idtf="" shapeColor="0" id="142151224" parent="0" x="60" y="300" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244337984" parent="0" x="645" y="225" haveBus="false">
+        <node type="node/meta/attribute" idtf="" shapeColor="0" id="142150424" parent="0" x="195" y="270" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244337120" parent="0" x="525" y="225" haveBus="false">
+        <node type="node/const/attribute" idtf="" shapeColor="0" id="142160432" parent="0" x="60" y="255" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244336256" parent="0" x="825" y="165" haveBus="false">
+        <node type="node/var/nopredmet" idtf="" shapeColor="0" id="142159816" parent="0" x="135" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244335392" parent="0" x="705" y="165" haveBus="false">
+        <node type="node/const/nopredmet" idtf="" shapeColor="0" id="142159120" parent="0" x="60" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244334528" parent="0" x="645" y="165" haveBus="false">
+        <node type="node/meta/general_node" idtf="" shapeColor="0" id="142158464" parent="0" x="195" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244333664" parent="0" x="525" y="165" haveBus="false">
+        <node type="node/meta/asymmetry" idtf="" shapeColor="0" id="142157808" parent="0" x="195" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244332800" parent="0" x="480" y="165" haveBus="false">
+        <node type="node/var/asymmetry" idtf="" shapeColor="0" id="142157192" parent="0" x="135" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244331936" parent="0" x="345" y="165" haveBus="false">
+        <node type="node/const/asymmetry" idtf="" shapeColor="0" id="142156496" parent="0" x="60" y="120" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244331056" parent="0" x="825" y="120" haveBus="false">
+        <node type="node/meta/nopredmet" idtf="" shapeColor="0" id="142155880" parent="0" x="195" y="165" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244330192" parent="0" x="705" y="120" haveBus="false">
+        <node type="node/meta/predmet" idtf="" shapeColor="0" id="142155224" parent="0" x="195" y="225" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244329328" parent="0" x="645" y="120" haveBus="false">
+        <node type="node/var/predmet" idtf="" shapeColor="0" id="142154608" parent="0" x="135" y="210" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244328464" parent="0" x="525" y="120" haveBus="false">
+        <node type="node/const/predmet" idtf="" shapeColor="0" id="142153872" parent="0" x="60" y="210" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244327600" parent="0" x="480" y="120" haveBus="false">
+        <node type="node/var/general_node" idtf="" shapeColor="0" id="142153256" parent="0" x="135" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244326736" parent="0" x="345" y="120" haveBus="false">
+        <node type="node/const/general_node" idtf="" shapeColor="0" id="142152560" parent="0" x="60" y="75" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244325872" parent="0" x="825" y="75" haveBus="false">
+        <node type="node/meta/not_define" idtf="" shapeColor="0" id="142151904" parent="0" x="195" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244325008" parent="0" x="705" y="75" haveBus="false">
+        <node type="node/var/not_define" idtf="" shapeColor="0" id="142151360" parent="0" x="135" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244324128" parent="0" x="645" y="75" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142148896" parent="0" x="60" y="30" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244323264" parent="0" x="525" y="75" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142149768" parent="0" x="735" y="300" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244322552" parent="0" x="480" y="75" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142149040" parent="0" x="525" y="300" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244307088" parent="0" x="345" y="75" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142148176" parent="0" x="525" y="345" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244320288" parent="0" x="825" y="30" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142147456" parent="0" x="270" y="300" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244319424" parent="0" x="705" y="30" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142146736" parent="0" x="735" y="345" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244318560" parent="0" x="645" y="30" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142146080" parent="0" x="480" y="345" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244317696" parent="0" x="525" y="30" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142144792" parent="0" x="480" y="300" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/meta/group" idtf="" shapeColor="0" id="244316816" parent="0" x="195" y="405" haveBus="false">
+        <node type="node/const/not_define" idtf="" shapeColor="0" id="142144008" parent="0" x="270" y="345" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/var/group" idtf="" shapeColor="0" id="244315952" parent="0" x="135" y="405" haveBus="false">
+        <node type="node/var/attribute" idtf="" shapeColor="0" id="142143440" parent="0" x="135" y="255" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/const/group" idtf="" shapeColor="0" id="244315088" parent="0" x="60" y="405" haveBus="false">
+        <node type="node/var/relation" idtf="" shapeColor="0" id="142122456" parent="0" x="135" y="300" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/meta/relation" idtf="" shapeColor="0" id="244314224" parent="0" x="195" y="330" haveBus="false">
+        <node type="node/var/group" idtf="" shapeColor="0" id="141894528" parent="0" x="135" y="345" haveBus="false">
             <content type="0" mime_type="content/base" file_name=""/>
         </node>
-        <node type="node/var/relation" idtf="" shapeColor="0" id="244313360" parent="0" x="135" y="330" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/relation" idtf="" shapeColor="0" id="244312496" parent="0" x="60" y="330" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/meta/attribute" idtf="" shapeColor="0" id="244311632" parent="0" x="195" y="270" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/var/attribute" idtf="" shapeColor="0" id="244310768" parent="0" x="135" y="270" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/attribute" idtf="" shapeColor="0" id="244309888" parent="0" x="60" y="270" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/var/nopredmet" idtf="" shapeColor="0" id="244309024" parent="0" x="135" y="165" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/nopredmet" idtf="" shapeColor="0" id="244308248" parent="0" x="60" y="165" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/meta/general_node" idtf="" shapeColor="0" id="244305304" parent="0" x="195" y="75" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/meta/asymmetry" idtf="" shapeColor="0" id="244306272" parent="0" x="195" y="120" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/var/asymmetry" idtf="" shapeColor="0" id="244303528" parent="0" x="135" y="120" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/asymmetry" idtf="" shapeColor="0" id="244304488" parent="0" x="60" y="120" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/meta/nopredmet" idtf="" shapeColor="0" id="244303688" parent="0" x="195" y="165" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/meta/predmet" idtf="" shapeColor="0" id="244302696" parent="0" x="195" y="225" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/var/predmet" idtf="" shapeColor="0" id="244301864" parent="0" x="135" y="225" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/predmet" idtf="" shapeColor="0" id="244300904" parent="0" x="60" y="225" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/var/general_node" idtf="" shapeColor="0" id="244300080" parent="0" x="135" y="75" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/general_node" idtf="" shapeColor="0" id="244299136" parent="0" x="60" y="75" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/meta/not_define" idtf="" shapeColor="0" id="244293352" parent="0" x="195" y="30" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/var/not_define" idtf="" shapeColor="0" id="244033872" parent="0" x="135" y="30" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <node type="node/const/not_define" idtf="" shapeColor="0" id="244031312" parent="0" x="60" y="30" haveBus="false">
-            <content type="0" mime_type="content/base" file_name=""/>
-        </node>
-        <pair type="pair/meta/orient" idtf="" shapeColor="0" id="244383968" parent="0" id_b="244358688" id_e="244359552" b_x="705" b_y="405" e_x="825" e_y="405" dotBBalance="0" dotEBalance="0">
+        <pair type="pair/var/noorient" idtf="" shapeColor="0" id="142190392" parent="0" id_b="142149040" id_e="142149768" b_x="525" b_y="300" e_x="735" e_y="300" dotBBalance="0" dotEBalance="0">
             <points/>
         </pair>
-        <pair type="pair/meta/noorient" idtf="" shapeColor="0" id="244383096" parent="0" id_b="244353504" id_e="244354368" b_x="705" b_y="330" e_x="825" e_y="330" dotBBalance="0" dotEBalance="0">
+        <pair type="pair/const/synonym" idtf="" shapeColor="0" id="142189696" parent="0" id_b="142147456" id_e="142144792" b_x="270" b_y="300" e_x="480" e_y="300" dotBBalance="0" dotEBalance="0">
             <points/>
         </pair>
-        <pair type="pair/var/orient" idtf="" shapeColor="0" id="244382224" parent="0" id_b="244356960" id_e="244357824" b_x="525" b_y="405" e_x="645" e_y="405" dotBBalance="0" dotEBalance="0">
+        <pair type="pair/var/orient" idtf="" shapeColor="0" id="142189032" parent="0" id_b="142148176" id_e="142146736" b_x="525" b_y="345" e_x="735" e_y="345" dotBBalance="0" dotEBalance="0">
             <points/>
         </pair>
-        <pair type="pair/var/noorient" idtf="" shapeColor="0" id="244381352" parent="0" id_b="244351760" id_e="244352624" b_x="525" b_y="330" e_x="645" e_y="330" dotBBalance="0" dotEBalance="0">
+        <pair type="pair/const/orient" idtf="" shapeColor="0" id="142188376" parent="0" id_b="142144008" id_e="142146080" b_x="270" b_y="345" e_x="480" e_y="345" dotBBalance="0" dotEBalance="0">
             <points/>
         </pair>
-        <pair type="pair/const/orient" idtf="" shapeColor="0" id="244380472" parent="0" id_b="244355232" id_e="244356096" b_x="345" b_y="405" e_x="480" e_y="405" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </pair>
-        <pair type="pair/const/synonym" idtf="" shapeColor="0" id="244379600" parent="0" id_b="244321152" id_e="244322272" b_x="345" b_y="330" e_x="480" e_y="330" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </pair>
-        <arc type="arc/const/pos" idtf="" shapeColor="0" id="244378728" parent="0" id_b="244362160" id_e="244363024" b_x="345" b_y="30" e_x="480" e_y="30" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/const/pos" idtf="" shapeColor="0" id="142187680" parent="0" id_b="142178592" id_e="142179248" b_x="270" b_y="30" e_x="480" e_y="30" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/meta/fuz/temp" idtf="" shapeColor="0" id="244377856" parent="0" id_b="244347520" id_e="244348384" b_x="705" b_y="270" e_x="825" e_y="270" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/var/fuz/temp" idtf="" shapeColor="0" id="142187016" parent="0" id_b="142177280" id_e="142177936" b_x="525" b_y="255" e_x="735" e_y="255" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/var/fuz/temp" idtf="" shapeColor="0" id="244376984" parent="0" id_b="244345792" id_e="244346656" b_x="525" b_y="270" e_x="645" e_y="270" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/const/fuz/temp" idtf="" shapeColor="0" id="142186320" parent="0" id_b="142145416" id_e="142176624" b_x="270" b_y="255" e_x="480" e_y="255" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/const/fuz/temp" idtf="" shapeColor="0" id="244376112" parent="0" id_b="244344048" id_e="244344912" b_x="345" b_y="270" e_x="480" e_y="270" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/var/neg/temp" idtf="" shapeColor="0" id="142185592" parent="0" id_b="142174000" id_e="142174656" b_x="525" b_y="210" e_x="735" e_y="210" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/meta/neg/temp" idtf="" shapeColor="0" id="244375240" parent="0" id_b="244338864" id_e="244339728" b_x="705" b_y="225" e_x="825" e_y="225" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/const/neg/temp" idtf="" shapeColor="0" id="142184944" parent="0" id_b="142175312" id_e="142175968" b_x="270" b_y="210" e_x="480" e_y="210" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/var/neg/temp" idtf="" shapeColor="0" id="244374368" parent="0" id_b="244337120" id_e="244337984" b_x="525" b_y="225" e_x="645" e_y="225" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/var/pos/temp" idtf="" shapeColor="0" id="142184456" parent="0" id_b="142172688" id_e="142173344" b_x="525" b_y="165" e_x="735" e_y="165" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/const/neg/temp" idtf="" shapeColor="0" id="244373488" parent="0" id_b="244340592" id_e="244341456" b_x="345" b_y="225" e_x="480" e_y="225" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/const/pos/temp" idtf="" shapeColor="0" id="142162016" parent="0" id_b="142171376" id_e="142172032" b_x="270" b_y="165" e_x="480" e_y="165" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/meta/pos/temp" idtf="" shapeColor="0" id="244372616" parent="0" id_b="244335392" id_e="244336256" b_x="705" b_y="165" e_x="825" e_y="165" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/var/fuz" idtf="" shapeColor="0" id="142142256" parent="0" id_b="142170064" id_e="142170720" b_x="525" b_y="120" e_x="735" e_y="120" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/var/pos/temp" idtf="" shapeColor="0" id="244371744" parent="0" id_b="244333664" id_e="244334528" b_x="525" b_y="165" e_x="645" e_y="165" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/const/fuz" idtf="" shapeColor="0" id="142181928" parent="0" id_b="142168752" id_e="142169408" b_x="270" b_y="120" e_x="480" e_y="120" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/const/pos/temp" idtf="" shapeColor="0" id="244370872" parent="0" id_b="244331936" id_e="244332800" b_x="345" b_y="165" e_x="480" e_y="165" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/var/neg" idtf="" shapeColor="0" id="142181264" parent="0" id_b="142167440" id_e="142168096" b_x="525" b_y="75" e_x="735" e_y="75" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/meta/fuz" idtf="" shapeColor="0" id="244370000" parent="0" id_b="244330192" id_e="244331056" b_x="705" b_y="120" e_x="825" e_y="120" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/const/neg" idtf="" shapeColor="0" id="142180568" parent="0" id_b="142166128" id_e="142166784" b_x="270" b_y="75" e_x="480" e_y="75" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
-        <arc type="arc/var/fuz" idtf="" shapeColor="0" id="244369128" parent="0" id_b="244328464" id_e="244329328" b_x="525" b_y="120" e_x="645" e_y="120" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </arc>
-        <arc type="arc/const/fuz" idtf="" shapeColor="0" id="244368256" parent="0" id_b="244326736" id_e="244327600" b_x="345" b_y="120" e_x="480" e_y="120" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </arc>
-        <arc type="arc/meta/neg" idtf="" shapeColor="0" id="244367384" parent="0" id_b="244325008" id_e="244325872" b_x="705" b_y="75" e_x="825" e_y="75" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </arc>
-        <arc type="arc/var/neg" idtf="" shapeColor="0" id="244366504" parent="0" id_b="244323264" id_e="244324128" b_x="525" b_y="75" e_x="645" e_y="75" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </arc>
-        <arc type="arc/const/neg" idtf="" shapeColor="0" id="244365632" parent="0" id_b="244307088" id_e="244322552" b_x="345" b_y="75" e_x="480" e_y="75" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </arc>
-        <arc type="arc/meta/pos" idtf="" shapeColor="0" id="244364760" parent="0" id_b="244319424" id_e="244320288" b_x="705" b_y="30" e_x="825" e_y="30" dotBBalance="0" dotEBalance="0">
-            <points/>
-        </arc>
-        <arc type="arc/var/pos" idtf="" shapeColor="0" id="244363888" parent="0" id_b="244317696" id_e="244318560" b_x="525" b_y="30" e_x="645" e_y="30" dotBBalance="0" dotEBalance="0">
+        <arc type="arc/var/pos" idtf="" shapeColor="0" id="142179904" parent="0" id_b="142164816" id_e="142165472" b_x="525" b_y="30" e_x="735" e_y="30" dotBBalance="0" dotEBalance="0">
             <points/>
         </arc>
     </staticSector>
