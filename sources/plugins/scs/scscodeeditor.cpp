@@ -27,14 +27,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCsCodeEditor::SCsCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
-    this->mLineNumberArea = new SCsLineNumberArea(this);
+    mLineNumberArea = new SCsLineNumberArea(this);
 
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
-    this->updateLineNumberAreaWidth(0);
-    this->highlightCurrentLine();
+    updateLineNumberAreaWidth(0);
+    highlightCurrentLine();
 }
 
 int SCsCodeEditor::lineNumberAreaWidth()
@@ -47,40 +47,40 @@ int SCsCodeEditor::lineNumberAreaWidth()
         ++digits;
     }
 
-    int space = 3 + this->fontMetrics().width(QLatin1Char('9')) * digits;
+    int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
 
     return space;
 }
 
 void SCsCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-    this->setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
 void SCsCodeEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
      if (dy)
-         this->mLineNumberArea->scroll(0, dy);
+         mLineNumberArea->scroll(0, dy);
      else
-         this->mLineNumberArea->update(0, rect.y(), this->mLineNumberArea->width(), rect.height());
+         mLineNumberArea->update(0, rect.y(), mLineNumberArea->width(), rect.height());
 
      if (rect.contains(viewport()->rect()))
-         this->updateLineNumberAreaWidth(0);
+         updateLineNumberAreaWidth(0);
 }
 
 void SCsCodeEditor::resizeEvent(QResizeEvent *e)
 {
      QPlainTextEdit::resizeEvent(e);
 
-     QRect cr = this->contentsRect();
-     this->mLineNumberArea->setGeometry(QRect(cr.left(), cr.top(), this->lineNumberAreaWidth(), cr.height()));
+     QRect cr = contentsRect();
+     mLineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
 void SCsCodeEditor::highlightCurrentLine()
 {
      QList<QTextEdit::ExtraSelection> extraSelections;
 
-     if (!this->isReadOnly())
+     if (!isReadOnly())
      {
          QTextEdit::ExtraSelection selection;
 
@@ -93,14 +93,14 @@ void SCsCodeEditor::highlightCurrentLine()
          extraSelections.append(selection);
      }
 
-     this->setExtraSelections(extraSelections);
+     setExtraSelections(extraSelections);
 }
 
 void SCsCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
-     QPainter painter(this->mLineNumberArea);
+     QPainter painter(mLineNumberArea);
      painter.fillRect(event->rect(), Qt::lightGray);
-     QTextBlock block = this->firstVisibleBlock();
+     QTextBlock block = firstVisibleBlock();
      int blockNumber = block.blockNumber();
      int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
      int bottom = top + (int) blockBoundingRect(block).height();
@@ -110,7 +110,7 @@ void SCsCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
          {
              QString number = QString::number(blockNumber + 1);
              painter.setPen(Qt::black);
-             painter.drawText(0, top, this->mLineNumberArea->width(), fontMetrics().height(),
+             painter.drawText(0, top, mLineNumberArea->width(), fontMetrics().height(),
                               Qt::AlignRight, number);
          }
 

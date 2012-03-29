@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/scg">
         <file>media/icons/edit-clear.png</file>
         <file>media/icons/edit-copy.png</file>
         <file>media/icons/edit-cut.png</file>

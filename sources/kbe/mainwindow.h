@@ -144,9 +144,11 @@ private:
      */
     QMap<QString, QByteArray> mStates;
 
+
+    typedef QMap<QWidget*, EditorInterface*> Widget2EditorInterfaceMap;
     /*! Map to convert widget to editor interface
       */
-    QMap<QWidget*, EditorInterface*> mWidget2EditorInterface;
+    Widget2EditorInterfaceMap mWidget2EditorInterface;
 
 public slots:
     /*! Update main menu.

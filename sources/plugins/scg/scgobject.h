@@ -170,7 +170,7 @@ public:
 
     long parentId() const
     {
-        return ((SCgObject*)this->parentItem())->id();
+        return ((SCgObject*)parentItem())->id();
     }
 
 protected:

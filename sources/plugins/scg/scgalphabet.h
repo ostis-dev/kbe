@@ -41,20 +41,6 @@ Q_OBJECT
 
 public:
 
-    //! Possible width of lines
-    static inline qreal lineWidthThin()
-    {
-        return 2.f;
-    }
-    static inline qreal lineWidthFat()
-    {
-        return 7.f;
-    }
-    static inline qreal lineWidthFatIn()
-    {
-        return lineWidthFat() * 0.6f;
-    }
-
     //! Return width of lines for building usable shapes.
     static inline qreal lineWidthForShape()
     {
@@ -148,11 +134,7 @@ protected:
     QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgNodeStructType &type_struct);
     QIcon createPairIcon(const QSize &size, QString type);
 
-    static QPixmap* getTempPixmap(QColor color);
-
 private:
-
-    static QMap<int, QPixmap*> mTemporaryPixmap;
 
     static SCgAlphabet *mInstance;
     SCgObjectTypesMap mObjectTypes;
@@ -174,9 +156,14 @@ private:
     typedef QMap<QString, SCgPermType> SCgTypeAlias2PermTypeMap;
     SCgTypeAlias2PermTypeMap mPermTypes;
 
-    // patterns
-    static QVector<qreal> msVarThinDashPattern;
-    static QVector<qreal> msVarFatDashPattern;
+    //! Pattern that used to draw permanent, variable, accessory pairs
+    static QVector<qreal> msPermVarAccesDashPattern;
+    //! Pattern that used to draw permanent, variable, not accessory pairs
+    static QVector<qreal> msPermVarNoAccesDashPattern;
+    //! Pattern that used to draw temporary, constant, accessory pairs
+    static QVector<qreal> msTempConstAccesDashPattern;
+    //! Pattern that used to draw temporary, variable, accessory pairs
+    static QVector<qreal> msTempVarAccesDashPattern;
 
 signals:
 

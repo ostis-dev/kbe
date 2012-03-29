@@ -40,7 +40,7 @@ bool SCsFileLoader::load(QString file_name, QObject *output)
 
     QFile file(file_name);
 
-    this->mFileName = file_name;
+    mFileName = file_name;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
             return false;

@@ -120,8 +120,10 @@ public:
     SCgAlphabet::SCgPosType getPosType() const { return mPosType; }
     //! Get permanency type
     SCgAlphabet::SCgPermType getPermType() const { return mPermType; }
+    //! Return accessory flag value
+    bool isAccessory() const { return mIsAccessory; }
     //! Check if pair is orient
-    bool isOrient() const   { return mOrient; }
+    bool isOrient() const   { return mIsOrient; }
 
 
 
@@ -142,8 +144,10 @@ private:
     SCgAlphabet::SCgPosType mPosType;
     //! Permanency type
     SCgAlphabet::SCgPermType mPermType;
+    //! Flag that shows if pair is accessory
+    bool mIsAccessory;
     //! Orientation flag
-    bool mOrient;
+    bool mIsOrient;
 
 };
 

@@ -28,14 +28,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVector2D>
 
 SCgPair::SCgPair() :
-        mBeginObject(0),
-        mBeginDot(0.f),
-        mEndObject(0),
-        mEndDot(0.f),
-        mEndArrow(false),
-        mPosType(SCgAlphabet::PosUnknown),
-        mPermType(SCgAlphabet::PermUnknown),
-        mOrient(false)
+    mBeginObject(0),
+    mBeginDot(0.f),
+    mEndObject(0),
+    mEndDot(0.f),
+    mEndArrow(false),
+    mPosType(SCgAlphabet::PosUnknown),
+    mPermType(SCgAlphabet::PermUnknown),
+    mIsAccessory(false),
+    mIsOrient(false)
 {
     mPoints.push_back(QPointF());
     mPoints.push_back(QPointF());
@@ -375,7 +376,7 @@ void SCgPair::updateType()
     mConstType = SCgAlphabet::ConstUnknown;
     mPosType = SCgAlphabet::PosUnknown;
     mPermType = SCgAlphabet::PermUnknown;
-    mOrient = false;
+    mIsOrient = mIsAccessory = false;
 
     /* updating information based on type alias */
     QStringList sl = mTypeAlias.split("/");
@@ -383,5 +384,7 @@ void SCgPair::updateType()
     mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
     mPosType = SCgAlphabet::getInstance().aliasToPositiveCode(sl[2]);
     mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[3]);
-    mOrient = (sl[4] == "orient");
+    mIsOrient = (sl[4] == "orient");
+    if (sl.size() == 6)
+        mIsAccessory = (sl[5] == "accessory");
 }

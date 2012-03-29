@@ -77,6 +77,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(mTabWidget, SIGNAL(currentChanged(int)),
             SLOT(subWindowHasChanged(int)), Qt::AutoConnection);
+    connect(mTabWidget, SIGNAL(tabBeforeClose(QWidget*)),
+            this, SLOT(windowWillBeClosed(QWidget*)));
 
     // creating actions
     createActions();
@@ -210,7 +212,11 @@ bool MainWindow::checkSubWindowSavedState()
 EditorInterface *MainWindow::activeChild()
 {
     if (QWidget *activeSubWindow = mTabWidget->currentWidget())
-        return mWidget2EditorInterface[activeSubWindow];
+    {
+        Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(activeSubWindow);
+        if (it != mWidget2EditorInterface.end())
+            return *it;
+    }
     return 0;
 }
 
@@ -313,19 +319,20 @@ void MainWindow::fileNew()
         QListWidget *availableTypesList = new QListWidget;
         availableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
         availableTypesList->setIconSize(QSize(16, 16));
+
         foreach (QString ext, PluginManager::instance()->supportedFilesExt())
-        {
             availableTypesList->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
-        }
+
         QHBoxLayout *buttonLay = new QHBoxLayout;
         QPushButton *butOk = new QPushButton(tr("OK"));
+
         if (availableTypesList->count() > 0)
             availableTypesList->item(0)->setSelected(true);
         else
             butOk->setEnabled(false);
+
         QPushButton *butCancel = new QPushButton(tr("Cancel"));
-        connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
-        connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
+
         buttonLay->addWidget(butOk, 1, Qt::AlignRight);
         buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
 
@@ -333,6 +340,10 @@ void MainWindow::fileNew()
         lay->addWidget(availableTypesList);
         lay->addLayout(buttonLay);
         fileNewDlg->setLayout(lay);
+
+        connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
+        connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
+
         int dlgResult = fileNewDlg->exec();
         if (dlgResult == QDialog::Accepted)
         {
@@ -413,7 +424,11 @@ bool MainWindow::saveWindow(EditorInterface* window, QString& name, const QStrin
 
 void MainWindow::fileSave(QWidget* window)
 {
-    EditorInterface* childWindow = mWidget2EditorInterface[window];
+    EditorInterface* childWindow = 0;
+
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
 
     if(!childWindow)
         childWindow = activeChild();
@@ -436,7 +451,10 @@ void MainWindow::fileSave(QWidget* window)
 
 void MainWindow::fileSaveAs(QWidget* window)
 {
-    EditorInterface* childWindow = mWidget2EditorInterface[window];
+    EditorInterface* childWindow = 0;
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
 
     if(!childWindow)
         childWindow = activeChild();
@@ -632,6 +650,8 @@ void MainWindow::subWindowHasChanged(int index)
     QWidget* window = mTabWidget->widget(index);
     if (window)
     {
+        Q_ASSERT(mWidget2EditorInterface.contains(window));
+
         mLastActiveWindow = mWidget2EditorInterface[window];
 
         Q_ASSERT(mLastActiveWindow);
@@ -653,30 +673,29 @@ void MainWindow::windowWillBeClosed(QWidget* w)
                "There are no conversion to editor interface for a given window");
 
     it.value()->_setObserver(0);
+
+    // check if it saved
+    EditorInterface *editor = it.value();
+    if (!editor->isSaved())
+    {
+        if (QMessageBox::question(this, tr("Save changes"),
+                                  tr("Do you want to save changes in %1 ?").arg(editor->currentFileName()),
+                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+        {
+            fileSave(it.key());
+        }
+    }
+
     mWidget2EditorInterface.erase(it);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    int countActiveWindow = mTabWidget->subWindowList().size();
-    for (int i = 0; i < countActiveWindow; i++) {
-        if (!mTabWidget->closeWindow(mTabWidget->currentWidget()))
-        {
-            event->ignore();
-            updateMenu();
-            return;
-        }
-    }
-    event->accept();
-
-    QSettings settings;
-    QMap<QString, QByteArray>::const_iterator it = mStates.begin();
-    while(it != mStates.end())
-    {
-        settings.setValue(Config::settingsDocksGeometry + "/" + it.key(), it.value());
-        ++it;
-    }
-    settings.setValue(Config::settingsMainWindowGeometry, saveGeometry());
+    // close all child windows
+    QList<QWidget*> widgets = mWidget2EditorInterface.keys();
+    QWidget *widget = 0;
+    foreach (widget, widgets)
+        mTabWidget->closeWindow(widget);
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

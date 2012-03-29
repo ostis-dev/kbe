@@ -29,22 +29,22 @@ SCsStdHighlightingRule::SCsStdHighlightingRule()
 SCsStdHighlightingRule::SCsStdHighlightingRule(QRegExp pattern, QTextCharFormat format)
     : SCsAbstractHighlightingRule(format)
 {
-    this->mPattern = pattern;
+    mPattern = pattern;
 }
 
 QRegExp SCsStdHighlightingRule::getPattern()
 {
-    return this->mPattern;
+    return mPattern;
 }
 
 void SCsStdHighlightingRule::assignFormat(SCsSyntaxHighlighter *highliter, const QString& text)
 {
-    QRegExp expression(this->mPattern);
+    QRegExp expression(mPattern);
     int index = expression.indexIn(text);
     while (index >= 0)
     {
         int length = expression.matchedLength();
-        highliter->setFormating(index,length, this->format());
+        highliter->setFormating(index,length, format());
         index = expression.indexIn(text, index + length);
     }
 }

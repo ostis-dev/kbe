@@ -280,7 +280,7 @@ void SCgWindow::createToolBar()
 
 QIcon SCgWindow::findIcon(const QString &iconName)
 {
-    return QIcon(":/media/icons/" + iconName);
+    return QIcon(":/scg/media/icons/" + iconName);
 }
 
 QIcon SCgWindow::icon() const
@@ -296,6 +296,7 @@ bool SCgWindow::loadFromFile(const QString &fileName)
     {
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
+        emitEvent(EditorObserverInterface::ContentLoaded);
         return true;
     }else
         return false;
@@ -310,6 +311,8 @@ bool SCgWindow::saveToFile(const QString &fileName)
         mFileName = fileName;
         setWindowTitle(mFileName + "[*]");
         mUndoStack->setClean();
+        emitEvent(EditorObserverInterface::ContentSaved);
+
         return true;
     }else
         return false;

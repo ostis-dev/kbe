@@ -83,6 +83,10 @@ private:
     M4SCpSyntaxHighlighter *mHighlighter;
     bool mIsSaved;
 
+private slots:
+    //! Slot that recieve content changing
+    void textChanged();
+
 };
 
 class M4SCpWindowFactory : public QObject,
