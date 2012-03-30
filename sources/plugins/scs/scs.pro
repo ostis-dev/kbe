@@ -18,8 +18,6 @@ HEADERS += \
     scsplugin.h \
     scsmultilinecommenthighlightingrule.h \
     scshighlightingrulespool.h \
-    scsfilewriter.h \
-    scsfileloader.h \
     scscodeeditor.h \
     scsabstracthighlightingrule.h
 
@@ -30,7 +28,5 @@ SOURCES += \
     scsplugin.cpp \
     scsmultilinecommenthighlightingrule.cpp \
     scshighlightingrulespool.cpp \
-    scsfilewriter.cpp \
-    scsfileloader.cpp \
     scscodeeditor.cpp \
     scsabstracthighlightingrule.cpp

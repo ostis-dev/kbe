@@ -22,8 +22,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scswindow.h"
 #include "config.h"
-#include "scsfileloader.h"
-#include "scsfilewriter.h"
 #include "scshighlightingrulespool.h"
 #include "scscodeeditor.h"
 #include "scssyntaxhighlighter.h"
@@ -33,6 +31,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QUndoStack>
 #include <QDir>
 #include <QFileInfo>
+#include <QMessageBox>
+#include <QTextStream>
 
 SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
@@ -85,38 +85,53 @@ QStringList SCsWindow::supportedFormatsExt() const
 
 bool SCsWindow::loadFromFile(const QString &fileName)
 {
-    SCsFileLoader loader;
+    // read data from file
+    QFile fileIn(fileName);
 
-    if(loader.load(fileName, mEditor->document()))
+    if (!fileIn.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        mFileName = fileName;
-        setWindowTitle(mFileName + "[*]");
-        mIsSaved = true;
-
-        emitEvent(EditorObserverInterface::ContentLoaded);
-
-        return true;
+        QMessageBox::warning(0, tr("Error"),
+                             tr("Can't open file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(fileIn.errorString()));
+        return false;
     }
 
-    return false;
+    QTextStream in(&fileIn);
+    mEditor->document()->setPlainText(in.readAll());
+    fileIn.close();
+
+    mFileName = fileName;
+    setWindowTitle(mFileName + "[*]");
+    mIsSaved = true;
+
+    emitEvent(EditorObserverInterface::ContentLoaded);
+
+    return true;
 }
 
 bool SCsWindow::saveToFile(const QString &fileName)
 {
-    SCsFileWriter writer;
-
-    if (writer.save(fileName, mEditor->document()))
+    QFile fileOut(fileName);
+    if (!fileOut.open(QFile::WriteOnly | QFile::Text))
     {
-        mFileName = fileName;
-        setWindowTitle(mFileName + "[*]");
-        mIsSaved = true;
-
-        emitEvent(EditorObserverInterface::ContentSaved);
-
-        return true;
+         QMessageBox::warning(0, tr("error"),
+                              tr("Can't save file %1:\n%2.")
+                              .arg(fileName)
+                              .arg(fileOut.errorString()));
+         return false;
     }
-    else
-        return false;
+    QTextStream out(&fileOut);
+    out << mEditor->document()->toPlainText();
+    fileOut.close();
+
+    mFileName = fileName;
+    setWindowTitle(mFileName + "[*]");
+    mIsSaved = true;
+
+    emitEvent(EditorObserverInterface::ContentSaved);
+
+    return true;
 }
 
 bool SCsWindow::isSaved() const
