@@ -120,6 +120,8 @@ private:
 
     //! Graphics view
     SCgView *mView;
+    SCgScene *mScene;
+
     typedef QMap<int, QString> IntStringMap;
     IntStringMap mId2TypeAlias;
 
@@ -181,38 +183,29 @@ private:
 signals:
 
 private slots:
-    /*! Slot for a selection mode tool bar button clicked.
-      */
+    //! Slot to handle a selection action
     void onSelectMode();
-    /*! Slot for a pair creation mode
-      */
+    //! Slot to handle a pair creation action
     void onPairMode();
-    /*! Slot for a bus creation mode tool bar button clicked.
-      */
+    //! Slot to handle a bus creation mode action
     void onBusMode();
-    /*! Slot for a contour creation mode tool bar button clicked.
-      */
+    //! Slot to handle a contour creation mode action
     void onContourMode();
-    /*! Slot for the grid alignment tool bar button clicked.
-      */
+    //! Slot to handle a grid alignment action
     void onGridAlignment();
-    /*! Slot for the tuple alignment tool bar button clicked.
-      */
+    //! Slot to handle a tuple alignment action
     void onTupleAlignment();
-    /*! Slot for the vertical alignment tool bar button clicked.
-      */
+    //! Slot to handle a vertical alignment action
     void onVerticalAlignment();
-    /*! Slot for the horizontal alignment tool bar button clicked.
-      */
+    //! Slot to handle a horizontal alignment action
     void onHorizontalAlignment();
-    /*! Slot for handling ZoomIn event;
-     */
+    //! Slot to hanlde an export image action
+    void onExportImage();
+    //! Slot to handle a zoom in action
     void onZoomIn();
-    /*! Slot for handling ZoomOut event;
-     */
+    //! Slot to handle a zoom out action
     void onZoomOut();
-    /*! Slot for setting zoom factor value.
-     */
+    //! Slot to set zoom factor value.
     void onViewScaleChanged(qreal newScaleValue);
 
     //! Handle find next button pressed event
