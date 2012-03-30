@@ -87,9 +87,13 @@ void GwfStreamWriter::createTypesMap()
     mTypeAlias2GWFType["node/meta/group"] = "node/meta/group";
 
     // pairs
+    mTypeAlias2GWFType["pair/-/-/-/orient/accessory"] = "arc/-/-";
+    mTypeAlias2GWFType["pair/-/-/-/noorien"] = "pair/noorient";
+    mTypeAlias2GWFType["pair/-/-/-/orient"] = "pair/orient";
+
     mTypeAlias2GWFType["pair/const/pos/perm/orient/accessory"] = "arc/const/pos";
     mTypeAlias2GWFType["pair/var/pos/perm/orient/accessory"] = "arc/var/pos";
-    mTypeAlias2GWFType ["pair/meta/pos/perm/orient/accessory"] = "arc/meta/pos";
+    mTypeAlias2GWFType["pair/meta/pos/perm/orient/accessory"] = "arc/meta/pos";
 
     mTypeAlias2GWFType["pair/const/neg/perm/orient/accessory"] = "arc/const/neg";
     mTypeAlias2GWFType["pair/var/neg/perm/orient/accessory"] = "arc/var/neg";

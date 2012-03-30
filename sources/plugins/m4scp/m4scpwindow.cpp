@@ -25,9 +25,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpsyntaxhighlighter.h"
 #include "m4scpplugin.h"
 
-#include "m4scpfileloader.h"
-#include "m4scpfilewriter.h"
-
 #include "config.h"
 
 #include <QHBoxLayout>
@@ -35,6 +32,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QUndoStack>
 #include <QDir>
 #include <QFileInfo>
+#include <QMessageBox>
+#include <QTextStream>
 
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
@@ -88,38 +87,54 @@ QStringList M4SCpWindow::supportedFormatsExt() const
 
 bool M4SCpWindow::loadFromFile(const QString &fileName)
 {    
-    M4SCpFileLoader loader;
+    // read data from file
+    QFile fileIn(fileName);
 
-    if (loader.load(fileName, mEditor->document()))
+    if (!fileIn.open(QIODevice::ReadOnly | QIODevice::Text))
     {
-        mFileName = fileName;
-        setWindowTitle(mFileName + "[*]");
-        mIsSaved = true;
-
-        emitEvent(EditorObserverInterface::ContentLoaded);
-
-        return true;
+        QMessageBox::warning(0, tr("Error"),
+                             tr("Can't open file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(fileIn.errorString()));
+        return false;
     }
 
-    return false;
+    QTextStream in(&fileIn);
+    mEditor->document()->setPlainText(in.readAll());
+    fileIn.close();
+
+    mFileName = fileName;
+    setWindowTitle(mFileName + "[*]");
+    mIsSaved = true;
+
+    emitEvent(EditorObserverInterface::ContentLoaded);
+
+    return true;
 }
 
 
 bool M4SCpWindow::saveToFile(const QString &fileName)
 {
-    M4SCpFileWriter writer;
-
-    if (writer.save(fileName, mEditor->document()))
+    QFile fileOut(fileName);
+    if (!fileOut.open(QFile::WriteOnly | QFile::Text))
     {
-        mFileName = fileName;
-        setWindowTitle(mFileName + "[*]");
-        mIsSaved = true;
+         QMessageBox::warning(0, tr("error"),
+                              tr("Can't save file %1:\n%2.")
+                              .arg(fileName)
+                              .arg(fileOut.errorString()));
+         return false;
+    }
+    QTextStream out(&fileOut);
+    out << mEditor->document()->toPlainText();
+    fileOut.close();
 
-        emitEvent(EditorObserverInterface::ContentSaved);
+    mFileName = fileName;
+    setWindowTitle(mFileName + "[*]");
+    mIsSaved = true;
 
-        return true;
-    }else
-        return false;
+    emitEvent(EditorObserverInterface::ContentSaved);
+
+    return true;
 }
 
 bool M4SCpWindow::isSaved() const
