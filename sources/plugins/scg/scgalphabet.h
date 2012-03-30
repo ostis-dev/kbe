@@ -164,6 +164,8 @@ private:
     static QVector<qreal> msTempConstAccesDashPattern;
     //! Pattern that used to draw temporary, variable, accessory pairs
     static QVector<qreal> msTempVarAccesDashPattern;
+    //! Pattern that used to draw common accessory marks
+    static QVector<qreal> msCommonAccessoryDashPattern;
 
 signals:
 

@@ -251,13 +251,10 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
                "Begin or end object is null");
     SCgPair *pair = new SCgPair;
 
-    pair->setTypeAlias("pair/const/pos/-/orient");
+    pair->setTypeAlias("pair/-/-/-/accessory");
 
     pair->setBeginObject(begObj);
     pair->setEndObject(endObj);
-    /*
-    pair->setBeginDot(begObj->dotPos(points.at(0)));
-    pair->setEndDot(endObj->dotPos(points.at(points.size()-1)));*/
 
     pair->setPoints(points);
 

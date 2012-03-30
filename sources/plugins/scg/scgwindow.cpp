@@ -221,7 +221,7 @@ void SCgWindow::createToolBar()
 
     QToolButton *alignButton = new QToolButton(mToolBar);
     alignButton->setIcon(findIcon("tool-align.png"));
-    alignButton->setPopupMode(QToolButton::InstantPopup);
+    alignButton->setPopupMode(QToolButton::DelayedPopup);
     mToolBar->addWidget(alignButton);
 
     //Grid alignment

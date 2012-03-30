@@ -102,6 +102,10 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["node/meta/group"] = "node/meta/group";
 
     // pairs
+    mGWFType2TypeAlias["arc/-/-"] = "pair/-/-/-/orient/accessory";
+    mGWFType2TypeAlias["pair/noorient"] = "pair/-/-/-/noorien";
+    mGWFType2TypeAlias["pair/orient"] = "pair/-/-/-/orient";
+
     mGWFType2TypeAlias["arc/const/pos"] = "pair/const/pos/perm/orient/accessory";
     mGWFType2TypeAlias["arc/var/pos"] = "pair/var/pos/perm/orient/accessory";
     mGWFType2TypeAlias["arc/meta/pos"] = "pair/meta/pos/perm/orient/accessory";
