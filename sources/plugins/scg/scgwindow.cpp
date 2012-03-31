@@ -398,6 +398,7 @@ void SCgWindow::onExportImage()
 
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
+    QMap<QString, QString> filtersMap;
 
     SCgExportImage exportImage;
     QString selectedFilter;
@@ -405,7 +406,11 @@ void SCgWindow::onExportImage()
 
     QStringList formats = exportImage.supportedFormats();
     foreach(fmt, formats)
-        formatsStr += tr("%1 image (*.%1);;").arg(fmt);
+    {
+        QString filter = tr("%1 image (*.%1)").arg(fmt);
+        formatsStr += filter + ";;";
+        filtersMap[filter] = fmt;
+    }
     formatsStr = formatsStr.left(formatsStr.length() - 2);
 
     QString fileName = QCoreApplication::applicationDirPath() + "/" + currentFileName();
@@ -417,7 +422,19 @@ void SCgWindow::onExportImage()
                                            options);
 
     if (fileName.length() > 0)
+    {
+        QFileInfo info(fileName);
+
+        if (info.suffix().isEmpty())
+            fileName += "." + filtersMap[selectedFilter];
+        else
+        {
+            // replace suffix if it not in selected filter
+            if (info.suffix() != filtersMap[selectedFilter])
+                fileName = fileName.left(fileName.size() - info.suffix().size()) + filtersMap[selectedFilter];
+        }
         exportImage.doExport(mScene, fileName);
+    }
 }
 
 void SCgWindow::onZoomIn()
