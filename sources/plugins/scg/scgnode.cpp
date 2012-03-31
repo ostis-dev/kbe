@@ -49,13 +49,17 @@ SCgNode::SCgNode(QGraphicsItem *parent, QGraphicsScene *scene) :
 SCgNode::~SCgNode()
 {
     //Q_ASSERT(!mBus);    // must be deleted before
+    if (mContentViewer)
+    {
+        delete mContentViewer;
+        mContentViewer = 0;
+    }
+
     if (mBus)
     {
     	mBus->setOwner(0);
     	mBus = 0;
     }
-    if (mContentViewer)
-    	delete mContentViewer;
 }
 
 void SCgNode::setTypeAlias(const QString &typeAlias)
@@ -127,8 +131,11 @@ QPainterPath SCgNode::shape() const
 QVariant SCgNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
     if (mBus && !mBus->isDead() && change == QGraphicsItem::ItemParentHasChanged)
+    {
         mBus->setParentItem(parentItem());
-    updateConnected();
+        updateConnected();
+    }
+
     return SCgObject::itemChange(change, value);
 }
 

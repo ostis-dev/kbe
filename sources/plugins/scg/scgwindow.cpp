@@ -36,6 +36,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenuBar>
 #include <QMenu>
 #include <QToolButton>
+#include <QFileDialog>
 
 #include "scglayoutmanager.h"
 #include "scgarrangervertical.h"
@@ -43,6 +44,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgarrangergrid.h"
 #include "scgarrangertuple.h"
 #include "scgplugin.h"
+#include "scgexportimage.h"
 
 #include "scgfindwidget.h"
 #include "scgview.h"
@@ -66,6 +68,7 @@ const int SCgWindow::mScaleChangeStep = 25;
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),
     mView(0),
+    mScene(0),
     mZoomFactorLine(0),
     mMinimap(0),
     mUndoView(0),
@@ -86,7 +89,8 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     /////////////////////////////////////////////////
     //Creating main environment
     mView = new SCgView(0, this);
-    mView->setScene(new SCgScene(mUndoStack, mView));
+    mScene = new SCgScene(mUndoStack, mView);
+    mView->setScene(mScene);
     mView->setSceneRect(0, 0, 1000, 1000);
 
     mFindWidget = new SCgFindWidget(this);
@@ -180,7 +184,7 @@ void SCgWindow::createToolBar()
     QActionGroup* group = new QActionGroup(mToolBar);
 
     // Select mode
-    QAction *action = new QAction(findIcon("tool-select.png"), tr("Selection mode(1)"), mToolBar);
+    QAction *action = new QAction(findIcon("tool-select.png"), tr("Selection mode"), mToolBar);
     action->setCheckable(true);
     action->setChecked(true);
     action->setShortcut(QKeySequence(tr("1", "Selection mode")));
@@ -190,7 +194,7 @@ void SCgWindow::createToolBar()
     connect(action, SIGNAL(triggered()), this, SLOT(onSelectMode()));
 
     //Pair creation mode
-    action = new QAction(findIcon("tool-pair.png"), tr("Pair creation mode(2)"), mToolBar);
+    action = new QAction(findIcon("tool-pair.png"), tr("Pair creation mode"), mToolBar);
     action->setCheckable(true);
     action->setShortcut(QKeySequence(tr("2", "Pair creation mode")));
     group->addAction(action);
@@ -199,7 +203,7 @@ void SCgWindow::createToolBar()
     connect(action, SIGNAL(triggered()), this, SLOT(onPairMode()));
 
     //Bus creation mode
-    action = new QAction(findIcon("tool-bus.png"), tr("Bus creation mode(3)"), mToolBar);
+    action = new QAction(findIcon("tool-bus.png"), tr("Bus creation mode"), mToolBar);
     action->setCheckable(true);
     action->setShortcut(QKeySequence(tr("3", "Bus creation mode")));
     group->addAction(action);
@@ -208,7 +212,7 @@ void SCgWindow::createToolBar()
     connect(action, SIGNAL(triggered()), this, SLOT(onBusMode()));
 
     //Contour creation mode
-    action = new QAction(findIcon("tool-contour.png"), tr("Contour creation mode(4)"), mToolBar);
+    action = new QAction(findIcon("tool-contour.png"), tr("Contour creation mode"), mToolBar);
     action->setCheckable(true);
     action->setShortcut(QKeySequence(tr("4", "Contour creation mode")));
     group->addAction(action);
@@ -252,11 +256,19 @@ void SCgWindow::createToolBar()
     alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onHorizontalAlignment()));
 
+    mToolBar->addSeparator();
+
+    action = new QAction(findIcon("tool-export-image.png"), tr("Export image"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("0", "Export image")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onExportImage()));
+
     //
     mToolBar->addSeparator();
     //
     //Zoom in
-    action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in(+)"), mToolBar);
+    action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("+", "Zoom in")));
     mToolBar->addAction(action);
@@ -275,7 +287,7 @@ void SCgWindow::createToolBar()
     connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
 
     //Zoom out
-    action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out(-)"), mToolBar);
+    action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("-", "Zoom out")));
     mToolBar->addAction(action);
@@ -379,6 +391,50 @@ void SCgWindow::onVerticalAlignment()
 void SCgWindow::onHorizontalAlignment()
 {
     SCgLayoutManager::instance().arrange(mView, SCgHorizontalArranger::Type);
+}
+
+void SCgWindow::onExportImage()
+{
+
+    QFileDialog::Options options;
+    options |= QFileDialog::DontUseNativeDialog;
+    QMap<QString, QString> filtersMap;
+
+    SCgExportImage exportImage;
+    QString selectedFilter;
+    QString formatsStr, fmt;
+
+    QStringList formats = exportImage.supportedFormats();
+    foreach(fmt, formats)
+    {
+        QString filter = tr("%1 image (*.%1)").arg(fmt);
+        formatsStr += filter + ";;";
+        filtersMap[filter] = fmt;
+    }
+    formatsStr = formatsStr.left(formatsStr.length() - 2);
+
+    QString fileName = QCoreApplication::applicationDirPath() + "/" + currentFileName();
+    fileName = QFileDialog::getSaveFileName(this,
+                                           tr("Export file to ..."),
+                                           fileName,
+                                           formatsStr,
+                                           &selectedFilter,
+                                           options);
+
+    if (fileName.length() > 0)
+    {
+        QFileInfo info(fileName);
+
+        if (info.suffix().isEmpty())
+            fileName += "." + filtersMap[selectedFilter];
+        else
+        {
+            // replace suffix if it not in selected filter
+            if (info.suffix() != filtersMap[selectedFilter])
+                fileName = fileName.left(fileName.size() - info.suffix().size()) + filtersMap[selectedFilter];
+        }
+        exportImage.doExport(mScene, fileName);
+    }
 }
 
 void SCgWindow::onZoomIn()

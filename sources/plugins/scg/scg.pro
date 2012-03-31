@@ -81,7 +81,8 @@ HEADERS += \
     commands/scgcommandclone.h \
     commands/scgcommandchangeincedentobject.h \
     commands/scgbasecommand.h \
-    commands/scgcommandidtfmove.h
+    commands/scgcommandidtfmove.h \
+    scgexportimage.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -151,6 +152,7 @@ SOURCES += \
     commands/scgcommandchangeincedentobject.cpp \
     commands/scgbasecommand.cpp \
     commands/scgcommandcreatenode.cpp \
-    commands/scgcommandidtfmove.cpp
+    commands/scgcommandidtfmove.cpp \
+    scgexportimage.cpp
 
 
