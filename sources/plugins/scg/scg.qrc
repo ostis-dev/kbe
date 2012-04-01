@@ -28,5 +28,6 @@
         <file>media/icons/tool-align.png</file>
         <file>media/icons/tool-select-group.png</file>
         <file>media/icons/tool-select-inout.png</file>
+        <file>media/icons/tool-select-subgraph.png</file>
     </qresource>
 </RCC>

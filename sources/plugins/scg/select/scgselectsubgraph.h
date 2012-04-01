@@ -20,16 +20,32 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#ifndef SCGSELECTSUBGRAPH_H
+#define SCGSELECTSUBGRAPH_H
+
 #include "scgselect.h"
 
-SCgSelect::SCgSelect(QObject *parent) :
-    QObject(parent)
+class SCgSelectSubGraph : public SCgSelect
 {
-}
+    Q_OBJECT
+public:
+    explicit SCgSelectSubGraph(QObject *parent = 0);
+    virtual ~SCgSelectSubGraph();
+    
+    //! @copydoc SCgSelect::doSelection
+    void doSelection(SCgScene *scene);
 
+private:
+    /*! Select specified \p obj and call that function for all connected
+      * to \p obj objects, that aren't selected yet.
+      * @param obj Pointer to object, that need to be selected
+      */
+    void select(SCgObject *obj);
 
-SCgSelect::~SCgSelect()
-{
-}
+signals:
+    
+public slots:
+    
+};
 
-
+#endif // SCGSELECTSUBGRAPH_H

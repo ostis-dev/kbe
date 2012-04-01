@@ -199,8 +199,10 @@ private slots:
     void onVerticalAlignment();
     //! Slot to handle a horizontal alignment action
     void onHorizontalAlignment();
-    //! Slot to handle input/output alignment action
+    //! Slot to handle select input/output action
     void onSelectInputOutput();
+    //! Slot to handle select subgraph action
+    void onSelectSubgraph();
     //! Slot to hanlde an export image action
     void onExportImage();
     //! Slot to handle a zoom in action

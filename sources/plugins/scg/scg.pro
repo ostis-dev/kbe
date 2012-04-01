@@ -84,7 +84,8 @@ HEADERS += \
     arrangers/scgarrangergrid.h \
     arrangers/scgarranger.h \
     select/scgselectinputoutput.h \
-    select/scgselect.h
+    select/scgselect.h \
+    select/scgselectsubgraph.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -157,6 +158,7 @@ SOURCES += \
     arrangers/scgarrangergrid.cpp \
     arrangers/scgarranger.cpp \
     select/scgselectinputoutput.cpp \
-    select/scgselect.cpp
+    select/scgselect.cpp \
+    select/scgselectsubgraph.cpp
 
 

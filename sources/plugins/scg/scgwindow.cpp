@@ -45,6 +45,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangertuple.h"
 
 #include "select/scgselectinputoutput.h"
+#include "select/scgselectsubgraph.h"
 
 #include "scgplugin.h"
 #include "scgexportimage.h"
@@ -272,6 +273,12 @@ void SCgWindow::createToolBar()
     selectButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onSelectInputOutput()));
 
+    // sbgraph selection
+    action = new QAction(findIcon("tool-select-subgraph.png"), tr("Select subgraph"), mToolBar);
+    action->setCheckable(false);
+    selectButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onSelectSubgraph()));
+
     mToolBar->addSeparator();
 
     action = new QAction(findIcon("tool-export-image.png"), tr("Export image"), mToolBar);
@@ -412,6 +419,12 @@ void SCgWindow::onHorizontalAlignment()
 void SCgWindow::onSelectInputOutput()
 {
     SCgSelectInputOutput select;
+    select.doSelection(mScene);
+}
+
+void SCgWindow::onSelectSubgraph()
+{
+    SCgSelectSubGraph select;
     select.doSelection(mScene);
 }
 
