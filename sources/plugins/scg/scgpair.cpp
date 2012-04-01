@@ -278,7 +278,7 @@ void SCgPair::setBeginObject(SCgObject *object)
     updatePosition();
 }
 
-SCgObject* SCgPair::getBeginObject() const
+SCgObject* SCgPair::beginObject() const
 {
     return mBeginObject;
 }
@@ -296,7 +296,7 @@ void SCgPair::setEndObject(SCgObject *object)
     updatePosition();
 }
 
-SCgObject* SCgPair::getEndObject() const
+SCgObject* SCgPair::endObject() const
 {
     return mEndObject;
 }

@@ -237,8 +237,8 @@ void GwfStreamWriter::writePair(SCgObject *obj)
         writeStartElement("pair");
     writeObjectAttributes(obj);
     SCgPair* pair = static_cast<SCgPair*>(obj);
-    SCgObject* b = pair->getBeginObject();
-    SCgObject* e = pair->getEndObject();
+    SCgObject* b = pair->beginObject();
+    SCgObject* e = pair->endObject();
     writeAttribute("id_b", QString::number(b->id()));
     writeAttribute("id_e", QString::number(e->id()));
 

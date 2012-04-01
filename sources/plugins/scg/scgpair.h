@@ -39,10 +39,10 @@ public:
 
     /* begin & end objects */
     void setBeginObject(SCgObject *object);
-    SCgObject* getBeginObject() const;
+    SCgObject* beginObject() const;
 
     void setEndObject(SCgObject *object);
-    SCgObject* getEndObject() const;
+    SCgObject* endObject() const;
 
     /* dot positions */
     void setBeginDot(float pos);

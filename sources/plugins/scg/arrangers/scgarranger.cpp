@@ -102,8 +102,8 @@ SCgObject* SCgArranger::createGhost(SCgObject* obj, qreal opacityLevel)
     case SCgPair::Type:
     {
         SCgPair* p = static_cast<SCgPair*>(obj);
-        SCgObject* begGhost = createGhost(p->getBeginObject());
-        SCgObject* endGhost = createGhost(p->getEndObject());
+        SCgObject* begGhost = createGhost(p->beginObject());
+        SCgObject* endGhost = createGhost(p->endObject());
         ghost = s->createSCgPair(begGhost, endGhost, p->points());
         ghost->setTypeAlias(obj->typeAlias());
         break;

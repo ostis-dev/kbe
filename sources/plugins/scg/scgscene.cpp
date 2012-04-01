@@ -251,7 +251,7 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
                "Begin or end object is null");
     SCgPair *pair = new SCgPair;
 
-    pair->setTypeAlias("pair/-/-/-/accessory");
+    pair->setTypeAlias("pair/-/-/-/orient/accessory");
 
     pair->setBeginObject(begObj);
     pair->setEndObject(endObj);

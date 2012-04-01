@@ -45,6 +45,14 @@ bool SCgTupleArranger::configDialog()
 
     mDialog->setParent(0, Qt::Dialog);
 
+    if (res == QDialog::Rejected)
+    {
+        deleteGhosts();
+        mArrangeItems.clear();
+        mBusPairs.clear();
+        mTupleNode = 0;
+    }
+
     return res;
 }
 
@@ -61,15 +69,18 @@ void SCgTupleArranger::startOperation()
     // affect pairs and objects
     foreach(SCgPair *pair, mBusPairs)
     {
-        SCgObject *end = pair->getEndObject();
-        Q_ASSERT(end != 0);
-        SCgObject *ghostEnd = mGhosts[end];
-        Q_ASSERT(ghostEnd != 0);
+        SCgObject *end = pair->endObject();
+        SCgObject *beg = pair->beginObject();
+        Q_ASSERT(end != 0 && beg != 0);
         SCgPair *ghostPair = qgraphicsitem_cast<SCgPair*>(mGhosts[pair]);
         Q_ASSERT(ghostPair != 0);
 
         registerCommand(pair, ghostPair->points());
-        registerCommand(end, ghostEnd->pos());
+
+        if (beg->type() == SCgBus::Type)
+            registerCommand(end, mGhosts[end]->pos());
+        else
+            registerCommand(beg, mGhosts[beg]->pos());
     }
 
     deleteGhosts();
@@ -155,25 +166,51 @@ bool SCgTupleArranger::findArrangeItems()
     SCgBus *bus = mTupleNode->bus();
     if (bus == 0) return false; // do nothing
 
+    // list used to order pairs by dot value
+    QList< QPair<qreal, SCgPair*> > unorderedPairs;
+
     foreach(QGraphicsItem *item, mView->scene()->items())
     {
         SCgPair *pair = qgraphicsitem_cast<SCgPair*>(item);
-        if (pair != 0 && pair->getBeginObject() == bus)
+        if (pair != 0)
         {
-            SCgObject *end = pair->getEndObject();
-            if (end && (!SCgObject::isSCgPointObjectType(end->type())))
+            qreal dot = -1.f;
+            if (pair->beginObject() == bus)
             {
+                SCgObject *end = pair->endObject();
+                if (end && (!SCgObject::isSCgPointObjectType(end->type())))
+                {
+                    mArrangeItems.append(pair);
+                    mArrangeItems.append(end);
 
-                mBusPairs.append(pair);
-
-                mArrangeItems.append(pair);
-                mArrangeItems.append(pair->getEndObject());
+                    dot = pair->getBeginDot();
+                }
             }
+
+            if (pair->endObject() == bus)
+            {
+                SCgObject *beg = pair->beginObject();
+                if (beg && (!SCgObject::isSCgPointObjectType(beg->type())))
+                {
+                    mArrangeItems.append(pair);
+                    mArrangeItems.append(beg);
+
+                    dot = pair->getEndDot();
+                }
+            }
+            if (dot >= 0.f)
+                unorderedPairs.append(qMakePair(dot, pair));
         }
     }
 
     //mArrangeItems.append(mTupleNode);
     mArrangeItems.append(bus);
+
+    // order pairs
+    qSort(unorderedPairs);
+    QPair<qreal, SCgPair*> pairInfo;
+    foreach (pairInfo, unorderedPairs)
+        mBusPairs.append(pairInfo.second);
 
     return true;
 }
@@ -181,12 +218,17 @@ bool SCgTupleArranger::findArrangeItems()
 void SCgTupleArranger::recalculateGhostsPosition()
 {
     // calculate bus length and set objects to positions
-    qreal busLength = mOffsetY + mObjectsDist * mBusPairs.size();
+    qreal busLength = mOffsetY + mObjectsDist * (mBusPairs.size() - 1);
     foreach(SCgPair *pair, mBusPairs)
     {
-        SCgObject *realObj = pair->getEndObject();
+        SCgObject *realObj = 0;
+        if (pair->endObject()->type() == SCgBus::Type)
+            realObj = pair->beginObject();
+        else
+            realObj = pair->endObject();
         busLength += realObj->boundingRect().height();
     }
+    busLength += 10;
 
     // arrange bus
     SCgBus *realBus = mTupleNode->bus();
@@ -206,21 +248,40 @@ void SCgTupleArranger::recalculateGhostsPosition()
     {
         SCgPair *ghostPair = qgraphicsitem_cast<SCgPair*>(mGhosts[pair]);
         Q_ASSERT(ghostPair != 0);
-        SCgObject *ghostEnd = mGhosts[pair->getEndObject()];
+        SCgObject *ghostEnd = mGhosts[pair->endObject()];
         Q_ASSERT(ghostEnd);
+        SCgObject *ghostBeg = mGhosts[pair->beginObject()];
+        Q_ASSERT(ghostBeg);
 
-        ghostEnd->setPos(mTupleNode->pos().x() + mOffsetX,
-                         mTupleNode->pos().y() + yPos);
+        if (ghostBeg->type() == SCgBus::Type)
+        {
+            ghostEnd->setPos(mTupleNode->pos().x() + mOffsetX,
+                             mTupleNode->pos().y() + yPos);
+            QVector<QPointF> points;
+            points.append(QPointF(mTupleNode->pos().x(),
+                                  mTupleNode->pos().y() + yPos));
+            points.append(ghostEnd->pos());
+            ghostPair->setPoints(points);
 
-        QVector<QPointF> points;
-        points.append(QPointF(mTupleNode->pos().x(),
-                              mTupleNode->pos().y() + yPos));
-        points.append(ghostEnd->pos());
-        ghostPair->setPoints(points);
+            yPos += ghostEnd->boundingRect().height();
+        }else
+        {
+            ghostBeg->setPos(mTupleNode->pos().x() + mOffsetX,
+                             mTupleNode->pos().y() + yPos);
+            QVector<QPointF> points;
+            points.append(ghostBeg->pos());
+            points.append(QPointF(mTupleNode->pos().x(),
+                                  mTupleNode->pos().y() + yPos));
+            ghostPair->setPoints(points);
+
+            yPos += ghostBeg->boundingRect().height();
+        }
+
+
         //ghostPair->setBeginDot(ghostBus->dotPos(QPointF(mTupleNode->pos().x(),
         //                                                mTupleNode->pos().y() + yPos)));
 
-        yPos += ghostEnd->boundingRect().height() + mObjectsDist;
+        yPos += mObjectsDist;
     }
 
 }

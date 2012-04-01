@@ -87,8 +87,8 @@ SCgNodeInfoData::~SCgNodeInfoData()
 //_______________________________________________
 
 SCgPairInfoData::SCgPairInfoData(const SCgPair* obj):  mPoints(obj->points()),
-                                    mBeginObjectId(QString::number(obj->getBeginObject()->id())),
-                                    mEndObjectId(QString::number(obj->getEndObject()->id())),
+                                    mBeginObjectId(QString::number(obj->beginObject()->id())),
+                                    mEndObjectId(QString::number(obj->endObject()->id())),
                                     mBeginDot(obj->getBeginDot()),
                                     mEndDot(obj->getEndDot())
 {
