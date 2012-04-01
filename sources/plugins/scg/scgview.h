@@ -44,6 +44,9 @@ public:
     //! Actions, provided by this view.
     QList<QAction*> actions() const;
 
+    //!
+    SCgWindow* parentSCgWindow() const;
+
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
 
@@ -84,10 +87,10 @@ private:
     QAction* mActionSelect_All;
 
     QList<QAction*> mActionsList;
-    void craeteActions();
+    void createActions();
 
 private slots:
-    //! Update state of actions created by craeteActions() command.
+    //! Update state of actions created by createActions() command.
     void updateActionsState(int idx = 0);
 
     /*! Provides handling SelectAll menu event.

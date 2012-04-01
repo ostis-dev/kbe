@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgwindow.h"
-
+#include <QDebug>
 #include <QToolBar>
 #include <QApplication>
 #include <QClipboard>
@@ -75,12 +75,12 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mFindWidget(0),
     mToolBar(0),
     mUndoStack(0),
-//    mViewMenu(0),
+    //    mViewMenu(0),
     mEditMenu(0),
     mActionUndo(0),
     mActionRedo(0),
     mActionFind(0)//,
-//    mActionMinMap(0)
+  //    mActionMinMap(0)
 {
 
     setObjectName(QString((quint32)this));
@@ -92,6 +92,7 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mScene = new SCgScene(mUndoStack, mView);
     mView->setScene(mScene);
     mView->setSceneRect(0, 0, 1000, 1000);
+    connect(mScene, SIGNAL(selectionChanged()), this, SLOT(editToolBarsStateChanged()));
 
     mFindWidget = new SCgFindWidget(this);
     connect(mFindWidget, SIGNAL(findNext()), this, SLOT(findNext()));
@@ -110,11 +111,13 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     /////////////////////////////////////////////////
 
     // Create widgets, which will be added into dock area of main window.
+    createToolBar();
+
     createWidgetsForDocks();
 
     createActions();
 
-    createToolBar();
+    mScene->setEditMode(SCgScene::Mode_Select);
 }
 
 SCgWindow::~SCgWindow()
@@ -149,12 +152,12 @@ void SCgWindow::createActions()
     mActionRedo->setShortcut(QKeySequence::Redo);
     mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
 
-//    mActionMinMap = new QAction(tr("Minimap"), this);
-//    mActionMinMap->setCheckable(true);
-//    mActionMinMap->setShortcuts();
-//    fi.setFile();
-//    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
-//    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
+    //    mActionMinMap = new QAction(tr("Minimap"), this);
+    //    mActionMinMap->setCheckable(true);
+    //    mActionMinMap->setShortcuts();
+    //    fi.setFile();
+    //    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
+    //    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
 }
 
 void SCgWindow::createWidgetsForDocks()
@@ -295,6 +298,190 @@ void SCgWindow::createToolBar()
 
 
     mToolBar->setWindowTitle(tr("SCg Tools"));
+
+    ///========================================
+    QToolBar *editBar = new QToolBar(tr("Edit tool bar"), this);
+    group = new QActionGroup(editBar);
+    action = new QAction(tr("Not defined"), group);
+    action->setCheckable(true);
+    action->setData("3|not_define");
+    action->setShortcut(QKeySequence(tr("Alt+0")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("General node"), group);
+    action->setCheckable(true);
+    action->setData("3|general_node");
+    action->setShortcut(QKeySequence(tr("Alt+1")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Predmet node"), group);
+    action->setCheckable(true);
+    action->setData("3|predmet");
+    action->setShortcut(QKeySequence(tr("Alt+2")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Nopredmet node"), group);
+    action->setCheckable(true);
+    action->setData("3|nopredmet");
+    action->setShortcut(QKeySequence(tr("Alt+3")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Assymetry node"), group);
+    action->setCheckable(true);
+    action->setData("3|asymmetry");
+    action->setShortcut(QKeySequence(tr("Alt+4")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Attribute node"), group);
+    action->setCheckable(true);
+    action->setData("3|attribute");
+    action->setShortcut(QKeySequence(tr("Alt+5")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Relation node"), group);
+    action->setCheckable(true);
+    action->setData("3|relation");
+    action->setShortcut(QKeySequence(tr("Alt+6")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Atom node"), group);
+    action->setCheckable(true);
+    action->setData("3|atom");
+    action->setShortcut(QKeySequence(tr("Alt+7")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Group node"), group);
+    action->setCheckable(true);
+    action->setData("3|group");
+    action->setShortcut(QKeySequence(tr("Alt+8")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    editBar->setWindowTitle(tr("Node struct types"));
+    connect(editBar, SIGNAL(actionTriggered(QAction*)), mView, SLOT(changeType(QAction*)));
+    mEditToolBarsList.append(editBar);
+    //==================================================================
+    editBar = new QToolBar(this);
+    group = new QActionGroup(editBar);
+    action = new QAction(tr("Const element"), group);
+    action->setCheckable(true);
+    action->setData("2|const");
+    action->setShortcut(QKeySequence(tr("Alt+C")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Variable element"), group);
+    action->setCheckable(true);
+    action->setData("2|var");
+    action->setShortcut(QKeySequence(tr("Alt+V")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    editBar->setWindowTitle(tr("Element's constansy"));
+    connect(editBar, SIGNAL(actionTriggered(QAction*)), mView, SLOT(changeType(QAction*)));
+    mEditToolBarsList.append(editBar);
+    //================================================================
+    editBar = new QToolBar(this);
+    group = new QActionGroup(editBar);
+    action = new QAction(tr("Positive pair"), group);
+    action->setCheckable(true);
+    action->setData("3|pos");
+    action->setShortcut(QKeySequence(tr("Alt+P")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Negative pair"), group);
+    action->setCheckable(true);
+    action->setData("3|neg");
+    action->setShortcut(QKeySequence(tr("Alt+N")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Fuzzy pair"), group);
+    action->setCheckable(true);
+    action->setData("3|fuz");
+    action->setShortcut(QKeySequence(tr("Alt+F")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    editBar->setWindowTitle(tr("Pair's positivity"));
+    connect(editBar, SIGNAL(actionTriggered(QAction*)), mView, SLOT(changeType(QAction*)));
+    mEditToolBarsList.append(editBar);
+    //=================================================================
+    editBar = new QToolBar(this);
+    group = new QActionGroup(editBar);
+    action = new QAction(tr("Permanent pair"), group);
+    action->setCheckable(true);
+    action->setData("4|perm");
+    action->setShortcut(QKeySequence(tr("Alt+E")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Temporary pair"), group);
+    action->setCheckable(true);
+    action->setData("4|temp");
+    action->setShortcut(QKeySequence(tr("Alt+T")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    editBar->setWindowTitle(tr("Pair's temporariness"));
+    connect(editBar, SIGNAL(actionTriggered(QAction*)), mView, SLOT(changeType(QAction*)));
+    mEditToolBarsList.append(editBar);
+    //================================================================
+    editBar = new QToolBar(this);
+    group = new QActionGroup(editBar);
+    action = new QAction(tr("Common arc"), group);
+    action->setCheckable(true);
+    action->setData("5|noorien");
+    action->setShortcut(QKeySequence(tr("Alt+U")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(tr("Common pair"), group);
+    action->setCheckable(true);
+    action->setData("5|orient");
+    action->setShortcut(QKeySequence(tr("Alt+O")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+//    action = new QAction(tr("Common accessory pair"), group);
+//    action->setCheckable(true);
+//    action->setData("5|orient/accessory");
+//    action->setShortcut(QKeySequence(tr("Alt+A")));
+//    group->addAction(action);
+//    editBar->addAction(action);
+//    mTypeChangeActionsList.append(action);
+
+    editBar->setWindowTitle(tr("Commom pair's type"));
+    connect(editBar, SIGNAL(actionTriggered(QAction*)), mView, SLOT(changeType(QAction*)));
+    mEditToolBarsList.append(editBar);
+
 }
 
 QIcon SCgWindow::findIcon(const QString &iconName)
@@ -415,11 +602,11 @@ void SCgWindow::onExportImage()
 
     QString fileName = QCoreApplication::applicationDirPath() + "/" + currentFileName();
     fileName = QFileDialog::getSaveFileName(this,
-                                           tr("Export file to ..."),
-                                           fileName,
-                                           formatsStr,
-                                           &selectedFilter,
-                                           options);
+                                            tr("Export file to ..."),
+                                            fileName,
+                                            formatsStr,
+                                            &selectedFilter,
+                                            options);
 
     if (fileName.length() > 0)
     {
@@ -588,6 +775,13 @@ void SCgWindow::activate(QMainWindow *window)
         window->addToolBar(Qt::LeftToolBarArea, tool_bar);
         tool_bar->show();
     }
+    window->addToolBarBreak(Qt::TopToolBarArea);
+    foreach (QToolBar *bar, mEditToolBarsList)
+    {
+        window->addToolBar(Qt::TopToolBarArea, bar);
+        bar->show();
+    }
+    editToolBarsStateChanged();
     mUndoStack->setActive(true);
 }
 
@@ -595,8 +789,9 @@ void SCgWindow::deactivate(QMainWindow *window)
 {
     EditorInterface::deactivate(window);
     deleteMenu();
-
     window->removeToolBar(toolBar());
+    foreach (QToolBar *bar, mEditToolBarsList)
+        window->removeToolBar(bar);
     mUndoStack->setActive(false);
 }
 
@@ -613,6 +808,16 @@ QToolBar* SCgWindow::toolBar()
 QList<QWidget*> SCgWindow::widgetsForDocks()
 {
     return mWidgetsForDocks;
+}
+
+QList<QToolBar*> SCgWindow::editToolBars()
+{
+    return mEditToolBarsList;
+}
+
+QList<QAction*> SCgWindow::typeChangeActions()
+{
+    return mTypeChangeActionsList;
 }
 
 bool SCgWindow::isSaved() const
@@ -640,23 +845,73 @@ void SCgWindow::createMenu()
     mEditMenu->addActions(mView->actions());
 
 
-//
-//    mViewMenu = new QMenu(tr("View"), this);
-//    mViewMenu ->addAction(mActionMinMap);
+    //
+    //    mViewMenu = new QMenu(tr("View"), this);
+    //    mViewMenu ->addAction(mActionMinMap);
 }
 
 void SCgWindow::deleteMenu()
 {
     Q_ASSERT(mEditMenu);
     delete mEditMenu;
-//    delete mViewMenu;
-//    mViewMenu = 0;
+    //    delete mViewMenu;
+    //    mViewMenu = 0;
     mEditMenu = 0;
 }
 
 void SCgWindow::stackCleanStateChanged(bool value)
 {
     emitEvent(EditorObserverInterface::ContentChanged);
+}
+
+void SCgWindow::editToolBarsStateChanged()
+{
+    foreach (QToolBar *bar, mEditToolBarsList)
+        bar->setEnabled(false);
+
+    if (mScene->selectedItems().count() == 1)
+    {
+        QGraphicsItem *item = mScene->selectedItems().at(0);
+        Q_ASSERT(item != 0);
+        if (SCgObject::isSCgObjectType(item->type()))
+        {
+            SCgObject *obj = static_cast<SCgObject*>(item);
+            QStringList divAlias = obj->typeAlias().split("/");
+            if (divAlias.count() > 1)
+            {
+                // take object type: node or pair
+                if (divAlias.at(0) == "node")
+                {
+                    actionForType(divAlias.at(1))->setChecked(true);
+                    actionForType(divAlias.at(2))->setChecked(true);
+                    mEditToolBarsList.at(0)->setEnabled(true);
+                    mEditToolBarsList.at(1)->setEnabled(true);
+                }
+                else if (divAlias.at(0) == "pair")
+                {
+                    for (int i = 1; i < 3; ++i)
+                    {
+                        QAction *act = actionForType(divAlias.at(i));
+                        if (act) act->setChecked(true);
+                    }
+                    mEditToolBarsList.at(1)->setEnabled(true);
+                    mEditToolBarsList.at(2)->setEnabled(true);
+                    mEditToolBarsList.at(3)->setEnabled(true);
+                    mEditToolBarsList.at(4)->setEnabled(true);
+                }
+            }
+        }
+    }
+}
+
+QAction* SCgWindow::actionForType(QString type)
+{
+    foreach (QAction *act, mTypeChangeActionsList)
+    {
+        QStringList l = act->data().toString().split("|");
+        if (l.at(1) == type) return act;
+    }
+    return 0;
 }
 
 
