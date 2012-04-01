@@ -178,6 +178,8 @@ void MainWindow::createActions()
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
+
+    connect(ui->actionFeedback,SIGNAL(triggered()),this,SLOT(helpFeedback()));
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
@@ -710,4 +712,10 @@ void MainWindow::dropEvent(QDropEvent *event)
             load(fileName);
     }
     event->acceptProposedAction();
+}
+
+void MainWindow::helpFeedback()
+{
+    FeedBackDialog *feedbackWidget = new FeedBackDialog();
+    feedbackWidget->exec();
 }
