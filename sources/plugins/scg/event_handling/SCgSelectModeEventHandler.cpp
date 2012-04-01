@@ -26,19 +26,96 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "../scgtemplateobjectbuilder.h"
 #include <QDomDocument>
 #include "../scgnode.h"
+#include "../scgpair.h"
 #include "../scgbus.h"
 #include "../pointgraphicsitem.h"
-
-SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
+#include "../scgview.h"
+#include "../scgwindow.h"
+#include <QToolBar>
+#include <QVBoxLayout>
+#include <QToolButton>
+#include <QGraphicsView>
+#include <QGraphicsProxyWidget>
+#include <QGraphicsOpacityEffect>
+#include <QDebug>
+SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent) :
+    SCgEventHandler(parent),
+    mNodeBars(0),
+    mPairBars(0),
     mIsItemsMoved(false),
     mCurrentPointObject(0)
 {
+    t = new QGraphicsProxyWidget;
+    effect = new QGraphicsOpacityEffect;
+    effect->setOpacity(1);
+    t->setGraphicsEffect(effect);
+    t->setZValue(10);
 
 }
 
 SCgSelectModeEventHandler::~SCgSelectModeEventHandler()
 {
+    if (t)
+    {
+        delete t;
+        t = 0;
+    }
+    else {
+        delete effect;
+    }
     //    clean();
+}
+
+void SCgSelectModeEventHandler::activate()
+{
+    if (!mNodeBars && !mPairBars)
+    {
+        qDebug()<<"activate";
+        mNodeBars = new QWidget;
+        mPairBars = new QWidget;
+        QVBoxLayout *layout = new QVBoxLayout;
+        QList<QAction*> editActions = static_cast<SCgView*>(mScene->views().at(0))->parentSCgWindow()->typeChangeActions();
+        int i = 0;
+        QToolBar *structBar = new QToolBar;
+        for (; i < 9; ++i)
+            structBar->addAction(editActions.at(i));
+        layout->addWidget(structBar);
+        QToolBar *constNodeBar = new QToolBar;
+        QToolBar *constPairBar = new QToolBar;
+        for (; i < 11; ++i)
+        {
+            constNodeBar->addAction(editActions.at(i));
+            constPairBar->addAction(editActions.at(i));
+        }
+        layout->addWidget(constNodeBar);
+        mNodeBars->setLayout(layout);
+
+        layout = new QVBoxLayout;
+        layout->addWidget(constPairBar);
+        QToolBar *posBar = new QToolBar;
+        for(; i < 14; ++i)
+            posBar->addAction(editActions.at(i));
+        layout->addWidget(posBar);
+
+        QToolBar *permBar = new QToolBar;
+        for(; i < 16; ++i)
+            permBar->addAction(editActions.at(i));
+        layout->addWidget(permBar);
+
+        QToolBar *comBar = new QToolBar;
+        for(; i < editActions.size(); ++i)
+            comBar->addAction(editActions.at(i));
+        layout->addWidget(comBar);
+        mPairBars->setLayout(layout);
+    }
+}
+
+void SCgSelectModeEventHandler::deactivate()
+{
+//    delete mNodeBars;
+//    delete mPairBars;
+//    mNodeBars = 0;
+//    mPairBars = 0;
 }
 
 void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
@@ -94,6 +171,47 @@ void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         }
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
+        return;
+    }
+    QList<QGraphicsItem*> temp = mScene->selectedItems();
+    if (temp.count() == 1)
+    {
+        QGraphicsItem* item = temp.at(0);
+        QPointF itemsPos;
+        QPointF menusPos;
+        if (item->type() == SCgPair::Type)
+        {
+            SCgPair *pair = static_cast<SCgPair*>(item);
+            itemsPos = (pair->getEndObject()->scenePos() + pair->getBeginObject()->scenePos()) / 2;
+        }
+        else
+            itemsPos = item->scenePos();
+        menusPos = itemsPos + QPointF(40, -40);
+        qreal r = (event->scenePos() - menusPos).manhattanLength();
+        if (r < 50 && !mScene->items().contains(t))
+        {
+            if (item->type() == SCgNode::Type)
+                t->setWidget(mNodeBars);
+            if (item->type() == SCgPair::Type)
+                t->setWidget(mPairBars);
+            menusPos -= QPointF(0, t->rect().height());
+            mScene->addItem(t);
+            t->setPos(menusPos);
+        }
+        if (t->sceneBoundingRect().contains(event->scenePos()))
+            effect->setOpacity(1);
+        else if (r < 50)
+            effect->setOpacity(1 - r/50);
+        else if (r > 50 && mScene->items().contains(t))
+        {
+            mScene->removeItem(t);
+            t->setWidget(0);
+        }
+    }
+    else if (mScene->items().contains(t))
+    {
+        mScene->removeItem(t);
+        t->setWidget(0);
     }
 }
 

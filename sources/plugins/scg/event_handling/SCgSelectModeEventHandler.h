@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 
 class SCgPointObject;
+class QToolBar;
+class QGraphicsOpacityEffect;
 
 class SCgSelectModeEventHandler: public SCgEventHandler
 {
@@ -55,7 +57,14 @@ public:
     void clean();
 
 protected:
+    virtual void activate();
 
+    virtual void deactivate();
+
+    QWidget *mNodeBars;
+    QWidget *mPairBars;
+    QGraphicsProxyWidget *t;
+    QGraphicsOpacityEffect *effect;
 private:
     //! Holds initial items positions and parents before and after moving
     SCgScene::ItemUndoInfo mUndoInfo;

@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
-
+#include <QDebug>
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
@@ -43,11 +43,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
-        QGraphicsView(parent),
-        mContextMenu(0),
-        mContextObject(0),
-        mWindow(window),
-        isSceneRectControlled(false)
+    QGraphicsView(parent),
+    mContextMenu(0),
+    mContextObject(0),
+    mWindow(window),
+    isSceneRectControlled(false)
 {
     setCacheMode(CacheNone);//CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -58,7 +58,7 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     setDragMode(QGraphicsView::RubberBandDrag);
     setAcceptDrops(true);
     connect(mWindow->undoStack(), SIGNAL(indexChanged(int)), this, SLOT(updateActionsState(int)) );
-    craeteActions();
+    createActions();
 }
 
 SCgView::~SCgView()
@@ -67,7 +67,7 @@ SCgView::~SCgView()
     mContextObject = 0;
 }
 
-void SCgView::craeteActions()
+void SCgView::createActions()
 {
     QAction* sep = new QAction(this);
     sep->setSeparator(true);
@@ -95,7 +95,7 @@ void SCgView::craeteActions()
     connect(mActionDelete, SIGNAL(triggered()), this, SLOT(deleteSelected()));
 
     mActionContourDelete = new QAction(mWindow->findIcon("edit-delete.png"),tr("Delete contour"),mWindow);
-    mActionContourDelete->setShortcut( QKeySequence(tr("Backspace")) );
+    mActionContourDelete->setShortcut(QKeySequence(tr("Backspace")) );
     connect(mActionContourDelete, SIGNAL(triggered()), this, SLOT(deleteJustContour()));
 
     mActionCopy = new QAction(QIcon::fromTheme("edit-copy", mWindow->findIcon("edit-copy.png")), tr("Copy"),this);
@@ -205,6 +205,11 @@ QList<QAction*> SCgView::actions() const
     return mActionsList;
 }
 
+SCgWindow* SCgView::parentSCgWindow() const
+{
+    return mWindow;
+}
+
 void SCgView::contextMenuEvent(QContextMenuEvent *event)
 {
     // get scg-object under mouse
@@ -233,7 +238,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 
     if (mContextObject)
     {
-    	// creating menu actions depending on object type
+        // creating menu actions depending on object type
         if (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type)
         {
             // type changing
@@ -251,7 +256,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             if (mContextObject->type() == SCgNode::Type)
                 stype = "node";
             else if (mContextObject->type() == SCgPair::Type)
-                    stype = "pair";
+                stype = "pair";
 
             SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Const, types);
             for (iter = types.begin(); iter != types.end(); ++iter)
@@ -379,7 +384,7 @@ void SCgView::changeIdentifier()
     QLineEdit* lineEdit = new QLineEdit(&dialog);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                                       | QDialogButtonBox::Cancel);
     buttonBox->setParent(&dialog);
 
     connect(buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
@@ -412,8 +417,48 @@ void SCgView::changeIdentifier()
 void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
-
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    QString newTypeAlias;
+    QStringList aliasList = action->data().toString().split("|");
+    qDebug()<<aliasList;
+    if (aliasList.size() > 1)
+    {
+        int position = aliasList.at(0).toInt();
+        QString type = aliasList.at(1);
+        QStringList strl = mContextObject->typeAlias().split("/");
+        strl[position - 1] = type;
+        // change to "orient" or "noorien" type
+        if (type == "orient" || type == "noorien")
+        {
+            if (strl[1] == "-")
+                strl[1] = "const";
+            strl[2] = "-";// pair's positivity
+            strl[3] = "-";// pair's temporariness
+            strl[4] = type;
+            if (strl.size() > 5) strl.removeAt(5);
+        }
+        else if (strl[0] == "pair")
+        {
+            // set default types for pairs
+            if (strl[1] == "-")
+                strl[1] = "const";
+            if (strl[4] == "accessory" || position == 3 || position == 4)
+            {
+                if (strl[2] == "-")
+                    strl[2] = "pos";
+                if (strl[3] == "-")
+                    strl[3] = "perm";
+                if (strl.size() < 6)
+                    strl[4] = "orient/accessory";
+            }
+        }
+        for (int i = 0; i < strl.size() - 1; ++i)
+            newTypeAlias.append(strl.at(i) + "/");
+        newTypeAlias.append(strl[strl.size() - 1]);
+        qDebug()<<newTypeAlias;
+    }
+    else
+        newTypeAlias = action->data().toString();
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newTypeAlias);
 }
 
 void SCgView::changeContent()

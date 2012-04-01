@@ -78,6 +78,8 @@ public:
     //! @return Undo stack for this window
     QUndoStack* undoStack() const;
 
+    QList<QToolBar*> editToolBars();
+    QList<QAction*> typeChangeActions();
 protected:
 
     //! @copydoc EditorInterface::icon()
@@ -144,6 +146,9 @@ private:
     //! Tool bar
     QToolBar *mToolBar;
 
+    QList<QToolBar*> mEditToolBarsList;
+    QList<QAction*> mTypeChangeActionsList;
+
     //! Undo stack
     QUndoStack *mUndoStack;
 
@@ -179,6 +184,8 @@ private:
     //! Destroys specific menus created by createMenu(). Called after window deactivation.
     void deleteMenu();
     /**@}*/
+
+    QAction* actionForType(QString type);
 
 signals:
 
@@ -239,6 +246,8 @@ private slots:
     void deleteSelected();
 
     void stackCleanStateChanged(bool value);
+
+    void editToolBarsStateChanged();
 };
 
 class SCgWindowFactory : public QObject,
