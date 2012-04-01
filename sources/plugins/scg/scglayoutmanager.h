@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QMap>
-#include "scgarranger.h"
+#include "arrangers/scgarranger.h"
 
 class SCgView;
 class LayoutAlgorithm;

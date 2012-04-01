@@ -39,10 +39,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileDialog>
 
 #include "scglayoutmanager.h"
-#include "scgarrangervertical.h"
-#include "scgarrangerhorizontal.h"
-#include "scgarrangergrid.h"
-#include "scgarrangertuple.h"
+#include "arrangers/scgarrangervertical.h"
+#include "arrangers/scgarrangerhorizontal.h"
+#include "arrangers/scgarrangergrid.h"
+#include "arrangers/scgarrangertuple.h"
 #include "scgplugin.h"
 #include "scgexportimage.h"
 

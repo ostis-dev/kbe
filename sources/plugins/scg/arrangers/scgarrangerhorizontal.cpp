@@ -1,8 +1,8 @@
 #include "scgarrangerhorizontal.h"
 
-#include "scgview.h"
-#include "scgpair.h"
-#include "scgbus.h"
+#include "../scgview.h"
+#include "../scgpair.h"
+#include "../scgbus.h"
 
 #include <QMessageBox>
 #include <QApplication>

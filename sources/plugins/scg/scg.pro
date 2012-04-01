@@ -39,11 +39,6 @@ HEADERS += \
     scgcontent.h \
     scgconfig.h \
     scgbus.h \
-    scgarrangervertical.h \
-    scgarrangertuple.h \
-    scgarrangerhorizontal.h \
-    scgarrangergrid.h \
-    scgarranger.h \
     scgalphabet.h \
     scgabstractobjectbuilder.h \
     pointgraphicsitem.h \
@@ -82,7 +77,12 @@ HEADERS += \
     commands/scgcommandchangeincedentobject.h \
     commands/scgbasecommand.h \
     commands/scgcommandidtfmove.h \
-    scgexportimage.h
+    scgexportimage.h \
+    arrangers/scgarrangervertical.h \
+    arrangers/scgarrangertuple.h \
+    arrangers/scgarrangerhorizontal.h \
+    arrangers/scgarrangergrid.h \
+    arrangers/scgarranger.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -110,11 +110,6 @@ SOURCES += \
     scgcontent.cpp \
     scgconfig.cpp \
     scgbus.cpp \
-    scgarrangervertical.cpp \
-    scgarrangertuple.cpp \
-    scgarrangerhorizontal.cpp \
-    scgarrangergrid.cpp \
-    scgarranger.cpp \
     scgalphabet.cpp \
     scgabstractobjectbuilder.cpp \
     pointgraphicsitem.cpp \
@@ -153,6 +148,11 @@ SOURCES += \
     commands/scgbasecommand.cpp \
     commands/scgcommandcreatenode.cpp \
     commands/scgcommandidtfmove.cpp \
-    scgexportimage.cpp
+    scgexportimage.cpp \
+    arrangers/scgarrangervertical.cpp \
+    arrangers/scgarrangertuple.cpp \
+    arrangers/scgarrangerhorizontal.cpp \
+    arrangers/scgarrangergrid.cpp \
+    arrangers/scgarranger.cpp
 
 

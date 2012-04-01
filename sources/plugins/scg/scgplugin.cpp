@@ -29,10 +29,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontentstring.h"
 
 #include "scglayoutmanager.h"
-#include "scgarrangergrid.h"
-#include "scgarrangerhorizontal.h"
-#include "scgarrangertuple.h"
-#include "scgarrangervertical.h"
+#include "arrangers/scgarrangergrid.h"
+#include "arrangers/scgarrangerhorizontal.h"
+#include "arrangers/scgarrangertuple.h"
+#include "arrangers/scgarrangervertical.h"
 
 Q_EXPORT_PLUGIN2(scg, SCgPlugin)
 

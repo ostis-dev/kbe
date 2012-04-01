@@ -1,9 +1,9 @@
 #include "scgarrangertuple.h"
 
-#include "scgview.h"
-#include "scgnode.h"
-#include "scgbus.h"
-#include "scgpair.h"
+#include "../scgview.h"
+#include "../scgnode.h"
+#include "../scgbus.h"
+#include "../scgpair.h"
 
 #include <QDialogButtonBox>
 #include <QVBoxLayout>

@@ -22,12 +22,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgarranger.h"
 
-#include "scgview.h"
-#include "scgobject.h"
-#include "scgpair.h"
-#include "scgnode.h"
-#include "scgcontour.h"
-#include "scgbus.h"
+#include "../scgview.h"
+#include "../scgobject.h"
+#include "../scgpair.h"
+#include "../scgnode.h"
+#include "../scgcontour.h"
+#include "../scgbus.h"
 
 #include <QDialogButtonBox>
 #include <QApplication>
