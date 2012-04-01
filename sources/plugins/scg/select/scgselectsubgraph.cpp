@@ -55,8 +55,8 @@ void SCgSelectSubGraph::select(SCgObject *obj)
     obj->setSelected(true);
 
     // select parent
-    if (obj->parentItem() != 0 && SCgObject::isSCgObjectType(obj->parentItem()->type()))
-        select(static_cast<SCgObject*>(obj->parentItem()));
+    //if (obj->parentItem() != 0 && SCgObject::isSCgObjectType(obj->parentItem()->type()))
+        //select(static_cast<SCgObject*>(obj->parentItem()));
 
     switch(obj->type())
     {
