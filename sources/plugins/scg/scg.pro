@@ -82,7 +82,9 @@ HEADERS += \
     arrangers/scgarrangertuple.h \
     arrangers/scgarrangerhorizontal.h \
     arrangers/scgarrangergrid.h \
-    arrangers/scgarranger.h
+    arrangers/scgarranger.h \
+    select/scgselectinputoutput.h \
+    select/scgselect.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -153,6 +155,8 @@ SOURCES += \
     arrangers/scgarrangertuple.cpp \
     arrangers/scgarrangerhorizontal.cpp \
     arrangers/scgarrangergrid.cpp \
-    arrangers/scgarranger.cpp
+    arrangers/scgarranger.cpp \
+    select/scgselectinputoutput.cpp \
+    select/scgselect.cpp
 
 

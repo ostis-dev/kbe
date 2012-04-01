@@ -199,6 +199,8 @@ private slots:
     void onVerticalAlignment();
     //! Slot to handle a horizontal alignment action
     void onHorizontalAlignment();
+    //! Slot to handle input/output alignment action
+    void onSelectInputOutput();
     //! Slot to hanlde an export image action
     void onExportImage();
     //! Slot to handle a zoom in action

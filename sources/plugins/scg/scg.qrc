@@ -26,5 +26,7 @@
         <file>media/icons/tool-zoom-out.png</file>
         <file>media/icons/tool-export-image.png</file>
         <file>media/icons/tool-align.png</file>
+        <file>media/icons/tool-select-group.png</file>
+        <file>media/icons/tool-select-inout.png</file>
     </qresource>
 </RCC>
