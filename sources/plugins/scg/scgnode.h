@@ -129,7 +129,7 @@ private:
 
     /*! Content visibility flag
       */
-    bool mContentVisible;
+    bool mIsContentVisible;
 
     /*! Content viewer
      *  This is a widget for displaying content.

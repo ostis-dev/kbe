@@ -36,7 +36,7 @@ SCgNode::SCgNode(QGraphicsItem *parent, QGraphicsScene *scene) :
     SCgObject(parent, scene),
     SCgContent(),
     mStructType(SCgAlphabet::StructUnknown),
-    mContentVisible(false),
+    mIsContentVisible(false),
     mContentViewer(0),
     mBus(0)
 {
@@ -83,7 +83,7 @@ QRectF SCgNode::boundingRect() const
 {
     QRectF res;
 
-    if (!mContentVisible)
+    if (!mIsContentVisible)
     {
         res = QRectF(-mSize.width() / 2.f, -mSize.height() / 2.f, mSize.width(), mSize.height());
     }else
@@ -104,7 +104,7 @@ QPainterPath SCgNode::shape() const
     QPainterPath path;
     QRectF boundRect = boundingRect();
 
-    if (mContentVisible)
+    if (mIsContentVisible)
     {
         path.addRect(boundRect);
     }else
@@ -150,7 +150,7 @@ void SCgNode::objectDelete(SCgObject *object)
 
 void SCgNode::del(QList<SCgObject*> &delList)
 {
-    if(mContentVisible)
+    if(mIsContentVisible)
         mContentViewer->hide();
 
     if(mBus)
@@ -165,7 +165,7 @@ void SCgNode::undel(SCgScene* scene)
     	mBus->undel(scene);
 
     SCgObject::undel(scene);
-    if(mContentVisible)
+    if(mIsContentVisible)
         mContentViewer->show();
 }
 
@@ -173,7 +173,7 @@ QPointF SCgNode::cross(const QPointF &from, float dot) const
 {
     QPointF p(0.f, 0.f);
 
-    if (!mContentVisible)
+    if (!mIsContentVisible)
     {
         QVector2D vec(from - scenePos());
         p = vec.normalized().toPointF() * (mSize.width() / 2.f + 5.f);
@@ -219,7 +219,7 @@ void SCgNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
     QRectF boundRect = boundingRect();
 
-    if (!mContentVisible)
+    if (!mIsContentVisible)
     {
         painter->save();
         SCgAlphabet::getInstance().paintNode(painter, mColor, boundRect, mConstType, mStructType);
@@ -241,6 +241,23 @@ void SCgNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     }
 
     SCgObject::paint(painter, option, widget);
+
+    // draw content corner
+    if (mIsContentVisible)
+    {
+        QRectF rc = boundRect.adjusted(2, 2, -2, -2);
+        QPolygonF polygon;
+        polygon.append(rc.topLeft());
+        polygon.append(QPointF(rc.left() + 10, rc.top()));
+        polygon.append(QPointF(rc.left(), rc.top() + 10));
+
+        QPainterPath path;
+        path.addPolygon(polygon);
+        path.closeSubpath();
+
+        painter->fillPath(path, QBrush(mColor));
+
+    }
 }
 
 void SCgNode::updateConnected()
@@ -260,11 +277,11 @@ void SCgNode::setContent(const QString& mimeType, const QVariant& data,
 
 void SCgNode::showContent()
 {
-    Q_ASSERT(!mContentVisible && mContentViewer);
+    Q_ASSERT(!mIsContentVisible && mContentViewer);
 
     prepareGeometryChange();
 
-    mContentVisible = true;
+    mIsContentVisible = true;
     updateConnected();
 
     mContentViewer->show();
@@ -273,11 +290,11 @@ void SCgNode::showContent()
 
 void SCgNode::hideContent()
 {
-    Q_ASSERT(mContentVisible && mContentViewer);
+    Q_ASSERT(mIsContentVisible && mContentViewer);
 
     prepareGeometryChange();
 
-    mContentVisible = false;
+    mIsContentVisible = false;
     updateConnected();
 
     mContentViewer->hide();
@@ -286,13 +303,13 @@ void SCgNode::hideContent()
 
 bool SCgNode::isContentVisible() const
 {
-    return mContentVisible;
+    return mIsContentVisible;
 }
 
 
 void SCgNode::updateContentViewer()
 {
-    bool isCntVis = mContentVisible;
+    bool isCntVis = mIsContentVisible;
 
     if(isCntVis)
         hideContent();
