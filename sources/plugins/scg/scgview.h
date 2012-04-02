@@ -83,8 +83,11 @@ private:
     //! Select All action
     QAction* mActionSelect_All;
 
+    //! List of edit actions
     QList<QAction*> mActionsList;
-    void craeteActions();
+
+    //! Create a list of actions which connected with edit mode in SCg
+    void createActions();
 
 private slots:
     //! Update state of actions created by craeteActions() command.
@@ -103,6 +106,7 @@ private:
     QMenu *mContextMenu;
     //! Pointer to object for witch one context menu created
     SCgObject *mContextObject;
+    //! parent SCg window
     SCgWindow *mWindow;
 
     bool isSceneRectControlled;
@@ -138,6 +142,8 @@ private slots:
     void changeIdentifier();
 
     /*! Slot for type changing
+      * It's depends on how much information about element's type @p action has.
+      * Created type changing undo command
       */
     void changeType(QAction *action);
 

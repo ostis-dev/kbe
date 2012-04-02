@@ -82,7 +82,8 @@ HEADERS += \
     arrangers/scgarrangertuple.h \
     arrangers/scgarrangerhorizontal.h \
     arrangers/scgarrangergrid.h \
-    arrangers/scgarranger.h
+    arrangers/scgarranger.h \
+    ballontypetoolbar.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -153,6 +154,9 @@ SOURCES += \
     arrangers/scgarrangertuple.cpp \
     arrangers/scgarrangerhorizontal.cpp \
     arrangers/scgarrangergrid.cpp \
-    arrangers/scgarranger.cpp
+    arrangers/scgarranger.cpp \
+    ballontypetoolbar.cpp
+
+
 
 

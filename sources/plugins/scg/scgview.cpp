@@ -43,11 +43,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
-        QGraphicsView(parent),
-        mContextMenu(0),
-        mContextObject(0),
-        mWindow(window),
-        isSceneRectControlled(false)
+    QGraphicsView(parent),
+    mContextMenu(0),
+    mContextObject(0),
+    mWindow(window),
+    isSceneRectControlled(false)
 {
     setCacheMode(CacheNone);//CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -58,7 +58,7 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     setDragMode(QGraphicsView::RubberBandDrag);
     setAcceptDrops(true);
     connect(mWindow->undoStack(), SIGNAL(indexChanged(int)), this, SLOT(updateActionsState(int)) );
-    craeteActions();
+    createActions();
 }
 
 SCgView::~SCgView()
@@ -67,7 +67,7 @@ SCgView::~SCgView()
     mContextObject = 0;
 }
 
-void SCgView::craeteActions()
+void SCgView::createActions()
 {
     QAction* sep = new QAction(this);
     sep->setSeparator(true);
@@ -233,7 +233,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 
     if (mContextObject)
     {
-    	// creating menu actions depending on object type
+        // creating menu actions depending on object type
         if (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type)
         {
             // type changing
@@ -251,7 +251,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             if (mContextObject->type() == SCgNode::Type)
                 stype = "node";
             else if (mContextObject->type() == SCgPair::Type)
-                    stype = "pair";
+                stype = "pair";
 
             SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Const, types);
             for (iter = types.begin(); iter != types.end(); ++iter)
@@ -379,7 +379,7 @@ void SCgView::changeIdentifier()
     QLineEdit* lineEdit = new QLineEdit(&dialog);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                                       | QDialogButtonBox::Cancel);
     buttonBox->setParent(&dialog);
 
     connect(buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
@@ -412,8 +412,54 @@ void SCgView::changeIdentifier()
 void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
+    QString newTypeAlias;
+    QStringList aliasList = action->data().toString().split("|");
+    if (aliasList.size() > 1)
+    {
+        int position = aliasList.at(0).toInt();
+        QString type = aliasList.at(1);
+        QStringList strl = mContextObject->typeAlias().split("/");
+        //        if (!(strl[4] == "orient" && strl.size() == 6 && strl[2] == strl[3]))
+        strl[position - 1] = type;
+        // change to "orient" or "noorien" type
+        if (type == "orient" || type == "noorien")
+        {
+            if (strl[1] == "-")
+                strl[1] = "const";
+            strl[2] = "-";// pair's positivity
+            strl[3] = "-";// pair's temporariness
+            strl[4] = type;
+            if (strl.size() > 5) strl.removeAt(5);
+        }
+        else if (type == "orient/accessory")
+        {
+            strl[1] = "-";
+            strl[2] = "-";
+            strl[3] = "-";
+            strl[4] = type;
+            if (strl.size() > 5) strl.removeAt(5);
+        }
+        else if (strl[0] == "pair")
+        {
+            // set default types for pairs
+            if (strl[4] == "orient" && strl.size() == 6 && (position == 2 || position == 3))
+            {
+                if (strl[1] == "-")
+                    strl[1] = "const";
+                if (strl[2] == "-")
+                    strl[2] = "pos";
+                if (strl[3] == "-")
+                    strl[3] = "perm";
+            }
+        }
+        for (int i = 0; i < strl.size() - 1; ++i)
+            newTypeAlias.append(strl.at(i) + "/");
+        newTypeAlias.append(strl[strl.size() - 1]);
+    }
+    else
+        newTypeAlias = action->data().toString();
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newTypeAlias);
 
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
 }
 
 void SCgView::changeContent()

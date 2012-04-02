@@ -20,25 +20,52 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 #include "SCgSelectModeEventHandler.h"
-#include "../scgcontour.h"
 #include "../gwf/gwffilewriter.h"
 #include "../gwf/gwfobjectinforeader.h"
 #include "../scgtemplateobjectbuilder.h"
-#include <QDomDocument>
+#include "../scgview.h"
 #include "../scgnode.h"
+#include "../scgpair.h"
 #include "../scgbus.h"
+#include "../scgcontour.h"
 #include "../pointgraphicsitem.h"
+#include "../ballontypetoolbar.h"
+
+#include <QDomDocument>
+#include <QToolBar>
 
 SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
     mIsItemsMoved(false),
     mCurrentPointObject(0)
 {
-
+    mEditBar = new BallonTypeToolBar;
 }
 
 SCgSelectModeEventHandler::~SCgSelectModeEventHandler()
 {
+    delete mEditBar;
     //    clean();
+}
+
+void SCgSelectModeEventHandler::activate()
+{
+    QList<QToolBar*> barsList = mEditBar->toolBarsList();
+    SCgView *view = static_cast<SCgView*>(mScene->views().at(0));
+    foreach (QToolBar *bar, barsList)
+    {
+        connect(bar, SIGNAL(actionTriggered(QAction*)), view, SLOT(changeType(QAction*)));
+    }
+}
+
+void SCgSelectModeEventHandler::deactivate()
+{
+    QList<QToolBar*> barsList = mEditBar->toolBarsList();
+    SCgView *view = static_cast<SCgView*>(mScene->views().at(0));
+    foreach (QToolBar *bar, barsList)
+    {
+        disconnect(bar, SIGNAL(actionTriggered(QAction*)), view, SLOT(changeType(QAction*)));
+    }
+
 }
 
 void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
@@ -108,6 +135,7 @@ void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
             mCurrentPointObject = 0;
         }
     }
+
     if(!mCurrentPointObject)
     {
         QPointF cur_pos = event->scenePos();
@@ -121,8 +149,53 @@ void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
                 mCurrentPointObject = 0;
         }
     }
+
     if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
         mScene->setEditMode(SCgScene::Mode_Clone);
+
+    if (event->modifiers() == Qt::NoModifier &&
+            event->button() == Qt::LeftButton &&
+            mScene->selectedItems().size() == 1)
+    {
+        QGraphicsItem *selItem = mScene->itemAt(event->scenePos());
+        // add edit bar to the scene in case if it hasn't been added earlier; if we have one
+        // selected item and item has corresponding type
+        if (selItem && selItem->isSelected() &&
+                (selItem->type() == SCgNode::Type || selItem->type() == SCgPair::Type) &&
+                !mEditBar->scene())
+        {
+            mEditBar->setParentItem(selItem);
+            mEditBar->setToolBarForType(selItem->type());
+            mScene->addItem(mEditBar);
+            mEditBar->editToolBarsStateChanged();
+            QPointF editBarPos;
+            if (selItem->type() == SCgNode::Type)
+                editBarPos = QPointF(selItem->boundingRect().width() + 10,
+                                     -(mEditBar->rect().height() + 10));
+            if (selItem->type() == SCgPair::Type)
+            {
+                SCgPair *pair = static_cast<SCgPair*>(selItem);
+                QPointF itemPos = (pair->endObject()->scenePos() + pair->beginObject()->scenePos()) / 2.f;
+                editBarPos = itemPos + QPointF(10, -(mEditBar->rect().height() + 10));
+            }
+            mEditBar->setPos(editBarPos);
+            connect(static_cast<SCgObject*>(selItem),
+                    SIGNAL(typeChanged()),
+                    mEditBar,
+                    SLOT(editToolBarsStateChanged()));
+        }
+        else if (mEditBar->scene() == mScene &&
+                 !mEditBar->sceneBoundingRect().contains(event->scenePos()))
+        {
+            disconnect(static_cast<SCgObject*>(mEditBar->parentItem()),
+                       SIGNAL(typeChanged()),
+                       mEditBar,
+                       SLOT(editToolBarsStateChanged()));
+            mEditBar->setParentItem(0);
+            mScene->removeItem(mEditBar);
+            mEditBar->editToolBarsStateChanged();
+        }
+    }
 }
 
 void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
