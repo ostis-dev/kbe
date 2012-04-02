@@ -20,8 +20,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef BALLONTYPETOOLBAR_H
-#define BALLONTYPETOOLBAR_H
+#ifndef SCGTYPEPANEL_H
+#define SCGTYPEPANEL_H
 
 #include <QGraphicsProxyWidget>
 
@@ -32,7 +32,7 @@ class QToolBar;
 * @brief Class for ballon tool bar
 *
 */
-class BallonTypeToolBar : public QGraphicsProxyWidget
+class SCgTypePanel : public QGraphicsProxyWidget
 {
     Q_OBJECT
 public:
@@ -41,10 +41,10 @@ public:
     * @param parent Pointer to parent graphics item
     * @param wFlags Flags which represented various property of proxy widget
     */
-    explicit BallonTypeToolBar(QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0);
+    explicit SCgTypePanel(QGraphicsItem *parent = 0, Qt::WindowFlags wFlags = 0);
 
     //! Destructor
-    virtual ~BallonTypeToolBar();
+    virtual ~SCgTypePanel();
 
     //! @return List of all accessible type changing tool bars
     QList<QToolBar*> toolBarsList();
@@ -98,4 +98,4 @@ private slots:
     void updateOpacity();
 };
 
-#endif // BALLONTYPETOOLBAR_H
+#endif // SCGTYPEPANEL_H

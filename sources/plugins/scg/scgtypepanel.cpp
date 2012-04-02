@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "ballontypetoolbar.h"
+#include "scgtypepanel.h"
 #include "scgobject.h"
 #include "scgnode.h"
 #include "scgpair.h"
@@ -31,7 +31,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QToolBar>
 #include <QVBoxLayout>
 
-BallonTypeToolBar::BallonTypeToolBar(QGraphicsItem *parent, Qt::WindowFlags wFlags) :
+SCgTypePanel::SCgTypePanel(QGraphicsItem *parent, Qt::WindowFlags wFlags) :
     QGraphicsProxyWidget(parent, wFlags)
 {
     setFlags(ItemIsSelectable | ItemIsFocusable |ItemIsPanel);
@@ -61,10 +61,18 @@ BallonTypeToolBar::BallonTypeToolBar(QGraphicsItem *parent, Qt::WindowFlags wFla
     editBar->addAction(action);
     mTypeChangeActionsList.append(action);
 
-    action = new QAction(QIcon(), tr("Predmet node"), group);
+    action = new QAction(QIcon(), tr("Abstract node"), group);
     action->setCheckable(true);
-    action->setData("3|predmet");
+    action->setData("3|abstract");
     action->setShortcut(QKeySequence(tr("Alt+2")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(QIcon(), tr("Abstract extended node"), group);
+    action->setCheckable(true);
+    action->setData("3|abstractExt");
+    action->setShortcut(QKeySequence(tr("Alt+3")));
     group->addAction(action);
     editBar->addAction(action);
     mTypeChangeActionsList.append(action);
@@ -72,23 +80,23 @@ BallonTypeToolBar::BallonTypeToolBar(QGraphicsItem *parent, Qt::WindowFlags wFla
     action = new QAction(QIcon(), tr("Nopredmet node"), group);
     action->setCheckable(true);
     action->setData("3|nopredmet");
-    action->setShortcut(QKeySequence(tr("Alt+3")));
-    group->addAction(action);
-    editBar->addAction(action);
-    mTypeChangeActionsList.append(action);
-
-    action = new QAction(QIcon(), tr("Assymetry node"), group);
-    action->setCheckable(true);
-    action->setData("3|asymmetry");
     action->setShortcut(QKeySequence(tr("Alt+4")));
     group->addAction(action);
     editBar->addAction(action);
     mTypeChangeActionsList.append(action);
 
-    action = new QAction(QIcon(), tr("Attribute node"), group);
+    action = new QAction(QIcon(), tr("Tuple"), group);
     action->setCheckable(true);
-    action->setData("3|attribute");
+    action->setData("3|tuple");
     action->setShortcut(QKeySequence(tr("Alt+5")));
+    group->addAction(action);
+    editBar->addAction(action);
+    mTypeChangeActionsList.append(action);
+
+    action = new QAction(QIcon(), tr("Role node"), group);
+    action->setCheckable(true);
+    action->setData("3|role");
+    action->setShortcut(QKeySequence(tr("Alt+6")));
     group->addAction(action);
     editBar->addAction(action);
     mTypeChangeActionsList.append(action);
@@ -96,14 +104,6 @@ BallonTypeToolBar::BallonTypeToolBar(QGraphicsItem *parent, Qt::WindowFlags wFla
     action = new QAction(QIcon(), tr("Relation node"), group);
     action->setCheckable(true);
     action->setData("3|relation");
-    action->setShortcut(QKeySequence(tr("Alt+6")));
-    group->addAction(action);
-    editBar->addAction(action);
-    mTypeChangeActionsList.append(action);
-
-    action = new QAction(QIcon(), tr("Atom node"), group);
-    action->setCheckable(true);
-    action->setData("3|atom");
     action->setShortcut(QKeySequence(tr("Alt+7")));
     group->addAction(action);
     editBar->addAction(action);
@@ -232,7 +232,7 @@ BallonTypeToolBar::BallonTypeToolBar(QGraphicsItem *parent, Qt::WindowFlags wFla
     setZValue(10);
 }
 
-BallonTypeToolBar::~BallonTypeToolBar()
+SCgTypePanel::~SCgTypePanel()
 {
     delete mOpacityTimer;
     //    delete mNodeBars;
@@ -242,27 +242,27 @@ BallonTypeToolBar::~BallonTypeToolBar()
     delete mCommonAccessoryPairType;
 }
 
-void BallonTypeToolBar::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void SCgTypePanel::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     mOpacityTimer->stop();
     setOpacity(1);
     QGraphicsProxyWidget::hoverEnterEvent(event);
 }
 
-void BallonTypeToolBar::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+void SCgTypePanel::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
 {
     if (parentItem() && !parentItem()->isSelected())
         parentItem()->setSelected(true);
     QGraphicsProxyWidget::hoverMoveEvent(event);
 }
 
-void BallonTypeToolBar::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void SCgTypePanel::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
     mOpacityTimer->start();
     QGraphicsProxyWidget::hoverLeaveEvent(event);
 }
 
-void BallonTypeToolBar::updateOpacity()
+void SCgTypePanel::updateOpacity()
 {
     qreal op = opacity();
     op -= .05;
@@ -279,7 +279,7 @@ void BallonTypeToolBar::updateOpacity()
         mOpacityTimer->stop();
 }
 
-void BallonTypeToolBar::editToolBarsStateChanged()
+void SCgTypePanel::editToolBarsStateChanged()
 {
     foreach (QToolBar *bar, mEditToolBarsList)
         bar->setEnabled(false);
@@ -337,7 +337,7 @@ void BallonTypeToolBar::editToolBarsStateChanged()
     }
 }
 
-QAction* BallonTypeToolBar::actionForType(QString type)
+QAction* SCgTypePanel::actionForType(QString type)
 {
     foreach (QAction *act, mTypeChangeActionsList)
     {
@@ -348,12 +348,12 @@ QAction* BallonTypeToolBar::actionForType(QString type)
 }
 
 
-QList<QToolBar*> BallonTypeToolBar::toolBarsList()
+QList<QToolBar*> SCgTypePanel::toolBarsList()
 {
     return mEditToolBarsList;
 }
 
-void BallonTypeToolBar::setToolBarForType(int type)
+void SCgTypePanel::setToolBarForType(int type)
 {
     switch(type)
     {
