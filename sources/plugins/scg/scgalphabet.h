@@ -60,13 +60,12 @@ public:
     {
         NotDefine = 0,
         General,
-        Predmet,
-        NoPredmet,
-        Symmetry,
-        Asymmetry,
-        Attribute,
+        Abstract,
+        AbstractExt,
+        Struct,
+        Tuple,
+        Role,
         Relation,
-        Atom,
         Group,
         StructUnknown
     } SCgNodeStructType;

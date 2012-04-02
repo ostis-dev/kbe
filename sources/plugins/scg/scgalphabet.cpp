@@ -78,14 +78,13 @@ void SCgAlphabet::initialize()
     mPermTypes["any"] = PermAny;
 
     mStructTypes["not_define"] = NotDefine;
-    mStructTypes["general_node"] = General;
-    mStructTypes["predmet"] = Predmet;
-    mStructTypes["nopredmet"] = NoPredmet;
-    mStructTypes["symmetry"] = Symmetry;
-    mStructTypes["asymmetry"] = Asymmetry;
-    mStructTypes["attribute"] = Attribute;
+    mStructTypes["general"] = General;
+    mStructTypes["abstract"] = Abstract;
+    mStructTypes["abstractExt"] = AbstractExt;
+    mStructTypes["struct"] = Struct;
+    mStructTypes["tuple"] = Tuple;
+    mStructTypes["role"] = Role;
     mStructTypes["relation"] = Relation;
-    mStructTypes["atom"] = Atom;
     mStructTypes["group"] = Group;
 
     // initiliaze patterns
@@ -114,25 +113,25 @@ void SCgAlphabet::initialize()
     QSize size(24, 24);
 
     mObjectTypes["node/const/not_define"] = createNodeIcon(size, Const, NotDefine);
-    mObjectTypes["node/const/general_node"] = createNodeIcon(size, Const, General);
-    mObjectTypes["node/const/predmet"] = createNodeIcon(size, Const, Predmet);
-    mObjectTypes["node/const/nopredmet"] = createNodeIcon(size, Const, NoPredmet);
-    mObjectTypes["node/const/symmetry"] = createNodeIcon(size, Const, Symmetry);
-    mObjectTypes["node/const/asymmetry"] = createNodeIcon(size, Const, Asymmetry);
-    mObjectTypes["node/const/attribute"] = createNodeIcon(size, Const, Attribute);
+    mObjectTypes["node/const/general"] = createNodeIcon(size, Const, General);
+    mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, Abstract);
+    mObjectTypes["node/const/abstractExt"] = createNodeIcon(size, Const, AbstractExt);
+    mObjectTypes["node/const/nopredmet"] = createNodeIcon(size, Const, Struct);
+    mObjectTypes["node/const/tuple"] = createNodeIcon(size, Const, Tuple);
+    //mObjectTypes["node/const/asymmetry"] = createNodeIcon(size, Const, Tuple);
+    mObjectTypes["node/const/role"] = createNodeIcon(size, Const, Role);
     mObjectTypes["node/const/relation"] = createNodeIcon(size, Const, Relation);
-    mObjectTypes["node/const/atom"] = createNodeIcon(size, Const, Atom);
     mObjectTypes["node/const/group"] = createNodeIcon(size, Const, Group);
 
     mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
-    mObjectTypes["node/var/general_node"] = createNodeIcon(size, Var, General);
-    mObjectTypes["node/var/predmet"] = createNodeIcon(size, Var, Predmet);
-    mObjectTypes["node/var/nopredmet"] = createNodeIcon(size, Var, NoPredmet);
-    mObjectTypes["node/var/symmetry"] = createNodeIcon(size, Var, Symmetry);
-    mObjectTypes["node/var/asymmetry"] = createNodeIcon(size, Var, Asymmetry);
-    mObjectTypes["node/var/attribute"] = createNodeIcon(size, Var, Attribute);
+    mObjectTypes["node/var/general"] = createNodeIcon(size, Var, General);
+    mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, Abstract);
+    mObjectTypes["node/var/abstractExt"] = createNodeIcon(size, Var, AbstractExt);
+    mObjectTypes["node/var/nopredmet"] = createNodeIcon(size, Var, Struct);
+    mObjectTypes["node/var/tuple"] = createNodeIcon(size, Var, Tuple);
+    //mObjectTypes["node/var/asymmetry"] = createNodeIcon(size, Var, Tuple);
+    mObjectTypes["node/var/role"] = createNodeIcon(size, Var, Role);
     mObjectTypes["node/var/relation"] = createNodeIcon(size, Var, Relation);
-    mObjectTypes["node/var/atom"] = createNodeIcon(size, Var, Atom);
     mObjectTypes["node/var/group"] = createNodeIcon(size, Var, Group);
 
 
@@ -348,7 +347,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
     QPointF c, d;
     switch (type)
     {
-    case NoPredmet:
+    case Struct:
         float w, h;
         w = boundRect.width() / 10.f;
         h = boundRect.height() / 10.f;
@@ -357,34 +356,54 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         painter->setBrush(QBrush(Qt::NoBrush));
         break;
 
-    case Predmet:
+    case Abstract:
     {
         QPen p = painter->pen();
         p.setWidthF(0);
         painter->setPen(p);
         qreal x1, x2, top, bottom;
-        top = boundRect.top() + 3.4;
-        bottom = boundRect.bottom() - 3.5;
+        top = boundRect.top();
+        bottom = boundRect.bottom();
         x1 = boundRect.left();
         x2 = boundRect.right();
 
-        for (qreal y = top; y < bottom; y += 2)
+        for (qreal y = top; y < bottom; y += 3)
             painter->drawLine(QLineF(x1, y, x2, y));
+
         break;
     }
-    case Symmetry:
-        c = boundRect.center();
-        d = QPointF(0.f, boundRect.height() / 2.0);
-        painter->drawLine(c - d, c + d);
-        break;
 
-    case Asymmetry:
+    case AbstractExt:
+    {
+        QPen p = painter->pen();
+        p.setWidthF(0);
+        painter->setPen(p);
+        qreal y1, y2, left, right;
+        left = boundRect.left();
+        right = boundRect.right();
+
+
+        qreal dist = right - left;
+
+        y1 = boundRect.top();
+        y2 = boundRect.bottom();
+
+        for (qreal d = 0; d <= dist; d += 4.2)
+        {
+            painter->drawLine(QLineF(left + d, y1, left, y1 + d));
+            painter->drawLine(QLineF(right - d, y2, right, y2 - d));
+        }
+
+        break;
+    }
+
+    case Tuple:
         c = boundRect.center();
         d = QPointF(boundRect.width() / 2.0, 0.f);
         painter->drawLine(c - d, c + d);
         break;
 
-    case Attribute:
+    case Role:
         c = boundRect.center();
         d = QPointF(boundRect.width() / 2.0, 0.f);
         painter->drawLine(c - d, c + d);
@@ -395,9 +414,6 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
     case Relation:
         painter->drawLine(boundRect.topLeft(), boundRect.bottomRight());
         painter->drawLine(boundRect.topRight(), boundRect.bottomLeft());
-        break;
-
-    case Atom:
         break;
 
     case Group:
