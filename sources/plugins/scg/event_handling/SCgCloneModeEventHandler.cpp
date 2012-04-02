@@ -41,6 +41,11 @@ SCgCloneModeEventHandler::~SCgCloneModeEventHandler() {
 void SCgCloneModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
 {
     SCgEventHandler::mousePress(event);
+    if (!mInsertedObjectGroup)
+    {
+        mScene->setEditMode(mScene->previousMode());
+        return;
+    }
     SCgObject* underMouseObj = mScene->objectAt(event->scenePos());
     SCgContour* parent = 0;
     if (underMouseObj && underMouseObj->type() == SCgContour::Type)
