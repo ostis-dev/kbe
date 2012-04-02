@@ -4,7 +4,7 @@
 \documentclass[a4paper,oneside, titlepage, 12pt]{article}
 \usepackage{fancyhdr} %%Fancy headings
 
-\usepackage[cp1251]{inputenc}
+\usepackage[utf8]{inputenc}
 %% Language %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[USenglish, russian]{babel}
 \usepackage[T2A]{fontenc}
@@ -24,15 +24,14 @@
 \input{title}
 \pagestyle{empty}
 \tableofcontents
-%\newpage
+\newpage
 \input{headings}
-\input{ch1.Intro}
-\input{ch2.Installation}
-\input{ch3.Support}
-\input{ch4.SupportedFormats}
-\input{ch5.GUI}
-\input{ch6.Usage}
-\input{ch7.Hotkeys}
+\input{intro}
+\input{install}
+\input{gui}
+\input{usage}
+\input{support}
+\input{hotkeys}
 
 \end{document}
 

@@ -195,6 +195,11 @@ bool SCgObject::haveConnectedObject(SCgObject *object) const
     return mConnectedObjects.contains(object);
 }
 
+SCgObject::SCgObjectList SCgObject::connectedObjects() const
+{
+    return mConnectedObjects;
+}
+
 void SCgObject::updateConnected()
 {
     SCgObjectList::iterator it;

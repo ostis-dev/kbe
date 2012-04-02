@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 
 class SCgPointObject;
-class BallonTypeToolBar;
+class SCgTypePanel;
 
 class SCgSelectModeEventHandler: public SCgEventHandler
 {
@@ -75,7 +75,7 @@ private:
     SCgContour *findNearestParentContour(QGraphicsItem* item);
 
     //! Ballon edit toolbars for type changing
-    BallonTypeToolBar *mEditBar;
+    SCgTypePanel *mEditBar;
 };
 
 #endif /* SCGSCENEEVENTHANDLERS_H_ */

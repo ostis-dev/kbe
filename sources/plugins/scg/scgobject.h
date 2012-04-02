@@ -56,8 +56,14 @@ public:
     void addConnectedObject(SCgObject *object);
     //! Removes given connected object.
     void removeConnectedObject(SCgObject *object);
-    //! @return If given object @p object is connected to this object returns true.
+    /*! Check if \p object is in connected list for this one
+      * @param object Pointer to object, that need to be checked
+      * @return Return true, if \p object exist in connected list; otherwise return false
+      */
     bool haveConnectedObject(SCgObject *object) const;
+    //! Return list of connected objects
+    SCgObjectList connectedObjects() const;
+
     //! Update (repaint) connected objects
     virtual void updateConnected();
 

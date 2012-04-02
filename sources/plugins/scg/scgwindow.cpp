@@ -43,6 +43,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangerhorizontal.h"
 #include "arrangers/scgarrangergrid.h"
 #include "arrangers/scgarrangertuple.h"
+
+#include "select/scgselectinputoutput.h"
+#include "select/scgselectsubgraph.h"
+
 #include "scgplugin.h"
 #include "scgexportimage.h"
 
@@ -224,6 +228,7 @@ void SCgWindow::createToolBar()
     mToolBar->addSeparator();
     //
 
+    // align group button
     QToolButton *alignButton = new QToolButton(mToolBar);
     alignButton->setIcon(findIcon("tool-align.png"));
     alignButton->setPopupMode(QToolButton::InstantPopup);
@@ -256,6 +261,24 @@ void SCgWindow::createToolBar()
     action->setShortcut(QKeySequence(tr("8", "Horizontal alignment")));
     alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onHorizontalAlignment()));
+
+    // selection gtoup button
+    QToolButton *selectButton = new QToolButton(mToolBar);
+    selectButton->setIcon(findIcon("tool-select-group.png"));
+    selectButton->setPopupMode(QToolButton::InstantPopup);
+    mToolBar->addWidget(selectButton);
+
+    // input/output selection
+    action = new QAction(findIcon("tool-select-inout.png"), tr("Select input/output"), mToolBar);
+    action->setCheckable(false);
+    selectButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onSelectInputOutput()));
+
+    // sbgraph selection
+    action = new QAction(findIcon("tool-select-subgraph.png"), tr("Select subgraph"), mToolBar);
+    action->setCheckable(false);
+    selectButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onSelectSubgraph()));
 
     mToolBar->addSeparator();
 
@@ -392,6 +415,18 @@ void SCgWindow::onVerticalAlignment()
 void SCgWindow::onHorizontalAlignment()
 {
     SCgLayoutManager::instance().arrange(mView, SCgHorizontalArranger::Type);
+}
+
+void SCgWindow::onSelectInputOutput()
+{
+    SCgSelectInputOutput select;
+    select.doSelection(mScene);
+}
+
+void SCgWindow::onSelectSubgraph()
+{
+    SCgSelectSubGraph select;
+    select.doSelection(mScene);
 }
 
 void SCgWindow::onExportImage()

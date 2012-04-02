@@ -69,36 +69,38 @@ void GwfObjectInfoReader::createTypesMap()
 
     // nodes
     mGWFType2TypeAlias["node/const/not_define"] = "node/const/not_define";
-    mGWFType2TypeAlias["node/const/general_node"] = "node/const/general_node";
-    mGWFType2TypeAlias["node/const/predmet"] = "node/const/predmet";
+    mGWFType2TypeAlias["node/const/general_node"] = "node/const/general";
+    mGWFType2TypeAlias["node/const/predmet"] = "node/const/abstract";
+    mGWFType2TypeAlias["node/const/predmet_ext"] = "node/const/abstractExt";
     mGWFType2TypeAlias["node/const/nopredmet"] = "node/const/nopredmet";
-    mGWFType2TypeAlias["node/const/symmetry"] = "node/const/symmetry";
-    mGWFType2TypeAlias["node/const/asymmetry"] = "node/const/asymmetry";
-    mGWFType2TypeAlias["node/const/attribute"] = "node/const/attribute";
+    mGWFType2TypeAlias["node/const/symmetry"] = "node/const/tuple";
+    mGWFType2TypeAlias["node/const/asymmetry"] = "node/const/tuple";
+    mGWFType2TypeAlias["node/const/attribute"] = "node/const/role";
     mGWFType2TypeAlias["node/const/relation"] = "node/const/relation";
-    mGWFType2TypeAlias["node/const/atom"] = "node/const/atom";
+    mGWFType2TypeAlias["node/const/atom"] = "node/const/group";
     mGWFType2TypeAlias["node/const/group"] = "node/const/group";
 
-    mGWFType2TypeAlias["node/var/not_define"] = "node/var/not_define";
-    mGWFType2TypeAlias["node/var/general_node"] = "node/var/general_node";
-    mGWFType2TypeAlias["node/var/predmet"] = "node/var/predmet";
+    mGWFType2TypeAlias["node/var/not_define"] = "node/var/general";
+    mGWFType2TypeAlias["node/var/general_node"] = "node/var/general";
+    mGWFType2TypeAlias["node/var/predmet"] = "node/var/abstract";
+    mGWFType2TypeAlias["node/var/predmet_ext"] = "node/var/abstractExt";
     mGWFType2TypeAlias["node/var/nopredmet"] = "node/var/nopredmet";
-    mGWFType2TypeAlias["node/var/symmetry"] = "node/var/symmetry";
-    mGWFType2TypeAlias["node/var/asymmetry"] = "node/var/asymmetry";
-    mGWFType2TypeAlias["node/var/attribute"] = "node/var/attribute";
+    mGWFType2TypeAlias["node/var/symmetry"] = "node/var/tuple";
+    mGWFType2TypeAlias["node/var/asymmetry"] = "node/var/tuple";
+    mGWFType2TypeAlias["node/var/attribute"] = "node/var/role";
     mGWFType2TypeAlias["node/var/relation"] = "node/var/relation";
-    mGWFType2TypeAlias["node/var/atom"] = "node/var/atom";
+    mGWFType2TypeAlias["node/var/atom"] = "node/var/group";
     mGWFType2TypeAlias["node/var/group"] = "node/var/group";
 
     mGWFType2TypeAlias["node/meta/not_define"] = "node/var/not_define";
-    mGWFType2TypeAlias["node/meta/general_node"] = "node/var/general_node";
-    mGWFType2TypeAlias["node/meta/predmet"] = "node/var/predmet";
-    mGWFType2TypeAlias["node/meta/nopredmet"] = "node/var/nopredmet";
-    mGWFType2TypeAlias["node/meta/symmetry"] = "node/var/symmetry";
-    mGWFType2TypeAlias["node/meta/asymmetry"] = "node/var/asymmetry";
-    mGWFType2TypeAlias["node/meta/attribute"] = "node/var/attribute";
+    mGWFType2TypeAlias["node/meta/general_node"] = "node/var/general";
+    mGWFType2TypeAlias["node/meta/predmet"] = "node/var/abstract";
+    mGWFType2TypeAlias["node/meta/nopredmet"] = "node/var/abstractExt";
+    mGWFType2TypeAlias["node/meta/symmetry"] = "node/var/tuple";
+    mGWFType2TypeAlias["node/meta/asymmetry"] = "node/var/tuple";
+    mGWFType2TypeAlias["node/meta/attribute"] = "node/var/role";
     mGWFType2TypeAlias["node/meta/relation"] = "node/var/relation";
-    mGWFType2TypeAlias["node/meta/atom"] = "node/var/atom";
+    mGWFType2TypeAlias["node/meta/atom"] = "node/var/group";
     mGWFType2TypeAlias["node/meta/group"] = "node/var/group";
 
     // pairs

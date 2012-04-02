@@ -29,7 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "../scgbus.h"
 #include "../scgcontour.h"
 #include "../pointgraphicsitem.h"
-#include "../ballontypetoolbar.h"
+#include "../scgtypepanel.h"
 
 #include <QDomDocument>
 #include <QToolBar>
@@ -38,7 +38,7 @@ SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventH
     mIsItemsMoved(false),
     mCurrentPointObject(0)
 {
-    mEditBar = new BallonTypeToolBar;
+    mEditBar = new SCgTypePanel;
 }
 
 SCgSelectModeEventHandler::~SCgSelectModeEventHandler()

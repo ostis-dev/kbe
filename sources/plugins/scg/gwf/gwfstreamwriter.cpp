@@ -54,34 +54,36 @@ void GwfStreamWriter::createTypesMap()
 {
     // nodes
     mTypeAlias2GWFType["node/const/not_define"] = "node/const/not_define";
-    mTypeAlias2GWFType["node/const/general_node"] = "node/const/general_node";
-    mTypeAlias2GWFType["node/const/predmet"] = "node/const/predmet";
+    mTypeAlias2GWFType["node/const/general"] = "node/const/general_node";
+    mTypeAlias2GWFType["node/const/abstract"] = "node/const/predmet";
+    mTypeAlias2GWFType["node/const/abstractExt"] = "node/const/predmet_ext";
     mTypeAlias2GWFType["node/const/nopredmet"] = "node/const/nopredmet";
     mTypeAlias2GWFType["node/const/symmetry"] = "node/const/symmetry";
-    mTypeAlias2GWFType["node/const/asymmetry"] = "node/const/asymmetry";
-    mTypeAlias2GWFType["node/const/attribute"] = "node/const/attribute";
+    mTypeAlias2GWFType["node/const/tuple"] = "node/const/asymmetry";
+    mTypeAlias2GWFType["node/const/role"] = "node/const/attribute";
     mTypeAlias2GWFType["node/const/relation"] = "node/const/relation";
     mTypeAlias2GWFType["node/const/atom"] = "node/const/atom";
     mTypeAlias2GWFType["node/const/group"] = "node/const/group";
 
     mTypeAlias2GWFType["node/var/not_define"] = "node/var/not_define";
-    mTypeAlias2GWFType["node/var/general_node"] = "node/var/general_node";
-    mTypeAlias2GWFType["node/var/predmet"] = "node/var/predmet";
+    mTypeAlias2GWFType["node/var/general"] = "node/var/general_node";
+    mTypeAlias2GWFType["node/var/abstract"] = "node/var/predmet";
+    mTypeAlias2GWFType["node/var/abstractExt"] = "node/var/predmet_ext";
     mTypeAlias2GWFType["node/var/nopredmet"] = "node/var/nopredmet";
-    mTypeAlias2GWFType["node/var/symmetry"] = "node/var/symmetry";
+    mTypeAlias2GWFType["node/var/tuple"] = "node/var/symmetry";
     mTypeAlias2GWFType["node/var/asymmetry"] = "node/var/asymmetry";
-    mTypeAlias2GWFType["node/var/attribute"] = "node/var/attribute";
+    mTypeAlias2GWFType["node/var/role"] = "node/var/attribute";
     mTypeAlias2GWFType["node/var/relation"] = "node/var/relation";
     mTypeAlias2GWFType["node/var/atom"] = "node/var/atom";
     mTypeAlias2GWFType["node/var/group"] = "node/var/group";
 
     mTypeAlias2GWFType["node/meta/not_define"] = "node/meta/not_define";
-    mTypeAlias2GWFType["node/meta/general_node"] = "node/meta/general_node";
-    mTypeAlias2GWFType["node/meta/predmet"] = "node/meta/predmet";
+    mTypeAlias2GWFType["node/meta/general"] = "node/meta/general_node";
+    mTypeAlias2GWFType["node/meta/abstract"] = "node/meta/predmet";
     mTypeAlias2GWFType["node/meta/nopredmet"] = "node/meta/nopredmet";
-    mTypeAlias2GWFType["node/meta/symmetry"] = "node/meta/symmetry";
+    mTypeAlias2GWFType["node/meta/tuple"] = "node/meta/symmetry";
     mTypeAlias2GWFType["node/meta/asymmetry"] = "node/meta/asymmetry";
-    mTypeAlias2GWFType["node/meta/attribute"] = "node/meta/attribute";
+    mTypeAlias2GWFType["node/meta/role"] = "node/meta/attribute";
     mTypeAlias2GWFType["node/meta/relation"] = "node/meta/relation";
     mTypeAlias2GWFType["node/meta/atom"] = "node/meta/atom";
     mTypeAlias2GWFType["node/meta/group"] = "node/meta/group";
