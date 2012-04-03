@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgcommandcontentchange.h"
 
-#include "../scgnode.h"
+#include "scgnode.h"
 
 SCgCommandContentChange::SCgCommandContentChange(SCgScene *scene,
                                                  SCgNode *node,

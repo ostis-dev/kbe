@@ -21,8 +21,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandinsert.h"
-#include "../scgobject.h"
-#include "../scgcontour.h"
+#include "scgobject.h"
+#include "scgcontour.h"
 
 SCgCommandInsert::SCgCommandInsert(SCgScene *scene,
                                    QList<SCgObject*> objList,

@@ -22,11 +22,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgselectsubgraph.h"
 
-#include "../scgscene.h"
-#include "../scgbus.h"
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
+#include "scgscene.h"
+#include "scgbus.h"
+#include "scgnode.h"
+#include "scgpair.h"
+#include "scgcontour.h"
 
 SCgSelectSubGraph::SCgSelectSubGraph(QObject *parent) :
     SCgSelect(parent)

@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandcontentvisibility.h"
-#include "../scgnode.h"
+#include "scgnode.h"
 
 SCgCommandContentVisibility::SCgCommandContentVisibility(SCgScene *scene,
                                                          SCgNode *node,

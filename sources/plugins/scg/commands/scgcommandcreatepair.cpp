@@ -21,8 +21,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandcreatepair.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
+#include "scgpair.h"
+#include "scgcontour.h"
 
 SCgCommandCreatePair::SCgCommandCreatePair(SCgScene *scene,
                                            const QVector<QPointF> &points,

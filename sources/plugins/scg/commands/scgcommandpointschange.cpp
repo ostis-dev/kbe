@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgcommandpointschange.h"
 
-#include "../scgpair.h"
+#include "scgpair.h"
 
 SCgCommandPointsChange::SCgCommandPointsChange(SCgScene* scene,
                                                 SCgPointObject* obj,

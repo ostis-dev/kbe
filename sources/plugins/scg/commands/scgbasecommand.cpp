@@ -23,11 +23,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgbasecommand.h"
 
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
+#include "scgnode.h"
+#include "scgpair.h"
+#include "scgcontour.h"
+#include "scgbus.h"
+#include "scgscene.h"
 
 SCgBaseCommand::SCgBaseCommand(SCgScene *scene,
                                SCgObject *object,

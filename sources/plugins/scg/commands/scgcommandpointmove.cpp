@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandpointmove.h"
-#include "../scgpointobject.h"
+#include "scgpointobject.h"
 
 SCgCommandPointMove::SCgCommandPointMove(SCgScene* scene,
                                         SCgPointObject* obj,

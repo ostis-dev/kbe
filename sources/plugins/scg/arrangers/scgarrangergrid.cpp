@@ -1,8 +1,8 @@
 #include "scgarrangergrid.h"
 
-#include "../scgview.h"
-#include "../scgnode.h"
-#include "../scgpointobject.h"
+#include "scgview.h"
+#include "scgnode.h"
+#include "scgpointobject.h"
 
 #include <QSpinBox>
 #include <QLabel>

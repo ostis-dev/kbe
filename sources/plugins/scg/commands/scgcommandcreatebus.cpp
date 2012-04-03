@@ -21,9 +21,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandcreatebus.h"
-#include "../scgnode.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
+#include "scgnode.h"
+#include "scgcontour.h"
+#include "scgbus.h"
 
 SCgCommandCreateBus::SCgCommandCreateBus(SCgScene *scene,
                                            SCgNode *owner,

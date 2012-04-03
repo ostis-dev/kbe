@@ -20,14 +20,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 #include "SCgSelectModeEventHandler.h"
-#include "../scgcontour.h"
-#include "../gwf/gwffilewriter.h"
-#include "../gwf/gwfobjectinforeader.h"
-#include "../scgtemplateobjectbuilder.h"
-#include "../scgnode.h"
-#include "../scgbus.h"
-#include "../scgtextitem.h"
-#include "../pointgraphicsitem.h"
+#include "scgcontour.h"
+#include "gwf/gwffilewriter.h"
+#include "gwf/gwfobjectinforeader.h"
+#include "scgtemplateobjectbuilder.h"
+#include "scgnode.h"
+#include "scgbus.h"
+#include "scgtextitem.h"
+#include "pointgraphicsitem.h"
 
 #include <QDomDocument>
 

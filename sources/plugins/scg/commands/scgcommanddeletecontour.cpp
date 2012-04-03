@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcommanddeletecontour.h"
 #include "scgcommandobjectdelete.h"
 
-#include "../scgcontour.h"
+#include "scgcontour.h"
 
 SCgCommandDeleteContour::SCgCommandDeleteContour(SCgScene *scene,
                                                  SCgContour *contour,

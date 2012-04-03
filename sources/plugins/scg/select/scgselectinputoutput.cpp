@@ -22,8 +22,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgselectinputoutput.h"
 
-#include "../scgscene.h"
-#include "../scgobject.h"
+#include "scgscene.h"
+#include "scgobject.h"
 
 SCgSelectInputOutput::SCgSelectInputOutput(QObject *parent) :
     SCgSelect(parent)

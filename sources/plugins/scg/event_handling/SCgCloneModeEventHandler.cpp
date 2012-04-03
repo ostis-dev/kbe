@@ -21,10 +21,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "SCgCloneModeEventHandler.h"
-#include "../scgcontour.h"
-#include "../gwf/gwfobjectinforeader.h"
-#include "../gwf/gwfstreamwriter.h"
-#include "../scgtemplateobjectbuilder.h"
+#include "scgcontour.h"
+#include "gwf/gwfobjectinforeader.h"
+#include "gwf/gwfstreamwriter.h"
+#include "scgtemplateobjectbuilder.h"
 
 #include <QDomDocument>
 #include <QGraphicsView>

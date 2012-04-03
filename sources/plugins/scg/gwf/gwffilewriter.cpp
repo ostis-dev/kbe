@@ -20,11 +20,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 #include "gwffilewriter.h"
-#include "../scgscene.h"
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgbus.h"
-#include "../scgcontour.h"
+#include "scgscene.h"
+#include "scgnode.h"
+#include "scgpair.h"
+#include "scgbus.h"
+#include "scgcontour.h"
 
 #include <QMessageBox>
 #include <QFile>

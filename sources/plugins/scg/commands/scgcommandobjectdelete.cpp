@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandobjectdelete.h"
-#include "../scgobject.h"
+#include "scgobject.h"
 
 SCgCommandObjectDelete::SCgCommandObjectDelete(SCgScene *scene,
                                                SCgObject *object,

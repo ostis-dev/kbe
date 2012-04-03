@@ -2,7 +2,8 @@ QT += xml
 
 TARGET        = $$qtLibraryTarget(scg)
 TEMPLATE      = lib
-INCLUDEPATH  += ../../kbe
+INCLUDEPATH  += ../../kbe \
+                ./
 
 DESTDIR = ../../bin/plugins
 

@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandcreatecontour.h"
-#include "../scgcontour.h"
+#include "scgcontour.h"
 
 SCgCommandCreateContour::SCgCommandCreateContour(SCgScene *scene,
                                                  const QList<QGraphicsItem *> &childs,

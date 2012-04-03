@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgcommandidtfmove.h"
-#include "../scgtextitem.h"
+#include "scgtextitem.h"
 
 SCgCommandIdtfMove::SCgCommandIdtfMove(SCgTextItem *idtf,
                                        SCgScene *scene,
