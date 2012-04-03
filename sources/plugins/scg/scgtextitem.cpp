@@ -22,12 +22,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgtextitem.h"
 #include "scgconfig.h"
+#include <QGraphicsSceneEvent>
 
 SCgTextItem::SCgTextItem(const QString &str, QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsTextItem(str, parent, scene)
 {
-    setFlags(QGraphicsItem::ItemIsMovable
-             | QGraphicsItem::ItemIsSelectable
+    setFlags(QGraphicsItem::ItemIsSelectable
              | QGraphicsItem::ItemIsFocusable);
 
     setAcceptHoverEvents(true);
@@ -36,8 +36,7 @@ SCgTextItem::SCgTextItem(const QString &str, QGraphicsItem *parent, QGraphicsSce
 SCgTextItem::SCgTextItem(QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsTextItem(parent, scene)
 {
-    setFlags(QGraphicsItem::ItemIsMovable
-             | QGraphicsItem::ItemIsSelectable
+    setFlags(QGraphicsItem::ItemIsSelectable
              | QGraphicsItem::ItemIsFocusable);
     setAcceptHoverEvents(true);
 }
@@ -88,3 +87,22 @@ void SCgTextItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     QGraphicsTextItem::hoverLeaveEvent(event);
 }
+
+void SCgTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (parentItem()->isSelected())
+        setFlag(QGraphicsItem::ItemIsMovable);
+    QGraphicsTextItem::mousePressEvent(event);
+}
+
+void SCgTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsTextItem::mouseMoveEvent(event);
+}
+
+void SCgTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    QGraphicsTextItem::mouseReleaseEvent(event);
+}
+
