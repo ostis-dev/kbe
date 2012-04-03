@@ -1,17 +1,17 @@
 QT += xml
 
-TARGET        = $$qtLibraryTarget(scg)
-TEMPLATE      = lib
-INCLUDEPATH  += ../../kbe
+TARGET = $$qtLibraryTarget(scg)
+TEMPLATE = lib
+INCLUDEPATH += ../../kbe
 
 DESTDIR = ../../bin/plugins
 
-CONFIG       += plugin
+CONFIG += plugin
 
 OBJECTS_DIR = obj
 MOC_DIR = moc
 
-RESOURCES     = scg.qrc
+RESOURCES = scg.qrc
 
 HEADERS += \
     scgwindow.h \
@@ -85,7 +85,8 @@ HEADERS += \
     arrangers/scgarranger.h \
     select/scgselectinputoutput.h \
     select/scgselect.h \
-    select/scgselectsubgraph.h
+    select/scgselectsubgraph.h \
+    scgtypepanel.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -159,6 +160,5 @@ SOURCES += \
     arrangers/scgarranger.cpp \
     select/scgselectinputoutput.cpp \
     select/scgselect.cpp \
-    select/scgselectsubgraph.cpp
-
-
+    select/scgselectsubgraph.cpp \
+    scgtypepanel.cpp

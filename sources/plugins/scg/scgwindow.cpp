@@ -119,6 +119,7 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     createActions();
 
     createToolBar();
+    mScene->setEditMode(SCgScene::Mode_Select);
 }
 
 SCgWindow::~SCgWindow()

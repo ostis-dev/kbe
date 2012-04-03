@@ -201,6 +201,9 @@ protected:
     //! true, if parent about to change.
     bool mParentChanging;
 
+signals:
+    void typeChanged();
+
 protected:
     friend class GwfStreamWriter;
     const SCgTextItem* textItem() const{return mTextItem;}
