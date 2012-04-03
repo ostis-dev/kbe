@@ -20,14 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandcreatebus.h"
-
 #include "../scgnode.h"
-#include "../scgpair.h"
 #include "../scgcontour.h"
 #include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandCreateBus::SCgCommandCreateBus(SCgScene *scene,
                                            SCgNode *owner,
@@ -68,7 +64,7 @@ void SCgCommandCreateBus::redo()
     mObject->setParentItem(mParentContour);
     mObject->setDead(false);
 
-    ((SCgBus*)mObject)->setOwner(mOwner);
+    static_cast<SCgBus*>(mObject)->setOwner(mOwner);
 }
 
 void SCgCommandCreateBus::undo()
@@ -77,7 +73,7 @@ void SCgCommandCreateBus::undo()
                "void SCgCommandCreateBus::undo()",
                "Bus doesn't exists");
 
-    ((SCgBus*)mObject)->setOwner(0);
+    static_cast<SCgBus*>(mObject)->setOwner(0);
     mObject->setParentItem(0);
 
     mScene->removeItem(mObject);

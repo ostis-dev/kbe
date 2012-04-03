@@ -20,28 +20,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #ifndef SCGCOMMANDCHANGEINCEDENTOBJECT_H
 #define SCGCOMMANDCHANGEINCEDENTOBJECT_H
 
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
+#include "scgbasecommand.h"
 #include "../scgpointobject.h"
-#include "../scgscene.h"
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
 
 //! Command for changing begin and end objects of pair and owner of bus.
 class SCgCommandChangeIncedentObject: public SCgBaseCommand

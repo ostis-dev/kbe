@@ -20,29 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #ifndef SCGCOMMANDCONTENTCHANGE_H
 #define SCGCOMMANDCONTENTCHANGE_H
 
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
-
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
+#include "scgbasecommand.h"
 
 /*! Change content command
   */

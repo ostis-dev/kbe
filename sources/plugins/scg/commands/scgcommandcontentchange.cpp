@@ -20,14 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandcontentchange.h"
 
 #include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandContentChange::SCgCommandContentChange(SCgScene *scene,
                                                  SCgNode *node,

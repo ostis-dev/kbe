@@ -20,47 +20,28 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#ifndef SCGCOMMANDOBJECTTYPECHANGE_H
+#define SCGCOMMANDOBJECTTYPECHANGE_H
 
-#ifndef SCGCOMMANDOBJECTIDFTCHANGE_H
-#define SCGCOMMANDOBJECTIDFTCHANGE_H
+#include "scgbasecommand.h"
 
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
-
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
-
-/*! Object identification change command
+/*! Object type changing command
   */
-class SCgCommandObjectIdtfChange : public SCgBaseCommand
+class SCgCommandObjectTypeChange : public SCgBaseCommand
 {
 public:
     /*! Constructor
       @param    scene   Pointer to SCgScene that will be used for command working
-      @param    object  Pointer to object for identifier changing
-      @param    newIdtf New object identifier
+      @param    object  Pointer to object for type changing
+      @param    newType New object type
       @param    parent  Pointer to parent command
       */
-    explicit SCgCommandObjectIdtfChange(SCgScene *scene,
+    explicit SCgCommandObjectTypeChange(SCgScene *scene,
                                         SCgObject *object,
-                                        const QString &newIdtf,
+                                        const QString &newType,
                                         QUndoCommand *parent = 0);
     //! Destructor
-    virtual ~SCgCommandObjectIdtfChange();
+    virtual ~SCgCommandObjectTypeChange();
 
 protected:
     //! @see    QUndoCommand::redo
@@ -68,10 +49,11 @@ protected:
     //! @see    QUndoCommand::undo
     void undo();
 
-    //! Old identifier
-    QString mOldIdtf;
-    //! New identifier
-    QString mNewIdtf;
+    //! Old object type
+    QString mOldType;
+    //! New object type
+    QString mNewType;
 };
 
-#endif // SCGCOMMANDOBJECTIDFTCHANGE_H
+
+#endif // SCGCOMMANDOBJECTTYPECHANGE_H

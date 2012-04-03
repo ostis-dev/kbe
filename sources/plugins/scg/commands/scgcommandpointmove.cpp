@@ -20,14 +20,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandpointmove.h"
-
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
+#include "../scgpointobject.h"
 
 SCgCommandPointMove::SCgCommandPointMove(SCgScene* scene,
                                         SCgPointObject* obj,
@@ -51,10 +45,10 @@ SCgCommandPointMove::~SCgCommandPointMove()
 void SCgCommandPointMove::redo()
 {
     SCgBaseCommand::redo();
-    ((SCgPointObject*)mObject)->changePointPosition(mPointIndex, mNewPos);
+    static_cast<SCgPointObject*>(mObject)->changePointPosition(mPointIndex, mNewPos);
 }
 void SCgCommandPointMove::undo()
 {
-    ((SCgPointObject*)mObject)->changePointPosition(mPointIndex, mOldPos);
+    static_cast<SCgPointObject*>(mObject)->changePointPosition(mPointIndex, mOldPos);
     SCgBaseCommand::undo();
 }

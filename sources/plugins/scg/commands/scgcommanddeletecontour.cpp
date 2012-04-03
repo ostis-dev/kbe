@@ -20,21 +20,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommanddeletecontour.h"
 #include "scgcommandobjectdelete.h"
 
-#include "../scgnode.h"
-#include "../scgpair.h"
 #include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandDeleteContour::SCgCommandDeleteContour(SCgScene *scene,
-                                                         SCgContour *contour,
-                                                         QUndoCommand *parent) :
-        SCgBaseCommand(scene, 0, parent),
-        mContour(contour)
+                                                 SCgContour *contour,
+                                                 QUndoCommand *parent) :
+    SCgBaseCommand(scene, 0, parent),
+    mContour(contour)
 {
     setText(QObject::tr("Delete contour"));
     Q_ASSERT_X(mContour != 0,

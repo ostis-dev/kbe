@@ -61,9 +61,7 @@ HEADERS += \
     commands/scgcommandselectedobjectmove.h \
     commands/scgcommandpointschange.h \
     commands/scgcommandpointmove.h \
-    commands/scgcommandobjecttypechage.h \
     commands/scgcommandobjectmove.h \
-    commands/scgcommandobjectidftchange.h \
     commands/scgcommandobjectdelete.h \
     commands/scgcommandinsert.h \
     commands/scgcommanddeletecontour.h \
@@ -160,5 +158,9 @@ SOURCES += \
     select/scgselectinputoutput.cpp \
     select/scgselect.cpp \
     select/scgselectsubgraph.cpp
+
+
+
+
 
 

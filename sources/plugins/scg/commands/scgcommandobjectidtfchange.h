@@ -20,47 +20,28 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#ifndef SCGCOMMANDOBJECTIDTFCHANGE_H
+#define SCGCOMMANDOBJECTIDTFCHANGE_H
 
-#ifndef SCGCOMMANDOBJECTTYPECHAGE_H
-#define SCGCOMMANDOBJECTTYPECHAGE_H
+#include "scgbasecommand.h"
 
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
-
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
-
-/*! Object type changing command
+/*! Object identification change command
   */
-class SCgCommandObjectTypeChange : public SCgBaseCommand
+class SCgCommandObjectIdtfChange : public SCgBaseCommand
 {
 public:
     /*! Constructor
       @param    scene   Pointer to SCgScene that will be used for command working
-      @param    object  Pointer to object for type changing
-      @param    newType New object type
+      @param    object  Pointer to object for identifier changing
+      @param    newIdtf New object identifier
       @param    parent  Pointer to parent command
       */
-    explicit SCgCommandObjectTypeChange(SCgScene *scene,
+    explicit SCgCommandObjectIdtfChange(SCgScene *scene,
                                         SCgObject *object,
-                                        const QString &newType,
+                                        const QString &newIdtf,
                                         QUndoCommand *parent = 0);
     //! Destructor
-    virtual ~SCgCommandObjectTypeChange();
+    virtual ~SCgCommandObjectIdtfChange();
 
 protected:
     //! @see    QUndoCommand::redo
@@ -68,11 +49,10 @@ protected:
     //! @see    QUndoCommand::undo
     void undo();
 
-    //! Old object type
-    QString mOldType;
-    //! New object type
-    QString mNewType;
+    //! Old identifier
+    QString mOldIdtf;
+    //! New identifier
+    QString mNewIdtf;
 };
 
-
-#endif // SCGCOMMANDOBJECTTYPECHAGE_H
+#endif // SCGCOMMANDOBJECTIDTFCHANGE_H
