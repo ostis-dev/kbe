@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgview.h"
 #include "scgnode.h"
 #include "scgpair.h"
+#include "scgbus.h"
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
@@ -43,11 +44,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
-        QGraphicsView(parent),
-        mContextMenu(0),
-        mContextObject(0),
-        mWindow(window),
-        isSceneRectControlled(false)
+    QGraphicsView(parent),
+    mContextMenu(0),
+    mContextObject(0),
+    mWindow(window),
+    isSceneRectControlled(false)
 {
     setCacheMode(CacheNone);//CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -229,11 +230,11 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
     }
 
     // create new context menu
-    mContextMenu = new QMenu;
+    mContextMenu = new QMenu(this);
 
     if (mContextObject)
     {
-    	// creating menu actions depending on object type
+        // creating menu actions depending on object type
         if (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type)
         {
             // type changing
@@ -251,7 +252,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             if (mContextObject->type() == SCgNode::Type)
                 stype = "node";
             else if (mContextObject->type() == SCgPair::Type)
-                    stype = "pair";
+                stype = "pair";
 
             SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Const, types);
             for (iter = types.begin(); iter != types.end(); ++iter)
@@ -265,7 +266,20 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
     }
     mContextMenu->addActions(mActionsList);
 
-    mContextMenu->exec(event->globalPos());
+    QPoint menuPos;
+    if (mContextObject) {
+        QPoint itemPos;
+        if (mContextObject->type() == SCgPair::Type || mContextObject->type() == SCgBus::Type)
+            itemPos = mapFromParent(mContextObject->boundingRect().center().toPoint());
+        else
+            itemPos = mContextObject->scenePos().toPoint();
+        menuPos = mapToGlobal(itemPos);
+    }
+    else if (event->globalPos() == mapToGlobal(rect().topLeft()))
+        menuPos = mapToGlobal(rect().center())/*event->globalPos()*/;
+    else
+        menuPos = event->globalPos();
+    mContextMenu->exec(menuPos);
 }
 
 void SCgView::selectAllCommand() const
@@ -379,7 +393,7 @@ void SCgView::changeIdentifier()
     QLineEdit* lineEdit = new QLineEdit(&dialog);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                                       | QDialogButtonBox::Cancel);
     buttonBox->setParent(&dialog);
 
     connect(buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
