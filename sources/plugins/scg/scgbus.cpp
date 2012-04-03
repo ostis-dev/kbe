@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgalphabet.h"
 #include "scgnode.h"
+#include "scgtextitem.h"
 #include "pointgraphicsitem.h"
 
 #include <QPainterPathStroker>

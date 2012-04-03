@@ -27,9 +27,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItem>
 
 #include "scgalphabet.h"
-#include "scgtextitem.h"
 
 class SCgScene;
+class SCgTextItem;
 
 class SCgObject : public QObject, public QGraphicsItem
 {

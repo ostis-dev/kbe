@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgnode.h"
 #include "scgpair.h"
 #include "scgcontour.h"
+#include "scgtextitem.h"
 
 #include "pointgraphicsitem.h"
 #include "scgconfig.h"

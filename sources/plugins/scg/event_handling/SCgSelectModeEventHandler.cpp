@@ -24,10 +24,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "../gwf/gwffilewriter.h"
 #include "../gwf/gwfobjectinforeader.h"
 #include "../scgtemplateobjectbuilder.h"
-#include <QDomDocument>
 #include "../scgnode.h"
 #include "../scgbus.h"
+#include "../scgtextitem.h"
 #include "../pointgraphicsitem.h"
+
+#include <QDomDocument>
 
 SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
     mIsItemsMoved(false),
@@ -140,7 +142,7 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
             {
             case PointGraphicsItem::Type :
             case IncidencePointGraphicsItem::Type :
-            case SCgTextItem::Type :
+            case SCgTextItem::Type:
             {
                 // exclude PointGraphicsItem's object, because it always has a parent item
                 it.value().second.second = item->pos();
