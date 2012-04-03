@@ -52,9 +52,9 @@ int main(int argc, char *argv[])
     //    root_dir.cdUp();
     //#endif
     Config::pathMedia = root_dir;
-//#if KBE_DEBUG_MODE
-//    Config::pathMedia.cdUp();
-//#endif
+#if KBE_DEBUG_MODE
+    Config::pathMedia.cdUp();
+#endif
     Config::pathMedia.cd("media");
     Config::pathIcons = Config::pathMedia;
     Config::pathIcons.cd("icons");
