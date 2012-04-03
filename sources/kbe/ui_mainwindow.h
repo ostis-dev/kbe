@@ -39,6 +39,7 @@ public:
     QAction *actionClose_All;
     QAction *actionClose_Others;
     QAction *actionClose;
+    QAction *actionFeedback;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -81,6 +82,8 @@ public:
         actionClose = new QAction(MainWindow);
         actionClose->setObjectName(QString::fromUtf8("actionClose"));
         actionClose->setShortcutContext(Qt::WindowShortcut);
+        actionFeedback = new QAction(MainWindow);
+        actionFeedback->setObjectName(QString::fromUtf8("actionFeedback"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -121,6 +124,8 @@ public:
         menuExport->addAction(actionTo_image);
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_Qt);
+        menuHelp->addSeparator();
+        menuHelp->addAction(actionFeedback);
 
         retranslateUi(MainWindow);
 
@@ -152,6 +157,7 @@ public:
         actionClose_Others->setText(QApplication::translate("MainWindow", "Close Others", 0, QApplication::UnicodeUTF8));
         actionClose->setText(QApplication::translate("MainWindow", "Close", 0, QApplication::UnicodeUTF8));
         actionClose->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", 0, QApplication::UnicodeUTF8));
+        actionFeedback->setText(QApplication::translate("MainWindow","Feedback",0,QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
