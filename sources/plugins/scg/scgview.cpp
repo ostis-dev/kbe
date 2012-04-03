@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
-#include <QDebug>
+
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
@@ -419,7 +419,6 @@ void SCgView::changeType(QAction *action)
         int position = aliasList.at(0).toInt();
         QString type = aliasList.at(1);
         QStringList strl = mContextObject->typeAlias().split("/");
-        qDebug()<<strl;
         strl[position - 1] = type;
         // change to "orient" or "noorien" type
         if (type == "orient" || type == "noorien")
@@ -460,7 +459,6 @@ void SCgView::changeType(QAction *action)
     }
     else
         newTypeAlias = action->data().toString();
-    qDebug()<<newTypeAlias;
     static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newTypeAlias);
 }
 
