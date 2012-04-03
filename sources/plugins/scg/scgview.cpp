@@ -275,6 +275,8 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             itemPos = mContextObject->scenePos().toPoint();
         menuPos = mapToGlobal(itemPos);
     }
+    else if (event->globalPos() == mapToGlobal(rect().topLeft()))
+        menuPos = mapToGlobal(rect().center())/*event->globalPos()*/;
     else
         menuPos = event->globalPos();
     mContextMenu->exec(menuPos);
