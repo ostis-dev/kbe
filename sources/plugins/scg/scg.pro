@@ -135,9 +135,7 @@ SOURCES += \
     commands/scgcommandselectedobjectmove.cpp \
     commands/scgcommandpointschange.cpp \
     commands/scgcommandpointmove.cpp \
-    commands/scgcommandobjecttypechange.cpp \
     commands/scgcommandobjectmove.cpp \
-    commands/scgcommandobjectidtfchange.cpp \
     commands/scgcommandobjectdelete.cpp \
     commands/scgcommandinsert.cpp \
     commands/scgcommanddeletecontour.cpp \
