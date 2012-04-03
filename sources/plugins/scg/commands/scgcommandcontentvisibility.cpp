@@ -20,14 +20,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandcontentvisibility.h"
-
 #include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandContentVisibility::SCgCommandContentVisibility(SCgScene *scene,
                                                          SCgNode *node,

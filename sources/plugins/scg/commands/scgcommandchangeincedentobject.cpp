@@ -20,14 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandchangeincedentobject.h"
-
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandChangeIncedentObject::SCgCommandChangeIncedentObject(SCgScene* scene,
                                                                 SCgPointObject* obj,
@@ -56,13 +49,13 @@ SCgCommandChangeIncedentObject::~SCgCommandChangeIncedentObject()
 
 void SCgCommandChangeIncedentObject::redo()
 {
-    ((SCgPointObject*)mObject)->changeIncidentObject(mNewObject, mNewPoint, mRole);
+    static_cast<SCgPointObject*>(mObject)->changeIncidentObject(mNewObject, mNewPoint, mRole);
     SCgBaseCommand::redo();
 }
 
 void SCgCommandChangeIncedentObject::undo()
 {
     SCgBaseCommand::undo();
-    ((SCgPointObject*)mObject)->changeIncidentObject(mOldObject, mOldPoint, mRole);
+    static_cast<SCgPointObject*>(mObject)->changeIncidentObject(mOldObject, mOldPoint, mRole);
 }
 

@@ -20,14 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandobjectmove.h"
-
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandObjectMove::SCgCommandObjectMove( SCgScene *scene,
                                             SCgObject* obj,

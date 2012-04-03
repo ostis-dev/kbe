@@ -20,31 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #ifndef SCGCOMMANDPOINTSCHANGE_H
 #define SCGCOMMANDPOINTSCHANGE_H
 
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
 #include "scgbasecommand.h"
-
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
-
 
 //! Command for changing points on SCgPointObject
 class SCgCommandPointsChange : public SCgBaseCommand

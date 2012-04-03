@@ -20,14 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandselectedobjectmove.h"
-
-#include "../scgnode.h"
-#include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandSelectedObjectMove::SCgCommandSelectedObjectMove(SCgScene *scene,
                                                             const SCgScene::ObjectUndoInfo& undoInfo,

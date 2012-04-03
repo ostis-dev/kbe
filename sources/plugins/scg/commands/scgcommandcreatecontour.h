@@ -20,29 +20,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #ifndef SCGCOMMANDCREATECONTOUR_H
 #define SCGCOMMANDCREATECONTOUR_H
 
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
-
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
+#include <QObject>
+#include "scgbasecommand.h"
 
 /*! Contour creation command
   */

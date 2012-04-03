@@ -1,22 +1,3 @@
-#ifndef SCGCOMMANDSELECTEDOBJECTMOVE_H
-#define SCGCOMMANDSELECTEDOBJECTMOVE_H
-
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
-#include "scgbasecommand.h"
-
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
 /*
 -----------------------------------------------------------------------------
 This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
@@ -39,18 +20,18 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#ifndef SCGCOMMANDSELECTEDOBJECTMOVE_H
+#define SCGCOMMANDSELECTEDOBJECTMOVE_H
 
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
+#include "scgbasecommand.h"
 
 //! Moves specified object from it's initial position to finish position.
 class SCgCommandSelectedObjectMove : public SCgBaseCommand
 {
 public:
     /*! This command will be major if we'll rewrite scene event handling.
-     * @param undoInfo Map holding object and pair with its initial parent,position and final parent, position.
+     * @param undoInfo Map holding object and pair with it's
+     * initial parent, position and final parent, position.
      */
     explicit SCgCommandSelectedObjectMove(SCgScene *scene,
                                       const SCgScene::ObjectUndoInfo& undoInfo,

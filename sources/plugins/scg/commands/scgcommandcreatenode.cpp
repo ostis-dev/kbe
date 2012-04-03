@@ -20,14 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandcreatenode.h"
-
 #include "../scgnode.h"
-#include "../scgpair.h"
 #include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandCreateNode::SCgCommandCreateNode(SCgScene *scene,
                                            const QPointF &point,

@@ -20,14 +20,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandpointschange.h"
 
-#include "../scgnode.h"
 #include "../scgpair.h"
-#include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
 SCgCommandPointsChange::SCgCommandPointsChange(SCgScene* scene,
                                                 SCgPointObject* obj,
@@ -41,9 +36,10 @@ SCgCommandPointsChange::SCgCommandPointsChange(SCgScene* scene,
     if(obj->type() == SCgPair::Type)
     {
         mIsPair = true;
-        mOldBeginDot = ((SCgPair*)obj)->getBeginDot();
-        mOldEndDot = ((SCgPair*)obj)->getEndDot();
-    }else
+        mOldBeginDot = static_cast<SCgPair*>(obj)->getBeginDot();
+        mOldEndDot = static_cast<SCgPair*>(obj)->getEndDot();
+    }
+    else
         mIsPair = false;
 }
 
@@ -55,16 +51,16 @@ SCgCommandPointsChange::~SCgCommandPointsChange()
 void SCgCommandPointsChange::redo()
 {
     SCgBaseCommand::redo();
-    ((SCgPointObject*)mObject)->setPoints(mNewPoints);
+    static_cast<SCgPointObject*>(mObject)->setPoints(mNewPoints);
 }
 
 void SCgCommandPointsChange::undo()
 {
-    ((SCgPointObject*)mObject)->setPoints(mOldPoints);
+    static_cast<SCgPointObject*>(mObject)->setPoints(mOldPoints);
     if(mIsPair)
     {
-        ((SCgPair*)mObject)->setBeginDot(mOldBeginDot);
-        ((SCgPair*)mObject)->setEndDot(mOldEndDot);
+        static_cast<SCgPair*>(mObject)->setBeginDot(mOldBeginDot);
+        static_cast<SCgPair*>(mObject)->setEndDot(mOldEndDot);
     }
     SCgBaseCommand::undo();
 }

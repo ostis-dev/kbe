@@ -61,9 +61,7 @@ HEADERS += \
     commands/scgcommandselectedobjectmove.h \
     commands/scgcommandpointschange.h \
     commands/scgcommandpointmove.h \
-    commands/scgcommandobjecttypechage.h \
     commands/scgcommandobjectmove.h \
-    commands/scgcommandobjectidftchange.h \
     commands/scgcommandobjectdelete.h \
     commands/scgcommandinsert.h \
     commands/scgcommanddeletecontour.h \
@@ -82,7 +80,9 @@ HEADERS += \
     arrangers/scgarrangertuple.h \
     arrangers/scgarrangerhorizontal.h \
     arrangers/scgarrangergrid.h \
-    arrangers/scgarranger.h
+    arrangers/scgarranger.h \
+    commands/scgcommandobjectidtfchange.h \
+    commands/scgcommandobjecttypechange.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -154,5 +154,9 @@ SOURCES += \
     arrangers/scgarrangerhorizontal.cpp \
     arrangers/scgarrangergrid.cpp \
     arrangers/scgarranger.cpp
+
+
+
+
 
 

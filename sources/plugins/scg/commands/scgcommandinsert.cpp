@@ -20,22 +20,17 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-
 #include "scgcommandinsert.h"
-
-#include "../scgnode.h"
-#include "../scgpair.h"
+#include "../scgobject.h"
 #include "../scgcontour.h"
-#include "../scgbus.h"
-#include "../scgscene.h"
 
-SCgCommandInsert::SCgCommandInsert( SCgScene *scene,
-                                    QList<SCgObject*> objList,
-                                    SCgContour* parentContour,
-                                    QUndoCommand *parent) :
-        SCgBaseCommand(scene, 0, parent),
-        mList(objList),
-        mParent(parentContour)
+SCgCommandInsert::SCgCommandInsert(SCgScene *scene,
+                                   QList<SCgObject*> objList,
+                                   SCgContour* parentContour,
+                                   QUndoCommand *parent) :
+    SCgBaseCommand(scene, 0, parent),
+    mList(objList),
+    mParent(parentContour)
 {
     foreach(SCgObject* obj, mList)
         connect(obj, SIGNAL(destroyed(QObject*)), this, SLOT(objectFromListDestroyed(QObject*)));

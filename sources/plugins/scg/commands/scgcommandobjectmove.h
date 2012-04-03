@@ -1,15 +1,3 @@
-#ifndef SCGCOMMANDOBJECTMOVE_H
-#define SCGCOMMANDOBJECTMOVE_H
-
-#include <QUndoCommand>
-#include <QVector>
-#include <QPointF>
-#include <QMap>
-#include <QPair>
-
-#include "../scgcontent.h"
-#include "../scgpointobject.h"
-#include "../scgscene.h"
 /*
 -----------------------------------------------------------------------------
 This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
@@ -32,17 +20,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#ifndef SCGCOMMANDOBJECTMOVE_H
+#define SCGCOMMANDOBJECTMOVE_H
 
 #include "scgbasecommand.h"
-
-class SCgObject;
-class SCgNode;
-class SCgPair;
-class SCgContour;
-class SCgBus;
-
-class QGraphicsScene;
-class QGraphicsItem;
 
 //! Moves specified object from it's initial position to finish position.
 class SCgCommandObjectMove : public SCgBaseCommand
