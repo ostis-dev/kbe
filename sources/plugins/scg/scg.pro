@@ -75,6 +75,8 @@ HEADERS += \
     commands/scgcommandchangeincedentobject.h \
     commands/scgbasecommand.h \
     commands/scgcommandidtfmove.h \
+    commands/scgcommandobjectidtfchange.h \
+    commands/scgcommandobjecttypechange.h \
     scgexportimage.h \
     arrangers/scgarrangervertical.h \
     arrangers/scgarrangertuple.h \
@@ -149,6 +151,8 @@ SOURCES += \
     commands/scgbasecommand.cpp \
     commands/scgcommandcreatenode.cpp \
     commands/scgcommandidtfmove.cpp \
+    commands/scgcommandobjectidtfchange.cpp \
+    commands/scgcommandobjecttypechange.cpp \
     scgexportimage.cpp \
     arrangers/scgarrangervertical.cpp \
     arrangers/scgarrangertuple.cpp \
