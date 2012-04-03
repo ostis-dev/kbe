@@ -60,8 +60,18 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     mCompleter->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
 
     connect(mCompleter, SIGNAL(activated(QModelIndex)), this, SLOT(insertCompletion(QModelIndex)));
-}
 
+    mAnalyzer = new M4SCpCodeAnalyzer();
+
+    connect(this, SIGNAL(textChanged()), this, SLOT(updateTextOnAnalyzer()));
+    connect(this, SIGNAL(textUpdated(QString,uint)), mAnalyzer, SLOT(updateTextAndCursor(QString, uint)));
+    connect(mAnalyzer, SIGNAL(completeModelChanged(M4SCpCodeAnalyzer::CompleteModel)),
+            mCompleter, SLOT(changeCompleteModel(M4SCpCodeAnalyzer::CompleteModel)));
+    connect(mAnalyzer, SIGNAL(variablesModelUpdated(QStringList)),
+            mCompleter, SLOT(updateVariablesModel(QStringList)));
+    mAnalyzer->start();
+
+}
 M4SCpCodeEditor::~M4SCpCodeEditor()
 {
     delete extraArea;

@@ -31,9 +31,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QCompleter(parent)
 {
-    QStandardItemModel *_mItemModel = new QStandardItemModel(parent);
-    setModel(_mItemModel);
     popup()->setIconSize(QSize(16, 16));
+    voidModel = new QStandardItemModel(parent);
+    globalModel=new QStandardItemModel(parent);
+    atributesAndVariablesModel=new QStandardItemModel(parent);
+    setModel(globalModel);
 }
 
 M4SCpCodeCompleter::~M4SCpCodeCompleter()
@@ -42,7 +44,6 @@ M4SCpCodeCompleter::~M4SCpCodeCompleter()
 
 void M4SCpCodeCompleter::initDictionary()
 {
-    QStandardItemModel *mod = static_cast<QStandardItemModel*>(model());
     QStringList words;
     words << M4SCpSyntax::attributes();
 
@@ -50,15 +51,17 @@ void M4SCpCodeCompleter::initDictionary()
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("attribute.png"),
                     str);
-        mod->appendRow(item);
+        atributesAndVariablesModel->appendRow(item);
     }
+    atributesModelLength=words.size();
     words.clear();
     words << M4SCpSyntax::ordinals();
     foreach(QString str, words) {
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("ordinal.png"),
                     str);
-        mod->appendRow(item);
+        atributesAndVariablesModel->appendRow(item);
+        atributesModelLength++;
     }
 
     QMap<QString, QString> templatesMap;
@@ -128,10 +131,40 @@ void M4SCpCodeCompleter::initDictionary()
         QStandardItem *item = new QStandardItem(
                     M4SCpWindow::findIcon("procedure.png"),
                     it.key());
-        mod->appendRow(item);
-        QModelIndex index = mod->indexFromItem(item);
-        mod->setData(index, QVariant(it.value()), Qt::UserRole);
-        mod->setData(index, QVariant(it.value()), Qt::ToolTipRole);
-    }
+
+        globalModel->appendRow(item);
+        QModelIndex index = globalModel->indexFromItem(item);
+        globalModel->setData(index, QVariant(it.value()), Qt::UserRole);
+        globalModel->setData(index, QVariant(it.value()), Qt::ToolTipRole);
+      }
 }
 
+void M4SCpCodeCompleter::changeCompleteModel(M4SCpCodeAnalyzer::CompleteModel completeModel)
+{
+    if(previousModel==completeModel) return;
+
+    switch (completeModel){
+        case M4SCpCodeAnalyzer::GlobalModel:
+            setModel(globalModel);
+            break;
+        case M4SCpCodeAnalyzer::AtributesAndVariablesModel:
+            setModel(atributesAndVariablesModel);
+            break;
+        case M4SCpCodeAnalyzer::VoidModel:
+            setModel(voidModel);
+            break;
+     }
+    previousModel=completeModel;
+}
+
+void M4SCpCodeCompleter::updateVariablesModel(QStringList listOfVariables)
+{
+    int currentRowCount=atributesAndVariablesModel->rowCount();
+    atributesAndVariablesModel->removeRows(atributesModelLength,currentRowCount-atributesModelLength);
+        foreach(QString var, listOfVariables){
+            if(var.isEmpty()) continue;
+            QStandardItem *item = new QStandardItem(
+                M4SCpWindow::findIcon("constant.png"),var);
+            atributesAndVariablesModel->appendRow(item);
+        }
+}

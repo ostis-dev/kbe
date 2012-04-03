@@ -23,19 +23,56 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPCODEANALYZER_H
 #define M4SCPCODEANALYZER_H
 
-#include <QObject>
+#include <QThread>
+#include <QTextCursor>
+#include <QPlainTextEdit>
+#include <QStandardItemModel>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QTimer>
 
-class M4SCpCodeAnalyzer : public QObject
+#include "m4scpwindow.h"
+
+class M4SCpCodeAnalyzer : public QThread
 {
     Q_OBJECT
+
 public:
     explicit M4SCpCodeAnalyzer(QObject *parent = 0);
     virtual ~M4SCpCodeAnalyzer();
 
-signals:
+    bool updateVariables();
 
+    enum CompleteModel{
+        GlobalModel,
+        AtributesAndVariablesModel,
+        VoidModel
+    } previousCompleteModel;
+
+protected:
+    void run();
+
+private:
+    QMutex mutex;
+    QString text;
+    int textCursorPos;
+    QString programHeader;
+    QStringList variables;
+    QTimer timer;
+
+    bool isGlobal(QString text, int cursorPos) const;
+    bool isAtributeOrVariable(QString text, int cursorPos) const;
+    bool isCommentOrProcedure(QString text, int cursorPos) const;
+
+signals:
+    void variablesModelUpdated(QStringList);
+    void completeModelChanged(M4SCpCodeAnalyzer::CompleteModel);
 public slots:
+    void analyze();
+    void updateTextAndCursor(QString text, unsigned int cursorPos);
+    void detectCompleteModel();
 
 };
 
+Q_DECLARE_METATYPE(M4SCpCodeAnalyzer::CompleteModel)
 #endif // M4SCPCODEANALYZER_H

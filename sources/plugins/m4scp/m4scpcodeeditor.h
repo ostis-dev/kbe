@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QPlainTextEdit>
 #include <QModelIndex>
 
+#include "m4scpcodeanalyzer.h"
+
 class M4SCpCodeCompleter;
 
 class ExtraArea;
@@ -59,6 +61,8 @@ private slots:
 
     void changeSelection();
 
+    void updateTextOnAnalyzer(){ emit textUpdated(toPlainText(),textCursor().position()); }
+
 private:
     ExtraArea *extraArea;
 
@@ -73,9 +77,15 @@ private:
     //! Pointer to code completer
     M4SCpCodeCompleter *mCompleter;
 
+    //! Pointer to code analyzer
+    M4SCpCodeAnalyzer *mAnalyzer;
+
     QRect drawIcon(QPainter *, int y,int height, bool folded);
     void foldOrUnfold (int blockNumber);
     void moveCursorFromFoldedBlocks();
+
+signals:
+    void textUpdated(QString, uint);
 };
 
 class ExtraArea : public QWidget
