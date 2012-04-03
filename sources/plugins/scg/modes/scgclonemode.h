@@ -20,19 +20,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCGCLONEMODEEVENTHANDLER_H
-#define SCGCLONEMODEEVENTHANDLER_H
+#ifndef SCGCLONEMODE_H
+#define SCGCLONEMODE_H
 
-#include "SCgInsertModeEventHandler.h"
+#include "scginsertmode.h"
 
-class SCgCloneModeEventHandler : public SCgInsertModeEventHandler
+class SCgCloneMode : public SCgInsertMode
 {
 public:
     //! Constructor
-    explicit SCgCloneModeEventHandler(SCgScene* scene);
+    explicit SCgCloneMode(SCgScene* scene);
 
     //! Destructor
-    virtual ~SCgCloneModeEventHandler();
+    virtual ~SCgCloneMode();
 
     void mousePress(QGraphicsSceneMouseEvent *event);
 

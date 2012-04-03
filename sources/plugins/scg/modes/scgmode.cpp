@@ -20,13 +20,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "SCgEventHandler.h"
+#include "scgmode.h"
 #include <QPainterPath>
 #include <QGraphicsView>
 #include "scgcontour.h"
 #include "scgnode.h"
 
-SCgEventHandler::SCgEventHandler(SCgScene* parent) :
+SCgMode::SCgMode(SCgScene* parent) :
         QObject(parent),
         mPathItem(0),
         mScene(parent),
@@ -38,12 +38,12 @@ SCgEventHandler::SCgEventHandler(SCgScene* parent) :
     mPen.setStyle(Qt::DashDotLine);
 }
 
-SCgEventHandler::~SCgEventHandler()
+SCgMode::~SCgMode()
 {
     clean();
 }
 
-void SCgEventHandler::mousePress(QGraphicsSceneMouseEvent* event)
+void SCgMode::mousePress(QGraphicsSceneMouseEvent* event)
 {
     event->accept();
     if (event->modifiers() == Qt::ShiftModifier && mLinePoints.size() > 0)
@@ -75,12 +75,12 @@ void SCgEventHandler::mousePress(QGraphicsSceneMouseEvent* event)
     }
 }
 
-void SCgEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
+void SCgMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
 {
 
 }
 
-QPointF SCgEventHandler::degreeAlign(const QLineF& l)
+QPointF SCgMode::degreeAlign(const QLineF& l)
 {
     qreal a = l.angle();
     bool isOnOX = a > 360 - 22.5 || a < 22.5;
@@ -104,7 +104,7 @@ QPointF SCgEventHandler::degreeAlign(const QLineF& l)
     }
 }
 
-void SCgEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
+void SCgMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(mLastLineItem)
     {
@@ -117,12 +117,12 @@ void SCgEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void SCgEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
+void SCgMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
 
 }
 
-void SCgEventHandler::startLineCreation(const QPointF &point)
+void SCgMode::startLineCreation(const QPointF &point)
 {
     Q_ASSERT(!mPathItem);
     Q_ASSERT(!mLastLineItem);
@@ -164,7 +164,7 @@ void SCgEventHandler::startLineCreation(const QPointF &point)
     mScene->addItem(mLastLineItem);
 }
 
-void SCgEventHandler::endLineCreation()
+void SCgMode::endLineCreation()
 {
     delete mPathItem;
     delete mLastLineItem;
@@ -173,7 +173,7 @@ void SCgEventHandler::endLineCreation()
     mObjectAtFirstPoint = 0;
 }
 
-void SCgEventHandler::updateLastLine(QPointF mousePos)
+void SCgMode::updateLastLine(QPointF mousePos)
 {
     Q_ASSERT(mLastLineItem);
     mLastLineItem->setPen(mPen);
@@ -188,7 +188,7 @@ void SCgEventHandler::updateLastLine(QPointF mousePos)
     mLastLineItem->setLine(QLineF(last, mousePos));
 }
 
-void SCgEventHandler::updatePath()
+void SCgMode::updatePath()
 {
     Q_ASSERT(mPathItem);
 
@@ -209,13 +209,13 @@ void SCgEventHandler::updatePath()
     mPathItem->setPath(path);
 }
 
-bool SCgEventHandler::movableAncestorIsSelected(const QGraphicsItem *item)
+bool SCgMode::movableAncestorIsSelected(const QGraphicsItem *item)
 {
     const QGraphicsItem *parent = item->parentItem();
     return parent && (((parent->flags() & QGraphicsItem::ItemIsMovable) && parent->isSelected()) || movableAncestorIsSelected(parent));
 }
 
-void SCgEventHandler::keyPress(QKeyEvent *event)
+void SCgMode::keyPress(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
     {
@@ -315,7 +315,7 @@ void SCgEventHandler::keyPress(QKeyEvent *event)
         }
 }
 
-void SCgEventHandler::keyRelease(QKeyEvent *event)
+void SCgMode::keyRelease(QKeyEvent *event)
 {
 
 }

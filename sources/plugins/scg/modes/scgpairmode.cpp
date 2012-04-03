@@ -21,22 +21,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
-#include "SCgPairModeEventHandler.h"
+#include "scgpairmode.h"
 #include "scgcontour.h"
 
-SCgPairModeEventHandler::SCgPairModeEventHandler(SCgScene* parent):SCgEventHandler(parent)
+SCgPairMode::SCgPairMode(SCgScene* parent):SCgMode(parent)
 {
     mPen.setColor(Qt::red);
 }
 
-SCgPairModeEventHandler::~SCgPairModeEventHandler()
+SCgPairMode::~SCgPairMode()
 {
     clean();
 }
 
-void SCgPairModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
+void SCgPairMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    SCgEventHandler::mousePress(event);
+    SCgMode::mousePress(event);
     if (event->button() == Qt::LeftButton)
     {
         QPointF mousePos = event->scenePos();
@@ -70,7 +70,7 @@ void SCgPairModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void SCgPairModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
+void SCgPairMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     Qt::PenStyle s;
 
@@ -89,6 +89,6 @@ void SCgPairModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
             updatePath();
         }
     }
-    SCgEventHandler::mouseMove(event);
+    SCgMode::mouseMove(event);
 }
 

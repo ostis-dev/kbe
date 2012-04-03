@@ -19,22 +19,22 @@ You should have received a copy of the GNU General Public License
 along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
-#include "SCgContourModeEventHandler.h"
+#include "scgcontourmode.h"
 #include "scgcontour.h"
 
 #include <QVector2D>
 
-SCgContourModeEventHandler::SCgContourModeEventHandler(SCgScene* parent):SCgEventHandler(parent),mClosingSubpathLine(0)
+SCgContourMode::SCgContourMode(SCgScene* parent):SCgMode(parent),mClosingSubpathLine(0)
 {
     mPen.setColor(Qt::green);
 }
 
-SCgContourModeEventHandler::~SCgContourModeEventHandler()
+SCgContourMode::~SCgContourMode()
 {
     clean();
 }
 
-void SCgContourModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
+void SCgContourMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
@@ -64,10 +64,10 @@ void SCgContourModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    SCgEventHandler::mousePress(event);
+    SCgMode::mousePress(event);
 }
 
-QList<QGraphicsItem* > SCgContourModeEventHandler::selectItemsForContour() const
+QList<QGraphicsItem* > SCgContourMode::selectItemsForContour() const
 {
     QList<QGraphicsItem* > result;
     foreach(QGraphicsItem* it, mScene->items())
@@ -82,7 +82,7 @@ QList<QGraphicsItem* > SCgContourModeEventHandler::selectItemsForContour() const
     return result;
 }
 
-void SCgContourModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
+void SCgContourMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(mPathItem)
     {
@@ -102,15 +102,15 @@ void SCgContourModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    SCgEventHandler::mouseMove(event);
+    SCgMode::mouseMove(event);
 }
 
 
-void SCgContourModeEventHandler::startLineCreation(const QPointF &point)
+void SCgContourMode::startLineCreation(const QPointF &point)
 {
     Q_ASSERT(!mClosingSubpathLine);
 
-    SCgEventHandler::startLineCreation(point);
+    SCgMode::startLineCreation(point);
     mClosingSubpathLine = new QGraphicsLineItem(mPathItem->parentItem());
 
     mClosingSubpathLine->setPen(mPen);
@@ -118,17 +118,17 @@ void SCgContourModeEventHandler::startLineCreation(const QPointF &point)
 }
 
 
-void SCgContourModeEventHandler::endLineCreation()
+void SCgContourMode::endLineCreation()
 {
-    SCgEventHandler::endLineCreation();
+    SCgMode::endLineCreation();
     delete mClosingSubpathLine;
     mClosingSubpathLine = 0;
 }
 
 
-void SCgContourModeEventHandler::updateLastLine(QPointF mousePos)
+void SCgContourMode::updateLastLine(QPointF mousePos)
 {
-    SCgEventHandler::updateLastLine(mousePos);
+    SCgMode::updateLastLine(mousePos);
     mClosingSubpathLine->setPen(mPen);
     QPointF first = mLinePoints.first();
 

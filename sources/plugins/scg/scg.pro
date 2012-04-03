@@ -44,13 +44,6 @@ HEADERS += \
     scgabstractobjectbuilder.h \
     pointgraphicsitem.h \
     scgtextitem.h \
-    event_handling/SCgSelectModeEventHandler.h \
-    event_handling/SCgPairModeEventHandler.h \
-    event_handling/SCgInsertModeEventHandler.h \
-    event_handling/SCgEventHandler.h \
-    event_handling/SCgContourModeEventHandler.h \
-    event_handling/SCgBusModeEventHandler.h \
-    event_handling/SCgCloneModeEventHandler.h \
     gwf/gwfstreamwriter.h \
     gwf/gwfobjectinforeader.h \
     gwf/gwffilewriter.h \
@@ -86,7 +79,14 @@ HEADERS += \
     arrangers/scgarranger.h \
     select/scgselectinputoutput.h \
     select/scgselect.h \
-    select/scgselectsubgraph.h
+    select/scgselectsubgraph.h \
+    modes/scgselectmode.h \
+    modes/scgpairmode.h \
+    modes/scgmode.h \
+    modes/scginsertmode.h \
+    modes/scgcontourmode.h \
+    modes/scgclonemode.h \
+    modes/scgbusmode.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -118,13 +118,6 @@ SOURCES += \
     scgabstractobjectbuilder.cpp \
     pointgraphicsitem.cpp \
     scgtextitem.cpp \
-    event_handling/SCgSelectModeEventHandler.cpp \
-    event_handling/SCgPairModeEventHandler.cpp \
-    event_handling/SCgInsertModeEventHandler.cpp \
-    event_handling/SCgEventHandler.cpp \
-    event_handling/SCgContourModeEventHandler.cpp \
-    event_handling/SCgBusModeEventHandler.cpp \
-    event_handling/SCgCloneModeEventHandler.cpp \
     gwf/gwfstreamwriter.cpp \
     gwf/gwfobjectinforeader.cpp \
     gwf/gwffilewriter.cpp \
@@ -160,10 +153,11 @@ SOURCES += \
     arrangers/scgarranger.cpp \
     select/scgselectinputoutput.cpp \
     select/scgselect.cpp \
-    select/scgselectsubgraph.cpp
-
-
-
-
-
-
+    select/scgselectsubgraph.cpp \
+    modes/scgselectmode.cpp \
+    modes/scgpairmode.cpp \
+    modes/scgmode.cpp \
+    modes/scginsertmode.cpp \
+    modes/scgcontourmode.cpp \
+    modes/scgclonemode.cpp \
+    modes/scgbusmode.cpp

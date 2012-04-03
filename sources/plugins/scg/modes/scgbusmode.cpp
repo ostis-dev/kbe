@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "SCgBusModeEventHandler.h"
+#include "scgbusmode.h"
 #include "scgcontour.h"
 #include "scgnode.h"
 
@@ -28,20 +28,20 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVector2D>
 #include <QApplication>
 
-SCgBusModeEventHandler::SCgBusModeEventHandler(SCgScene* parent):SCgEventHandler(parent)
+SCgBusMode::SCgBusMode(SCgScene* parent):SCgMode(parent)
 {
     mPen.setColor(Qt::blue);
     mPen.setWidthF(5.f);
 }
 
-SCgBusModeEventHandler::~SCgBusModeEventHandler()
+SCgBusMode::~SCgBusMode()
 {
     clean();
 }
 
-void SCgBusModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
+void SCgBusMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    SCgEventHandler::mousePress(event);
+    SCgMode::mousePress(event);
     if (event->button() == Qt::LeftButton)
     {
         QPointF mousePos = event->scenePos();
@@ -80,7 +80,7 @@ void SCgBusModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void SCgBusModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
+void SCgBusMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(mPathItem)
     {
@@ -99,7 +99,7 @@ void SCgBusModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
         }
     }
 
-    SCgEventHandler::mouseMove(event);
+    SCgMode::mouseMove(event);
 }
 
 

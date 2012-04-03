@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
-#include "SCgSelectModeEventHandler.h"
+#include "scgselectmode.h"
 #include "scgcontour.h"
 #include "gwf/gwffilewriter.h"
 #include "gwf/gwfobjectinforeader.h"
@@ -31,19 +31,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDomDocument>
 
-SCgSelectModeEventHandler::SCgSelectModeEventHandler(SCgScene* parent):SCgEventHandler(parent),
+SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
     mCurrentPointObject(0)
 {
 
 }
 
-SCgSelectModeEventHandler::~SCgSelectModeEventHandler()
+SCgSelectMode::~SCgSelectMode()
 {
     //    clean();
 }
 
-void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
+void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
 {
     QPointF mousePos = event->scenePos();
 
@@ -70,10 +70,10 @@ void SCgSelectModeEventHandler::mouseDoubleClick(QGraphicsSceneMouseEvent *event
                 event->accept();
             }
     }
-    SCgEventHandler::mouseDoubleClick(event);
+    SCgMode::mouseDoubleClick(event);
 }
 
-void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
+void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(event->buttons()==Qt::LeftButton && !mIsItemsMoved)
     {
@@ -99,7 +99,7 @@ void SCgSelectModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
+void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if(mCurrentPointObject)
     {
@@ -127,7 +127,7 @@ void SCgSelectModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
         mScene->setEditMode(SCgScene::Mode_Clone);
 }
 
-void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
+void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
     if(mIsItemsMoved)
     {
@@ -189,9 +189,9 @@ void SCgSelectModeEventHandler::mouseRelease(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void SCgSelectModeEventHandler::clean()
+void SCgSelectMode::clean()
 {
-    SCgEventHandler::clean();
+    SCgMode::clean();
     mIsItemsMoved = false;
     mUndoInfo.clear();
     if (mCurrentPointObject)
@@ -199,7 +199,7 @@ void SCgSelectModeEventHandler::clean()
     mCurrentPointObject = 0;
 }
 
-SCgContour* SCgSelectModeEventHandler::findNearestParentContour(QGraphicsItem *item)
+SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)
 {
     // get list of items, which have the same position
     QList<QGraphicsItem*> itemList = mScene->items(item->scenePos(), Qt::ContainsItemShape, Qt::AscendingOrder);

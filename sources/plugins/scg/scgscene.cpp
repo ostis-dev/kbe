@@ -31,12 +31,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "pointgraphicsitem.h"
 #include "scgcontentfactory.h"
 
-#include "event_handling/SCgBusModeEventHandler.h"
-#include "event_handling/SCgPairModeEventHandler.h"
-#include "event_handling/SCgContourModeEventHandler.h"
-#include "event_handling/SCgSelectModeEventHandler.h"
-#include "event_handling/SCgInsertModeEventHandler.h"
-#include "event_handling/SCgCloneModeEventHandler.h"
+#include "modes/scgbusmode.h"
+#include "modes/scgpairmode.h"
+#include "modes/scgcontourmode.h"
+#include "modes/scgselectmode.h"
+#include "modes/scginsertmode.h"
+#include "modes/scgclonemode.h"
 
 #include "commands/scgbasecommand.h"
 #include "commands/scgcommandchangeincedentobject.h"
@@ -71,20 +71,20 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     QGraphicsScene(parent),
-    mEventHandler(0),
+    mMode(0),
     mUndoStack(undoStack),
     mIsGridDrawn(false),
     mIsIdtfModelDirty(true),
     mCursor(0,0)
 {
-    mSceneEventHandlers.fill(0,(int)Mode_Count);
+    mSceneModes.fill(0,(int)Mode_Count);
 
-    mSceneEventHandlers[Mode_Bus] = new SCgBusModeEventHandler(this);
-    mSceneEventHandlers[Mode_Pair] = new SCgPairModeEventHandler(this);
-    mSceneEventHandlers[Mode_Contour] = new SCgContourModeEventHandler(this);
-    mSceneEventHandlers[Mode_Select] = new SCgSelectModeEventHandler(this);
-    mSceneEventHandlers[Mode_InsertTemplate] = new SCgInsertModeEventHandler(this);
-    mSceneEventHandlers[Mode_Clone] = new SCgCloneModeEventHandler(this);
+    mSceneModes[Mode_Bus] = new SCgBusMode(this);
+    mSceneModes[Mode_Pair] = new SCgPairMode(this);
+    mSceneModes[Mode_Contour] = new SCgContourMode(this);
+    mSceneModes[Mode_Select] = new SCgSelectMode(this);
+    mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
+    mSceneModes[Mode_Clone] = new SCgCloneMode(this);
 
     setEditMode(Mode_Select);
     // grid foreground
@@ -95,32 +95,32 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
 SCgScene::~SCgScene()
 {
     // delete event handlers
-    for (int i = 0; i < mSceneEventHandlers.size(); ++i)
-        delete mSceneEventHandlers[i];
-    mSceneEventHandlers.clear();
+    for (int i = 0; i < mSceneModes.size(); ++i)
+        delete mSceneModes[i];
+    mSceneModes.clear();
 }
 
 void SCgScene::setEditMode(EditMode mode)
 {
-    if(mEventHandler)
+    if(mMode)
     {
-        if(mEventHandler->mode() != mode) {
-            mEventHandler->deactivate();
-            mPreviousEditMode = mEventHandler->mode();
+        if(mMode->mode() != mode) {
+            mMode->deactivate();
+            mPreviousEditMode = mMode->mode();
         }
 
-        mEventHandler->clean();
+        mMode->clean();
     }
 
-    mEventHandler = mSceneEventHandlers.at(mode);
-    mEventHandler->activate();
+    mMode = mSceneModes.at(mode);
+    mMode->activate();
 
     editModeChanged(mode);
 }
 
 SCgScene::EditMode SCgScene::editMode() const
 {
-    return mEventHandler->mode();
+    return mMode->mode();
 }
 
 SCgObject* SCgScene::objectAt(const QPointF &point) const
@@ -183,52 +183,52 @@ void SCgScene::setIdtfDirtyFlag()
 
 void SCgScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-    mEventHandler->mouseDoubleClick(event);
+    mMode->mouseDoubleClick(event);
     //    if(!event->isAccepted())
     QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
 void SCgScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_ASSERT(mEventHandler);
+    Q_ASSERT(mMode);
 
-    mEventHandler->mousePress(event);
+    mMode->mousePress(event);
     if (!event->isAccepted())
         QGraphicsScene::mousePressEvent(event);
 }
 
 void SCgScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_ASSERT(mEventHandler);
+    Q_ASSERT(mMode);
 
-    mEventHandler->mouseMove(event);
+    mMode->mouseMove(event);
     if(!event->isAccepted())
         QGraphicsScene::mouseMoveEvent(event);
 }
 
 void SCgScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-    Q_ASSERT(mEventHandler);
+    Q_ASSERT(mMode);
 
-    mEventHandler->mouseRelease(event);
+    mMode->mouseRelease(event);
     if(!event->isAccepted())
         QGraphicsScene::mouseReleaseEvent(event);
 }
 
 void SCgScene::keyPressEvent(QKeyEvent *event)
 {
-    Q_ASSERT(mEventHandler);
+    Q_ASSERT(mMode);
     //    if (event->modifiers() == Qt::ShiftModifier && mEventHandler->mode() == Mode_Select)
     //        setEditMode(Mode_Clone);
-    mEventHandler->keyPress(event);
+    mMode->keyPress(event);
     if(!event->isAccepted())
         QGraphicsScene::keyPressEvent(event);
 }
 
 void SCgScene::keyReleaseEvent(QKeyEvent *event)
 {
-    Q_ASSERT(mEventHandler);
-    mEventHandler->keyRelease(event);
+    Q_ASSERT(mMode);
+    mMode->keyRelease(event);
     if(!event->isAccepted())
         QGraphicsScene::keyReleaseEvent(event);
 }
@@ -436,7 +436,7 @@ SCgBaseCommand* SCgScene::changeContentDataCommand(SCgNode *node, const SCgConte
 
 void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
-    Q_ASSERT(mEventHandler->mode() == Mode_InsertTemplate);
+    Q_ASSERT(mMode->mode() == Mode_InsertTemplate);
 
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)
@@ -448,7 +448,7 @@ void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 
 void SCgScene::cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
-    Q_ASSERT(mEventHandler->mode() == Mode_Clone);
+    Q_ASSERT(mMode->mode() == Mode_Clone);
 
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)

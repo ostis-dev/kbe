@@ -32,7 +32,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontent.h"
 #include "commands/scgbasecommand.h"
 
-class SCgEventHandler;
+class SCgMode;
 class SCgNode;
 class SCgPair;
 class SCgBus;
@@ -304,9 +304,9 @@ public:
     void cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
 
 private:
-    QVector<SCgEventHandler*> mSceneEventHandlers;
+    QVector<SCgMode*> mSceneModes;
     //! Current edit mode
-    SCgEventHandler* mEventHandler;
+    SCgMode* mMode;
     //! Undo stack
     QUndoStack *mUndoStack;
 

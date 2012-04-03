@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "SCgInsertModeEventHandler.h"
+#include "scginsertmode.h"
 #include "scgcontour.h"
 #include "gwf/gwfobjectinforeader.h"
 #include "scgtemplateobjectbuilder.h"
@@ -30,20 +30,20 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QClipboard>
 
-SCgInsertModeEventHandler::SCgInsertModeEventHandler(SCgScene* parent):
-    SCgEventHandler(parent),
+SCgInsertMode::SCgInsertMode(SCgScene* parent):
+    SCgMode(parent),
     mInsertedObjectGroup(0)
 {
 }
 
-SCgInsertModeEventHandler::~SCgInsertModeEventHandler()
+SCgInsertMode::~SCgInsertMode()
 {
     clean();
 }
 
-void SCgInsertModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
+void SCgInsertMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    SCgEventHandler::mousePress(event);
+    SCgMode::mousePress(event);
     SCgObject* underMouseObj = mScene->objectAt(event->scenePos());
     SCgContour* parent = 0;
     if (underMouseObj && underMouseObj->type() == SCgContour::Type)
@@ -52,16 +52,16 @@ void SCgInsertModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
     clean();
 }
 
-void SCgInsertModeEventHandler::mouseMove(QGraphicsSceneMouseEvent *event)
+void SCgInsertMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
-    SCgEventHandler::mouseMove(event);
+    SCgMode::mouseMove(event);
     if (mInsertedObjectGroup)
         mInsertedObjectGroup->setPos(event->scenePos());
 }
 
-void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
+void SCgInsertMode::keyPress(QKeyEvent *event)
 {
-    SCgEventHandler::keyPress(event);
+    SCgMode::keyPress(event);
     if(event->key() == Qt::Key_Escape)
     {
         clean();
@@ -70,9 +70,9 @@ void SCgInsertModeEventHandler::keyPress(QKeyEvent *event)
     }
 }
 
-void SCgInsertModeEventHandler::clean()
+void SCgInsertMode::clean()
 {
-    SCgEventHandler::clean();
+    SCgMode::clean();
     if (mInsertedObjectGroup)
     {
         delete mInsertedObjectGroup;
@@ -80,7 +80,7 @@ void SCgInsertModeEventHandler::clean()
     }
 }
 
-void SCgInsertModeEventHandler::activate() {
+void SCgInsertMode::activate() {
     if (mInsertedObjectGroup)
     {
         delete mInsertedObjectGroup;
@@ -125,6 +125,6 @@ void SCgInsertModeEventHandler::activate() {
 
 }
 
-void SCgInsertModeEventHandler::deactivate() {
+void SCgInsertMode::deactivate() {
     clean();
 }

@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "SCgCloneModeEventHandler.h"
+#include "scgclonemode.h"
 #include "scgcontour.h"
 #include "gwf/gwfobjectinforeader.h"
 #include "gwf/gwfstreamwriter.h"
@@ -29,18 +29,18 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QGraphicsView>
 
-SCgCloneModeEventHandler::SCgCloneModeEventHandler(SCgScene *scene) :
-    SCgInsertModeEventHandler(scene)
+SCgCloneMode::SCgCloneMode(SCgScene *scene) :
+    SCgInsertMode(scene)
 {
 }
 
-SCgCloneModeEventHandler::~SCgCloneModeEventHandler() {
+SCgCloneMode::~SCgCloneMode() {
     clean();
 }
 
-void SCgCloneModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
+void SCgCloneMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    SCgEventHandler::mousePress(event);
+    SCgMode::mousePress(event);
     if (!mInsertedObjectGroup)
     {
         mScene->setEditMode(mScene->previousMode());
@@ -54,7 +54,7 @@ void SCgCloneModeEventHandler::mousePress(QGraphicsSceneMouseEvent *event)
     clean();
 }
 
-void SCgCloneModeEventHandler::activate() {
+void SCgCloneMode::activate() {
     clean();
     QList<QGraphicsItem*> list = mScene->selectedItems();
 
@@ -101,6 +101,6 @@ void SCgCloneModeEventHandler::activate() {
     }
 }
 
-void SCgCloneModeEventHandler::deactivate() {
-    SCgInsertModeEventHandler::deactivate();
+void SCgCloneMode::deactivate() {
+    SCgInsertMode::deactivate();
 }
