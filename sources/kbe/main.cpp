@@ -48,9 +48,9 @@ int main(int argc, char *argv[])
     a.setAttribute(Qt::AA_DontShowIconsInMenus, false);
     QDir root_dir = a.applicationDirPath();
 
-//#if KBE_DEBUG_MODE
-//    root_dir.cdUp();
-//#endif
+    //#if KBE_DEBUG_MODE
+    //    root_dir.cdUp();
+    //#endif
     Config::pathMedia = root_dir;
 //#if KBE_DEBUG_MODE
 //    Config::pathMedia.cdUp();
@@ -79,16 +79,11 @@ int main(int argc, char *argv[])
     //splash.showMessage(a.tr("Create interface"), Qt::AlignBottom | Qt::AlignHCenter);
     MainWindow::getInstance()->show();
 
-//    QList<QString> formats = ReadWriteManager::instance()->registeredLoaderExtensions();
-//    for(int i = 1; i < argc; i++)
-//    {
-//        QString arg = a.arguments().at(i);
-//        if(formats.contains(arg.mid(arg.lastIndexOf('.') + 1)))
-//            MainWindow::getInstance()->load(arg);
-//        else
-//            QMessageBox::information(0, qAppName(),QObject::tr("Error while opening file: \n")+
-//                            arg + QObject::tr("\n\nUnsupported file format."));
-//    }
+    for(int i = 1; i < argc; i++)
+    {
+        QString arg = a.arguments().at(i);
+        MainWindow::getInstance()->load(arg);
+    }
 
     //splash.finish(&w);
     return a.exec();
