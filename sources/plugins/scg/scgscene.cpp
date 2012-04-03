@@ -86,7 +86,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
 
-    setEditMode(Mode_Select);
+//    setEditMode(Mode_Select);
     // grid foreground
     //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
     //    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));

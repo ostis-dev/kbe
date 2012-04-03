@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
-
+#include <QDebug>
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
@@ -412,8 +412,56 @@ void SCgView::changeIdentifier()
 void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
-
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    QString newTypeAlias;
+    QStringList aliasList = action->data().toString().split("|");
+    if (aliasList.size() > 1)
+    {
+        int position = aliasList.at(0).toInt();
+        QString type = aliasList.at(1);
+        QStringList strl = mContextObject->typeAlias().split("/");
+        qDebug()<<strl;
+        strl[position - 1] = type;
+        // change to "orient" or "noorien" type
+        if (type == "orient" || type == "noorien")
+        {
+            if (strl[1] == "-")
+                strl[1] = "const";
+            strl[2] = "-";// pair's positivity
+            strl[3] = "-";// pair's temporariness
+            strl[4] = type;
+            if (strl.size() > 5) strl.removeAt(5);
+        }
+        else if (type == "orient/accessory")
+        {
+            strl[1] = "-";
+            strl[2] = "-";
+            strl[3] = "-";
+            strl[4] = type;
+            if (strl.size() > 5) strl.removeAt(5);
+        }
+        else if (strl[0] == "pair")
+        {
+            // set default types for pairs
+            if (strl[4] == "orient" && strl.size() >= 5 && (position == 2 || position == 3))
+            {
+                if (strl[1] == "-")
+                    strl[1] = "const";
+                if (strl[2] == "-")
+                    strl[2] = "pos";
+                if (strl[3] == "-")
+                    strl[3] = "perm";
+            }
+            if (strl.size() == 5 && (position == 2 || position == 3))
+                strl.append("accessory");
+        }
+        for (int i = 0; i < strl.size() - 1; ++i)
+            newTypeAlias.append(strl.at(i) + "/");
+        newTypeAlias.append(strl[strl.size() - 1]);
+    }
+    else
+        newTypeAlias = action->data().toString();
+    qDebug()<<newTypeAlias;
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newTypeAlias);
 }
 
 void SCgView::changeContent()
