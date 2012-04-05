@@ -80,7 +80,7 @@ void SCgAlphabet::initialize()
     mStructTypes["not_define"] = NotDefine;
     mStructTypes["general"] = General;
     mStructTypes["abstract"] = Abstract;
-    mStructTypes["abstractExt"] = AbstractExt;
+    mStructTypes["material"] = Material;
     mStructTypes["struct"] = Struct;
     mStructTypes["tuple"] = Tuple;
     mStructTypes["role"] = Role;
@@ -115,8 +115,8 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/const/not_define"] = createNodeIcon(size, Const, NotDefine);
     mObjectTypes["node/const/general"] = createNodeIcon(size, Const, General);
     mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, Abstract);
-    mObjectTypes["node/const/abstractExt"] = createNodeIcon(size, Const, AbstractExt);
-    mObjectTypes["node/const/nopredmet"] = createNodeIcon(size, Const, Struct);
+    mObjectTypes["node/const/material"] = createNodeIcon(size, Const, Material);
+    mObjectTypes["node/const/struct"] = createNodeIcon(size, Const, Struct);
     mObjectTypes["node/const/tuple"] = createNodeIcon(size, Const, Tuple);
     //mObjectTypes["node/const/asymmetry"] = createNodeIcon(size, Const, Tuple);
     mObjectTypes["node/const/role"] = createNodeIcon(size, Const, Role);
@@ -126,8 +126,8 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
     mObjectTypes["node/var/general"] = createNodeIcon(size, Var, General);
     mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, Abstract);
-    mObjectTypes["node/var/abstractExt"] = createNodeIcon(size, Var, AbstractExt);
-    mObjectTypes["node/var/nopredmet"] = createNodeIcon(size, Var, Struct);
+    mObjectTypes["node/var/material"] = createNodeIcon(size, Var, Material);
+    mObjectTypes["node/var/struct"] = createNodeIcon(size, Var, Struct);
     mObjectTypes["node/var/tuple"] = createNodeIcon(size, Var, Tuple);
     //mObjectTypes["node/var/asymmetry"] = createNodeIcon(size, Var, Tuple);
     mObjectTypes["node/var/role"] = createNodeIcon(size, Var, Role);
@@ -373,7 +373,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         break;
     }
 
-    case AbstractExt:
+    case Material:
     {
         QPen p = painter->pen();
         p.setWidthF(0);

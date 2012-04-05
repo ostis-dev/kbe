@@ -57,8 +57,8 @@ void GwfStreamWriter::createTypesMap()
     mTypeAlias2GWFType["node/const/not_define"] = "node/const/not_define";
     mTypeAlias2GWFType["node/const/general"] = "node/const/general_node";
     mTypeAlias2GWFType["node/const/abstract"] = "node/const/predmet";
-    mTypeAlias2GWFType["node/const/abstractExt"] = "node/const/predmet_ext";
-    mTypeAlias2GWFType["node/const/nopredmet"] = "node/const/nopredmet";
+    mTypeAlias2GWFType["node/const/material"] = "node/const/material";
+    mTypeAlias2GWFType["node/const/struct"] = "node/const/nopredmet";
     mTypeAlias2GWFType["node/const/symmetry"] = "node/const/symmetry";
     mTypeAlias2GWFType["node/const/tuple"] = "node/const/asymmetry";
     mTypeAlias2GWFType["node/const/role"] = "node/const/attribute";
@@ -69,8 +69,8 @@ void GwfStreamWriter::createTypesMap()
     mTypeAlias2GWFType["node/var/not_define"] = "node/var/not_define";
     mTypeAlias2GWFType["node/var/general"] = "node/var/general_node";
     mTypeAlias2GWFType["node/var/abstract"] = "node/var/predmet";
-    mTypeAlias2GWFType["node/var/abstractExt"] = "node/var/predmet_ext";
-    mTypeAlias2GWFType["node/var/nopredmet"] = "node/var/nopredmet";
+    mTypeAlias2GWFType["node/var/material"] = "node/var/material";
+    mTypeAlias2GWFType["node/var/struct"] = "node/var/nopredmet";
     mTypeAlias2GWFType["node/var/tuple"] = "node/var/symmetry";
     mTypeAlias2GWFType["node/var/asymmetry"] = "node/var/asymmetry";
     mTypeAlias2GWFType["node/var/role"] = "node/var/attribute";

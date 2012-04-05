@@ -61,7 +61,7 @@ public:
         NotDefine = 0,
         General,
         Abstract,
-        AbstractExt,
+        Material,
         Struct,
         Tuple,
         Role,
