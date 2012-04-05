@@ -44,11 +44,16 @@ SCgInsertMode::~SCgInsertMode()
 void SCgInsertMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     SCgMode::mousePress(event);
-    SCgObject* underMouseObj = mScene->objectAt(event->scenePos());
-    SCgContour* parent = 0;
-    if (underMouseObj && underMouseObj->type() == SCgContour::Type)
-        parent = static_cast<SCgContour*>(underMouseObj);
-    mScene->pasteCommand(mInsertedObjectGroup->childItems(), parent);
+    if (mInsertedObjectGroup)
+    {
+        SCgObject* underMouseObj = mScene->objectAt(event->scenePos());
+        SCgContour* parent = 0;
+        if (underMouseObj && underMouseObj->type() == SCgContour::Type)
+            parent = static_cast<SCgContour*>(underMouseObj);
+        mScene->pasteCommand(mInsertedObjectGroup->childItems(), parent);
+    }
+    else
+        mScene->setEditMode(mScene->previousMode());
     clean();
 }
 
