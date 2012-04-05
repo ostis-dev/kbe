@@ -140,7 +140,7 @@ void GwfStreamWriter::startWriting(const char* encoding)
     setAutoFormatting(true);
     writeStartDocument();
     writeStartElement("GWF");
-    writeAttribute("version", "1.6");
+    writeAttribute("version", "2.0");
     writeStartElement("staticSector");
     isWritingStarted = true;
 }
