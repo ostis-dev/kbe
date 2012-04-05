@@ -30,6 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVector>
 #include <QPointF>
 #include <QMap>
+#include <QPair>
 
 class SCgObjectInfo;
 
@@ -165,6 +166,7 @@ private:
 
     QString mLastError;
 
+    QPair<qint32, qint32> mVersion;
 };
 
 #endif /* GWFOBJECTINFOREADER_H_ */

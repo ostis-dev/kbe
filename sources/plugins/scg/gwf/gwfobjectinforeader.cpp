@@ -31,7 +31,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgpair.h"
 
-GwfObjectInfoReader::GwfObjectInfoReader(bool isOwner):mIsOwner(isOwner)
+GwfObjectInfoReader::GwfObjectInfoReader(bool isOwner) :
+    mIsOwner(isOwner),
+    mVersion(qMakePair(0, 0))
 {
     createTypesMap();
 }
@@ -161,12 +163,17 @@ bool GwfObjectInfoReader::read(const QDomDocument& document)
         return false;
     }
     else
-        if (root.hasAttribute("version") && root.attribute("version") != "1.6")
+    {
+        QStringList v_list = root.attribute("version").split(".");
+        mVersion.first = v_list.first().toInt();
+        mVersion.second = v_list.last().toInt();
+        if (mVersion != qMakePair(1, 6) && mVersion != qMakePair(2, 0))
         {
             mLastError = QString(QObject::tr("Version %1 of GWF files not supported.\n"
-                                        "Just version 1.6 supported.")).arg(root.attribute("version"));
+                                        "Just 1.6 and 2.0 versions supported.")).arg(root.attribute("version"));
             return false;
         }
+    }
 
     // get static sector
     QDomElement staticSector = root.firstChildElement("staticSector");
