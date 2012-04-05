@@ -72,6 +72,7 @@ HEADERS += \
     commands/scgcommandobjectidtfchange.h \
     commands/scgcommandobjecttypechange.h \
     scgexportimage.h \
+    scgtypepanel.h \
     arrangers/scgarrangervertical.h \
     arrangers/scgarrangertuple.h \
     arrangers/scgarrangerhorizontal.h \
@@ -146,6 +147,7 @@ SOURCES += \
     commands/scgcommandobjectidtfchange.cpp \
     commands/scgcommandobjecttypechange.cpp \
     scgexportimage.cpp \
+    scgtypepanel.cpp \
     arrangers/scgarrangervertical.cpp \
     arrangers/scgarrangertuple.cpp \
     arrangers/scgarrangerhorizontal.cpp \

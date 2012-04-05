@@ -249,6 +249,7 @@ void SCgObject::setTypeAlias(const QString &type_alias)
 {
     mTypeAlias = type_alias;
     update();
+    emit typeChanged();
 }
 
 QString SCgObject::typeAlias() const

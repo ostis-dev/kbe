@@ -179,6 +179,10 @@ public:
         return ((SCgObject*)parentItem())->id();
     }
 
+signals:
+    //! Signal emited when new objec's type are set
+    void typeChanged();
+
 protected:
     //! Main color
     QColor mColor;
