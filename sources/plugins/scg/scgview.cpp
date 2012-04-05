@@ -207,6 +207,8 @@ QList<QAction*> SCgView::actions() const
 
 void SCgView::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (event->reason() == QContextMenuEvent::Keyboard || event->reason() == QContextMenuEvent::Other)
+        return;
     // get scg-object under mouse
     QPointF mousePos = mapToScene(event->pos());/* +
                                 QPointF(horizontalScrollBar()->value(), verticalScrollBar()->value()) -
