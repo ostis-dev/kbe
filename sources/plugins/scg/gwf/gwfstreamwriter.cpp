@@ -91,7 +91,7 @@ void GwfStreamWriter::createTypesMap()
 
     // pairs
     mTypeAlias2GWFType["pair/-/-/-/orient/accessory"] = "arc/-/-";
-    mTypeAlias2GWFType["pair/-/-/-/noorien"] = "pair/noorient";
+    mTypeAlias2GWFType["pair/-/-/-/noorient"] = "pair/noorient";
     mTypeAlias2GWFType["pair/-/-/-/orient"] = "pair/orient";
 
     mTypeAlias2GWFType["pair/const/pos/perm/orient/accessory"] = "arc/const/pos";

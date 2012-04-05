@@ -238,7 +238,7 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     SCgNode *node = new SCgNode;
 
     node->setPos(pos);
-    node->setTypeAlias("node/const/general_node");
+    node->setTypeAlias("node/const/general");
 
     addItem(node);
     return node;
@@ -251,7 +251,7 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
                "Begin or end object is null");
     SCgPair *pair = new SCgPair;
 
-    pair->setTypeAlias("pair/-/-/-/orient");
+    pair->setTypeAlias("pair/-/-/-/noorient");
 
     pair->setBeginObject(begObj);
     pair->setEndObject(endObj);
