@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
-
+#include "QDebug"
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
@@ -207,6 +207,8 @@ QList<QAction*> SCgView::actions() const
 
 void SCgView::contextMenuEvent(QContextMenuEvent *event)
 {
+    if (event->reason() == QContextMenuEvent::Keyboard || event->reason() == QContextMenuEvent::Other)
+        return;
     // get scg-object under mouse
     QPointF mousePos = mapToScene(event->pos());/* +
                                 QPointF(horizontalScrollBar()->value(), verticalScrollBar()->value()) -
