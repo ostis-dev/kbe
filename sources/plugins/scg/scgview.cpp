@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
-#include "QDebug"
+
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
