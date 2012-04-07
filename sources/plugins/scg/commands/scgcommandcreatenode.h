@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include "scgbasecommand.h"
 
-/*! SCg-node creation command
+/*! sc.g-node creation command
   */
 class SCgCommandCreateNode : public QObject, public SCgBaseCommand
 {

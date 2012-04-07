@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgalphabet.h"
 #include "scgnode.h"
 #include "scgtextitem.h"
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 
 #include <QPainterPathStroker>
 #include <QVector2D>
@@ -37,7 +37,7 @@ SCgBus::SCgBus() :
     mTypeAlias = "bus";
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
-    setToolTip(QObject::tr("SCg-bus"));
+    setToolTip(QObject::tr("sc.g-bus"));
     mDefaultZValue = 0;
 }
 
@@ -200,12 +200,12 @@ float SCgBus::dotPos(const QPointF &point) const
     return result;
 }
 
-PointGraphicsItem* SCgBus::createPointItem(int pointIndex)
+SCgPointGraphicsItem* SCgBus::createPointItem(int pointIndex)
 {
     if(pointIndex == 0)
-        return new IncidencePointGraphicsItem(this, pointIndex);
+        return new SCgIncidentPointGraphicsItem(this, pointIndex);
 
-    return new PointGraphicsItem(this, pointIndex);
+    return new SCgPointGraphicsItem(this, pointIndex);
 }
 
 bool SCgBus::isAcceptable(SCgObject* obj, SCgPointObject::IncidentRole role) const

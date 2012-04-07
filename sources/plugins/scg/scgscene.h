@@ -95,8 +95,8 @@ public:
 
     /*! Get top most scg-object under point.
         \param point    point to get objects.
-        \return Returns pointer to SCg-object under point. If there are no any
-                SCg-object under point, then return null.
+        \return Returns pointer to sc.g-object under point. If there are no any
+                sc.g-object under point, then return null.
       */
     SCgObject* objectAt(const QPointF &point) const;
 
@@ -138,29 +138,29 @@ public:
     */
     QList<SCgObject*> itemsByType(int type) const;
 
-    /*! Create SCg-node.
-        @param pos    SCg-node position.
-        @return Created SCg-node
+    /*! Create sc.g-node.
+        @param pos    sc.g-node position.
+        @return Created sc.g-node
       */
     SCgNode* createSCgNode(const QPointF &pos);
 
-    /*! Create SCg-pair.
+    /*! Create sc.g-pair.
         @param begObj   Begin object.
         @param endObj   End object.
         @param points   Line points
-        @return Created SCg-pair
+        @return Created sc.g-pair
       */
     SCgPair* createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVector<QPointF> &points);
 
-    /*! Create SCg-bus.
+    /*! Create sc.g-bus.
         @param points   Bus line points
-        @param owner    SCg-node that owned bus
-        @return Created SCg-bus
+        @param owner    sc.g-node that owned bus
+        @return Created sc.g-bus
       */
     SCgBus* createSCgBus(const QVector<QPointF>& points, SCgNode *owner);
 
-    /*! Create SCg-contour.
-        @return Created SCg-contour
+    /*! Create sc.g-contour.
+        @return Created sc.g-contour
       */
     SCgContour* createSCgContour(const QVector<QPointF> &points);
 
@@ -197,7 +197,7 @@ public:
     									bool addToStack = true);
 
     /*! Show/hide content
-      @param    node    Pointer to SCg-node for content show/hide
+      @param    node    Pointer to sc.g-node for content show/hide
       @param    visibility  Visibility flag. True - to show content, False - to hide.
       */
     SCgBaseCommand* changeContentVisibilityCommand(SCgNode *node,
@@ -206,7 +206,7 @@ public:
     												bool addToStack = true);
 
     /*! Change content data
-      @param    node    Pointer to SCg-node for content changing
+      @param    node    Pointer to sc.g-node for content changing
       @param    contInfo    Content information
       */
     SCgBaseCommand* changeContentDataCommand(SCgNode *node,

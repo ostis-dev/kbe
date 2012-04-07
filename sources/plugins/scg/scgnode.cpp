@@ -42,7 +42,7 @@ SCgNode::SCgNode(QGraphicsItem *parent, QGraphicsScene *scene) :
 {
     mSize = QSizeF(19.f, 19.f);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-    setToolTip(QObject::tr("SCg-node"));
+    setToolTip(QObject::tr("sc.g-node"));
     setZValue(2);
 }
 

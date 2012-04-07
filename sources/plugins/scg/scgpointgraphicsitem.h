@@ -11,7 +11,7 @@
 #include <QGraphicsItem>
 #include "scgpointobject.h"
 
-class PointGraphicsItem:public QGraphicsItem
+class SCgPointGraphicsItem:public QGraphicsItem
 {
 public:
     enum { Type = UserType + 6 };
@@ -20,8 +20,8 @@ public:
      * @param parent SCgPointObject, controlled by this item.
      * @param pointIndex Index of Point in mPoints vector of SCgPointObject.
      */
-    PointGraphicsItem(SCgPointObject* parent, int pointIndex);
-    virtual ~PointGraphicsItem();
+    SCgPointGraphicsItem(SCgPointObject* parent, int pointIndex);
+    virtual ~SCgPointGraphicsItem();
 
     //! @see QGraphicsItem::type()
     int type() const
@@ -57,6 +57,11 @@ protected:
     //! @see QGraphicsItem::ItemChange()
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
+    //! @see QGraphicsItem::hoverEnterEvent
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    //! @see QGraphicsItem::hoverLeaveEvent
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
 
     //! Size of point. (different values for different types of parent)
     QSizeF mSize;
@@ -66,10 +71,12 @@ protected:
     int mPointIndex;
     //! Point color
     QColor mColor;
+    //! Chached shape data
+    QPainterPath mShape;
 };
 
 
-class IncidencePointGraphicsItem:public PointGraphicsItem
+class SCgIncidentPointGraphicsItem:public SCgPointGraphicsItem
 {
 public:
     enum { Type = UserType + 7 };
@@ -78,8 +85,8 @@ public:
      * @param parent SCgPointObject, controlled by this item.
      * @param pointIndex Index of Point in mPoints vector of SCgPointObject.
      */
-    IncidencePointGraphicsItem(SCgPointObject* parent, int pointIndex);
-    virtual ~IncidencePointGraphicsItem();
+    SCgIncidentPointGraphicsItem(SCgPointObject* parent, int pointIndex);
+    virtual ~SCgIncidentPointGraphicsItem();
 
     //! Returns object behind this point (except parent)
     SCgObject* objectAtPoint() const;

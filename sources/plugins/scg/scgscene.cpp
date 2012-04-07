@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgbus.h"
 #include "scgcontour.h"
 #include "scgtextitem.h"
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 #include "scgcontentfactory.h"
 
 #include "modes/scgbusmode.h"
@@ -303,7 +303,7 @@ SCgBaseCommand* SCgScene::deleteSelObjectsCommand(SCgBaseCommand* parentCmd, boo
 
     for (; it != selObjects.end(); ++it)
     {
-        // skip none SCg-objects
+        // skip none sc.g-objects
         if ( !SCgObject::isSCgObjectType((*it)->type()) )
             continue;
 
@@ -324,10 +324,10 @@ SCgBaseCommand* SCgScene::deleteSelObjectsCommand(SCgBaseCommand* parentCmd, boo
         for (it = selObjects.begin(); it != selObjects.end(); ++it)
         {
             // skip none Point items
-            if ( (*it)->type() != PointGraphicsItem::Type)
+            if ( (*it)->type() != SCgPointGraphicsItem::Type)
                 continue;
 
-            PointGraphicsItem *item = static_cast<PointGraphicsItem*>(*it);
+            SCgPointGraphicsItem *item = static_cast<SCgPointGraphicsItem*>(*it);
             if(!parent)
             {
                 parent = item->parentSCgPointObject();
@@ -481,9 +481,9 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
             if(item->type() != SCgNode::Type || !undoInfo.contains(static_cast<SCgNode*>(item)->bus()))
                 objUndoInfo[item] = it.value();
             // If PointItem has moved then create  SCgCommandPointMove command.
-        }else if(item->type() == PointGraphicsItem::Type)
+        }else if(item->type() == SCgPointGraphicsItem::Type)
         {
-            PointGraphicsItem* pointItem = static_cast<PointGraphicsItem*>(item);
+            SCgPointGraphicsItem* pointItem = static_cast<SCgPointGraphicsItem*>(item);
             if(!cmd)
                 cmd = new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
                                               pointItem->pointIndex(), it.value().first.second,
@@ -495,9 +495,9 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
         }
 
         // If Incidence point has moved then
-        else if(item->type() == IncidencePointGraphicsItem::Type)
+        else if(item->type() == SCgIncidentPointGraphicsItem::Type)
         {
-            IncidencePointGraphicsItem* i_item = static_cast<IncidencePointGraphicsItem*>(item);
+            SCgIncidentPointGraphicsItem* i_item = static_cast<SCgIncidentPointGraphicsItem*>(item);
             if(i_item->canBeFixed())
             {
                 SCgPointObject* p = i_item->parentSCgPointObject();

@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgobject.h"
 
-class PointGraphicsItem;
+class SCgPointGraphicsItem;
 
 //! Class for representing point objects.
 //! Includes interface for controlling item geometry by point movement
@@ -113,9 +113,9 @@ public:
 
 protected:
     //! Factory method;
-    virtual PointGraphicsItem* createPointItem(int pointIndex) = 0;
+    virtual SCgPointGraphicsItem* createPointItem(int pointIndex) = 0;
     //! List of created point graphics items.
-    QList<PointGraphicsItem*> mPointItems;
+    QList<SCgPointGraphicsItem*> mPointItems;
     //! Vector of object points
     PointFVector mPoints;
     //! Default Z value for this object

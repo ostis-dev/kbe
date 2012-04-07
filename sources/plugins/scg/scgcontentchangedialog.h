@@ -56,7 +56,7 @@ public:
     void contentInfo(SCgContent::ContInfo &info);
 
 private:
-    //! SCg-node that controls by dialog
+    //! sc.g-node that controls by dialog
     SCgNode *mNode;
     //! Current content dialog
     SCgContentDialog *mDialog;

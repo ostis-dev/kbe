@@ -66,33 +66,33 @@ public:
 
 private:
     bool isWritingStarted;
-    /*! Save SCg-node.
-      @param node Element of SCg-node type.
+    /*! Save sc.g-node.
+      @param node Element of sc.g-node type.
       */
     void writeNode(SCgObject *node);
 
-    /*! Save SCg-pair.
-      @param node Element of SCg-pair.
+    /*! Save sc.g-pair.
+      @param node Element of sc.g-pair.
       */
     void writePair(SCgObject *node);
 
-    /*! Save SCg-bus.
-      @param obj Element of SCg-bus.
+    /*! Save sc.g-bus.
+      @param obj Element of sc.g-bus.
       */
     void writeBus(SCgObject *obj);
 
-    /*! Save SCg-contour.
-      @param obj Element of SCg-contour.
+    /*! Save sc.g-contour.
+      @param obj Element of sc.g-contour.
       */
     void writeContour(SCgObject *obj);
 
-    /*! Save SCg-Object attributes.
-      @param obj Element of SCg-object.
+    /*! Save sc.g-Object attributes.
+      @param obj Element of sc.g-object.
       */
     void writeObjectAttributes(SCgObject *obj);
 
     /*! Save point position.
-      @param obj Element of SCg-object.
+      @param obj Element of sc.g-object.
       @param x Name of attribute x-positions.
       @param y Name of attribute y-positions.
       */
@@ -104,12 +104,12 @@ private:
     void writePoints(const QVector<QPointF>& points);
 
     /*! Save text attribute.
-      @param obj Element of SCg-object.
+      @param obj Element of sc.g-object.
       */
     void writeText(SCgObject *obj);
 
     /*! Save content in node.
-      @param node Element of SCg-node type.
+      @param node Element of sc.g-node type.
       */
     void writeContent(SCgNode *node);
 

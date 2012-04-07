@@ -42,7 +42,7 @@ protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    PointGraphicsItem* createPointItem(int pointIndex);
+    SCgPointGraphicsItem* createPointItem(int pointIndex);
 
 public:
     /*! @see SCgObject::del(QList<SCgObject*> &delList)

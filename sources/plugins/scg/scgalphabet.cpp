@@ -623,5 +623,6 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
     painter->setPen(pen);
     painter->setBrush(brush);
 
-    painter->drawPolygon(&(points[0]), points.size(), Qt::OddEvenFill);
+    painter->drawPath(contour->shape());
+    //painter->drawPolygon(&(points[0]), points.size(), Qt::OddEvenFill);
 }

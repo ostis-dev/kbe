@@ -48,7 +48,7 @@ public:
 
     /*! Creates an instance of content change dialog
 
-        \param node SCg-node we create dialog for.
+        \param node sc.g-node we create dialog for.
       */
     virtual SCgContentDialog* createDialogInstance(SCgNode *node) = 0;
 
@@ -83,7 +83,7 @@ public:
 
     /*! Create scg content dialog instance.
         \param format   content format.
-        \param node SCg-node we create dialog for.
+        \param node sc.g-node we create dialog for.
 
         \return SCg content dialog instance.
       */

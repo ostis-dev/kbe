@@ -27,7 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgnode.h"
 #include "scgbus.h"
 #include "scgtextitem.h"
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 
 #include <QDomDocument>
 
@@ -140,8 +140,8 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
             SCgContour *newParent = 0;
             switch(item->type())
             {
-            case PointGraphicsItem::Type :
-            case IncidencePointGraphicsItem::Type :
+            case SCgPointGraphicsItem::Type :
+            case SCgIncidentPointGraphicsItem::Type :
             case SCgTextItem::Type:
             {
                 // exclude PointGraphicsItem's object, because it always has a parent item

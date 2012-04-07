@@ -30,7 +30,7 @@ class SCgCommandContentVisibility : public SCgBaseCommand
 public:
     /*! Constructor
       @param    scene   Pointer to SCgScene that will be used for command working
-      @param    node    Pointer to SCg-node for content show/hide
+      @param    node    Pointer to sc.g-node for content show/hide
       @param    visibility    Visibility flag
       @param    parent  Pointer to parent command
       */
@@ -47,7 +47,7 @@ protected:
     //! @see    QUndoCommand::undo
     void undo();
 
-    //! Pointer to SCg-node for content show/hide
+    //! Pointer to sc.g-node for content show/hide
     SCgNode *mNode;
     //! Visibility flag
     bool mVisibility;

@@ -99,7 +99,7 @@ protected:
     //! @see SCgObject::objectDelete(). DEPRECATED
     void objectDelete(SCgObject *object);
     //! Factory method for creating point item by index.
-    PointGraphicsItem* createPointItem(int pointIndex);
+    SCgPointGraphicsItem* createPointItem(int pointIndex);
 public:
     int type() const { return Type; }
 

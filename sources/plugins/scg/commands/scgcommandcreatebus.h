@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include "scgbasecommand.h"
 
-/*! SCg-pair creation command
+/*! sc.g-pair creation command
   */
 class SCgCommandCreateBus : public QObject, public SCgBaseCommand
 {

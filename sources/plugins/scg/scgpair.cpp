@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpair.h"
 #include "scgbus.h"
 #include "scgtextitem.h"
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 
 #include <QPainter>
 #include <QVector2D>
@@ -42,7 +42,7 @@ SCgPair::SCgPair() :
     mPoints.push_back(QPointF());
     mPoints.push_back(QPointF());
 
-    setToolTip(QObject::tr("SCg-pair"));
+    setToolTip(QObject::tr("sc.g-pair"));
     mDefaultZValue = 1;
     setZValue(mDefaultZValue);
 }
@@ -257,12 +257,12 @@ void SCgPair::changePointPosition(int pointIndex, const QPointF& newPos)
         updatePosition();
 }
 
-PointGraphicsItem* SCgPair::createPointItem(int pointIndex)
+SCgPointGraphicsItem* SCgPair::createPointItem(int pointIndex)
 {
     if(pointIndex == 0 || pointIndex == mPoints.size()-1)
-        return new IncidencePointGraphicsItem(this, pointIndex);
+        return new SCgIncidentPointGraphicsItem(this, pointIndex);
 
-    return new PointGraphicsItem(this, pointIndex);
+    return new SCgPointGraphicsItem(this, pointIndex);
 }
 
 

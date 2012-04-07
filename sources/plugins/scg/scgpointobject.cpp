@@ -21,7 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgpointobject.h"
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 
 #include <QVector2D>
 
@@ -54,7 +54,7 @@ void SCgPointObject::updateConnected()
 {
     if(!mPointItems.empty())
     {
-        foreach(PointGraphicsItem* p, mPointItems)
+        foreach(SCgPointGraphicsItem* p, mPointItems)
             p->setPos(mPoints.at(p->pointIndex()));
     }
     SCgObject::updateConnected();
@@ -66,7 +66,7 @@ void SCgPointObject::createPointObjects()
     int i = mPoints.size() - 1;
     while(i >= 0)
     {
-        PointGraphicsItem* p = createPointItem(i);
+        SCgPointGraphicsItem* p = createPointItem(i);
         mPointItems.push_front(p);
         --i;
     }
@@ -75,7 +75,7 @@ void SCgPointObject::createPointObjects()
 
 void SCgPointObject::destroyPointObjects()
 {
-    foreach(PointGraphicsItem* p, mPointItems)
+    foreach(SCgPointGraphicsItem* p, mPointItems)
         delete p;
     mPointItems.clear();
     setZValue(mDefaultZValue);

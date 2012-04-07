@@ -56,18 +56,22 @@ public:
     //! @attention  points must be in local coordinates
     void setPoints(const PointFVector &points);
 
+    //! @see QGraphicsItem::shape()
+    QPainterPath shape() const;
+
 protected:
     //! @see QGraphicsItem::boundingRect()
     QRectF boundingRect() const;
-    //! @see QGraphicsItem::shape()
-    QPainterPath shape() const;
+
+    //! @see QGraphicsItem::contains
+    bool contains(const QPointF &point) const;
 
     /*! @see QGraphicsItem::paint
       */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     //! @see SCgPointObject::createPointItem()
-    PointGraphicsItem* createPointItem(int pointIndex);
+    SCgPointGraphicsItem* createPointItem(int pointIndex);
 
 public:
     int type() const { return Type; }
@@ -91,6 +95,8 @@ public:
 protected:
     //! Contour shape
     QPainterPath mShape;
+    //! Drawable shape
+    QPainterPath mShapeDraw;
 
     //! Background color
     QColor mColorBack;

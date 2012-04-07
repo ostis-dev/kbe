@@ -29,7 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgtextitem.h"
 
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 #include "scgconfig.h"
 
 #include <QCursor>

@@ -23,19 +23,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgalphabet.h"
 
-#include "pointgraphicsitem.h"
+#include "scgpointgraphicsitem.h"
 #include "scgpair.h"
 #include "scgcontour.h"
 
 #include <QColor>
 #include <QGraphicsScene>
+#include <QVector2D>
+
+#define CONTOUR_CORNER_RADIUS 20.f
 
 SCgContour::SCgContour() :
         mColorBack(QColor(250, 250, 250, 224))
 {
     setFlag(QGraphicsItem::ItemIsMovable, true);
     //setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
-    setToolTip(QObject::tr("SCg-contour"));
+    setToolTip(QObject::tr("sc.g-contour"));
     mDefaultZValue = 7;
     setZValue(mDefaultZValue);
 }
@@ -53,6 +56,18 @@ QPainterPath SCgContour::shape() const
 QRectF SCgContour::boundingRect() const
 {
     return mShape.boundingRect().adjusted(-5.f, -5.f, 5.f, 5.f);
+}
+
+bool SCgContour::contains(const QPointF &point) const
+{
+    SCgPointGraphicsItem *pointItem;
+    foreach (pointItem, mPointItems)
+    {
+        if (pointItem->contains(point))
+            return true;
+    }
+
+    return QGraphicsItem::contains(point);
 }
 
 void SCgContour::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -77,14 +92,6 @@ void SCgContour::setPoints(const PointFVector &points)
     if (points.size() < 3)
         return;
 
-    // map scene points into local coordinates
-/*
-    PointFVector pts = mapToScene(mPoints);
-    setPos(QPolygonF(pts).boundingRect().center());
-    mPoints = mapFromScene(pts);
-*/
-
-
     SCgPointObject::setPoints(points);
 }
 
@@ -99,18 +106,40 @@ void SCgContour::updateShape()
     mShape = QPainterPath();
     mShapePoints = QPainterPath();
 
-    int i = 1;
-    mShape.moveTo(mPoints.at(0));
-    for (; i < mPoints.size(); i++)
-        mShape.lineTo(mPoints.at(i));
+    PointFVector points;
+    quint32 pointsSize = mPoints.size();
+    for (quint32 i = 0; i < pointsSize; i++)
+    {
+        QPointF p2 = mPoints[(i + 1) % pointsSize];
+        QPointF p1 = mPoints[i];
+        QVector2D dir(p2 - p1);
+        dir.normalize();
+
+        QPointF dv = dir.toPointF() * CONTOUR_CORNER_RADIUS;
+        points.push_back(p1);
+        points.push_back(p1 + dv);
+        points.push_back(p2 - dv);
+    }
+
+    // draw path
+    quint32 psz3 = pointsSize * 3;
+    for (quint32 i = 0; i < pointsSize; i++)
+    {
+        quint32 idx = i * 3;
+
+        if (i == 0)
+            mShape.moveTo(points[idx + 1]);
+        mShape.lineTo(points[idx + 2]);
+        mShape.quadTo(points[(idx + 3) % psz3], points[(idx + 4) % psz3]);
+    }
     mShape.closeSubpath();
 
     QPainterPathStroker path_stroker;
-    path_stroker.setJoinStyle(Qt::MiterJoin);
+    //path_stroker.setJoinStyle(Qt::MiterJoin);
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape()+2);
     mShapePoints = path_stroker.createStroke(mShape);
 
-    mShape = mShape.united(mShapePoints);
+    //mShape = mShape.united(mShapePoints);
 
     updateConnected();
 
@@ -191,9 +220,9 @@ float SCgContour::dotPos(const QPointF &point) const
     return 0.f;
 }
 
-PointGraphicsItem* SCgContour::createPointItem(int pointIndex)
+SCgPointGraphicsItem* SCgContour::createPointItem(int pointIndex)
 {
-    return new PointGraphicsItem(this, pointIndex);
+    return new SCgPointGraphicsItem(this, pointIndex);
 }
 
 void SCgContour::changePointPosition(int pointIndex, const QPointF& newPos)

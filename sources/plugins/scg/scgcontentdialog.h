@@ -46,7 +46,7 @@ public:
     virtual void contentInfo(SCgContent::ContInfo &info) = 0;
 
 protected:
-    /*! SCg-node pointer
+    /*! sc.g-node pointer
       */
     SCgNode *mNode;
 

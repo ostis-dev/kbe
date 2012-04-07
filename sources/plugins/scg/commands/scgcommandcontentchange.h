@@ -44,7 +44,7 @@ protected:
     //! @see    QUndoCommand::undo
     void undo();
 
-    //! Pointer to SCg-node for content changing
+    //! Pointer to sc.g-node for content changing
     SCgNode *mNode;
     //! Content information
     SCgContent::ContInfo mContentInfo;

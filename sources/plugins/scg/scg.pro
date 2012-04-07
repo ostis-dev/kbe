@@ -42,7 +42,7 @@ HEADERS += \
     scgbus.h \
     scgalphabet.h \
     scgabstractobjectbuilder.h \
-    pointgraphicsitem.h \
+    scgpointgraphicsitem.h \
     scgtextitem.h \
     gwf/gwfstreamwriter.h \
     gwf/gwfobjectinforeader.h \
@@ -116,7 +116,7 @@ SOURCES += \
     scgbus.cpp \
     scgalphabet.cpp \
     scgabstractobjectbuilder.cpp \
-    pointgraphicsitem.cpp \
+    scgpointgraphicsitem.cpp \
     scgtextitem.cpp \
     gwf/gwfstreamwriter.cpp \
     gwf/gwfobjectinforeader.cpp \
