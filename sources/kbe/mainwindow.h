@@ -168,6 +168,7 @@ public slots:
 
     void helpAbout();
     void helpAboutQt();
+    void feedback();
 
     //! Current tab has changed
     void subWindowHasChanged(int index);

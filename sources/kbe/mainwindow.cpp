@@ -178,6 +178,7 @@ void MainWindow::createActions()
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
+    connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(feedback()));
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
@@ -573,6 +574,17 @@ void MainWindow::helpAbout()
 void MainWindow::helpAboutQt()
 {
     QMessageBox::aboutQt(this, "About Qt");
+}
+
+void MainWindow::feedback()
+{
+    QMessageBox::about(this, tr("Feedback"),
+                       QString("%1 e-mail: <a href=\"mailto:kbe@ostis.net\">kbe@ostis.net</a>."
+                               "<br/>%2 <a href=\"%3\">%4</a>.")
+                       .arg(tr("Founded errors description, new ideas and features you can send to"))
+                       .arg(tr("Also you can find our contact information on our"))
+                       .arg("http://www.ostis.net/feedback.html")
+                       .arg(tr("site")));
 }
 
 void MainWindow::changeEvent(QEvent *e)

@@ -33,6 +33,7 @@ FORMS += mainwindow.ui
 
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
+
 RC_FILE = kbe.rc
 #Debug:DEFINES += _DEBUG
 
