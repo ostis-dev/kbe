@@ -11,7 +11,6 @@ GuideDialog::GuideDialog(QWidget *parent) :
                                    "<td><font color=\"blue\"><b>Knowledge Base source Editor</b></font> is an application,<br>"
                                    "that aims to assist in creating and editing snippets of knowledge bases of intelligent systems"
                                    "the design is based on technology OSTIS(<font color=\"blue\">http://www.ostis.net</b></font>)"
-                                   "основано на технологии OSTIS."
                                    "The basis of the editor of the principle of visualization of the data stored in the knowledge base,"
                                    "which greatly simplifies the process of editing and speeds up the process of designing a knowledge base.</td></tr></table>")
                 .arg(QFileInfo(Config::pathIcons, "help-about-logo.png").absoluteFilePath());
