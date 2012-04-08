@@ -24,7 +24,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCGNODE_H
 
 #include "scgobject.h"
-#include "scgalphabet.h"
 #include "scgcontent.h"
 
 

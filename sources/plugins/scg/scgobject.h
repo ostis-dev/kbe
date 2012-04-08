@@ -114,7 +114,7 @@ public:
     QString typeAlias() const;
 
     // Const type
-    SCgAlphabet::SCgConstType getConstType() const
+    SCgAlphabet::SCgConstType constType() const
     {
         return mConstType;
     }

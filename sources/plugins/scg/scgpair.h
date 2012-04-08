@@ -117,9 +117,9 @@ public:
     void setTypeAlias(const QString &typeAlias);
 
     //! Get positive type
-    SCgAlphabet::SCgPosType getPosType() const { return mPosType; }
+    SCgAlphabet::SCgPosType posType() const { return mPosType; }
     //! Get permanency type
-    SCgAlphabet::SCgPermType getPermType() const { return mPermType; }
+    SCgAlphabet::SCgPermType permType() const { return mPermType; }
     //! Return accessory flag value
     bool isAccessory() const { return mIsAccessory; }
     //! Check if pair is orient

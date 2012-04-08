@@ -465,9 +465,9 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     }
 
     // get type data
-    SCgPosType posType = pair->getPosType();
-    SCgConstType constType = pair->getConstType();
-    SCgPermType permType = pair->getPermType();
+    SCgPosType posType = pair->posType();
+    SCgConstType constType = pair->constType();
+    SCgPermType permType = pair->permType();
 
     painter->setBrush(Qt::NoBrush);
 
@@ -612,11 +612,11 @@ void SCgAlphabet::paintBus(QPainter *painter, SCgBus *bus)
 
 void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
 {
-    SCgContour::PointFVector points = contour->points();
-
     QPen pen(contour->color());
     pen.setWidthF(LINE_THIN_WIDTH);
-    pen.setJoinStyle(Qt::RoundJoin);
+
+    if (contour->constType() == SCgAlphabet::Var)
+        pen.setDashPattern(msPermVarAccesDashPattern);
 
     QBrush brush(contour->colorBack(), Qt::SolidPattern);
 
@@ -624,5 +624,4 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
     painter->setBrush(brush);
 
     painter->drawPath(contour->shape());
-    //painter->drawPolygon(&(points[0]), points.size(), Qt::OddEvenFill);
 }
