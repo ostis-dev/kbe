@@ -12,3 +12,4 @@ SUBDIRS = plugins/m4scp \
           plugins/scn \
           plugins/scs \
           kbe \
+          updater \
