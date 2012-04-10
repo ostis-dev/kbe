@@ -36,7 +36,10 @@ int main(int argc, char *argv[])
 
     QDir root_dir = a.applicationDirPath();
 
-    UpdateWindow window;
+    if (a.arguments().size() < 2)
+        return 0;
+
+    UpdateWindow window(a.arguments().first());
     window.setFixedSize(600, 400);
     window.show();
 

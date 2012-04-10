@@ -1,3 +1,5 @@
+QT       += core gui network
+
 DESTDIR = ../bin
 
 CONFIG (debug) {
@@ -14,7 +16,11 @@ MOC_DIR = moc
 
 SOURCES += \
     main.cpp \
-    updatewindow.cpp
+    updatewindow.cpp \
+    updateinstaller.cpp \
+    updatedownloader.cpp
 
 HEADERS += \
-    updatewindow.h
+    updatewindow.h \
+    updateinstaller.h \
+    updatedownloader.h
