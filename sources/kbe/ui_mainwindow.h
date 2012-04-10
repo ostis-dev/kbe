@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun Mar 4 12:13:25 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Tue 10. Apr 21:24:13 2012
+**      by: Qt User Interface Compiler version 4.7.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -39,6 +39,8 @@ public:
     QAction *actionClose_All;
     QAction *actionClose_Others;
     QAction *actionClose;
+    QAction *actionFeedback;
+    QAction *actionStart_Guide;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -81,12 +83,16 @@ public:
         actionClose = new QAction(MainWindow);
         actionClose->setObjectName(QString::fromUtf8("actionClose"));
         actionClose->setShortcutContext(Qt::WindowShortcut);
+        actionFeedback = new QAction(MainWindow);
+        actionFeedback->setObjectName(QString::fromUtf8("actionFeedback"));
+        actionStart_Guide = new QAction(MainWindow);
+        actionStart_Guide->setObjectName(QString::fromUtf8("actionStart_Guide"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 25));
+        menuBar->setGeometry(QRect(0, 0, 600, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuExport = new QMenu(menuFile);
@@ -121,6 +127,8 @@ public:
         menuExport->addAction(actionTo_image);
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_Qt);
+        menuHelp->addAction(actionFeedback);
+        menuHelp->addAction(actionStart_Guide);
 
         retranslateUi(MainWindow);
 
@@ -152,6 +160,8 @@ public:
         actionClose_Others->setText(QApplication::translate("MainWindow", "Close Others", 0, QApplication::UnicodeUTF8));
         actionClose->setText(QApplication::translate("MainWindow", "Close", 0, QApplication::UnicodeUTF8));
         actionClose->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", 0, QApplication::UnicodeUTF8));
+        actionFeedback->setText(QApplication::translate("MainWindow", "Feedback", 0, QApplication::UnicodeUTF8));
+        actionStart_Guide->setText(QApplication::translate("MainWindow", "Start Guide", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
