@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
+#include "guidedialog.h"
 
 #include "version.h"
 
@@ -179,6 +180,11 @@ void MainWindow::createActions()
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
     connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(feedback()));
+    connect(ui->actionStart_Guide,SIGNAL(triggered()),this,SLOT(helpStartGuide()));
+
+    GuideDialog *mGuideDialog = new GuideDialog();
+    if (!settings.value("startupDialogShow").toBool())
+        mGuideDialog->exec();
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
@@ -585,6 +591,12 @@ void MainWindow::feedback()
                        .arg(tr("Also you can find our contact information on our"))
                        .arg("http://www.ostis.net/feedback.html")
                        .arg(tr("site")));
+}
+
+void MainWindow::helpStartGuide()
+{
+    GuideDialog *mGuideDialog = new GuideDialog();
+    mGuideDialog->exec();
 }
 
 void MainWindow::changeEvent(QEvent *e)
