@@ -23,6 +23,7 @@ import sys, os
 import filecmp
 from xml.dom.minidom import Document
 from zipfile import ZipFile
+import hashlib
 
 # list that contains update rules ('type', 'path', <is directory>)
 # rule types: remove (-), new (+), replace (*)
@@ -162,7 +163,21 @@ def do(_prev_version, _new_version, _prev_dir, _new_dir, _description, _output_f
     
     zip_file.close()
 
-    print "Update size: %u bytes" % os.path.getsize(_output_file)
+    sz = os.path.getsize(_output_file)
+    md5 = hashlib.md5()
+    f = open(_output_file, 'r')
+    md5.update(f.read())
+    f.close()
+
+    print "Update size: %u bytes" % sz
+    print "md5: %s" % str(md5.hexdigest())
+
+    # make checksum file
+    f = open(_output_file + ".checksum", 'w')
+    f.write("size: %u\n" % sz)
+    f.write("md5: %s" % str(md5.hexdigest()))
+    f.close()
+    
 
 if __name__ == "__main__":
 
