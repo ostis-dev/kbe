@@ -106,6 +106,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QSettings settings;
     restoreGeometry(settings.value(Config::settingsMainWindowGeometry).toByteArray());
 
+    GuideDialog *mGuideDialog = new GuideDialog();
+    if (!settings.value("startupDialogShow").toBool())
+        mGuideDialog->exec();
+
     setAcceptDrops(true);
 }
 
@@ -181,10 +185,6 @@ void MainWindow::createActions()
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
     connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(feedback()));
     connect(ui->actionStart_Guide,SIGNAL(triggered()),this,SLOT(helpStartGuide()));
-
-    GuideDialog *mGuideDialog = new GuideDialog();
-    if (!settings.value("startupDialogShow").toBool())
-        mGuideDialog->exec();
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
