@@ -21,10 +21,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgmode.h"
-#include <QPainterPath>
-#include <QGraphicsView>
 #include "scgcontour.h"
 #include "scgnode.h"
+
+#include <QPainterPath>
+#include <QGraphicsView>
+#include <QVector2D>
+
+#define KEYBOARD_SELECTION_RANGE 30.f
+#define KEYBOARD_SELECTION_MAX_DISTANCE 250.f
 
 SCgMode::SCgMode(SCgScene* parent) :
         QObject(parent),
@@ -253,66 +258,84 @@ void SCgMode::keyPress(QKeyEvent *event)
         }
     }
     else
-        if (event->key()>= Qt::Key_Left && event->key() <= Qt::Key_Down && mScene->selectedItems().size() == 1)
+    {
+        // iterate objects with keyboard arrows
+        int key = event->key();
+        if (key == Qt::Key_Left || key == Qt::Key_Right || key == Qt::Key_Up || key == Qt::Key_Down)
         {
-            QGraphicsItem* currentSelectedItem = mScene->selectedItems().at(0);
+            QList<QGraphicsItem*> selItems = mScene->selectedItems();
+            if (selItems.size() == 1)
+            {
+                QGraphicsItem *selectedItem = selItems.first();
+                // work just with node and contours
+                int type = selectedItem->type();
+                if (type == SCgNode::Type || type == SCgContour::Type)
+                {
+                    QList<QGraphicsItem*> items = mScene->items();
+                    QGraphicsItem *it, *nextSelection = 0;
+                    qreal min_dist = -1.f;
+                    foreach(it, items)
+                    {
+                        // skip objects that aren't nodes or contours
+                        if (it->type() != SCgNode::Type && it->type() != SCgContour::Type)
+                            continue;
 
-            int objType = currentSelectedItem->type();
-            QList<SCgObject*> itemsList = mScene->itemsByType(objType);
-            QGraphicsItem* nextSelectedItem = 0;
-            for (int i = 0; i < itemsList.size(); ++i)
-            {
-                qreal x0 = 0, y0 = 0, x1 = 0, x2 = 0, y1 = 0, y2 = 0, r1 = 0, r2 = 0;
-                if (nextSelectedItem) {
-                    x1 = nextSelectedItem->scenePos().x();
-                    y1 = nextSelectedItem->scenePos().y();
-                    r1 = (nextSelectedItem->scenePos() - currentSelectedItem->scenePos()).manhattanLength();
-                }
-                x0 = currentSelectedItem->scenePos().x();
-                y0 = currentSelectedItem->scenePos().y();
-                x2 = itemsList.at(i)->scenePos().x();
-                y2 = itemsList.at(i)->scenePos().y();
-                r2 = (itemsList.at(i)->scenePos() - currentSelectedItem->scenePos()).manhattanLength();
-                if (itemsList.at(i) == currentSelectedItem) continue;
-                switch(event->key())
-                {
-                case Qt::Key_Left :
-                {
-                    if (x1 && r2 < r1 && x2 <= x0)
-                            nextSelectedItem = itemsList.at(i);
-                    else if (!x1 && x2 < x0) nextSelectedItem = itemsList.at(i);
-                    break;
-                }
-                case Qt::Key_Right :
-                {
-                    if (x1 && r2 < r1 && x2 >= x0)
-                            nextSelectedItem = itemsList.at(i);
-                    else if (!x1 && x2 > x0) nextSelectedItem = itemsList.at(i);
-                    break;
-                }
-                case Qt::Key_Up :
-                {
-                    if (y1 && r2 < r1 && y2 <= y0)
-                            nextSelectedItem = itemsList.at(i);
-                    else if (!y1 && y2 < y0) nextSelectedItem = itemsList.at(i);
-                    break;
-                }
-                case Qt::Key_Down :
-                {
-                    if (y1 && r2 < r1 && y2 >= y0)
-                            nextSelectedItem = itemsList.at(i);
-                    else if (!y1 && y2 > y0) nextSelectedItem = itemsList.at(i);
-                    break;
-                }
+                        // skip selected item
+                        if (it == selectedItem)
+                            continue;
+
+                        QVector2D dv(it->pos() - selectedItem->pos());
+
+                        // check if object in possible ranges
+                        if ((key == Qt::Key_Left || key == Qt::Key_Right) && (qAbs(dv.y()) > KEYBOARD_SELECTION_RANGE))
+                            continue;
+                        if ((key == Qt::Key_Up || key == Qt::Key_Down) && (qAbs(dv.x()) > KEYBOARD_SELECTION_RANGE))
+                            continue;
+
+
+                        switch(key)
+                        {
+                        case Qt::Key_Left:
+                            dv *= QVector2D(-1.f, 0.f);
+                            break;
+                        case Qt::Key_Up:
+                            dv *= QVector2D(0.f, -1.f);
+                            break;
+                        case Qt::Key_Right:
+                            dv *= QVector2D(1.f, 0.f);
+                            break;
+                        case Qt::Key_Down:
+                            dv *= QVector2D(0.f, 1.f);
+                            break;
+                        }
+
+                        // check if object in selected direction
+                        if (dv.x() + dv.y() < 0)
+                            continue;
+
+                        // calculate distance and check if it has minimum distance
+                        qreal dist = dv.length();
+                        if (dist > KEYBOARD_SELECTION_MAX_DISTANCE)
+                            continue;
+
+                        if (min_dist < 0 || min_dist > dist)
+                        {
+                            min_dist = dist;
+                            nextSelection = it;
+                        }
+                    }
+
+                    // set selection
+                    if (nextSelection != 0)
+                    {
+                        selectedItem->setSelected(false);
+                        nextSelection->setSelected(true);
+                        nextSelection->ensureVisible();
+                    }
                 }
             }
-            if (nextSelectedItem)
-            {
-                currentSelectedItem->setSelected(false);
-                nextSelectedItem->setSelected(true);
-                mScene->views().at(0)->ensureVisible(nextSelectedItem);
-            }
-        }
+        } // if (key == Qt::Key_Left ...
+    }
 }
 
 void SCgMode::keyRelease(QKeyEvent *event)
