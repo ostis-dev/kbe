@@ -152,6 +152,7 @@ void MainWindow::createActions()
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
     ui->actionAbout->setIcon(QIcon::fromTheme("help-browser", getIcon("help-browser.png")));
+    ui->actionFeedback->setIcon(QIcon::fromTheme("mail", getIcon("mail.png")));
 
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(fileNew()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(fileOpen()));
