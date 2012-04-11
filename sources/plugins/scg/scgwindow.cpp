@@ -183,7 +183,7 @@ void SCgWindow::createToolBar()
 {
     mToolBar = new QToolBar(this);
 
-    mToolBar->setIconSize(QSize(42, 32));
+    mToolBar->setIconSize(QSize(32, 32));
 
     QActionGroup* group = new QActionGroup(mToolBar);
 
