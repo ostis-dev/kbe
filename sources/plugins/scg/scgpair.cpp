@@ -62,11 +62,6 @@ QRectF SCgPair::boundingRect() const
 
 QPainterPath SCgPair::shape() const
 {
-    return mShapePoints;
-}
-
-QPainterPath SCgPair::shapeNormal() const
-{
     return mShape;
 }
 
@@ -91,18 +86,18 @@ void SCgPair::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 void SCgPair::updateShape()
 {
     prepareGeometryChange();
-    // Rebuilding shape
-    mShape = QPainterPath();
-    mShapePoints = QPainterPath();
 
-    mShape.moveTo(mPoints.at(0));
+    // Rebuilding shape
+    mShapeNormal = QPainterPath();
+
+    mShapeNormal.moveTo(mPoints.at(0));
     for (int i = 1; i < mPoints.size(); i++)
-        mShape.lineTo(mPoints.at(i));
+        mShapeNormal.lineTo(mPoints.at(i));
 
     QPainterPathStroker path_stroker;
     path_stroker.setJoinStyle(Qt::MiterJoin);
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape());
-    mShapePoints = path_stroker.createStroke(mShape);
+    mShape = path_stroker.createStroke(mShapeNormal);
 
     // updating pair
     update();

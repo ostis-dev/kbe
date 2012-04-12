@@ -58,7 +58,7 @@ QRectF SCgBus::boundingRect() const
 
 QPainterPath SCgBus::shape() const
 {
-    return mShapePoints;
+    return mShape;
 }
 
 void SCgBus::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -97,9 +97,9 @@ void SCgBus::updatePosition()
 void SCgBus::updateShape()
 {
     prepareGeometryChange();
+
     // creating shape
     mShape = QPainterPath();
-    mShapePoints = QPainterPath();
 
     mShape.moveTo(mPoints.at(0));
     for (int i = 1; i < mPoints.size(); i++)
@@ -108,7 +108,7 @@ void SCgBus::updateShape()
     QPainterPathStroker path_stroker;
     path_stroker.setJoinStyle(Qt::MiterJoin);
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape());
-    mShapePoints = path_stroker.createStroke(mShape);
+    mShape = path_stroker.createStroke(mShape);
 
     // update item
     update();

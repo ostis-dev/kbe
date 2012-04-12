@@ -103,8 +103,8 @@ void SCgContour::updatePosition()
 void SCgContour::updateShape()
 {
     prepareGeometryChange();
+
     mShape = QPainterPath();
-    mShapePoints = QPainterPath();
 
     PointFVector points;
     quint32 pointsSize = mPoints.size();
@@ -134,10 +134,11 @@ void SCgContour::updateShape()
     }
     mShape.closeSubpath();
 
+    mShapeNormal = mShape;
     QPainterPathStroker path_stroker;
     //path_stroker.setJoinStyle(Qt::MiterJoin);
-    path_stroker.setWidth(SCgAlphabet::lineWidthForShape()+2);
-    mShapePoints = path_stroker.createStroke(mShape);
+    path_stroker.setWidth(SCgAlphabet::lineWidthForShape() + 2);
+    mShape = path_stroker.createStroke(mShape);
 
     //mShape = mShape.united(mShapePoints);
 

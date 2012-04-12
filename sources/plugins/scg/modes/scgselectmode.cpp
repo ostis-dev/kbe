@@ -53,7 +53,7 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
         QGraphicsItem *item = mScene->itemAt(mousePos);
         if(mCurrentPointObject)
         {
-            QPainterPath p = mCurrentPointObject->shapePoints();
+            QPainterPath p = mCurrentPointObject->shape();
             QPointF itemPoint = mCurrentPointObject->mapFromScene(mousePos);
             if(p.contains(itemPoint))
                 mScene->addPointCommand(mCurrentPointObject,itemPoint);
@@ -103,26 +103,35 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if(mCurrentPointObject)
     {
-        QPainterPath p = mCurrentPointObject->shapePoints();
-        if(!p.contains(mCurrentPointObject->mapFromScene(event->scenePos())))
+        QGraphicsItem *it = mScene->itemAt(event->scenePos());
+
+        if (it == 0 || (it != mCurrentPointObject && SCgObject::isSCgObjectType(it->type())))
         {
             mCurrentPointObject->destroyPointObjects();
             mCurrentPointObject = 0;
         }
-    }
-    if(!mCurrentPointObject)
-    {
-        QPointF cur_pos = event->scenePos();
-        SCgObject* objAtMouse = mScene->objectAt(cur_pos);
-        if(objAtMouse && SCgObject::isSCgPointObjectType(objAtMouse->type()))
+
+        /*QPainterPath p = mCurrentPointObject->shape();
+        if(!p.contains(mCurrentPointObject->mapFromScene(event->scenePos())))
         {
-            mCurrentPointObject = static_cast<SCgPointObject*>(objAtMouse);
-            if(mCurrentPointObject->shapePoints().contains(mCurrentPointObject->mapFromScene(cur_pos)))
-                mCurrentPointObject->createPointObjects();
-            else
-                mCurrentPointObject = 0;
+            mCurrentPointObject->destroyPointObjects();
+            mCurrentPointObject = 0;
+        }*/
+    }else
+        {
+            QPointF cur_pos = event->scenePos();
+            QGraphicsItem* item = mScene->itemAt(cur_pos);
+            if(item && SCgObject::isSCgPointObjectType(item->type()))
+            {
+                mCurrentPointObject = static_cast<SCgPointObject*>(item);
+                if(mCurrentPointObject->shape().contains(mCurrentPointObject->mapFromScene(cur_pos)))
+                    mCurrentPointObject->createPointObjects();
+                else
+                    mCurrentPointObject = 0;
+            }
         }
-    }
+
+    // start cloning
     if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
         mScene->setEditMode(SCgScene::Mode_Clone);
 }

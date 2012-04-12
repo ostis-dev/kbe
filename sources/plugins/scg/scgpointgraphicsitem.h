@@ -11,8 +11,9 @@
 #include <QGraphicsItem>
 #include "scgpointobject.h"
 
-class SCgPointGraphicsItem:public QGraphicsItem
+class SCgPointGraphicsItem : public QGraphicsItem
 {
+    friend class SCgPointObject;
 public:
     enum { Type = UserType + 6 };
     /*!

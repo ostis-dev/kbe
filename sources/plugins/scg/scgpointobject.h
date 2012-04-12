@@ -28,7 +28,7 @@ class SCgPointGraphicsItem;
 
 //! Class for representing point objects.
 //! Includes interface for controlling item geometry by point movement
-class SCgPointObject: public SCgObject
+class SCgPointObject : public SCgObject
 {
 public:
     enum IncidentRole
@@ -80,11 +80,14 @@ public:
     //! Returns point at specified index (in THIS ITEM coordinates).
     QPointF pointAt(int index) const;
 
-    //! Returns shape points situated in. (IN THIS ITEM COORDINATES)
-    QPainterPath shapePoints() const;
-
     //! updates shape of object without changing its points.
     virtual void updateShape() = 0;
+
+    //! Returns normal path, without pen width affected.
+    QPainterPath shapeNormal() const
+    {
+        return mShapeNormal;
+    }
 
     /*! Returns true, if @p obj is acceptable for specified role.
      * e.g. this object can be begin or end object of pair, or owner for bus.
@@ -120,8 +123,8 @@ protected:
     PointFVector mPoints;
     //! Default Z value for this object
     qreal mDefaultZValue;
-    //! Shape, containing all pointItems
-    QPainterPath mShapePoints;
+    //! Path that represents shape without any stroke (used for drawing)
+    QPainterPath mShapeNormal;
 
 private:
     static qreal distanceToSubpath(const QPointF& p0, const QPointF& p1, const QPointF& p);

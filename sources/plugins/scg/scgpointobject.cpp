@@ -26,7 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVector2D>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-SCgPointObject::SCgPointObject(QGraphicsItem *parent, QGraphicsScene *scene):SCgObject(parent, scene)
+SCgPointObject::SCgPointObject(QGraphicsItem *parent, QGraphicsScene *scene) :
+    SCgObject(parent, scene)
 {
 
 }
@@ -45,11 +46,6 @@ SCgPointObject::PointFVector SCgPointObject::scenePoints() const
     return mapToScene(mPoints);
 }
 
-QPainterPath SCgPointObject::shapePoints() const
-{
-    return mShapePoints;
-}
-
 void SCgPointObject::updateConnected()
 {
     if(!mPointItems.empty())
@@ -59,7 +55,6 @@ void SCgPointObject::updateConnected()
     }
     SCgObject::updateConnected();
 }
-
 
 void SCgPointObject::createPointObjects()
 {

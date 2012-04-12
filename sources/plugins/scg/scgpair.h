@@ -58,10 +58,6 @@ public:
       */
     void setPoints(const PointFVector &points);
 
-    /*! Returns normal path, without pen width affected.
-      */
-    QPainterPath shapeNormal() const;
-
     //! @see SCgPointObject::updateShape;
     void updateShape();
 

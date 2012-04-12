@@ -623,5 +623,5 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
     painter->setPen(pen);
     painter->setBrush(brush);
 
-    painter->drawPath(contour->shape());
+    painter->drawPath(contour->shapeNormal());
 }
