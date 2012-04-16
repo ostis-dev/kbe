@@ -13,4 +13,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml REQUIRED)
+
 add_subdirectory(kbe)
+add_subdirectory(plugins)

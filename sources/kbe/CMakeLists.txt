@@ -7,6 +7,7 @@ set(KBE_SRCS
     basewindow.cpp
     config.cpp
     extendedtabwidget.cpp
+    guidedialog.cpp
     main.cpp
     mainwindow.cpp
     pluginmanager.cpp
@@ -16,6 +17,7 @@ set(KBE_HDRS
     basewindow.h
     config.h
     extendedtabwidget.h
+    guidedialog.h
     mainwindow.h
     platform.h
     pluginmanager.h
@@ -25,6 +27,7 @@ set(KBE_HDRS
 set(KBE_MOC_HDRS
     basewindow.h
     extendedtabwidget.h
+    guidedialog.h
     mainwindow.h
     pluginmanager.h
 )
@@ -47,8 +50,6 @@ project (${PROJECT})
  
 include_directories (./)
 
- 
-find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml REQUIRED) #Phonon
 
 include (${QT_USE_FILE})
 qt4_wrap_ui (SAMPLE_UI_HDRS ${KBE_UI_FORMS})
