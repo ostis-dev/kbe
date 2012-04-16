@@ -20,11 +20,24 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "config.h"
+#ifndef STARTUPDIALOG_H
+#define STARTUPDIALOG_H
 
-QDir Config::pathPlugins = QDir("");
+#include <QDialog>
 
-const QString Config::settingsRecentFileList = "RecentFileList";
-const QString Config::settingsDocksGeometry = "DockWindowsGeometry";
+#define SETTINGS_STARTUP_DIALOG_SHOW    "/kbe/startupdialog/show"
 
-const QString Config::settingsMainWindowGeometry = "MainWindowGeometry";
+class GuideDialog : public QDialog
+{
+    Q_OBJECT
+public:
+    explicit GuideDialog(QWidget *parent = 0);
+    virtual ~GuideDialog();
+    
+signals:
+    
+public slots:
+    void showStateChanged(int state);
+};
+
+#endif // STARTUPDIALOG_H

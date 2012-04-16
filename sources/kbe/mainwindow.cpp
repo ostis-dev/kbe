@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
+#include "guidedialog.h"
 
 #include "version.h"
 
@@ -180,6 +181,7 @@ void MainWindow::createActions()
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
     connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(feedback()));
+    connect(ui->actionGuide, SIGNAL(triggered()), this, SLOT(guide()));
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
@@ -197,8 +199,7 @@ void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
 
 QIcon MainWindow::getIcon(const QString &name) const
 {
-    QFileInfo fi(Config::pathIcons, name);
-    return QIcon(fi.absoluteFilePath());
+    return QIcon(QString(":/media/icons/") + name);
 }
 
 bool MainWindow::checkSubWindowSavedState()
@@ -564,7 +565,7 @@ void MainWindow::helpAbout()
                                "<li>Dmitry Kolb (skif-sarmat)</li>"
                                "</ul>"
                                "</td></tr></table>")
-                       .arg(QFileInfo(Config::pathIcons, "help-about-logo.png").absoluteFilePath())
+                       .arg(QString(":/media/icons/help-about-logo.png"))
                        .arg(tr("Knowledge Base source Editor "))
                        .arg(tr("version"))
                        .arg(VERSION.toString())
@@ -588,16 +589,27 @@ void MainWindow::feedback()
                        .arg(tr("site")));
 }
 
-void MainWindow::changeEvent(QEvent *e)
+void MainWindow::guide()
 {
-    QMainWindow::changeEvent(e);
-    switch (e->type()) {
+    GuideDialog dlg;
+    dlg.exec();
+}
+
+void MainWindow::changeEvent(QEvent *event)
+{
+    QMainWindow::changeEvent(event);
+    switch (event->type())
+    {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
         break;
     default:
         break;
     }
+}
+
+void MainWindow::showEvent(QShowEvent *event)
+{
 }
 
 

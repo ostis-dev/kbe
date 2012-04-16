@@ -1,3 +1,14 @@
 <RCC>
-
+    <qresource prefix="/">
+        <file>media/icons/application-exit.png</file>
+        <file>media/icons/document-new.png</file>
+        <file>media/icons/document-open.png</file>
+        <file>media/icons/document-save.png</file>
+        <file>media/icons/document-save-as.png</file>
+        <file>media/icons/help-about-logo.png</file>
+        <file>media/icons/help-browser.png</file>
+        <file>media/icons/mail.png</file>
+        <file>media/icons/window-close.png</file>
+        <file>media/startup/index.html</file>
+    </qresource>
 </RCC>

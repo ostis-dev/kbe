@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Fri Apr 13 01:46:38 2012
+** Created: Mon Apr 16 11:15:33 2012
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -40,6 +40,7 @@ public:
     QAction *actionClose_Others;
     QAction *actionClose;
     QAction *actionFeedback;
+    QAction *actionGuide;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -84,6 +85,8 @@ public:
         actionClose->setShortcutContext(Qt::WindowShortcut);
         actionFeedback = new QAction(MainWindow);
         actionFeedback->setObjectName(QString::fromUtf8("actionFeedback"));
+        actionGuide = new QAction(MainWindow);
+        actionGuide->setObjectName(QString::fromUtf8("actionGuide"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -125,6 +128,7 @@ public:
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_Qt);
         menuHelp->addAction(actionFeedback);
+        menuHelp->addAction(actionGuide);
 
         retranslateUi(MainWindow);
 
@@ -157,6 +161,7 @@ public:
         actionClose->setText(QApplication::translate("MainWindow", "Close", 0, QApplication::UnicodeUTF8));
         actionClose->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", 0, QApplication::UnicodeUTF8));
         actionFeedback->setText(QApplication::translate("MainWindow", "Feedback", 0, QApplication::UnicodeUTF8));
+        actionGuide->setText(QApplication::translate("MainWindow", "Guide", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));

@@ -58,6 +58,7 @@
     <addaction name="actionAbout"/>
     <addaction name="actionAbout_Qt"/>
     <addaction name="actionFeedback"/>
+    <addaction name="actionGuide"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -173,6 +174,11 @@
   <action name="actionFeedback">
    <property name="text">
     <string>Feedback</string>
+   </property>
+  </action>
+  <action name="actionGuide">
+   <property name="text">
+    <string>Guide</string>
    </property>
   </action>
  </widget>

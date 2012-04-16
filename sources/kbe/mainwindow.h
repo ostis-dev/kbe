@@ -78,7 +78,8 @@ public:
     void dropEvent(QDropEvent *event);
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent(QEvent *event);
+    void showEvent(QShowEvent *event);
 
     //! creates actions and configure them
     void createActions();
@@ -169,6 +170,7 @@ public slots:
     void helpAbout();
     void helpAboutQt();
     void feedback();
+    void guide();
 
     //! Current tab has changed
     void subWindowHasChanged(int index);

@@ -29,12 +29,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class Config
 {
 public:
-    //! path to media
-    static QDir pathMedia;
-    //! path to icons
-    static QDir pathIcons;
-    //! path to translations
-    static QDir pathTranslations;
     //! path to plugins
     static QDir pathPlugins;
 

@@ -20,6 +20,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+#include "pluginmanager.h"
+#include "config.h"
+#include "platform.h"
+#include "mainwindow.h"
+#include "guidedialog.h"
+
 #include <QtGui/QApplication>
 #include <QTranslator>
 #include <QLocale>
@@ -30,12 +36,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSplashScreen>
 #include <QMessageBox>
 #include <QDebug>
+#include <QSettings>
 
-#include "pluginmanager.h"
-#include "config.h"
-#include "platform.h"
-
-#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -51,19 +53,9 @@ int main(int argc, char *argv[])
     //#if KBE_DEBUG_MODE
     //    root_dir.cdUp();
     //#endif
-    Config::pathMedia = root_dir;
-#if KBE_DEBUG_MODE
-    Config::pathMedia.cdUp();
-#endif
-    Config::pathMedia.cd("media");
-    Config::pathIcons = Config::pathMedia;
-    Config::pathIcons.cd("icons");
-    Config::pathTranslations = Config::pathMedia;
-    Config::pathTranslations.cd("langs");
     Config::pathPlugins = root_dir;
     Config::pathPlugins.cd("plugins");
 
-    qDebug() << Config::pathMedia.absolutePath();
 
     // Create splash screen
     //QSplashScreen splash(QPixmap(QFileInfo(QDir(Config::pathMedia), "splash.png").absoluteFilePath()));
@@ -73,7 +65,7 @@ int main(int argc, char *argv[])
     //splash.showMessage("Load Translation", Qt::AlignBottom | Qt::AlignHCenter);
 
     QTranslator myappTranslator;
-    myappTranslator.load("lang_" + QLocale::system().name(), Config::pathTranslations.absolutePath());
+    myappTranslator.load(":/media/translations/lang_" + QLocale::system().name());
     a.installTranslator(&myappTranslator);
 
     //splash.showMessage(a.tr("Create interface"), Qt::AlignBottom | Qt::AlignHCenter);
@@ -83,6 +75,18 @@ int main(int argc, char *argv[])
     {
         QString arg = a.arguments().at(i);
         MainWindow::getInstance()->load(arg);
+    }
+
+    QSettings settings;
+    // check if startup dialog property exist
+    if (!settings.contains(SETTINGS_STARTUP_DIALOG_SHOW))
+        settings.setValue(SETTINGS_STARTUP_DIALOG_SHOW, QVariant(true));
+
+    // show startup dialog
+    if (settings.value(SETTINGS_STARTUP_DIALOG_SHOW).toBool())
+    {
+        GuideDialog startDialog(MainWindow::getInstance());
+        startDialog.exec();
     }
 
     //splash.finish(&w);
