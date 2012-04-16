@@ -31,6 +31,8 @@ HEADERS += version.h \
 
 FORMS += mainwindow.ui
 
+RESOURCES     = kbe.qrc
+
 TRANSLATIONS += translations/lang_en_EN.ts \
     translations/lang_ru_RU.ts
 
