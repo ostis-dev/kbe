@@ -2,11 +2,11 @@ QT       += core gui network
 
 DESTDIR = ../bin
 
-CONFIG (debug) {
-        TARGET = updater_d
-        DEFINES += _DEBUG
+CONFIG(debug, debug|release) {
+    TARGET = updater_d
+    DEFINES += _DEBUG
 } else {
-        TARGET = updater
+    TARGET = updater
 }
 
 TEMPLATE = app
