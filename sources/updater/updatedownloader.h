@@ -38,7 +38,6 @@ public:
     explicit UpdateDownloader(QObject *parent = 0);
     virtual ~UpdateDownloader();
 
-protected:
     /*! Download file from specified \p url
       * @param url Url to download file
       * @param filePath Path to save downloaded file
@@ -64,8 +63,6 @@ signals:
     void downloadProgress(qint64 bytesRecieved, qint64 bytesTotal);
 
 public slots:
-    //! Downloads updates list from update server
-    void downloadUpdatesList();
 
     void downloadReadyRead();
     void downloadFinished();

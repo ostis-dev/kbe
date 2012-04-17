@@ -42,8 +42,24 @@ public:
     {
         WT_UPDATELIST = 0,
         WT_GETUPDATE,
+        WT_GETCHECKSUM,
         WT_INSTALL
     } WorkType;
+
+protected:
+    /*! Parse updates list and trying to resolve if there are any suitable update
+      * for current version. If it exists, then start download.
+      */
+    void resolveUpdate();
+
+    //! Start update downloading.
+    void downloadUpdate();
+
+    //! Download checksum for update
+    void downloadCheckSum();
+
+    //! Reads downloaded update and show information about it
+    void readUpdate();
 
 private:
     //! Pointer to text browser, that shows description
@@ -58,6 +74,8 @@ private:
     QPushButton *mCancelButton;
     //! Current version
     QString mCurrentVersion;
+    //! Path to founded on server update file
+    QString mUpdatePath;
 
     //! Current work
     WorkType mCurrentWork;

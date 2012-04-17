@@ -66,16 +66,17 @@ def compare(_prev_dir, _new_dir, _cur_prev, _cur_new):
     for path in comp.common_dirs:
         compare(_prev_dir, _new_dir, os.path.join(_cur_prev, path), os.path.join(_cur_new, path))
 
-def collectFiles(_dir):
+def collectFiles(_dir, _new_dir):
     """Recursively find files in \p _dir and return list of them.
     @param _dir: Path to directory for files searching
+    @param _new_dir: Path to new version directory (need to calculate relative path)
     @return Return list with relative path to founded files
     """
     result = []
-    for root, dirs, files in os.walk(_dir):
+    for root, dirs, files in os.walk(os.path.join(_new_dir, _dir)):
         for f in files:
             path = os.path.join(root, f)
-            result.append(os.path.relpath(path, dir))
+            result.append(os.path.relpath(path, _new_dir))
 
     return result
 
@@ -151,11 +152,12 @@ def do(_prev_version, _new_version, _prev_dir, _new_dir, _description, _output_f
 
         files = []
         if is_dir:
-            files.extend(collectFiles(path))
+            files.extend(collectFiles(path, _new_dir))
         else:
             files.append(path)
 
         for f in files:
+            print 'append %s into update' % f
             zip_file.write(os.path.join(_new_dir, f), "files/" + f)
 
     if os.path.exists(_description):

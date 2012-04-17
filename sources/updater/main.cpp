@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
     if (a.arguments().size() < 2)
         return 0;
 
-    UpdateWindow window(a.arguments().first());
+    UpdateWindow window(a.arguments().at(1));
     window.setFixedSize(600, 400);
     window.show();
 
