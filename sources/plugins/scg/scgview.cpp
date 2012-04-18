@@ -263,6 +263,11 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             for (iter = types.begin(); iter != types.end(); ++iter)
                 varSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
             types.clear();
+
+            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::ConstUnknown, types);
+            for (iter = types.begin(); iter != types.end(); ++iter)
+                menu->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
+            types.clear();
         }
     }
     mContextMenu->addActions(mActionsList);

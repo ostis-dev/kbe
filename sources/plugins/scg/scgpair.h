@@ -105,8 +105,9 @@ private:
 public:
     //! Updates position for points
     void updatePosition();
+    //! @copydoc SCgObject::cross
     QPointF cross(const QPointF &from, float dot) const;
-    //! @see SCgObject::dotPos
+    //! @copydoc SCgObject::dotPos
     float dotPos(const QPointF &point) const;
 
 public:

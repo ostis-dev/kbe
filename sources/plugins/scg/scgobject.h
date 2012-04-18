@@ -77,8 +77,8 @@ public:
     virtual void setIdtfValue(const QString &idtf);
     QString idtfValue() const;
 
-    /*! Get cross.
-      @param  from Point we are building line intersection from. It should have scene coordimates.
+    /*! Get cross of this sc.g-object with line from specified point.
+      @param  from Point to build line intersection from. It should have scene coordinates.
       @param  dot Relative dot position.
       @return Returns intersaction point for a line from specified point to
       object center. This point is in scene coordinates.

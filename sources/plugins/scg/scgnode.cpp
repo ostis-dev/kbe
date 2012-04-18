@@ -113,6 +113,7 @@ QPainterPath SCgNode::shape() const
         switch (mConstType)
         {
         case SCgAlphabet::Const:
+        case SCgAlphabet::ConstUnknown:
             path.addEllipse(boundRect);
             break;
 

@@ -54,7 +54,8 @@ GwfStreamWriter::~GwfStreamWriter()
 void GwfStreamWriter::createTypesMap()
 {
     // nodes
-    mTypeAlias2GWFType["node/const/not_define"] = "node/const/not_define";
+    mTypeAlias2GWFType["node/-/not_define"] = "node/-/not_define";
+
     mTypeAlias2GWFType["node/const/general"] = "node/const/general_node";
     mTypeAlias2GWFType["node/const/abstract"] = "node/const/predmet";
     mTypeAlias2GWFType["node/const/material"] = "node/const/material";
