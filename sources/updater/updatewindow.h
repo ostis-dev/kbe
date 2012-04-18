@@ -43,6 +43,7 @@ public:
         WT_UPDATELIST = 0,
         WT_GETUPDATE,
         WT_GETCHECKSUM,
+        WT_READCONTENT,
         WT_INSTALL
     } WorkType;
 

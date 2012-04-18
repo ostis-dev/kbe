@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "updatewindow.h"
 #include "updatedownloader.h"
+#include "updateextractor.h"
 
 #include <QTextBrowser>
 #include <QPushButton>
@@ -168,9 +169,21 @@ void UpdateWindow::downloadCheckSum()
 
 void UpdateWindow::readUpdate()
 {
+    mCurrentWork = WT_READCONTENT;
+
+    mProgressDialog->setLabelText(tr("Reading update..."));
+    mProgressDialog->setValue(0);
+    mProgressDialog->setRange(0, 0);
+    workStarted();
+
     // TODO: compare checksum
 
+    // unpack
+    UpdateExtractor extractor;
+    if (!extractor.extract(UPDATE_FILE_PATH, "_update_files"))
+        workFailed();
 
+    workFinished();
 }
 
 void UpdateWindow::workProgress(qint64 finished, qint64 total)

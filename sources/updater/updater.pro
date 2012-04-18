@@ -2,6 +2,8 @@ QT       += core gui network xml
 
 DESTDIR = ../bin
 
+LIBS += -lzzip
+
 CONFIG(debug, debug|release) {
     TARGET = updater_d
     DEFINES += _DEBUG
@@ -18,9 +20,11 @@ SOURCES += \
     main.cpp \
     updatewindow.cpp \
     updateinstaller.cpp \
-    updatedownloader.cpp
+    updatedownloader.cpp \
+    updateextractor.cpp
 
 HEADERS += \
     updatewindow.h \
     updateinstaller.h \
-    updatedownloader.h
+    updatedownloader.h \
+    updateextractor.h
