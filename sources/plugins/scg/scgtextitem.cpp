@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgTextItem::SCgTextItem(const QString &str, QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsTextItem(str, parent, scene)
 {
+    setZValue(7);
     setFlags(QGraphicsItem::ItemIsSelectable
              | QGraphicsItem::ItemIsFocusable);
 
@@ -97,12 +98,14 @@ void SCgTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void SCgTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    parentItem()->setSelected(false);
     QGraphicsTextItem::mouseMoveEvent(event);
 }
 
 void SCgTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     setFlag(QGraphicsItem::ItemIsMovable, false);
+    parentItem()->setSelected(true);
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
