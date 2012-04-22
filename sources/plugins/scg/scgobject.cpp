@@ -226,8 +226,8 @@ void SCgObject::setIdtfValue(const QString &idtf)
 
             mTextItem->setFont(font);
             mTextItem->setParentItem(this);
-            mTextItem->setZValue(7);
             mTextItem->setDefaultTextColor(scg_cfg_get_value_color(scg_text_element_color_normal));
+            mTextItem->setPos(5, 0);
             //scene()->addItem(mTextItem);
         }
         mTextItem->setPlainText(mIdtfValue);
