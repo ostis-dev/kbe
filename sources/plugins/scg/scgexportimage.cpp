@@ -47,6 +47,12 @@ QStringList SCgExportImage::supportedFormats() const
 
 bool SCgExportImage::doExport(SCgScene *scene, const QString &fileName)
 {
+    QList<QGraphicsItem*> allItems = scene->items();
+    foreach (QGraphicsItem *item, allItems)
+    {
+        item->setSelected(false);
+        item->clearFocus();
+    }
     QSize sz = scene->itemsBoundingRect().size().toSize();
     QSize imgSize(sz.width() + 10, sz.height() + 10);
 
