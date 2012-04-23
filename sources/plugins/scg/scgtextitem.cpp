@@ -24,11 +24,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgconfig.h"
 #include <QGraphicsSceneEvent>
 
+const qreal SCgTextItem::MAXDISTANCE = 30.;
+
 SCgTextItem::SCgTextItem(const QString &str, QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsTextItem(str, parent, scene)
 {
+    mMovingArea = QRectF();
     setFlags(QGraphicsItem::ItemIsSelectable
-             | QGraphicsItem::ItemIsFocusable);
+             | QGraphicsItem::ItemIsFocusable
+             | QGraphicsItem::ItemSendsGeometryChanges);
 
     setAcceptHoverEvents(true);
 }
@@ -37,7 +41,8 @@ SCgTextItem::SCgTextItem(QGraphicsItem *parent, QGraphicsScene *scene) :
     QGraphicsTextItem(parent, scene)
 {
     setFlags(QGraphicsItem::ItemIsSelectable
-             | QGraphicsItem::ItemIsFocusable);
+             | QGraphicsItem::ItemIsFocusable
+             | QGraphicsItem::ItemSendsGeometryChanges);
     setAcceptHoverEvents(true);
 }
 
@@ -97,7 +102,13 @@ void SCgTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void SCgTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    QGraphicsTextItem::mouseMoveEvent(event);
+    if (mStartMovingPosition.isNull())
+        mStartMovingPosition = mapToParent(event->pos());
+    QPointF offset = mapToParent(event->pos()) - mStartMovingPosition;
+    QRectF identifierBoundingRect = boundingRect();
+    identifierBoundingRect.translate(offset);
+    if (mMovingArea.contains(identifierBoundingRect))
+        QGraphicsTextItem::mouseMoveEvent(event);
 }
 
 void SCgTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -106,3 +117,9 @@ void SCgTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
+void SCgTextItem::recalculateMovingArea()
+{
+    qreal dx = MAXDISTANCE + boundingRect().width();
+    qreal dy = MAXDISTANCE + boundingRect().height();
+    mMovingArea = parentItem()->boundingRect().adjusted(-dx, -dy, dx, dy);
+}

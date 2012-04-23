@@ -65,11 +65,23 @@ public:
     //! Return a type of graphics item as integer
     virtual int type() const { return Type; }
 protected:
+    //! Maximumal distance between identifier's bounding rect and it parent's item bounding rect
+    static const qreal MAXDISTANCE;
+
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
+    //! Rect represent an area where item's moving is allowed
+    QRectF mMovingArea;
+
+    //! Start position of identifier
+    QPointF mStartMovingPosition;
+
+protected slots:
+    void recalculateMovingArea();
 };
 
 #endif // SCGTEXTITEM_H
