@@ -20,35 +20,27 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "scgcommandpointmove.h"
-#include "scgpointobject.h"
+#include "scgcommandswappairorient.h"
+#include "scgpair.h"
 
-SCgCommandPointMove::SCgCommandPointMove(SCgScene* scene,
-                                        SCgPointObject* obj,
-                                        int pointIndex,
-                                        const QPointF& oldPos,
-                                        const QPointF& newPos,
-                                        QUndoCommand* parent):
-    SCgBaseCommand(scene, obj, parent),
-    mPointIndex(pointIndex),
-    mOldPos(oldPos),
-    mNewPos(newPos)
+SCgCommandSwapPairOrient::SCgCommandSwapPairOrient(SCgScene *scene, SCgPair *pair, QUndoCommand *parent) :
+    SCgBaseCommand(scene, pair, parent)
 {
-    setText(QObject::tr("Move object's point"));
+    setText(QObject::tr("Swap pair"));
 }
 
-SCgCommandPointMove::~SCgCommandPointMove()
+SCgCommandSwapPairOrient::~SCgCommandSwapPairOrient()
 {
-
 }
 
-void SCgCommandPointMove::redo()
+void SCgCommandSwapPairOrient::redo()
 {
-    SCgBaseCommand::redo();
-    static_cast<SCgPointObject*>(mObject)->changePointPosition(mPointIndex, mNewPos);
+    Q_ASSERT(mObject != 0 && mObject->type() == SCgPair::Type);
+    static_cast<SCgPair*>(mObject)->swap();
 }
-void SCgCommandPointMove::undo()
+
+void SCgCommandSwapPairOrient::undo()
 {
-    static_cast<SCgPointObject*>(mObject)->changePointPosition(mPointIndex, mOldPos);
-    SCgBaseCommand::undo();
+    Q_ASSERT(mObject != 0 && mObject->type() == SCgPair::Type);
+    static_cast<SCgPair*>(mObject)->swap();
 }

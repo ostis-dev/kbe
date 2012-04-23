@@ -303,7 +303,7 @@ void SCgPair::setBeginDot(float pos)
     updatePosition();
 }
 
-float SCgPair::getBeginDot() const
+float SCgPair::beginDot() const
 {
     return mBeginDot;
 }
@@ -314,9 +314,42 @@ void SCgPair::setEndDot(float pos)
     updatePosition();
 }
 
-float SCgPair::getEndDot() const
+float SCgPair::endDot() const
 {
     return mEndDot;
+}
+
+void SCgPair::swap()
+{
+    SCgObject *bObj = beginObject();
+    SCgObject *eObj = endObject();
+
+    qreal bDot = beginDot();
+    qreal eDot = endDot();
+
+    setBeginDot(eDot);
+    setEndDot(bDot);
+
+    setBeginObject(0);
+    setEndObject(0);
+
+    setBeginObject(eObj);
+    setEndObject(bObj);
+
+    // swap points
+    PointFVector pts = mPoints;
+    mPoints.clear();
+    QPointF p;
+    foreach(p, pts)
+        mPoints.push_front(p);
+
+    if (!mPointItems.empty())
+    {
+        destroyPointObjects();
+        createPointObjects();
+    }
+
+    updatePosition();
 }
 
 bool SCgPair::isAcceptable(SCgObject* obj, SCgPointObject::IncidentRole role) const

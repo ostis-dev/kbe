@@ -86,7 +86,8 @@ HEADERS += \
     modes/scginsertmode.h \
     modes/scgcontourmode.h \
     modes/scgclonemode.h \
-    modes/scgbusmode.h
+    modes/scgbusmode.h \
+    commands/scgcommandswappairorient.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -160,4 +161,5 @@ SOURCES += \
     modes/scginsertmode.cpp \
     modes/scgcontourmode.cpp \
     modes/scgclonemode.cpp \
-    modes/scgbusmode.cpp
+    modes/scgbusmode.cpp \
+    commands/scgcommandswappairorient.cpp

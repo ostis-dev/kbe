@@ -249,8 +249,8 @@ void GwfStreamWriter::writePair(SCgObject *obj)
     writePosition(b,"b_x","b_y");
     writePosition(e,"e_x","e_y");
 
-    writeAttribute("dotBBalance", QString::number(pair->getBeginDot()));
-    writeAttribute("dotEBalance", QString::number(pair->getEndDot()));
+    writeAttribute("dotBBalance", QString::number(pair->beginDot()));
+    writeAttribute("dotEBalance", QString::number(pair->endDot()));
     QVector<QPointF> points = pair->scenePoints();
     points.pop_back();
     points.pop_front();

@@ -57,6 +57,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "commands/scgcommandselectedobjectmove.h"
 #include "commands/scgcommandpointschange.h"
 #include "commands/scgcommandidtfmove.h"
+#include "commands/scgcommandswappairorient.h"
 
 #include <QUrl>
 #include <QFile>
@@ -400,6 +401,20 @@ SCgBaseCommand* SCgScene::deleteContourCommand(SCgContour *contour, SCgBaseComma
     SCgBaseCommand* cmd = new SCgCommandDeleteContour(this, contour, parentCmd);
 
     if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::swapPairOrientCommand(SCgPair *pair, SCgBaseCommand *parentCmd, bool addToStack)
+{
+    Q_ASSERT_X(pair != 0,
+               "SCgBaseCommand* SCgScene::swapPairOrient(SCgPair *pair, SCgBaseCommand *parentCmd, bool addToStack)",
+               "Pointer to pair object is null");
+
+    SCgBaseCommand* cmd = new SCgCommandSwapPairOrient(this, pair, parentCmd);
+
+    if (addToStack)
         mUndoStack->push(cmd);
 
     return cmd;

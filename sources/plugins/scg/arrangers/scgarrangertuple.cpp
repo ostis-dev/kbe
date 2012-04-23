@@ -183,7 +183,7 @@ bool SCgTupleArranger::findArrangeItems()
                     mArrangeItems.append(pair);
                     mArrangeItems.append(end);
 
-                    dot = pair->getBeginDot();
+                    dot = pair->beginDot();
                 }
             }
 
@@ -195,7 +195,7 @@ bool SCgTupleArranger::findArrangeItems()
                     mArrangeItems.append(pair);
                     mArrangeItems.append(beg);
 
-                    dot = pair->getEndDot();
+                    dot = pair->endDot();
                 }
             }
             if (dot >= 0.f)

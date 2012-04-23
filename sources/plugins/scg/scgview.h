@@ -74,6 +74,7 @@ private:
     QAction* mActionChangeIdtf;
     QAction* mActionDelete;
     QAction* mActionContourDelete;
+    QAction* mActionSwapPairOrient;
     //! Copy action
     QAction* mActionCopy;
     //! Cut action
@@ -81,7 +82,7 @@ private:
     //! Paste action
     QAction* mActionPaste;
     //! Select All action
-    QAction* mActionSelect_All;
+    QAction* mActionSelectAll;
 
     QList<QAction*> mActionsList;
     void craeteActions();
@@ -125,40 +126,36 @@ public slots:
     void setScene(SCgScene* scene);
 
 private slots:
-    /*! Slot for object deletion
-      */
+    //! Delete selected sc.g-elements
     void deleteSelected();
 
-    /*! Slot for contour deletion (without child objects)
-      */
+    //! Delete selected contour without child objects
     void deleteJustContour();
 
-    /*! Slot for identificator changing.
-      */
+    //! Swap sc.g-pair orientation
+    void swapPairOrient();
+
+    //! Start dialog for sc.g-element identifier changing
     void changeIdentifier();
 
-    /*! Slot for type changing
+    /*! Change type of context element.
+      * @param action Pointer to action that assigned to specified sc.g-element type
       */
     void changeType(QAction *action);
 
-    /*! Slot for content changing
-      */
+    //! Starts content change dialog
     void changeContent();
 
-    /*! Slot for content show/hiding
-      */
+    //! Show/hide content of selected element
     void setContentVisible(bool visibility);
 
-    /*! Slot for deletion content
-      */
+    //! Delete content of selected element
     void deleteContent();
 
     void updateSceneRect(const QRectF& rect);
 
     //! Edit mode changed slot @see SCgScene::editModeChanged
     void editModeChanged(int mode);
-
-
 };
 
 #endif // SCGVIEW_H
