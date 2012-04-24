@@ -47,7 +47,19 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
         mContextMenu(0),
         mContextObject(0),
         mWindow(window),
-        isSceneRectControlled(false)
+        isSceneRectControlled(false),
+        mActionChangeContent(0),
+        mActionShowContent(0),
+        mActionDeleteContent(0),
+        mActionChangeIdtf(0),
+        mActionDelete(0),
+        mActionContourDelete(0),
+        mActionSwapPairOrient(0),
+        mActionCopy(0),
+        mActionCut(0),
+        mActionPaste(0),
+        mActionSelectAll(0)
+
 {
     setCacheMode(CacheNone);//CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -82,27 +94,31 @@ void SCgView::craeteActions()
     mActionShowContent->setShortcut(QKeySequence( tr("H") ));
     connect(mActionShowContent, SIGNAL(triggered(bool)), this, SLOT(setContentVisible(bool)));
 
-    mActionDeleteContent = new QAction(mWindow->findIcon("edit-content-delete.png"),tr("Delete content"),mWindow);
+    mActionDeleteContent = new QAction(mWindow->findIcon("edit-content-delete.png"), tr("Delete content"), mWindow);
     mActionDeleteContent->setShortcut(QKeySequence( tr("D") ));
     connect(mActionDeleteContent, SIGNAL(triggered()), this, SLOT(deleteContent()));
 
-    mActionChangeIdtf = new QAction(mWindow->findIcon("edit-change-idtf.png"),tr("Change identifier"),mWindow);
+    mActionChangeIdtf = new QAction(mWindow->findIcon("edit-change-idtf.png"), tr("Change identifier"), mWindow);
     mActionChangeIdtf->setShortcut(QKeySequence( tr("I") ));
     connect(mActionChangeIdtf, SIGNAL(triggered()), this, SLOT(changeIdentifier()));
 
-    mActionDelete = new QAction(QIcon::fromTheme("edit-delete", mWindow->findIcon("edit-delete.png")),tr("Delete"),mWindow);
+    mActionDelete = new QAction(QIcon::fromTheme("edit-delete", mWindow->findIcon("edit-delete.png")), tr("Delete"), mWindow);
     mActionDelete->setShortcut(QKeySequence::Delete);
     connect(mActionDelete, SIGNAL(triggered()), this, SLOT(deleteSelected()));
 
-    mActionContourDelete = new QAction(mWindow->findIcon("edit-delete.png"),tr("Delete contour"),mWindow);
+    mActionContourDelete = new QAction(mWindow->findIcon("edit-delete.png"), tr("Delete contour"), mWindow);
     mActionContourDelete->setShortcut( QKeySequence(tr("Backspace")) );
     connect(mActionContourDelete, SIGNAL(triggered()), this, SLOT(deleteJustContour()));
+
+    mActionSwapPairOrient = new QAction(mWindow->findIcon("edit-swap-pair.png"), tr("Swap orientation"), mWindow);
+    mActionSwapPairOrient->setShortcut( QKeySequence(tr("S")));
+    connect(mActionSwapPairOrient, SIGNAL(triggered()), this, SLOT(swapPairOrient()));
 
     mActionCopy = new QAction(QIcon::fromTheme("edit-copy", mWindow->findIcon("edit-copy.png")), tr("Copy"),this);
     mActionCopy->setShortcut(QKeySequence::Copy);
     connect(mActionCopy, SIGNAL(triggered()), mWindow, SLOT(copy()));
 
-    mActionCut = new QAction(QIcon::fromTheme("edit-cut", mWindow->findIcon("edit-cut.png")),tr("Cut"),this);
+    mActionCut = new QAction(QIcon::fromTheme("edit-cut", mWindow->findIcon("edit-cut.png")), tr("Cut"),this);
     mActionCut->setShortcut(QKeySequence::Cut);
     connect(mActionCut, SIGNAL(triggered()), mWindow, SLOT(cut()));
 
@@ -110,9 +126,9 @@ void SCgView::craeteActions()
     mActionPaste->setShortcut(QKeySequence::Paste);
     connect(mActionPaste, SIGNAL(triggered()), mWindow, SLOT(paste()));
 
-    mActionSelect_All = new QAction(QIcon::fromTheme("edit-select-all", mWindow->findIcon("edit-select-all.png")), tr("Select All"),this);
-    mActionSelect_All->setShortcut(QKeySequence::SelectAll);
-    connect(mActionSelect_All, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
+    mActionSelectAll = new QAction(QIcon::fromTheme("edit-select-all", mWindow->findIcon("edit-select-all.png")), tr("Select All"),this);
+    mActionSelectAll->setShortcut(QKeySequence::SelectAll);
+    connect(mActionSelectAll, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
 
     mActionsList.append(mActionChangeContent);
@@ -124,6 +140,7 @@ void SCgView::craeteActions()
     mActionsList.append(sep);
 
     mActionsList.append(mActionChangeIdtf);
+    mActionsList.append(mActionSwapPairOrient);
 
     sep = new QAction(this);
     sep->setSeparator(true);
@@ -137,7 +154,7 @@ void SCgView::craeteActions()
     sep->setSeparator(true);
     mActionsList.append(sep);
 
-    mActionsList.append(mActionSelect_All);
+    mActionsList.append(mActionSelectAll);
 
     sep = new QAction(this);
     sep->setSeparator(true);
@@ -187,6 +204,11 @@ void SCgView::updateActionsState(int idx)
         mActionDeleteContent->setEnabled(false);
         mActionDeleteContent->setVisible(false);
     }
+
+    bool pairType = (mContextObject != 0) && (mContextObject->type() == SCgPair::Type);
+
+    mActionSwapPairOrient->setEnabled(pairType);
+    mActionSwapPairOrient->setVisible(pairType);
 
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
@@ -262,6 +284,11 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Var, types);
             for (iter = types.begin(); iter != types.end(); ++iter)
                 varSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
+            types.clear();
+
+            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::ConstUnknown, types);
+            for (iter = types.begin(); iter != types.end(); ++iter)
+                menu->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
             types.clear();
         }
     }
@@ -368,6 +395,14 @@ void SCgView::deleteJustContour()
 
     SCgContour *contour = static_cast<SCgContour*>(mContextObject);
     static_cast<SCgScene*>(scene())->deleteContourCommand(contour);
+}
+
+void SCgView::swapPairOrient()
+{
+    Q_ASSERT(mContextObject && mContextObject->type() == SCgPair::Type);
+
+    SCgPair *pair = static_cast<SCgPair*>(mContextObject);
+    static_cast<SCgScene*>(scene())->swapPairOrientCommand(pair);
 }
 
 void SCgView::changeIdentifier()

@@ -70,7 +70,7 @@ void GwfObjectInfoReader::createTypesMap()
     // initialize types mapping
 
     // nodes
-    mGWFType2TypeAlias["node/const/not_define"] = "node/const/not_define";
+    mGWFType2TypeAlias["node/const/not_define"] = "node/-/not_define";
     mGWFType2TypeAlias["node/const/general_node"] = "node/const/general";
     mGWFType2TypeAlias["node/const/predmet"] = "node/const/abstract";
     mGWFType2TypeAlias["node/const/material"] = "node/const/material";
@@ -94,7 +94,7 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["node/var/atom"] = "node/var/group";
     mGWFType2TypeAlias["node/var/group"] = "node/var/group";
 
-    mGWFType2TypeAlias["node/meta/not_define"] = "node/var/not_define";
+    mGWFType2TypeAlias["node/meta/not_define"] = "node/-/not_define";
     mGWFType2TypeAlias["node/meta/general_node"] = "node/var/general";
     mGWFType2TypeAlias["node/meta/predmet"] = "node/var/abstract";
     mGWFType2TypeAlias["node/meta/nopredmet"] = "node/var/struct";

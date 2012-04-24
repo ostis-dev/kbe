@@ -131,40 +131,40 @@ public:
     //! @return List of used identifiers on this scene.
     QStringList idtfList();
 
-    /**
-    * @brief Gets all items with a given type which added to the scene
-    * @param type Type of objects that need to be selected from the scene
-    * @return List of selected objects
-    */
+    /*!
+     * @brief Gets all items with a given type which added to the scene
+     * @param type Type of objects that need to be selected from the scene
+     * @return List of selected objects
+     */
     QList<SCgObject*> itemsByType(int type) const;
 
     /*! Create sc.g-node.
-        @param pos    sc.g-node position.
-        @return Created sc.g-node
-      */
+     * @param pos    sc.g-node position.
+     * @return Created sc.g-node
+     */
     SCgNode* createSCgNode(const QPointF &pos);
 
     /*! Create sc.g-pair.
-        @param begObj   Begin object.
-        @param endObj   End object.
-        @param points   Line points
-        @return Created sc.g-pair
-      */
+     * @param begObj   Begin object.
+     * @param endObj   End object.
+     * @param points   Line points
+     * @return Created sc.g-pair
+     */
     SCgPair* createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVector<QPointF> &points);
 
     /*! Create sc.g-bus.
-        @param points   Bus line points
-        @param owner    sc.g-node that owned bus
-        @return Created sc.g-bus
+      * @param points   Bus line points
+      * @param owner    sc.g-node that owned bus
+      * @return Created sc.g-bus
       */
     SCgBus* createSCgBus(const QVector<QPointF>& points, SCgNode *owner);
 
     /*! Create sc.g-contour.
-        @return Created sc.g-contour
-      */
+     *  @return Created sc.g-contour
+     */
     SCgContour* createSCgContour(const QVector<QPointF> &points);
 
-    /**
+    /*!
      * \defgroup undoCommands Unified access to undo/redo mechanism
      * @param parentCmd Parent command for new command.
      * @param addToScene if true then command will be added to undoStack
@@ -173,116 +173,170 @@ public:
      * @{
      */
 
-    /*! Change object identifier
-      @param    object  Object to change identifier
-      @param    idtf    New identifier
-      */
+    /*! Create undo/redo command to change object identifier
+     * @param object Pointer of sc.g-object to change identifier
+     * @param idtf New identifier
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* changeIdtfCommand(SCgObject *object,
-    								const QString &idtf,
-    								SCgBaseCommand* parentCmd = 0,
-    								bool addToStack = true);
+                                      const QString &idtf,
+                                      SCgBaseCommand* parentCmd = 0,
+                                      bool addToStack = true);
 
-    /*! Change type of object
+    /*! Create undo/redo command to change object type
+      * @param object Pointer of sc.g-object to change type
+      * @param type String that contains new type alias
+      * @param parentCmd Pointer to parend undo/redo command
+      * @param addToStack Flag to add created command into stack
       */
     SCgBaseCommand* changeObjectTypeCommand(SCgObject *object,
-    										const QString &type,
-    										SCgBaseCommand* parentCmd = 0,
-    										bool addToStack = true);
+                                            const QString &type,
+                                            SCgBaseCommand* parentCmd = 0,
+                                            bool addToStack = true);
 
-    /*! Delete contour without childs
-      @param    contour    Pointer to contour we need to delete
-      */
+    /*! Create undo/redo command to delete contour without child objects
+     * @param contour Pointer of contour tp delete
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* deleteContourCommand(SCgContour *contour,
-    									SCgBaseCommand* parentCmd = 0,
-    									bool addToStack = true);
+                                         SCgBaseCommand* parentCmd = 0,
+                                         bool addToStack = true);
 
-    /*! Show/hide content
-      @param    node    Pointer to sc.g-node for content show/hide
-      @param    visibility  Visibility flag. True - to show content, False - to hide.
-      */
+    /*! Create undo/redo command to swap sc.g-pair orientation
+     * @param pair Pointer to sc.g-pair to swap orientation
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
+    SCgBaseCommand* swapPairOrientCommand(SCgPair *pair,
+                                          SCgBaseCommand* parentCmd = 0,
+                                          bool addToStack = true);
+
+    /*! Create undo/redo command to show/hide content
+     * @param node Pointer to sc.g-node for content show/hide
+     * @param visibility Visibility flag. True - to show content, False - to hide.
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* changeContentVisibilityCommand(SCgNode *node,
-    												bool visibility,
-    												SCgBaseCommand* parentCmd = 0,
-    												bool addToStack = true);
+                                                   bool visibility,
+                                                   SCgBaseCommand* parentCmd = 0,
+                                                   bool addToStack = true);
 
-    /*! Change content data
-      @param    node    Pointer to sc.g-node for content changing
-      @param    contInfo    Content information
-      */
+    /*! Create undo/redo command to change content data
+     * @param node Pointer to sc.g-node for content changing
+     * @param contInfo Content information
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* changeContentDataCommand(SCgNode *node,
-    										const SCgContent::ContInfo &contInfo,
-    										SCgBaseCommand* parentCmd = 0,
-    										bool addToStack = true);
+                                             const SCgContent::ContInfo &contInfo,
+                                             SCgBaseCommand* parentCmd = 0,
+                                             bool addToStack = true);
 
-    /*! Delete selected objects.
-      */
+    /*! Create undo/redo command to delete selected objects.
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* deleteSelObjectsCommand(SCgBaseCommand* parentCmd = 0,
-    										bool addToStack = true);
+                                            bool addToStack = true);
 
-    /*! Command for moving objects
-     * @param info Map with moved objects and their's initial and finish positions.
+    /*! Create undo/redo command to move objects
+     * @param info Map that contains initial and finish posiitons of moved objects
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* moveSelectedCommand(const ObjectUndoInfo& info,
-    									SCgBaseCommand* parentCmd = 0,
-    									bool addToStack = true);
+                                        SCgBaseCommand* parentCmd = 0,
+                                        bool addToStack = true);
 
-    /*!
-     * Adds point to specified object.
+    /*! Create undo/redo command to add point into specified object.
      * @param obj Object whose points will be changed.
      * @param point This point will be added.
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* addPointCommand(SCgPointObject* obj,
-    								const QPointF& point,
-    								SCgBaseCommand* parentCmd = 0,
-    								bool addToStack = true);
+                                    const QPointF& point,
+                                    SCgBaseCommand* parentCmd = 0,
+                                    bool addToStack = true);
 
-    /*!
-     * Command for creating node.
+    /*! Create undo/redo command to create sc.g-node
+     * @param pos Node position
+     * @param parent Pointer to parent contour
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* createNodeCommand(const QPointF& pos,
-    								SCgContour* parent,
-    								SCgBaseCommand* parentCmd = 0,
-    								bool addToStack = true);
+                                      SCgContour* parent,
+                                      SCgBaseCommand* parentCmd = 0,
+                                      bool addToStack = true);
 
-    /*!
-     * OCommand for creating bus.
+    /*! Create undo/redo command to create sc.g-bus
+     * @param owner Pointer to sc.g-node that will be a bus owner
+     * @param points Vector of sc.g-bus points
+     * @param parent Pointer to parent contour
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* createBusCommand(SCgNode* owner,
-    								const QVector<QPointF> &points,
-    								SCgContour* parent,
-    								SCgBaseCommand* parentCmd = 0,
-    								bool addToStack = true);
+                                     const QVector<QPointF> &points,
+                                     SCgContour* parent,
+                                     SCgBaseCommand* parentCmd = 0,
+                                     bool addToStack = true);
 
-    /*!
-     * Command for creating pair.
+    /*! Create undo/redo command to create sc.g-pair
+     * @param points Vector of sc.g-pair points
+     * @param beginObj Pointer to begin object of sc.g-pair
+     * @param endObj Pointer to end object of sc.g-pair
+     * @param parent Pointer to parent contour
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
      */
-    SCgBaseCommand* createPairCommand( const QVector<QPointF> &points,
-    									SCgObject* beginObj,
-    									SCgObject* endObj,
-    									SCgContour* parent,
-    									SCgBaseCommand* parentCmd = 0,
-    									bool addToStack = true);
+    SCgBaseCommand* createPairCommand(const QVector<QPointF> &points,
+                                      SCgObject* beginObj,
+                                      SCgObject* endObj,
+                                      SCgContour* parent,
+                                      SCgBaseCommand* parentCmd = 0,
+                                      bool addToStack = true);
 
-    /*!
-     * Command for creating contour.
+    /*! Create undo/redo command to create sc.g-contour
+     * @param childs List of child sc.g-objects
+     * @param points List of sc.g-contour points
+     * @param parent Pointer to parent contour
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* createContourCommand(const QList<QGraphicsItem*>& childs,
-    									const QVector<QPointF> &points,
-    									SCgContour* parent,
-    									SCgBaseCommand* parentCmd = 0,
-    									bool addToStack = true);
+                                         const QVector<QPointF> &points,
+                                         SCgContour* parent,
+                                         SCgBaseCommand* parentCmd = 0,
+                                         bool addToStack = true);
 
+    /*! Create undo/redo command to change object position
+     * @param obj Pointer to changed sc.g-object
+     * @param newPos New Object position
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* changeObjectPositionCommand(SCgObject* obj,
-    											const QPointF& newPos,
-    											SCgBaseCommand* parentCmd = 0,
-    											bool addToStack = true);
+                                                const QPointF& newPos,
+                                                SCgBaseCommand* parentCmd = 0,
+                                                bool addToStack = true);
 
+    /*! Create undo/redo command to change object points
+     * @param obj Pointer to changed sc.g-object
+     * @param newPoints Vector of new object points
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
     SCgBaseCommand* changeObjectPointsCommand(SCgPointObject* obj,
-    										const QVector<QPointF>& newPoints,
-    										SCgBaseCommand* parentCmd = 0,
-    										bool addToStack = true);
+                                              const QVector<QPointF>& newPoints,
+                                              SCgBaseCommand* parentCmd = 0,
+                                              bool addToStack = true);
 
-    /**@}*/
+    /*! @} */
 
     //! Adds given command @p cmd to scene's undoStack.
     void addCommandToStack(SCgBaseCommand* cmd);

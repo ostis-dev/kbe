@@ -22,6 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "updatewindow.h"
 #include "updatedownloader.h"
+#include "updateextractor.h"
 
 #include <QTextBrowser>
 #include <QPushButton>
@@ -30,6 +31,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QProgressDialog>
 #include <QMessageBox>
 #include <QTimer>
+#include <QDomDocument>
+#include <QFile>
+
+#define UPDATE_LIST "http://www.ostis.net/download/updates/updates.xml"
+#define UPDATE_FILE_PATH "_update.update"
+#define UPDATE_CHECKSUM_PATH "_update.checksum"
 
 UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
     QWidget(parent),
@@ -75,6 +82,108 @@ UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
 UpdateWindow::~UpdateWindow()
 {
     delete mProgressDialog;
+    delete mUpdateDownloader;
+}
+
+void UpdateWindow::startUpdate()
+{
+    // try to download new update
+    mUpdateDownloader = new UpdateDownloader(this);
+    connect(mUpdateDownloader, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(workProgress(qint64, qint64)));
+    connect(mUpdateDownloader, SIGNAL(started()), this, SLOT(workStarted()));
+    connect(mUpdateDownloader, SIGNAL(failed()), this, SLOT(workFailed()));
+    connect(mUpdateDownloader, SIGNAL(finished()), this, SLOT(workFinished()));
+
+    mUpdateButton->setEnabled(false);
+
+    mProgressDialog->setLabelText(tr("Download updates list"));
+    mUpdateDownloader->doDownload(UPDATE_LIST, "_updates.xml");
+}
+
+void UpdateWindow::resolveUpdate()
+{
+    static QString updatesFile = "_updates.xml";
+    QDomDocument doc(updatesFile);
+
+    QFile file(updatesFile);
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Can't open file %1").arg(updatesFile));
+        return;
+    }
+
+    if (!doc.setContent(&file))
+    {
+        file.close();
+        QMessageBox::critical(this, tr("Error"), tr("Can't parse file %1").arg(updatesFile));
+        return;
+    }
+    file.close();
+
+    QDomElement root = doc.documentElement();
+
+    if (root.tagName() != "updates")
+    {
+        QMessageBox::critical(this, tr("Error"), tr("File %1 is invalid").arg(updatesFile));
+        return;
+    }
+
+    // iterate all available updates and find for current version
+    QDomElement update = root.firstChildElement("update");
+    while (!update.isNull())
+    {
+        if (update.attribute("from") == mCurrentVersion)
+        {
+            mUpdatePath = update.firstChild().nodeValue();
+            break;
+        }
+
+        update = update.nextSiblingElement("update");
+    }
+
+    // start downloading of update
+    if (mUpdatePath.isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("There are no suitable update for version %1").arg(mCurrentVersion));
+        return;
+    }
+
+    downloadUpdate();
+}
+
+void UpdateWindow::downloadUpdate()
+{
+    mCurrentWork = WT_GETUPDATE;
+
+    mProgressDialog->setLabelText(tr("Download update..."));
+    mUpdateDownloader->doDownload(mUpdatePath, UPDATE_FILE_PATH);
+}
+
+void UpdateWindow::downloadCheckSum()
+{
+    mCurrentWork = WT_GETCHECKSUM;
+
+    mProgressDialog->setLabelText(tr("Download checksum..."));
+    mUpdateDownloader->doDownload(mUpdatePath + ".checksum", UPDATE_CHECKSUM_PATH);
+}
+
+void UpdateWindow::readUpdate()
+{
+    mCurrentWork = WT_READCONTENT;
+
+    mProgressDialog->setLabelText(tr("Reading update..."));
+    mProgressDialog->setValue(0);
+    mProgressDialog->setRange(0, 0);
+    workStarted();
+
+    // TODO: compare checksum
+
+    // unpack
+    UpdateExtractor extractor;
+    if (!extractor.extract(UPDATE_FILE_PATH, "_update_files"))
+        workFailed();
+
+    workFinished();
 }
 
 void UpdateWindow::workProgress(qint64 finished, qint64 total)
@@ -85,10 +194,26 @@ void UpdateWindow::workProgress(qint64 finished, qint64 total)
 
 void UpdateWindow::workFinished()
 {
+    mProgressDialog->setValue(0);
     mProgressDialog->hide();
 
-    if (mCurrentWork == WT_UPDATELIST)
+    switch (mCurrentWork)
+    {
+    case WT_UPDATELIST:
         mUpdateButton->setEnabled(true);
+        resolveUpdate();
+        break;
+
+    case WT_GETUPDATE:
+        mUpdateButton->setEnabled(false);
+        downloadCheckSum();
+        break;
+
+    case WT_GETCHECKSUM:
+        readUpdate();
+        break;
+    }
+
 }
 
 void UpdateWindow::workStarted()
@@ -104,6 +229,7 @@ void UpdateWindow::workFailed()
         mUpdateButton->setEnabled(true);
     }
 
+    mProgressDialog->setValue(0);
     mProgressDialog->hide();
 }
 
@@ -116,18 +242,3 @@ void UpdateWindow::workCanceled()
     }
 }
 
-void UpdateWindow::startUpdate()
-{
-    // try to download new update
-    mUpdateDownloader = new UpdateDownloader(this);
-    connect(mUpdateDownloader, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(workProgress(qint64, qint64)));
-    connect(mUpdateDownloader, SIGNAL(started()), this, SLOT(workStarted()));
-    connect(mUpdateDownloader, SIGNAL(failed()), this, SLOT(workFailed()));
-    connect(mUpdateDownloader, SIGNAL(finished()), this, SLOT(workFinished()));
-
-    mUpdateButton->setEnabled(false);
-
-    mProgressDialog->setLabelText(tr("Download updates list"));
-    QTimer::singleShot(0, mUpdateDownloader, SLOT(downloadUpdatesList()));
-    //mUpdateDownloader->downloadUpdatesList();
-}

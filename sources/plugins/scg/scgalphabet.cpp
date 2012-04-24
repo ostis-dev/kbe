@@ -68,6 +68,7 @@ void SCgAlphabet::initialize()
 
     mAlias2ConstType.push_back("const");
     mAlias2ConstType.push_back("var");
+    mAlias2ConstType.push_back("-");
 
     mPosTypes["pos"] = Positive;
     mPosTypes["neg"] = Negative;
@@ -112,7 +113,8 @@ void SCgAlphabet::initialize()
 
     QSize size(24, 24);
 
-    mObjectTypes["node/const/not_define"] = createNodeIcon(size, Const, NotDefine);
+    mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, NotDefine);
+
     mObjectTypes["node/const/general"] = createNodeIcon(size, Const, General);
     mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, Abstract);
     mObjectTypes["node/const/material"] = createNodeIcon(size, Const, Material);
@@ -123,7 +125,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/const/relation"] = createNodeIcon(size, Const, Relation);
     mObjectTypes["node/const/group"] = createNodeIcon(size, Const, Group);
 
-    mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
+    //mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
     mObjectTypes["node/var/general"] = createNodeIcon(size, Var, General);
     mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, Abstract);
     mObjectTypes["node/var/material"] = createNodeIcon(size, Var, Material);
@@ -311,6 +313,12 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     painter->setBrush(brush);
 
     QRectF bound = boundRect.adjusted(2, 2, -2, -2);
+
+    if (type_struct == NotDefine)
+    {
+        painter->drawEllipse(bound);
+        return;
+    }
 
     if (type == Const)
     {

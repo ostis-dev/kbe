@@ -20,30 +20,32 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include <QtGui/QApplication>
-#include <QDir>
+#ifndef UPDATEEXTRACTOR_H
+#define UPDATEEXTRACTOR_H
 
-#include "updatewindow.h"
+#include <QObject>
 
-
-int main(int argc, char *argv[])
+/*! Class that extracs update from zip archive
+  */
+class UpdateExtractor : public QObject
 {
-    QApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit UpdateExtractor(QObject *parent = 0);
+    virtual ~UpdateExtractor();
 
-    a.setOrganizationName("OSTIS");
-    a.setOrganizationDomain("ostis.net");
-    a.setApplicationName("updater");
+    /*! Extract files from \p archive into \p directory
+      * @param archive Path to archive to exctract data
+      * @param directory Path to output directory
+      *
+      * @return Return true, if archive extracted wihtout any errors; otherwise return false
+      */
+    bool extract(const QString &archive, const QString &directory);
 
-    QDir root_dir = a.applicationDirPath();
+signals:
+    
+public slots:
+    
+};
 
-    if (a.arguments().size() < 2)
-        return 0;
-
-    UpdateWindow window(a.arguments().at(1));
-    window.setFixedSize(600, 400);
-    window.show();
-
-    //splash.finish(&w);
-    return a.exec();
-}
-
+#endif // UPDATEEXTRACTOR_H

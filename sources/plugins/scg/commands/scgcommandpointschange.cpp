@@ -36,8 +36,8 @@ SCgCommandPointsChange::SCgCommandPointsChange(SCgScene* scene,
     if(obj->type() == SCgPair::Type)
     {
         mIsPair = true;
-        mOldBeginDot = static_cast<SCgPair*>(obj)->getBeginDot();
-        mOldEndDot = static_cast<SCgPair*>(obj)->getEndDot();
+        mOldBeginDot = static_cast<SCgPair*>(obj)->beginDot();
+        mOldEndDot = static_cast<SCgPair*>(obj)->endDot();
     }
     else
         mIsPair = false;

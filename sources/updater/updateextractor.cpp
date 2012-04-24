@@ -20,30 +20,53 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include <QtGui/QApplication>
+#include "updateextractor.h"
+
+#include <QFileInfo>
+#include <QDebug>
 #include <QDir>
 
-#include "updatewindow.h"
+#include <zzip/lib.h>
 
-
-int main(int argc, char *argv[])
+UpdateExtractor::UpdateExtractor(QObject *parent) :
+    QObject(parent)
 {
-    QApplication a(argc, argv);
-
-    a.setOrganizationName("OSTIS");
-    a.setOrganizationDomain("ostis.net");
-    a.setApplicationName("updater");
-
-    QDir root_dir = a.applicationDirPath();
-
-    if (a.arguments().size() < 2)
-        return 0;
-
-    UpdateWindow window(a.arguments().at(1));
-    window.setFixedSize(600, 400);
-    window.show();
-
-    //splash.finish(&w);
-    return a.exec();
 }
 
+UpdateExtractor::~UpdateExtractor()
+{
+}
+
+bool UpdateExtractor::extract(const QString &archive, const QString &directory)
+{
+    QFileInfo fi(archive);
+
+    if (!fi.exists())
+        return false;
+
+    // create output directory if it doesn't exist
+    QFileInfo di(directory);
+    if (!di.isDir())
+        return false;
+
+    QDir _d(".");
+    if (di.exists())
+        _d.rmdir(directory);
+
+    _d.mkpath(directory);
+
+    // open archive
+    ZZIP_DIR *dir = zzip_opendir(archive.toStdString().c_str());
+    if (dir != 0)
+    {
+        QStringList files;
+        // collect all files
+        ZZIP_DIRENT dirent;
+        while (zzip_dir_read(dir, &dirent))
+            files << dirent.d_name;
+
+
+
+        zzip_closedir(dir);
+    }
+}

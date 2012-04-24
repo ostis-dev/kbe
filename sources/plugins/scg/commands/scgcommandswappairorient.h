@@ -20,30 +20,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include <QtGui/QApplication>
-#include <QDir>
+#ifndef SCGCOMMANDSWAPPAIRORIENT_H
+#define SCGCOMMANDSWAPPAIRORIENT_H
 
-#include "updatewindow.h"
+#include "scgbasecommand.h"
 
+class SCgPair;
 
-int main(int argc, char *argv[])
+class SCgCommandSwapPairOrient : public SCgBaseCommand
 {
-    QApplication a(argc, argv);
+public:
+    explicit SCgCommandSwapPairOrient(SCgScene *scene, SCgPair *pair, QUndoCommand *parent);
+    virtual ~SCgCommandSwapPairOrient();
 
-    a.setOrganizationName("OSTIS");
-    a.setOrganizationDomain("ostis.net");
-    a.setApplicationName("updater");
+protected:
+    void redo();
+    void undo();
+};
 
-    QDir root_dir = a.applicationDirPath();
-
-    if (a.arguments().size() < 2)
-        return 0;
-
-    UpdateWindow window(a.arguments().at(1));
-    window.setFixedSize(600, 400);
-    window.show();
-
-    //splash.finish(&w);
-    return a.exec();
-}
-
+#endif // SCGCOMMANDSWAPPAIRORIENT_H

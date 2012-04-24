@@ -30,8 +30,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFile>
 #include <QDebug>
 
-#define UPDATE_LIST "http://www.ostis.net/download/updates/updates.xml"
-
 UpdateDownloader::UpdateDownloader(QObject *parent) :
     QObject(parent),
     mNetworkManager(0),
@@ -75,12 +73,6 @@ void UpdateDownloader::doDownload(const QString &url, const QString &filePath)
     emit started();
 }
 
-void UpdateDownloader::downloadUpdatesList()
-{
-    // first of all we need to download available updates list
-    doDownload(UPDATE_LIST, "_updates.xml");
-}
-
 void UpdateDownloader::downloadReadyRead()
 {
     Q_ASSERT(mFile != 0);
@@ -95,17 +87,21 @@ void UpdateDownloader::downloadFinished()
     mFile->flush();
     mFile->close();
 
+    bool _failed = false;
+
     if (mNetworkReply->error())
     {
         qDebug() << mNetworkReply->errorString();
         emit failed();
+        _failed = true;
     }
-    else
-        emit finished();
-
 
     mNetworkReply->deleteLater();
     mNetworkReply = 0;
+
+    // Need to call after network reply destroyed
+    if (!_failed)
+        emit finished();
 }
 
 void UpdateDownloader::downloadFailed()
@@ -119,4 +115,5 @@ void UpdateDownloader::downloadFailed()
 void UpdateDownloader::downloadCanceled()
 {
     mNetworkReply->abort();
+    mNetworkReply = 0;
 }
