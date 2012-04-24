@@ -86,12 +86,8 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mActionFind(0)//,
 //    mActionMinMap(0)
 {
-    // TODO: correct object name
-    size_t size = sizeof(this);
-    QChar* _char = (QChar*)this;
-    QString str(_char,size);
 
-    setObjectName(QString((QChar*)this, sizeof(this))); // for 64bit systems
+    setObjectName(QString::number((size_t)this));
 
     mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////
