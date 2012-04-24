@@ -110,6 +110,8 @@ void SCgBus::updateShape()
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape());
     mShape = path_stroker.createStroke(mShape);
 
+    mLineShape = mShape;
+
     // update item
     update();
 

@@ -27,7 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 class SCgPointObject;
 
-class SCgSelectMode: public SCgMode
+class SCgSelectMode : public SCgMode
 {
     Q_OBJECT
 public:
@@ -65,6 +65,7 @@ private:
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item
     SCgContour *findNearestParentContour(QGraphicsItem* item);
+
 };
 
 #endif /* SCGSCENEEVENTHANDLERS_H_ */

@@ -99,6 +99,8 @@ void SCgPair::updateShape()
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape());
     mShape = path_stroker.createStroke(mShapeNormal);
 
+    mLineShape = mShape;
+
     // updating pair
     update();
 

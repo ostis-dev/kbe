@@ -53,22 +53,25 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
         QGraphicsItem *item = mScene->itemAt(mousePos);
         if(mCurrentPointObject)
         {
-            QPainterPath p = mCurrentPointObject->shape();
+            QPainterPath p = mCurrentPointObject->lineShape();
             QPointF itemPoint = mCurrentPointObject->mapFromScene(mousePos);
             if(p.contains(itemPoint))
+            {
                 mScene->addPointCommand(mCurrentPointObject,itemPoint);
+                event->accept();
+                return;
+            }
+        }
+
+        // check if there are no any items under mouse and create scg-node
+        if (item == 0 || item->type() == SCgContour::Type)
+        {
+            SCgContour *contour = 0;
+            if (item != 0 && item->type() == SCgContour::Type)
+                contour = static_cast<SCgContour*>(item);
+            mScene->createNodeCommand(mousePos, contour);
             event->accept();
         }
-        else
-            // check if there are no any items under mouse and create scg-node
-            if (item == 0 || item->type() == SCgContour::Type)
-            {
-                SCgContour *contour = 0;
-                if (item != 0 && item->type() == SCgContour::Type)
-                    contour = static_cast<SCgContour*>(item);
-                mScene->createNodeCommand(mousePos, contour);
-                event->accept();
-            }
     }
     SCgMode::mouseDoubleClick(event);
 }

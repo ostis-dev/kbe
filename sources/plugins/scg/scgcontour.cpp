@@ -140,7 +140,9 @@ void SCgContour::updateShape()
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape() + 2);
     mShape = path_stroker.createStroke(mShape);
 
-    //mShape = mShape.united(mShapePoints);
+    mLineShape = mShape;
+
+    mShape = mShapeNormal.united(mShape);
 
     updateConnected();
 
