@@ -30,7 +30,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QTextDocumentFragment>
-#include <QDebug>
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     QPlainTextEdit(parent),
@@ -118,13 +117,16 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
-    if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return){
+    if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return)
+    {
         moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
         QPlainTextEdit::keyPressEvent(e);
         return;
     }
 
-    if (e->modifiers() == Qt::ShiftModifier && (e->key() == Qt::Key_PageDown || Qt::Key_PageUp)) {
+    if (e->modifiers() == Qt::ShiftModifier &&
+            (e->key() == Qt::Key_PageDown || e->key() == Qt::Key_PageUp))
+    {
         QPlainTextEdit::keyPressEvent(e);
         emit selectionChanged();
         e->accept();
