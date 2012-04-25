@@ -215,7 +215,7 @@ void DefaultSCgObjectBuilder::buildContour(SCgContourInfo* info)
             SCgContour* contour = new SCgContour;
 
             contour->setPos(QPolygonF(info->points()).boundingRect().center());
-            contour->setPoints(contour->mapFromScene(info->points()));
+            contour->setPoints(info->points());
 
             setObjectInfo(contour, info);
         }

@@ -288,7 +288,7 @@ SCgContour* SCgScene::createSCgContour(const QVector<QPointF> &points)
     QPointF center = polygon.boundingRect().center();
 
     contour->setPos(center);
-    contour->setPoints(contour->mapFromScene(v));
+    contour->setPoints(v);
 
     addItem(contour);
 

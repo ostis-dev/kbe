@@ -45,8 +45,8 @@ public:
     typedef QVector<QPointF> PointFVector;
 
     /*! Set points for an object.
-      @param points reference to vector that contains points for an object.
-      NOTE:all points in THIS ITEM coordinates
+      @param points Vector of points.
+      @note All points must be mapped into scene coordinates
       @see SCgObject::points
       @see SCgObject::scenePoints
       */

@@ -212,7 +212,7 @@ void SCgGridArranger::calculatePosition(SCgObject* obj)
             if (e_obj != 0)
                 calculatePosition(e_obj);
 
-            registerCommand(pointObj, pointObj->mapFromScene(points));
+            registerCommand(pointObj, points);
         }
     }
 }
@@ -258,7 +258,7 @@ void SCgGridArranger::placeToGrid(SCgObject* obj, SCgObject* realObj)
             placeToGrid(ghostPointObj->objectWithRole(SCgPointObject::IncidentEnd),
                         realPointObj->objectWithRole(SCgPointObject::IncidentEnd));
 
-            ghostPointObj->setPoints(ghostPointObj->mapFromScene(points));
+            ghostPointObj->setPoints(points);
         }
     }
 }

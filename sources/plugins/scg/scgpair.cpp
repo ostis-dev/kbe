@@ -222,13 +222,13 @@ void SCgPair::setPoints(const PointFVector &points)
 
     if(mBeginObject)
     {
-        qreal dPos = mBeginObject->dotPos(mapToScene(points.at(0)));
+        qreal dPos = mBeginObject->dotPos(points.at(0));
         if(dPos != 0)
             mBeginDot = dPos;
     }
     if(mEndObject)
     {
-        qreal dPos = mEndObject->dotPos(mapToScene(points.at(points.size()-1)));
+        qreal dPos = mEndObject->dotPos(points.at(points.size()-1));
         if(dPos != 0)
             mEndDot = dPos;
     }

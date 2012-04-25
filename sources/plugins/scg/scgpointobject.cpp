@@ -91,7 +91,8 @@ void SCgPointObject::setPoints(const PointFVector &points)
         return;
 
     mPoints = points;
-
+    for (quint32 idx = 0; idx < mPoints.size(); idx++)
+        mPoints[idx] = mapFromScene(mPoints[idx]);
     //////////////////////////////////////////////////
     // update points if they're displayed
     if(!mPointItems.empty())

@@ -51,11 +51,7 @@ public:
     void setEndDot(float pos);
     float endDot() const;
 
-    /*! Set points for a pair.
-      @param points reference to vector that contains points for a pair.
-
-      @see SCgPair::getPoints
-      */
+    //! @copydoc SCgPointObject::setPoints
     void setPoints(const PointFVector &points);
 
     //! Swap begin and end elements

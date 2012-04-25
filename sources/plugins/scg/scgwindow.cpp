@@ -87,7 +87,7 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
 //    mActionMinMap(0)
 {
 
-    setObjectName(QString((quint32)this));
+    //setObjectName(QString((quint32)this));
 
     mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////

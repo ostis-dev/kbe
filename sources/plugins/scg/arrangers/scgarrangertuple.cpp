@@ -64,6 +64,7 @@ void SCgTupleArranger::startOperation()
     SCgBus *ghostBus = qgraphicsitem_cast<SCgBus*>(mGhosts[bus]);
     Q_ASSERT(ghostBus != 0);
 
+    // map points into bus coordinates
     registerCommand(bus, ghostBus->points());
 
     // affect pairs and objects
