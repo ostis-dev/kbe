@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtextitem.h"
 #include "scgpointgraphicsitem.h"
 
+#include <QDebug>
 #include <QDomDocument>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
@@ -104,14 +105,34 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    if(mCurrentPointObject)
-    {
-        QGraphicsItem *it = mScene->itemAt(event->scenePos());
 
-        if (it == 0 || (it != mCurrentPointObject && SCgObject::isSCgObjectType(it->type())))
+    QPointF current_position = event->scenePos();
+    QGraphicsItem *item = mScene->itemAt( event->scenePos() );
+
+        if ( item )     // if not empty place
         {
-            mCurrentPointObject->destroyPointObjects();
-            mCurrentPointObject = 0;
+            if ( item != mCurrentPointObject && SCgObject::isSCgPointObjectType( item->type() ) )
+            {
+                if ( mCurrentPointObject )
+                {
+                    mCurrentPointObject->destroyPointObjects();
+                    mCurrentPointObject = NULL;
+                }
+                mCurrentPointObject = static_cast<SCgPointObject*>( item );
+                if( mCurrentPointObject->shape().contains( mCurrentPointObject->mapFromScene( current_position ) ) )
+                {
+                    mCurrentPointObject->createPointObjects();
+                }
+
+            }
+        }
+        else
+        {
+            if ( mCurrentPointObject )
+            {
+                mCurrentPointObject->destroyPointObjects();
+                mCurrentPointObject = NULL;
+            }
         }
 
         /*QPainterPath p = mCurrentPointObject->shape();
@@ -120,19 +141,6 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
             mCurrentPointObject->destroyPointObjects();
             mCurrentPointObject = 0;
         }*/
-    }else
-        {
-            QPointF cur_pos = event->scenePos();
-            QGraphicsItem* item = mScene->itemAt(cur_pos);
-            if(item && SCgObject::isSCgPointObjectType(item->type()))
-            {
-                mCurrentPointObject = static_cast<SCgPointObject*>(item);
-                if(mCurrentPointObject->shape().contains(mCurrentPointObject->mapFromScene(cur_pos)))
-                    mCurrentPointObject->createPointObjects();
-                else
-                    mCurrentPointObject = 0;
-            }
-        }
 
     // start cloning
     if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
