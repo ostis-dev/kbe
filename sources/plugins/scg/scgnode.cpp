@@ -175,7 +175,7 @@ QPointF SCgNode::cross(const QPointF &from, float dot) const
     QPointF p(0.f, 0.f);
 
     if (!mIsContentVisible)
-    {
+    {        
         QVector2D vec(from - scenePos());
         p = vec.normalized().toPointF() * (mSize.width() / 2.f + 5.f);
     }else

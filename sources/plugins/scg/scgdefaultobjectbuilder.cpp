@@ -93,6 +93,7 @@ void DefaultSCgObjectBuilder::buildObjects(const AbstractSCgObjectBuilder::TypeT
 
         pair->setBeginObject(begObject);
         pair->setEndObject(endObject);
+        pair->updatePosition();
     }
     // In this case we must check if all begin and end objects are valid.
     // If they not, we have to delete all unfinished pairs.
@@ -186,9 +187,10 @@ void DefaultSCgObjectBuilder::buildPair(SCgPairInfo* info)
     {
         SCgPair* pair = new SCgPair;
 
+        pair->setPoints(info->points());
         pair->setBeginDot(info->beginDot());
         pair->setEndDot(info->endDot());
-        pair->setPoints(info->points());
+//        pair->setPoints(info->points());
 
         setObjectInfo(pair, info);
     }

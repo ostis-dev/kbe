@@ -166,7 +166,22 @@ QPointF SCgPair::cross(const QPointF &from, float dot) const
     if (s >= mPoints.size() - 1)    s = mPoints.size() - 2;
     if (s < 0)  s = 0;
 
-    return mapToScene(mPoints[s] + (mPoints[s+1] - mPoints[s]) * ds);
+    QPointF p = mPoints[s] + (mPoints[s+1] - mPoints[s]) * ds;
+
+    QVector2D vec(from - p);
+
+    /* distanse from pair to pair */
+    const qreal distance = 7.f;
+
+    qreal l = vec.length();
+
+    /* if not preview .....*/
+    if (l > 5.f)
+    {
+    /* .... then make distance. */
+        p += vec.normalized().toPointF() * distance;
+    }
+    return mapToScene(p);
 }
 
 float SCgPair::dotPos(const QPointF &point) const
@@ -271,7 +286,7 @@ void SCgPair::setBeginObject(SCgObject *object)
     if (mBeginObject)
         mBeginObject->addConnectedObject(this);
 
-    updatePosition();
+//    updatePosition();
 }
 
 SCgObject* SCgPair::beginObject() const
@@ -289,7 +304,7 @@ void SCgPair::setEndObject(SCgObject *object)
     if (mEndObject)
         mEndObject->addConnectedObject(this);
 
-    updatePosition();
+//    updatePosition();
 }
 
 SCgObject* SCgPair::endObject() const
@@ -300,7 +315,7 @@ SCgObject* SCgPair::endObject() const
 void SCgPair::setBeginDot(float pos)
 {
     mBeginDot = pos;
-    updatePosition();
+//    updatePosition();
 }
 
 float SCgPair::beginDot() const
@@ -311,7 +326,7 @@ float SCgPair::beginDot() const
 void SCgPair::setEndDot(float pos)
 {
     mEndDot = pos;
-    updatePosition();
+//    updatePosition();
 }
 
 float SCgPair::endDot() const

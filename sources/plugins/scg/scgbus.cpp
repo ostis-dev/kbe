@@ -153,7 +153,21 @@ QPointF SCgBus::cross(const QPointF &from, float dot) const
     if (s >= mPoints.size() - 1)    s = mPoints.size() - 2;
     if (s < 0)  s = 0;
 
-    return mapToScene(mPoints[s] + (mPoints[s+1] - mPoints[s]) * ds);
+    QPointF p = mPoints[s] + (mPoints[s+1] - mPoints[s]) * ds;
+
+    QVector2D vec(from - p);
+
+    /* distanse from bus to pair */
+    const qreal distance = 7.f;
+
+    qreal l = vec.length();
+    /* if not preview .....*/
+    if (l > 5.f)
+    {
+    /* .... then make distance. */
+        p += vec.normalized().toPointF() * distance;
+    }
+    return mapToScene(p);
 }
 
 float SCgBus::dotPos(const QPointF &point) const
