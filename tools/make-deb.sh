@@ -45,14 +45,14 @@ fill_catalog_structure_with_content()
 {
   # Copying needed files into catalog structure
   cp -r ./DEBIAN ./kbe/
-  cp -r $PROJECT_SOURCES_ROOT/kbe/media ./kbe/usr/share/kbe/
+  #cp -r $PROJECT_SOURCES_ROOT/kbe/media ./kbe/usr/share/kbe/
   cp -r $PROJECT_SOURCES_ROOT/bin/* ./kbe/usr/lib/kbe
   cp ./files/kbe.desktop ./kbe/usr/share/applications/
   cp ./files/kbe.xpm ./kbe/usr/share/pixmaps/
 
   # Making symbolic links
   ln -s ../lib/kbe/kbe ./kbe/usr/bin/kbe
-  ln -s ../../share/kbe/media ./kbe/usr/lib/kbe/media
+  #ln -s ../../share/kbe/media ./kbe/usr/lib/kbe/media
 
   # Remove debug and other unneeded info
   strip ./kbe/usr/lib/kbe/kbe
@@ -66,6 +66,7 @@ fill_catalog_structure_with_content()
   cd ./kbe
   md5deep -l usr/lib/kbe/kbe > ./DEBIAN/md5sums
   md5deep -r -l usr/share >> ./DEBIAN/md5sums
+  chmod 644 ./DEBIAN/md5sums
   cd -
 }
 
