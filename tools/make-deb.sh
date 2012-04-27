@@ -57,10 +57,10 @@ fill_catalog_structure_with_content()
   # Remove debug and other unneeded info
   strip ./kbe/usr/lib/kbe/kbe
 
-  cp changelog ./kbe/usr/share/doc/kbe/
+  cp DEBIAN/changelog ./kbe/usr/share/doc/kbe/
   gzip -9 ./kbe/usr/share/doc/kbe/changelog
 
-  cp copyright ./kbe/usr/share/doc/kbe/
+  cp DEBIAN/copyright ./kbe/usr/share/doc/kbe/
 
   echo -en "\033[37;1;41mMake *.deb pachage...\033[0m\n"
   cd ./kbe
@@ -102,9 +102,9 @@ clean()
   rm -r ./kbe
   find $PROJECT_SOURCES_ROOT/ -name 'Makefile' -type f -print0 | xargs -0 rm
   find $PROJECT_SOURCES_ROOT/ -name 'qrc_*.cpp' -type f -print0 | xargs -0 rm
-  find $PROJECT_SOURCES_ROOT/ -name 'bin' -type d -print0 | xargs -0 rm -r
-  find $PROJECT_SOURCES_ROOT/ -name 'moc' -type d -print0 | xargs -0 rm -r
-  find $PROJECT_SOURCES_ROOT/ -name 'obj' -type d -print0 | xargs -0 rm -r
+  #find $PROJECT_SOURCES_ROOT/ -name 'bin' -type d -print0 | xargs -0 rm -r
+  #find $PROJECT_SOURCES_ROOT/ -name 'moc' -type d -print0 | xargs -0 rm -r
+  #find $PROJECT_SOURCES_ROOT/ -name 'obj' -type d -print0 | xargs -0 rm -r
 }
 
 make_deb_package()
