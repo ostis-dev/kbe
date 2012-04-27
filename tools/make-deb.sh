@@ -1,7 +1,8 @@
 #!/bin/bash
 
-VERSION=0.2.1
+VERSION=0.3.0
 ARCHITECTURE=$(dpkg-architecture -qDEB_BUILD_ARCH)
+PROJECT_SOURCES_ROOT=../sources
 
 install_dependency_if_not_yet_installed()
 {
@@ -16,7 +17,7 @@ install_all_dependencies_if_not_yet_installed()
 {
   echo -en "\033[37;1;41mCheck dependencies...\033[0m\n"
   install_dependency_if_not_yet_installed md5deep
-  install_dependency_if_not_yet_installed cmake
+  install_dependency_if_not_yet_installed qt4-dev-tools
   install_dependency_if_not_yet_installed make
   install_dependency_if_not_yet_installed fakeroot
 }
@@ -24,7 +25,8 @@ install_all_dependencies_if_not_yet_installed()
 build_source_files()
 {
   echo -en "\033[37;1;41mBuild binary...\033[0m\n"
-  cmake CMakeLists.txt
+  sed '/updater/d' all.pro > all_linux.pro
+  qmake all_linux.pro
   make
 }
 
@@ -43,14 +45,14 @@ fill_catalog_structure_with_content()
 {
   # Copying needed files into catalog structure
   cp -r ./DEBIAN ./kbe/
-  mv -f ../media ./kbe/usr/share/kbe/
-  mv -f ../kbe ./kbe/usr/lib/kbe/
+  cp -r $PROJECT_SOURCES_ROOT/kbe/media ./kbe/usr/share/kbe/
+  cp -r $PROJECT_SOURCES_ROOT/bin/* ./kbe/usr/lib/kbe
   cp ./files/kbe.desktop ./kbe/usr/share/applications/
   cp ./files/kbe.xpm ./kbe/usr/share/pixmaps/
 
   # Making symbolic links
   ln -s ../lib/kbe/kbe ./kbe/usr/bin/kbe
-  ln -s ../share/kbe/media ./kbe/usr/lib/kbe/media
+  ln -s ../../share/kbe/media ./kbe/usr/lib/kbe/media
 
   # Remove debug and other unneeded info
   strip ./kbe/usr/lib/kbe/kbe
@@ -95,15 +97,20 @@ build_deb_package()
 clean()
 {
   echo -en "\033[37;1;41mRemove temporary data...\033[0m\n"
-  rm -r ../CMakeFiles ../sources/*/*.cxx ../sources/*.cxx ./kbe
-  rm ../cmake_install.cmake ../CMakeCache.txt ../Makefile ../ui_mainwindow.h
+  rm $PROJECT_SOURCES_ROOT/all_linux.pro
+  rm -r ./kbe
+  find $PROJECT_SOURCES_ROOT/ -name 'Makefile' -type f -print0 | xargs -0 rm
+  find $PROJECT_SOURCES_ROOT/ -name 'qrc_*.cpp' -type f -print0 | xargs -0 rm
+  find $PROJECT_SOURCES_ROOT/ -name 'bin' -type d -print0 | xargs -0 rm -r
+  find $PROJECT_SOURCES_ROOT/ -name 'moc' -type d -print0 | xargs -0 rm -r
+  find $PROJECT_SOURCES_ROOT/ -name 'obj' -type d -print0 | xargs -0 rm -r
 }
 
 make_deb_package()
 {
   install_all_dependencies_if_not_yet_installed
 
-  cd ../
+  cd $PROJECT_SOURCES_ROOT/
   build_source_files
   # Back to that dir
   cd -
