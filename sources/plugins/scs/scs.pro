@@ -19,8 +19,10 @@ HEADERS += \
     scsmultilinecommenthighlightingrule.h \
     scshighlightingrulespool.h \
     scscodeeditor.h \
-    scsabstracthighlightingrule.h
-
+    scsabstracthighlightingrule.h \
+    scscodeanalyzer.h \
+    scscodecompleter.h
+    
 SOURCES += \
     scswindow.cpp \
     scssyntaxhighlighter.cpp \
@@ -29,4 +31,6 @@ SOURCES += \
     scsmultilinecommenthighlightingrule.cpp \
     scshighlightingrulespool.cpp \
     scscodeeditor.cpp \
-    scsabstracthighlightingrule.cpp
+    scsabstracthighlightingrule.cpp \
+    scscodeanalyzer.cpp \
+    scscodecompleter.cpp
