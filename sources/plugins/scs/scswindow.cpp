@@ -99,6 +99,7 @@ bool SCsWindow::loadFromFile(const QString &fileName)
 
     QTextStream in(&fileIn);
     mEditor->document()->setPlainText(in.readAll());
+    mEditor->setDocumentPath(fileName);
     fileIn.close();
 
     mFileName = fileName;

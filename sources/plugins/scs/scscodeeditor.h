@@ -24,6 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCSCODEEDITOR_H
 
 #include <QPlainTextEdit>
+#include <QModelIndex>
+
+class SCsCodeAnalyzer;
+class SCsCodeCompleter;
 
 class SCsCodeEditor : public QPlainTextEdit
 {
@@ -33,16 +37,25 @@ public:
     void lineNumberAreaPaintEvent(QPaintEvent* event);
     int lineNumberAreaWidth();
 
+    void setDocumentPath(const QString &path);
+
 protected:
     void resizeEvent(QResizeEvent *event);
+    void keyPressEvent(QKeyEvent *e);
+
+    QString textUnderCursor();
 
 private slots:
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &, int);
+    void insertCompletion(QModelIndex index);
+    void updateAnalyzer();
 
 private:
     QWidget *mLineNumberArea;
+    SCsCodeAnalyzer *mAnalyzer;
+    SCsCodeCompleter *mCompleter;
 
 };
 
