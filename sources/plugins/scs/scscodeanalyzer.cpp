@@ -48,17 +48,15 @@ void SCsCodeAnalyzer::parseFile(const QString &filePath)
     if (parsedFiles.contains(filePath))
         return;
 
-    parsedFiles << filePath;
-
     QFile file(filePath);
 
     if ( file.open(QIODevice::ReadOnly | QIODevice::Text) )
     {
         mWatcher->addPath(filePath);
+        parsedFiles << filePath;
+
         QTextStream in(&file);
         QString text = in.readAll();
-
-        //qDebug() << filePath;
 
         QDir fileDirectory = QFileInfo(file).absoluteDir();
         file.close();
@@ -222,11 +220,7 @@ void SCsCodeAnalyzer::update(const QString &text, QStandardItemModel *model)
     if (includesUpdated || includesChanged)
     {
         model->clear();
-
-        if (includesChanged)
-        {
-            clearWatcher();
-        }
+        clearWatcher();
 
         documentIdentifiers = newIdentifiers;
         documentIncludes = newIncludes;
@@ -344,9 +338,9 @@ bool SCsCodeAnalyzer::isIdentifier(const QString &text)
 
 void SCsCodeAnalyzer::clearWatcher()
 {
-    foreach(const QString &filePath, parsedFiles)
+    if (!parsedFiles.empty())
     {
-        mWatcher->removePath(filePath);
+        mWatcher->removePaths(parsedFiles.toList());
     }
 }
 
