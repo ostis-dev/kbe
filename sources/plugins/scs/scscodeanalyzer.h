@@ -65,22 +65,22 @@ protected:
     void clearWatcher();
 
 private:
-    const static QRegExp identifierExp;
-    const static QRegExp includeExp;
-    static QList<BlockPattern> ignoreBlockPatterns;
+    const static QRegExp msIdentifierExp;
+    const static QRegExp msIncludeExp;
+    static QList<BlockPattern> msIgnoreBlockPatterns;
 
-    QSet<QString> documentIncludes;
-    QSet<QString> documentIdentifiers;
+    QSet<QString> mDocumentIncludes;
+    QSet<QString> mDocumentIdentifiers;
 
-    QSet<QString> parsedFiles;
-    QSet<QString> includedIdentifiers;
-    QSet<QString> ignoreIdentifiers;
+    QSet<QString> mParsedFiles;
+    QSet<QString> mIncludedIdentifiers;
+    QSet<QString> mIgnoreIdentifiers;
 
-    QList<Block> documentEmptyBlocks;
-    QString documentPath;
-    QDir documentDir;
+    QList<Block> mDocumentEmptyBlocks;
+    QString mDocumentPath;
+    QDir mDocumentDir;
 
-    bool includesUpdated;
+    bool mIncludesUpdated;
     QFileSystemWatcher *mWatcher;
 
 private slots:
