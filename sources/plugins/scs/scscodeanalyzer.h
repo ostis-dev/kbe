@@ -41,91 +41,85 @@ class SCsCodeAnalyzer : public QObject
 
 public:    
     typedef QPair<QRegExp, QRegExp> BlockPattern;
+    //! Type that represents text block begin and end positions
+    typedef QPair<int, int> BlockRange;
 
     explicit SCsCodeAnalyzer(QObject *parent = 0);
 
-    /*! Sets the path of the opened file.
-      @param path Absolute path to the file.
+    /*! Set the path of document for to analyze
+      * @param path Path to document
       */
     void setDocumentPath(const QString &path);
 
-    /*! Parses contents of opened file and fills autocompleter's model.
-      @param text Text of document.
-      @param model Item model for autocompletion.
+    /*! Parse contents of specified sc.s-text and fills autocompleter's model
+      * @param text String that contains sc.s-text
+      * @param model Pointer to autocomplete item model
       */
     void parse(const QString &text, QStandardItemModel *model);
 
-    /*! Updates autocompleter's model according to changes in document made by user.
-      @param text Text of document.
-      @param model Item model for autocompletion.
+    /*! Update autocompleter's model according to changes in document made by user
+      * @param text String that contains sc.s-text of edited document
+      * @param model Pointer to autocomplete item model
       */
     void update(const QString &text, QStandardItemModel *model);
 
-    /*! Forces to ignore the addition of an identifier during the next update().
-        identifier won't be added to autocomleter's model.
-      @param identifier Identifier to ignore.
+    /*! Force to ignore the addition of an \p identifier during the next update
+      * (identifier wouldn't be added to autocomleter item model)
+      * @param identifier String that contains identifier
       */
     void ignoreUpdate(const QString &identifier);
 
-    /*! Checks whether the specified position is within the "empty block" of document
-       (inside block of comments, for example).
-      @param pos Position in document.
+    /*! Check whether the specified position is within the "empty block" of document
+      * (inside block of comments, for example)
+      * @param positon Character position in document
       */
+    bool isInEmptyBlock(int position);
+    bool isInEmptyBlock(int pos, const QList<BlockRange> &blocks);
 
-    bool inEmptyBlock(int pos);
-
-    /*! Adds pattern for "empty blocks".
-      @param blockPattern Block pattern.
+    /*! Add pattern for ignored blocks
+      * @param blockPattern Block pattern
       */
     static void addIgnoreBlock(const BlockPattern &blockPattern);
 
-    /*! Intializes patterns for "empty blocks".
-      */
+    //! Intialize patterns for "ignore blocks".
     static void init();
 
-    /*! Checks whether the specified text is an SCs identifier.
-      @param text Text to check.
+    /*! Check whether the specified \p text is an SCs identifier.
+      * @param text Text to check
       */
     static bool isIdentifier(const QString &text);
 
 protected:
-    typedef QPair<int, int> Block;
-
-    /*! Parses contents of specified .scs file:
-        extracts all identifiers, includes and recursively processes them.
-        If file has already been seen, does nothing.
-      @param filePath Absolute path to file.
+    /*! Parse contents of specified .scs file: extracts all identifiers, includes
+      * and recursively processes them. If file has already been processed, then does nothing
+      * @param filePath Absolute path to file
       */
     void parseFile(const QString &filePath);
 
-    /*! Parses set of files. Paths to files can be absolute and relative.
-      @param pathSet Set of paths to files.
-      @param workDirectory Current directory (for relative paths).
+    /*! Parse set of files. Paths to files can be absolute and relative.
+      * @param pathSet Set of file paths
+      * @param workDirectory Current directory (for relative paths).
       */
     void parseFiles(const QSet<QString> &pathSet, const QDir &workDirectory);
 
-    /*! Extracts "empty blocks", includes, identifiers from text.
-      @param text Contents of document.
-      @param emptyBlocks List of empty blocks.
-      @param includes Set of include files.
-      @param identifiers Set of identifiers.
+    /*! Process \p text and extract all blocks
+      * @param text sc.s-text to process
+      * @param emptyBlocks List of empty blocks
+      * @param includes Set of included files
+      * @param identifiers Set of identifiers
       */
-    void processText(const QString &text, QList<Block> *emptyBlocks, QSet<QString> *includes, QSet<QString> *identifiers);
-    void extractEmptyBlocks(const QString &text, QList<Block> *emptyBlocks);
-    void extractIdentifiers(const QString &text, QSet<QString> *identifiers, const QList<Block> &emptyBlocks);
-    void extractIncludes(const QString &text, QSet<QString> *includes, const QList<Block> &emptyBlocks);
+    void processText(const QString &text, QList<BlockRange> *emptyBlocks, QSet<QString> *includes, QSet<QString> *identifiers);
+    void extractEmptyBlocks(const QString &text, QList<BlockRange> *emptyBlocks);
+    void extractIdentifiers(const QString &text, QSet<QString> *identifiers, const QList<BlockRange> &emptyBlocks);
+    void extractIncludes(const QString &text, QSet<QString> *includes, const QList<BlockRange> &emptyBlocks);
 
-    /*! Clears FileSystemWatcher list of files.
-      */
+    //! Clear FileSystemWatcher list
     void clearWatcher();
 
-    /*! Fills autocompleter's model with identifiers extracted from current document
-        and its includes.
-        @param model Item model for autocompletion.
+    /*! Fills autocomplete items model with identifiers extracted from current document and its includes.
+      * @param model Pointer to autocomplete item model
       */
     void fillModel(QStandardItemModel *model);
-
-    bool inEmptyBlock(int pos, const QList<Block> &blocks);
 
 private:
     const static QRegExp msIdentifierExp;
@@ -139,7 +133,7 @@ private:
     QSet<QString> mIncludedIdentifiers;
     QSet<QString> mIgnoreIdentifiers;
 
-    QList<Block> mDocumentEmptyBlocks;
+    QList<BlockRange> mDocumentEmptyBlocks;
     QString mDocumentPath;
     QDir mDocumentDir;
 

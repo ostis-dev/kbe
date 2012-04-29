@@ -93,7 +93,7 @@ void SCsCodeAnalyzer::parseFile(const QString &filePath)
 
         QSet<QString> files;
         QSet<QString> identifiers;
-        QList<Block> emptyBlocks;
+        QList<BlockRange> emptyBlocks;
 
         processText(text, &emptyBlocks, &files, &identifiers);
 
@@ -103,14 +103,14 @@ void SCsCodeAnalyzer::parseFile(const QString &filePath)
     }
 }
 
-void SCsCodeAnalyzer::processText(const QString &text, QList<Block> *emptyBlocks, QSet<QString> *includes, QSet<QString> *identifiers)
+void SCsCodeAnalyzer::processText(const QString &text, QList<BlockRange> *emptyBlocks, QSet<QString> *includes, QSet<QString> *identifiers)
 {
     extractEmptyBlocks(text, emptyBlocks);
     extractIncludes(text, includes, *emptyBlocks);
     extractIdentifiers(text, identifiers, *emptyBlocks);
 }
 
-void SCsCodeAnalyzer::extractEmptyBlocks(const QString &text, QList<Block> *emptyBlocks)
+void SCsCodeAnalyzer::extractEmptyBlocks(const QString &text, QList<BlockRange> *emptyBlocks)
 {
     int pos = 0;
     while (pos != -1)
@@ -140,12 +140,12 @@ void SCsCodeAnalyzer::extractEmptyBlocks(const QString &text, QList<Block> *empt
 
             if (endPos == -1)
             {
-                *emptyBlocks << Block(startPos, text.length());
+                *emptyBlocks << BlockRange(startPos, text.length());
                 pos = -1;
             }
             else
             {
-                *emptyBlocks << Block(startPos, endPos + endExp->matchedLength());
+                *emptyBlocks << BlockRange(startPos, endPos + endExp->matchedLength());
                 pos = endPos + endExp->matchedLength();
             }
         }
@@ -154,12 +154,12 @@ void SCsCodeAnalyzer::extractEmptyBlocks(const QString &text, QList<Block> *empt
     }
 }
 
-void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *identifiers, const QList<Block> &emptyBlocks)
+void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *identifiers, const QList<BlockRange> &emptyBlocks)
 {
     int pos = 0;
     while ( (pos = msIdentifierExp.indexIn(text, pos)) != -1)
     {
-        if (!inEmptyBlock(pos, emptyBlocks))
+        if (!isInEmptyBlock(pos, emptyBlocks))
         {
             *identifiers << msIdentifierExp.cap(1);
         }
@@ -168,12 +168,12 @@ void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *ide
     }
 }
 
-void SCsCodeAnalyzer::extractIncludes(const QString &text, QSet<QString> *includes, const QList<Block> &emptyBlocks)
+void SCsCodeAnalyzer::extractIncludes(const QString &text, QSet<QString> *includes, const QList<BlockRange> &emptyBlocks)
 {
     int pos = 0;
     while ( (pos = msIncludeExp.indexIn(text, pos)) != -1 )
     {
-        if (!inEmptyBlock(pos, emptyBlocks))
+        if (!isInEmptyBlock(pos, emptyBlocks))
         {
             *includes << msIncludeExp.cap(1);
         }
@@ -275,18 +275,18 @@ void SCsCodeAnalyzer::setDocumentPath(const QString &path)
     mDocumentDir = QFileInfo(path).absoluteDir();
 }
 
-bool SCsCodeAnalyzer::inEmptyBlock(int pos, const QList<Block> &blocks)
+bool SCsCodeAnalyzer::isInEmptyBlock(int pos, const QList<BlockRange> &blocks)
 {
-    foreach(const Block &block, blocks)
+    foreach(const BlockRange &block, blocks)
         if (block.first < pos && block.second >= pos)
             return true;
 
     return false;
 }
 
-bool SCsCodeAnalyzer::inEmptyBlock(int pos)
+bool SCsCodeAnalyzer::isInEmptyBlock(int pos)
 {
-    return inEmptyBlock(pos, mDocumentEmptyBlocks);
+    return isInEmptyBlock(pos, mDocumentEmptyBlocks);
 }
 
 

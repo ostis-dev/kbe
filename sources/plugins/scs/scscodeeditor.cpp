@@ -184,7 +184,7 @@ void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
                           e->text().isEmpty() ||
                           completionPrefix.length() < SCsCodeCompleter::MinCompletetionLength ||
                           !SCsCodeAnalyzer::isIdentifier(e->text().right(1)) ||
-                          mAnalyzer->inEmptyBlock(textCursor().position()) ))
+                          mAnalyzer->isInEmptyBlock(textCursor().position()) ))
      {
          mCompleter->popup()->hide();
          return;
