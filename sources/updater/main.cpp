@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         return 0;
 
     UpdateWindow window(a.arguments().at(1));
-    window.setFixedSize(600, 400);
+    window.setFixedWidth(300);
     window.show();
 
     //splash.finish(&w);

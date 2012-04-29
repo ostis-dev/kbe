@@ -24,15 +24,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "updatedownloader.h"
 #include "updateextractor.h"
 
-#include <QTextBrowser>
+#include <QProgressBar>
 #include <QPushButton>
-#include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QProgressDialog>
+#include <QVBoxLayout>
 #include <QMessageBox>
 #include <QTimer>
 #include <QDomDocument>
 #include <QFile>
+#include <QLabel>
 
 #define UPDATE_LIST "http://www.ostis.net/download/updates/updates.xml"
 #define UPDATE_FILE_PATH "_update.update"
@@ -40,48 +40,38 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
     QWidget(parent),
-    mDescriptionBrowser(0),
-    mProgressDialog(0),
-    mUpdateButton(0),
-    mInstallButton(0),
+    mProgressBar(0),
+    mLabel(0),
     mCancelButton(0),
     mCurrentVersion(version),
     mCurrentWork(WT_UPDATELIST),
     mUpdateDownloader(0)
 {
-
-    QVBoxLayout *layout = new QVBoxLayout(this);
-
-    mDescriptionBrowser = new QTextBrowser(this);
-
-    layout->addWidget(mDescriptionBrowser);
-
+    QVBoxLayout *vlayout = new QVBoxLayout(this);
     QHBoxLayout *hlayout = new QHBoxLayout(this);
 
-    mUpdateButton = new QPushButton(tr("Update"), this);
-    mInstallButton = new QPushButton(tr("Install"), this);
+    mLabel = new QLabel(tr("Stage"), this);
+
+    mProgressBar = new QProgressBar(this);
+
     mCancelButton = new QPushButton(tr("Cancel"), this);
     mCancelButton->setEnabled(false);
-    mInstallButton->setEnabled(false);
 
-    hlayout->addWidget(mUpdateButton);
-    hlayout->addWidget(mInstallButton);
+    hlayout->addWidget(mProgressBar);
     hlayout->addWidget(mCancelButton);
 
-    connect(mUpdateButton, SIGNAL(clicked()), this, SLOT(startUpdate()));
+    connect(mCancelButton, SIGNAL(clicked()), this, SLOT(workCanceled()));
 
-    layout->addLayout(hlayout);
+    vlayout->addWidget(mLabel);
+    vlayout->addLayout(hlayout);
 
-    setLayout(layout);
+    setLayout(vlayout);
 
-    mProgressDialog = new QProgressDialog(this);
-
-    connect(mProgressDialog, SIGNAL(canceled()), this, SLOT(workCanceled()));
+    startUpdate();
 }
 
 UpdateWindow::~UpdateWindow()
 {
-    delete mProgressDialog;
     delete mUpdateDownloader;
 }
 
@@ -94,9 +84,7 @@ void UpdateWindow::startUpdate()
     connect(mUpdateDownloader, SIGNAL(failed()), this, SLOT(workFailed()));
     connect(mUpdateDownloader, SIGNAL(finished()), this, SLOT(workFinished()));
 
-    mUpdateButton->setEnabled(false);
-
-    mProgressDialog->setLabelText(tr("Download updates list"));
+    mLabel->setText(tr("Download updates list"));
     mUpdateDownloader->doDownload(UPDATE_LIST, "_updates.xml");
 }
 
@@ -155,7 +143,7 @@ void UpdateWindow::downloadUpdate()
 {
     mCurrentWork = WT_GETUPDATE;
 
-    mProgressDialog->setLabelText(tr("Download update..."));
+    mLabel->setText(tr("Download update..."));
     mUpdateDownloader->doDownload(mUpdatePath, UPDATE_FILE_PATH);
 }
 
@@ -163,7 +151,7 @@ void UpdateWindow::downloadCheckSum()
 {
     mCurrentWork = WT_GETCHECKSUM;
 
-    mProgressDialog->setLabelText(tr("Download checksum..."));
+    mLabel->setText(tr("Download checksum..."));
     mUpdateDownloader->doDownload(mUpdatePath + ".checksum", UPDATE_CHECKSUM_PATH);
 }
 
@@ -171,9 +159,7 @@ void UpdateWindow::readUpdate()
 {
     mCurrentWork = WT_READCONTENT;
 
-    mProgressDialog->setLabelText(tr("Reading update..."));
-    mProgressDialog->setValue(0);
-    mProgressDialog->setRange(0, 0);
+    mLabel->setText(tr("Reading update..."));
     workStarted();
 
     // TODO: compare checksum
@@ -183,34 +169,36 @@ void UpdateWindow::readUpdate()
     if (!extractor.extract(UPDATE_FILE_PATH, "_update_files"))
         workFailed();
 
+
+
     workFinished();
 }
 
 void UpdateWindow::workProgress(qint64 finished, qint64 total)
 {
-    mProgressDialog->setValue(finished);
-    mProgressDialog->setMaximum(total);
+    mProgressBar->setRange(0, total);
+    mProgressBar->setValue(finished);
 }
 
 void UpdateWindow::workFinished()
 {
-    mProgressDialog->setValue(0);
-    mProgressDialog->hide();
+    mCancelButton->setEnabled(false);
 
     switch (mCurrentWork)
     {
     case WT_UPDATELIST:
-        mUpdateButton->setEnabled(true);
         resolveUpdate();
         break;
 
     case WT_GETUPDATE:
-        mUpdateButton->setEnabled(false);
         downloadCheckSum();
         break;
 
     case WT_GETCHECKSUM:
         readUpdate();
+        break;
+
+    default:
         break;
     }
 
@@ -218,7 +206,7 @@ void UpdateWindow::workFinished()
 
 void UpdateWindow::workStarted()
 {
-    mProgressDialog->exec();
+    mCancelButton->setEnabled(true);
 }
 
 void UpdateWindow::workFailed()
@@ -226,19 +214,22 @@ void UpdateWindow::workFailed()
     if (mCurrentWork == WT_UPDATELIST)
     {
         QMessageBox::information(this, "Error", tr("Unable to download updates list"));
-        mUpdateButton->setEnabled(true);
     }
-
-    mProgressDialog->setValue(0);
-    mProgressDialog->hide();
 }
 
 void UpdateWindow::workCanceled()
 {
-    if (mCurrentWork == WT_UPDATELIST)
+    switch(mCurrentWork)
     {
+    case WT_UPDATELIST:
+    case WT_GETUPDATE:
         mUpdateDownloader->downloadCanceled();
-        mUpdateButton->setEnabled(true);
+        break;
+
+    default:
+        break;
     }
+
+    close();
 }
 

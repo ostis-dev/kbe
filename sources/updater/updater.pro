@@ -2,7 +2,6 @@ QT       += core gui network xml
 
 DESTDIR = ../bin
 
-LIBS += -lzzip
 
 CONFIG(debug, debug|release) {
     TARGET = updater_d

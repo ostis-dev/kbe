@@ -26,8 +26,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QWidget>
 
 class QTextBrowser;
-class QProgressDialog;
+class QProgressBar;
 class QPushButton;
+class QLabel;
 
 class UpdateDownloader;
 
@@ -63,14 +64,10 @@ protected:
     void readUpdate();
 
 private:
-    //! Pointer to text browser, that shows description
-    QTextBrowser *mDescriptionBrowser;
-    //! Pointer to work progress dialog
-    QProgressDialog *mProgressDialog;
-    //! Pointer to update button
-    QPushButton *mUpdateButton;
-    //! Pointer to start button
-    QPushButton *mInstallButton;
+    //! Pointer to progress bar that shows update progress
+    QProgressBar *mProgressBar;
+    //! Pointer to label that shows current update stage
+    QLabel *mLabel;
     //! Pointer to cancel button
     QPushButton *mCancelButton;
     //! Current version

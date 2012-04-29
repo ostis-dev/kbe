@@ -25,8 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QDebug>
 #include <QDir>
-
-#include <zzip/lib.h>
+#include <QProcess>
 
 UpdateExtractor::UpdateExtractor(QObject *parent) :
     QObject(parent)
@@ -46,27 +45,10 @@ bool UpdateExtractor::extract(const QString &archive, const QString &directory)
 
     // create output directory if it doesn't exist
     QFileInfo di(directory);
-    if (!di.isDir())
-        return false;
-
     QDir _d(".");
     if (di.exists())
         _d.rmdir(directory);
 
-    _d.mkpath(directory);
-
-    // open archive
-    ZZIP_DIR *dir = zzip_opendir(archive.toStdString().c_str());
-    if (dir != 0)
-    {
-        QStringList files;
-        // collect all files
-        ZZIP_DIRENT dirent;
-        while (zzip_dir_read(dir, &dirent))
-            files << dirent.d_name;
-
-
-
-        zzip_closedir(dir);
-    }
+    QProcess proc;
+    return proc.execute("7z.exe", QStringList() << "x" << QString("-o%1").arg(directory) << archive) == 0;
 }
