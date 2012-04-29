@@ -30,7 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <limits>
 
 const QRegExp SCsCodeAnalyzer::msIdentifierExp("([$]?[A-Za-z0-9_]+)");
-const QRegExp SCsCodeAnalyzer::msIncludeExp("#include \"([^\"]+)\"");
+const QRegExp SCsCodeAnalyzer::msIncludeExp("#include\\s+\"([^\"]+)\"");
 QList<SCsCodeAnalyzer::BlockPattern> SCsCodeAnalyzer::msIgnoreBlockPatterns;
 
 SCsCodeAnalyzer::SCsCodeAnalyzer(QObject *parent) :
@@ -41,6 +41,36 @@ SCsCodeAnalyzer::SCsCodeAnalyzer(QObject *parent) :
     connect(mWatcher, SIGNAL(fileChanged(QString)), this, SLOT(updateFile(QString)));
 
     SCsCodeAnalyzer::init();
+}
+
+void SCsCodeAnalyzer::parseFiles(const QSet<QString> &pathSet, const QDir &workDirectory)
+{
+    foreach(const QString &fileName, pathSet)
+    {
+        QFileInfo fileInfo(fileName);
+        if (fileInfo.isAbsolute())
+        {
+            parseFile(fileName);
+        }
+        else
+        {
+            fileInfo.setFile(workDirectory, fileName);
+            parseFile(fileInfo.absoluteFilePath());
+        }
+    }
+}
+
+void SCsCodeAnalyzer::fillModel(QStandardItemModel *model)
+{
+    model->clear();
+
+    QSet<QString> identifiers = mDocumentIdentifiers + mIncludedIdentifiers;
+
+    foreach(const QString &id, identifiers)
+    {
+        QStandardItem *item = new QStandardItem(id);
+        model->appendRow(item);
+    }
 }
 
 void SCsCodeAnalyzer::parseFile(const QString &filePath)
@@ -63,32 +93,25 @@ void SCsCodeAnalyzer::parseFile(const QString &filePath)
 
         QSet<QString> files;
         QSet<QString> identifiers;
+        QList<Block> emptyBlocks;
 
-        extractIncludes(text, &files);
-        extractIdentifiers(text, &identifiers);
+        processText(text, &emptyBlocks, &files, &identifiers);
 
         mIncludedIdentifiers += identifiers;
 
-        foreach(const QString &fileName, files)
-        {
-            QFileInfo fileInfo(fileName);
-            if (fileInfo.isAbsolute())
-            {
-                parseFile(fileName);
-            }
-            else
-            {
-                fileInfo.setFile(fileDirectory, fileName);
-                parseFile(fileInfo.absoluteFilePath());
-            }
-        }
+        parseFiles(files, fileDirectory);
     }
 }
 
-void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *identifiers, QList<Block> *emptyBlocks)
+void SCsCodeAnalyzer::processText(const QString &text, QList<Block> *emptyBlocks, QSet<QString> *includes, QSet<QString> *identifiers)
 {
-    QList<Block> ignoreBlocksPos;
+    extractEmptyBlocks(text, emptyBlocks);
+    extractIncludes(text, includes, *emptyBlocks);
+    extractIdentifiers(text, identifiers, *emptyBlocks);
+}
 
+void SCsCodeAnalyzer::extractEmptyBlocks(const QString &text, QList<Block> *emptyBlocks)
+{
     int pos = 0;
     while (pos != -1)
     {
@@ -103,7 +126,7 @@ void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *ide
             int currentPos = range.first.indexIn(text, pos);
 
             if (currentPos != -1 && currentPos < startPos)
-            {                
+            {
                 startExp = &range.first;
                 endExp = &range.second;
 
@@ -116,59 +139,51 @@ void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *ide
             endPos = endExp->indexIn(text, startPos + startExp->matchedLength());
 
             if (endPos == -1)
-            {                
-                ignoreBlocksPos << Block(startPos, text.length());
+            {
+                *emptyBlocks << Block(startPos, text.length());
                 pos = -1;
             }
             else
             {
-                ignoreBlocksPos << Block(startPos, endPos + endExp->matchedLength());
+                *emptyBlocks << Block(startPos, endPos + endExp->matchedLength());
                 pos = endPos + endExp->matchedLength();
             }
         }
         else pos = -1;
 
     }
+}
 
-    pos = 0;
+void SCsCodeAnalyzer::extractIdentifiers(const QString &text, QSet<QString> *identifiers, const QList<Block> &emptyBlocks)
+{
+    int pos = 0;
     while ( (pos = msIdentifierExp.indexIn(text, pos)) != -1)
     {
-        bool include = true;
-        foreach(const Block &block, ignoreBlocksPos)
-            if (block.first <= pos && block.second >= pos)
-            {
-                include = false;
-                break;
-            }
-
-        if (include)
+        if (!inEmptyBlock(pos, emptyBlocks))
         {
             *identifiers << msIdentifierExp.cap(1);
-            //qDebug() << identifierExp.cap(1);
         }
 
         pos += msIdentifierExp.matchedLength();
     }
-
-    if (emptyBlocks)
-    {
-        *emptyBlocks = ignoreBlocksPos;
-    }
 }
 
-void SCsCodeAnalyzer::extractIncludes(const QString &text, QSet<QString> *includes)
+void SCsCodeAnalyzer::extractIncludes(const QString &text, QSet<QString> *includes, const QList<Block> &emptyBlocks)
 {
     int pos = 0;
     while ( (pos = msIncludeExp.indexIn(text, pos)) != -1 )
     {
-        *includes << msIncludeExp.cap(1);
-        ++pos;
+        if (!inEmptyBlock(pos, emptyBlocks))
+        {
+            *includes << msIncludeExp.cap(1);
+        }
+
+        pos += msIncludeExp.matchedLength();
     }
 }
 
 void SCsCodeAnalyzer::parse(const QString &text, QStandardItemModel *model)
 {
-    model->clear();
     clearWatcher();
     mDocumentIncludes.clear();
     mDocumentEmptyBlocks.clear();
@@ -179,30 +194,10 @@ void SCsCodeAnalyzer::parse(const QString &text, QStandardItemModel *model)
 
     mParsedFiles << mDocumentPath;
 
-    extractIncludes(text, &mDocumentIncludes);
-    extractIdentifiers(text, &mDocumentIdentifiers, &mDocumentEmptyBlocks);
+    processText(text, &mDocumentEmptyBlocks, &mDocumentIncludes, &mDocumentIdentifiers);
+    parseFiles(mDocumentIncludes, mDocumentDir);
 
-    foreach(const QString &fileName, mDocumentIncludes)
-    {
-        QFileInfo fileInfo(fileName);
-        if (fileInfo.isAbsolute())
-        {
-            parseFile(fileName);
-        }
-        else
-        {
-            fileInfo.setFile(mDocumentDir, fileName);
-            parseFile(fileInfo.absoluteFilePath());
-        }
-    }
-
-    QSet<QString> identifiers = mDocumentIdentifiers + mIncludedIdentifiers;
-
-    foreach(const QString &id, identifiers)
-    {
-        QStandardItem *item = new QStandardItem(id);
-        model->appendRow(item);
-    }
+    fillModel(model);
 }
 
 void SCsCodeAnalyzer::update(const QString &text, QStandardItemModel *model)
@@ -210,8 +205,7 @@ void SCsCodeAnalyzer::update(const QString &text, QStandardItemModel *model)
     QSet<QString> newIdentifiers;
     QSet<QString> newIncludes;
 
-    extractIncludes(text, &newIncludes);
-    extractIdentifiers(text, &newIdentifiers, &mDocumentEmptyBlocks);
+    processText(text, &mDocumentEmptyBlocks, &newIncludes, &newIdentifiers);
 
     newIdentifiers -= mIgnoreIdentifiers - mDocumentIdentifiers;
 
@@ -219,7 +213,6 @@ void SCsCodeAnalyzer::update(const QString &text, QStandardItemModel *model)
 
     if (mIncludesUpdated || includesChanged)
     {
-        model->clear();
         clearWatcher();
 
         mDocumentIdentifiers = newIdentifiers;
@@ -230,27 +223,9 @@ void SCsCodeAnalyzer::update(const QString &text, QStandardItemModel *model)
 
         mParsedFiles << mDocumentPath;
 
-        foreach(const QString &fileName, mDocumentIncludes)
-        {
-            QFileInfo fileInfo(fileName);
-            if (fileInfo.isAbsolute())
-            {
-                parseFile(fileName);
-            }
-            else
-            {
-                fileInfo.setFile(mDocumentDir, fileName);
-                parseFile(fileInfo.absoluteFilePath());
-            }
-        }
+        parseFiles(mDocumentIncludes, mDocumentDir);
 
-        QSet<QString> identifiers = mDocumentIdentifiers + mIncludedIdentifiers;
-
-        foreach(const QString &id, identifiers)
-        {
-            QStandardItem *item = new QStandardItem(id);
-            model->appendRow(item);
-        }
+        fillModel(model);
 
         mIncludesUpdated = false;
 
@@ -300,13 +275,18 @@ void SCsCodeAnalyzer::setDocumentPath(const QString &path)
     mDocumentDir = QFileInfo(path).absoluteDir();
 }
 
-bool SCsCodeAnalyzer::inEmptyBlock(int pos)
+bool SCsCodeAnalyzer::inEmptyBlock(int pos, const QList<Block> &blocks)
 {
-    foreach(const Block &block, mDocumentEmptyBlocks)
+    foreach(const Block &block, blocks)
         if (block.first < pos && block.second >= pos)
             return true;
 
     return false;
+}
+
+bool SCsCodeAnalyzer::inEmptyBlock(int pos)
+{
+    return inEmptyBlock(pos, mDocumentEmptyBlocks);
 }
 
 
