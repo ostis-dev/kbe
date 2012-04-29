@@ -43,26 +43,89 @@ public:
     typedef QPair<QRegExp, QRegExp> BlockPattern;
 
     explicit SCsCodeAnalyzer(QObject *parent = 0);
+
+    /*! Sets the path of the opened file.
+      @param path Absolute path to the file.
+      */
     void setDocumentPath(const QString &path);
 
+    /*! Parses contents of opened file and fills autocompleter's model.
+      @param text Text of document.
+      @param model Item model for autocompletion.
+      */
     void parse(const QString &text, QStandardItemModel *model);
+
+    /*! Updates autocompleter's model according to changes in document made by user.
+      @param text Text of document.
+      @param model Item model for autocompletion.
+      */
     void update(const QString &text, QStandardItemModel *model);
+
+    /*! Forces to ignore the addition of an identifier during the next update().
+        identifier won't be added to autocomleter's model.
+      @param identifier Identifier to ignore.
+      */
     void ignoreUpdate(const QString &identifier);
+
+    /*! Checks whether the specified position is within the "empty block" of document
+       (inside block of comments, for example).
+      @param pos Position in document.
+      */
 
     bool inEmptyBlock(int pos);
 
+    /*! Adds pattern for "empty blocks".
+      @param blockPattern Block pattern.
+      */
     static void addIgnoreBlock(const BlockPattern &blockPattern);
+
+    /*! Intializes patterns for "empty blocks".
+      */
     static void init();
+
+    /*! Checks whether the specified text is an SCs identifier.
+      @param text Text to check.
+      */
     static bool isIdentifier(const QString &text);
 
 protected:
     typedef QPair<int, int> Block;
 
+    /*! Parses contents of specified .scs file:
+        extracts all identifiers, includes and recursively processes them.
+        If file has already been seen, does nothing.
+      @param filePath Absolute path to file.
+      */
     void parseFile(const QString &filePath);
 
-    void extractIdentifiers(const QString &text, QSet<QString> *identifiers, QList<Block> *emptyBlocks = NULL);
-    void extractIncludes(const QString &text, QSet<QString> *identifiers);
+    /*! Parses set of files. Paths to files can be absolute and relative.
+      @param pathSet Set of paths to files.
+      @param workDirectory Current directory (for relative paths).
+      */
+    void parseFiles(const QSet<QString> &pathSet, const QDir &workDirectory);
+
+    /*! Extracts "empty blocks", includes, identifiers from text.
+      @param text Contents of document.
+      @param emptyBlocks List of empty blocks.
+      @param includes Set of include files.
+      @param identifiers Set of identifiers.
+      */
+    void processText(const QString &text, QList<Block> *emptyBlocks, QSet<QString> *includes, QSet<QString> *identifiers);
+    void extractEmptyBlocks(const QString &text, QList<Block> *emptyBlocks);
+    void extractIdentifiers(const QString &text, QSet<QString> *identifiers, const QList<Block> &emptyBlocks);
+    void extractIncludes(const QString &text, QSet<QString> *includes, const QList<Block> &emptyBlocks);
+
+    /*! Clears FileSystemWatcher list of files.
+      */
     void clearWatcher();
+
+    /*! Fills autocompleter's model with identifiers extracted from current document
+        and its includes.
+        @param model Item model for autocompletion.
+      */
+    void fillModel(QStandardItemModel *model);
+
+    bool inEmptyBlock(int pos, const QList<Block> &blocks);
 
 private:
     const static QRegExp msIdentifierExp;
@@ -84,6 +147,9 @@ private:
     QFileSystemWatcher *mWatcher;
 
 private slots:
+    /*! Called when some of the included files of current document
+        is modified.
+      */
     void updateFile(const QString &file);
 
 };
