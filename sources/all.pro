@@ -11,5 +11,6 @@ SUBDIRS = plugins/m4scp \
           plugins/scg \
           plugins/scn \
           plugins/scs \
-          kbe \
-          updater \
+          kbe
+
+#win32: SUBDIRS += updater

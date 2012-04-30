@@ -70,6 +70,7 @@ void GwfObjectInfoReader::createTypesMap()
     // initialize types mapping
 
     // nodes
+    mGWFType2TypeAlias["node/-/not_define"] = "node/-/not_define";
     mGWFType2TypeAlias["node/const/not_define"] = "node/-/not_define";
     mGWFType2TypeAlias["node/const/general_node"] = "node/const/general";
     mGWFType2TypeAlias["node/const/predmet"] = "node/const/abstract";
