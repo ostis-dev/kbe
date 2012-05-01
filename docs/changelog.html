@@ -13,6 +13,57 @@
 <p class="header" align="center">Change Log</p>
 
 <hr width="90%">
+<p class="mainheader"> v0.3.0(Integrator)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="add">Added plugins support</li>
+	<li class="change">Refactored user guide documentation<p class="comment">Now it made in tex format</p></li>
+	<li class="add">Added scripts to make deb package on Ubuntu</li>
+	<li class="fix">Fixed errors with file opening</li>
+	<li class="remove">Disabled import/export menu</li>
+	<li class="change">Resources for each editor mode into qrc files, and now them compiled into plugin</li>
+	<li class="add">Added feedback dialog</li>
+	<li class="add">Added coding standards</li>
+	<li class="change">Drawed new icon for tool</li>
+	<li class="change">New tool icons set used</li>
+	<li class="fix">Fixed possible bugs with tabs <p class="commnet">There was possibility to make tool crashed, when working with tabs</p></li>
+	<li class="change">Added icons for tabs</li>
+	<li class="add">Added guide dialog on startup</li>
+	<li class="add">Added examples of files</li>
+	<li class="add">Added new files dialog, that allows to create files with supported formats</li>
+	
+	<p class="header">SCg-editor</p>
+	<li class="add">Improved drag and drop feature <p class="comment">Now if drag file on sc.g-node, then that file will be set as content</p></li>
+	<li class="fix">Fixed bug with sc.g-bus dragging <p class="comment">Sometimes it crashes tool</p></li>
+	<li class="fix">Fixed bug with sc.g-pair dragging into contour <p class="comment">Now if you drag two sc.g-nodes with sc.g-pair into sc.g-contour, then sc.g-pair also will be added into sc.g-contour</p></li>
+	<li class="add">Added object cloning <p class="comment">Now you can clone selected objects by Shift + mouse dragging</p></li>
+	<li class="add">Added possibility to navigate in sc.g-document with keyboard</li>
+	<li class="add">Added new command to select sc.g-elements <p class="comment">For now there are two commands: select input/output sc.g-pairs, select subgraph</p></li>
+	<li class="change">Refactored undo/redo commands <p class="comment">They moved into specified directory</p></li>
+	<li class="change">Refactored scg modes <p class="comment">They moved into separate directory, and class names was changed</p></li>
+	<li class="add">Added support of 0.1.0 version of SCg-code</li>
+	<li class="fix">Fixed bug with bus arrange</li>
+	<li class="change">Improved type changing menu <p class="comment">Now it supports common types of objects</p></li>
+	<li class="fix">Fixed bugs with copying</li>
+	<li class="change">Changed rules of sc.g-contour drawing <p class="comment">Now it draws with rounded corners</p></li>
+	<li class="change">Changed rules of sc.g-border drawing <p class="comment">Now it draws with mark in left top corner</p></li>
+	<li class="fix">Fixed bugs with exporting into image</li>
+	<li class="fix">Fixed bug with context menu calling <p class="comment">Disabled calling of context menu with keyboard</p></li>
+	<li class="change">Arrangers and slection tools grouped on toolbar</li>
+	
+	<p class="header">M4Scp editor</p>
+	<li class="add">Added syntax highlighting</li>
+	<li class="add">Added line numbers into editor</li>
+	<li class="add">Added autocompletion of scp operators</li>
+	<li class="add">Added icons into autocompletion list</li>
+	
+	<p class="header">SCs editor</p>
+	<li class="add">Added syntax highlighting</li>
+	<li class="add">Added line numbers into editor</li>
+	<li class="add">Added autocompletion of includes, identifiers <p class="comment">It also parse included files and add identifiers from them</p></li>
+</ul>
+
+<hr width="90%">
 <p class="mainheader"> v0.2.1(Opener)</p>
 <ul>
 	<p class="header">Common changes</p>

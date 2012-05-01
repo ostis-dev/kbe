@@ -13,8 +13,8 @@ a:visited {color: #000088;	text-decoration: underline}
 li {list-style-type: diamond;	position: relative;	left: -15px;	clip: rect(   )}
 
 .header { font-weight: bold; font-size: 12pt; }
-.comment { font-size: 8pt; }
-.MainHeader {  font-weight: bold; color: black; background-color: #037fc5; font-size: 10pt}
+.comment { font-size: 8pt; color: #aaa}
+.MainHeader {  font-weight: bold; color: white; background-color: #037fc5; font-size: 10pt}
 .NewsDate {  color: #ccccff; font-weight: bold}
 .MainContent { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt }
 

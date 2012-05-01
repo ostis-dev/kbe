@@ -73,7 +73,7 @@ protected:
 #define PATCH   0
 #define REVISION    0
 #define RC      ""
-#define CODENAME    "Opener"
+#define CODENAME    "integrator"
 
 #define VERSION Version(MAJOR, MINOR, PATCH, RC, REVISION, CODENAME)
 #define VERSION_STR VERSION.toString()

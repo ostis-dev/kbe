@@ -547,24 +547,30 @@ void MainWindow::fileExit()
 void MainWindow::helpAbout()
 {
     QMessageBox::about(this, tr("About KBE"),
-                       QString("<table><tr valign=\"middle\"><td align=\"left\"><img src=\"%1\"></td>"
-                               "<td>%2 %3: %4 <br> <br> Site: "
-                               "<STYLE type=\"text/css\">"
-                               "a:link {text-decoration: none}"
-                               "</STYLE>"
-                               "<a href=\"http://www.ostis.net\">http://www.ostis.net</a>"
-                               "<br> <br>Copyright  OSTIS.net</td></tr><tr>"
-                               "<td></td><td>%5:<ul>"
-                               "<li>Denis Koronchik</li>"
-                               "<li>Gumbar Ilya (zooner)</li>"
-                               "<li>Harkunov Evgeny (filosov)</li>"
-                               "</ul>%6:<ul>"
-                               "<li>Nikita Grishko (Gr1N)</li>"
-                               "<li>Denis Klimenko</li>"
-                               "<li>Pavel Karpan (pioneer)</li>"
-                               "<li>Dmitry Kolb (skif-sarmat)</li>"
-                               "</ul>"
-                               "</td></tr></table>")
+                       tr("<table><tr valign=\"middle\"><td align=\"left\"><img src=\"%1\"></td>"
+                          "<td>%2 %3: %4 <br> <br> Site: "
+                          "<STYLE type=\"text/css\">"
+                          "a:link {text-decoration: none}"
+                          "</STYLE>"
+                          "<a href=\"http://www.ostis.net\">http://www.ostis.net</a>"
+                          "<br> <br>Copyright  OSTIS.net</td></tr><tr>"
+                          "<td></td><td>%5:<ul>"
+                          "<li>Denis Koronchik</li>"
+                          "<li>Gumbar Ilya (zooner)</li>"
+                          "<li>Harkunov Evgeny (filosov)</li>"
+                          "</ul>%6:<ul>"
+                          "<li>Witkowsky Dmitry (wagos)</li>"
+                          "<li>Aliaksei Palkanau (lifus)</li>"
+                          "<li>Nikita Grishko (Gr1N)</li>"
+                          "<li>Denis Klimenko</li>"
+                          "<li>Konstantin Savon (Konstantsin)</li>"
+                          "<li>Sergei Yakimchik (Gudini)</li>"
+                          "<li>Lapitsky Artem</li>"
+                          "<li>Eugen Zakharich</li>"
+                          "<li>Pavel Karpan (pioneer)</li>"
+                          "<li>Dmitry Kolb (skif-sarmat)</li>"
+                          "</ul>"
+                          "</td></tr></table>")
                        .arg(QString(":/media/icons/help-about-logo.png"))
                        .arg(tr("Knowledge Base source Editor "))
                        .arg(tr("version"))
