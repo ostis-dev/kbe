@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
     //splash.showMessage("Load Translation", Qt::AlignBottom | Qt::AlignHCenter);
 
     QTranslator myappTranslator;
-    myappTranslator.load(":/media/translations/lang_" + QLocale::system().name());
+    myappTranslator.load("qrc:/media/translations/lang_" + QLocale::system().name());
     a.installTranslator(&myappTranslator);
 
     //splash.showMessage(a.tr("Create interface"), Qt::AlignBottom | Qt::AlignHCenter);

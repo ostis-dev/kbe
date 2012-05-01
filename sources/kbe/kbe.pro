@@ -38,6 +38,12 @@ RESOURCES     = kbe.qrc
 TRANSLATIONS += media/translations/lang_en_EN.ts \
                 media/translations/lang_ru_RU.ts
 
+lrelease.input         = TRANSLATIONS
+lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
+lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
+lrelease.CONFIG       += no_link target_predeps
+QMAKE_EXTRA_COMPILERS += lrelease
+
 RC_FILE = kbe.rc
 #Debug:DEFINES += _DEBUG
 

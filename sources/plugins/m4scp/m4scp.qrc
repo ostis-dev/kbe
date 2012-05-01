@@ -4,5 +4,7 @@
         <file>media/icons/ordinal.png</file>
         <file>media/icons/procedure.png</file>
         <file>media/icons/mime_type.png</file>
+        <file>media/translations/m4scp_en_EN.qm</file>
+        <file>media/translations/m4scp_ru_RU.qm</file>
     </qresource>
 </RCC>

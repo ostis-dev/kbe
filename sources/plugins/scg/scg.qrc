@@ -29,5 +29,7 @@
         <file>media/icons/tool-select-group.png</file>
         <file>media/icons/tool-select-inout.png</file>
         <file>media/icons/tool-select-subgraph.png</file>
+        <file>media/translations/scg_en_EN.qm</file>
+        <file>media/translations/scg_ru_RU.qm</file>
     </qresource>
 </RCC>

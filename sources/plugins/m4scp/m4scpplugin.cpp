@@ -25,16 +25,23 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpwindow.h"
 
 #include <QDir>
+#include <QTranslator>
+#include <QApplication>
+#include <QLocale>
 
 Q_EXPORT_PLUGIN2(m4scp, M4SCpPlugin)
 
 M4SCpPlugin::M4SCpPlugin(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    mTranslator(0)
 {
+    mTranslator = new QTranslator(this);
+    mTranslator->load("qrc:/media/translations/m4scp_" + QLocale::system().name());
 }
 
 M4SCpPlugin::~M4SCpPlugin()
 {
+    delete mTranslator;
 }
 
 const QString& M4SCpPlugin::name() const
@@ -59,6 +66,8 @@ void M4SCpPlugin::initialize()
     M4SCpSyntax::initialize();
 
     mInterfaces.push_back(new M4SCpWindowFactory(this));
+
+    qApp->installTranslator(mTranslator);
 }
 
 void M4SCpPlugin::shutdown()
@@ -68,4 +77,6 @@ void M4SCpPlugin::shutdown()
         delete obj;
 
     mInterfaces.clear();
+
+    qApp->removeTranslator(mTranslator);
 }

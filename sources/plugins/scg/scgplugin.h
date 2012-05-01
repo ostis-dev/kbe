@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include "interfaces/plugininterface.h"
 
+class QTranslator;
+
 class SCgPlugin : public QObject,
                   public PluginInterface
 {
@@ -50,6 +52,9 @@ protected:
 
 private:
     QList<QObject*> mInterfaces;
+
+    //! Pointer to plugin translator
+    QTranslator *mTranslator;
 
 signals:
 

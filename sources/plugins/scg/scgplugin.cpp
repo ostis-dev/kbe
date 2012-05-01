@@ -34,15 +34,23 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangertuple.h"
 #include "arrangers/scgarrangervertical.h"
 
+#include <QTranslator>
+#include <QApplication>
+#include <QLocale>
+
 Q_EXPORT_PLUGIN2(scg, SCgPlugin)
 
 SCgPlugin::SCgPlugin(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    mTranslator(0)
 {
+    mTranslator = new QTranslator(this);
+    mTranslator->load("qrc:/media/translations/scg_" + QLocale::system().name());
 }
 
 SCgPlugin::~SCgPlugin()
 {
+    delete mTranslator;
 }
 
 const QString& SCgPlugin::name() const
@@ -75,6 +83,8 @@ void SCgPlugin::initialize()
     SCgLayoutManager::instance().addArranger(new SCgVerticalArranger(this));
     SCgLayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
     SCgLayoutManager::instance().addArranger(new SCgTupleArranger(this));
+
+    qApp->installTranslator(mTranslator);
 }
 
 void SCgPlugin::shutdown()
@@ -82,5 +92,8 @@ void SCgPlugin::shutdown()
     QObject *interface = 0;
     foreach(interface, mInterfaces)
         delete interface;
+
     mInterfaces.clear();
+
+    qApp->removeTranslator(mTranslator);
 }

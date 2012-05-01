@@ -27,6 +27,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/plugininterface.h"
 
+class QTranslator;
+
 class M4SCpPlugin : public QObject, public PluginInterface
 {
     Q_OBJECT
@@ -53,6 +55,8 @@ protected:
 private:
     //! List of interfaces
     QList<QObject*> mInterfaces;
+    //! Pointer to plugin translator
+    QTranslator *mTranslator;
 
 signals:
 
