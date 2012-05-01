@@ -32,3 +32,6 @@ SOURCES += \
 
 RESOURCES += \
     m4scp.qrc
+
+TRANSLATIONS += media/translations/m4scp_en_EN.ts \
+                media/translations/m4scp_ru_RU.ts

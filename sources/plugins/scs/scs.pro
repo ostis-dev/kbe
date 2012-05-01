@@ -34,3 +34,6 @@ SOURCES += \
     scsabstracthighlightingrule.cpp \
     scscodeanalyzer.cpp \
     scscodecompleter.cpp
+
+TRANSLATIONS += media/translations/scs_en_EN.ts \
+                media/translations/scs_ru_RU.ts

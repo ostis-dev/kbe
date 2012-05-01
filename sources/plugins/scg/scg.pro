@@ -163,3 +163,6 @@ SOURCES += \
     modes/scgclonemode.cpp \
     modes/scgbusmode.cpp \
     commands/scgcommandswappairorient.cpp
+
+TRANSLATIONS += media/translations/scg_en_EN.ts \
+                media/translations/scg_ru_RU.ts
