@@ -177,6 +177,9 @@
    </property>
   </action>
   <action name="actionGuide">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Guide</string>
    </property>

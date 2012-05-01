@@ -1,0 +1,22 @@
+/* Website template by freewebsitetemplates.com */
+/*------------------------------ CONTENTS ------------------------------*/
+#main {
+	float: left;
+	margin: 60px 10px 0 0;
+}
+
+#sidebar {
+	margin: 60px 0 0;
+}
+
+/*------------------------------ FOOTER ------------------------------*/
+#footer ul.contacts li span {
+	float: left;
+	width: 50px;
+}
+#footer ul.contacts li p {
+	float: left;
+	width: 250px;
+	margin: 0;
+}
+

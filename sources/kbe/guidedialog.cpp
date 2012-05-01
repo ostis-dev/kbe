@@ -56,7 +56,7 @@ GuideDialog::GuideDialog(QWidget *parent) :
 
     setLayout(vlayout);
 
-    setFixedSize(420, 320);
+    setFixedSize(575, 500);
 }
 
 GuideDialog::~GuideDialog()
