@@ -34,28 +34,36 @@ SCgCloneMode::SCgCloneMode(SCgScene *scene) :
 {
 }
 
-SCgCloneMode::~SCgCloneMode() {
+SCgCloneMode::~SCgCloneMode()
+{
     clean();
 }
 
 void SCgCloneMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     SCgMode::mousePress(event);
+
     if (!mInsertedObjectGroup)
     {
         mScene->setEditMode(mScene->previousMode());
         return;
     }
+
     SCgObject* underMouseObj = mScene->objectAt(event->scenePos());
     SCgContour* parent = 0;
+
     if (underMouseObj && underMouseObj->type() == SCgContour::Type)
         parent = static_cast<SCgContour*>(underMouseObj);
+
     mScene->cloneCommand(mInsertedObjectGroup->childItems(), parent);
+
     clean();
 }
 
-void SCgCloneMode::activate() {
+void SCgCloneMode::activate()
+{
     clean();
+
     QList<QGraphicsItem*> list = mScene->selectedItems();
 
     QByteArray clonedData;
@@ -84,8 +92,10 @@ void SCgCloneMode::activate() {
     //Place objects to scene
     TemplateSCgObjectsBuilder objectBuilder(mScene);
     objectBuilder.buildObjects(reader.objectsInfo());
+
     QList<SCgObject*> objList = objectBuilder.objects();
     QList<QGraphicsItem*> withoutChilds;
+
     foreach(QGraphicsItem* obj, objList)
         if (!obj->parentItem())
             withoutChilds.append(obj);
@@ -96,11 +106,13 @@ void SCgCloneMode::activate() {
 
         QGraphicsView* v = mScene->views().at(0);
         QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
+
         mInsertedObjectGroup->setPos(p);
         mInsertedObjectGroup->setOpacity(0.5);
     }
 }
 
-void SCgCloneMode::deactivate() {
+void SCgCloneMode::deactivate()
+{
     SCgInsertMode::deactivate();
 }

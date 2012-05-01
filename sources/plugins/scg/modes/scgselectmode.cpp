@@ -136,7 +136,10 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 
     // start cloning
     if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
+    {
         mScene->setEditMode(SCgScene::Mode_Clone);
+        event->accept();
+    }
 }
 
 void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
