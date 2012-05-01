@@ -102,9 +102,9 @@ clean()
   rm -r ./kbe
   find $PROJECT_SOURCES_ROOT/ -name 'Makefile' -type f -print0 | xargs -0 rm
   find $PROJECT_SOURCES_ROOT/ -name 'qrc_*.cpp' -type f -print0 | xargs -0 rm
-  #find $PROJECT_SOURCES_ROOT/ -name 'bin' -type d -print0 | xargs -0 rm -r
-  #find $PROJECT_SOURCES_ROOT/ -name 'moc' -type d -print0 | xargs -0 rm -r
-  #find $PROJECT_SOURCES_ROOT/ -name 'obj' -type d -print0 | xargs -0 rm -r
+  find $PROJECT_SOURCES_ROOT/ -name 'bin' -type d -print0 | xargs -0 rm -r
+  find $PROJECT_SOURCES_ROOT/ -name 'moc' -type d -print0 | xargs -0 rm -r
+  find $PROJECT_SOURCES_ROOT/ -name 'obj' -type d -print0 | xargs -0 rm -r
 }
 
 make_deb_package()
