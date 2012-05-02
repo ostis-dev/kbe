@@ -134,6 +134,10 @@ void MainWindow::createToolBars()
     mToolBarFile->addAction(ui->actionSave_as);
     //mToolBarFile->addAction(ui->actionSave_all);
     mToolBarFile->addSeparator();
+    mToolBarFile->addAction(this->printAction);
+    mToolBarFile->addAction(this->printPreviewAction);
+    mToolBarFile->addAction(this->exportPDFAction);
+    mToolBarFile->addSeparator();
     mToolBarFile->addAction(ui->actionClose);
     //mToolBarFile->addAction(ui->actionClose_All);
     //mToolBarFile->addAction(ui->actionClose_Others);
@@ -148,6 +152,25 @@ void MainWindow::createActions()
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
+
+#ifndef QT_NO_PRINTER
+
+    this->printAction = new QAction(QIcon::fromTheme("document-print", getIcon("document-print.png")),
+                                    tr("&Print..."), this);
+    this->printAction->setPriority(QAction::LowPriority);
+    this->printAction->setShortcut(QKeySequence::Print);
+
+    this->printPreviewAction = new QAction(QIcon::fromTheme("document-print-preview", getIcon("document-print-preview.png")),
+                                           tr("Print Preview..."), this);
+
+    this->exportPDFAction = new QAction(QIcon::fromTheme("document-exportpdf", getIcon("document-exportpdf.png")),
+                                        tr("&Export PDF..."), this);
+
+    connect(this->printAction, SIGNAL(triggered()), this, SLOT(filePrint()));
+    connect(this->printPreviewAction, SIGNAL(triggered()), this, SLOT(filePrintPreview()));
+    connect(this->exportPDFAction, SIGNAL(triggered()), this, SLOT(fileExportPDF()));
+
+#endif
 
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
@@ -231,6 +254,10 @@ void MainWindow::updateMenu()
     ui->actionSave_as->setEnabled(subWindow != 0);
     ui->actionSave_all->setEnabled(subWindow != 0 && !checkSubWindowSavedState());
     //ui->menuExport->setEnabled(subWindow !=0);
+
+    this->printAction->setEnabled(subWindow != 0);
+    this->printPreviewAction->setEnabled(subWindow != 0);
+    this->exportPDFAction->setEnabled(subWindow != 0);
 
     ui->actionClose->setEnabled(subWindow != 0);
     ui->actionClose_All->setEnabled(subWindow != 0);
@@ -542,6 +569,80 @@ void MainWindow::fileExportToImage()
 void MainWindow::fileExit()
 {
     close();
+}
+
+void MainWindow::filePrint(QWidget* window)
+{
+    EditorInterface* childWindow = 0;
+
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
+
+    if(!childWindow)
+        childWindow = activeChild();
+
+    Q_ASSERT(childWindow);
+
+    if (childWindow)
+    {
+        //Q_ASSERT_X(dPos != 0, "MainWindow::fileSave()", "File with empty extension!");
+        mBlurEffect->setEnabled(true);
+        childWindow->printFile();
+        mBlurEffect->setEnabled(false);
+    }
+}
+
+void MainWindow::filePrintPreview(QWidget* window)
+{
+    EditorInterface* childWindow = 0;
+
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
+
+    if(!childWindow)
+        childWindow = activeChild();
+
+    Q_ASSERT(childWindow);
+
+    if (childWindow)
+    {
+        //Q_ASSERT_X(dPos != 0, "MainWindow::fileSave()", "File with empty extension!");
+        mBlurEffect->setEnabled(true);
+        childWindow->printPreviewFile();
+        mBlurEffect->setEnabled(false);
+    }
+}
+
+void MainWindow::fileExportPDF(QWidget* window)
+{
+    EditorInterface* childWindow = 0;
+
+    Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
+    if (it != mWidget2EditorInterface.end())
+        childWindow = *it;
+
+    if(!childWindow)
+        childWindow = activeChild();
+
+    Q_ASSERT(childWindow);
+
+    if (childWindow)
+    {
+        //Q_ASSERT_X(dPos != 0, "MainWindow::fileSave()", "File with empty extension!");
+        mBlurEffect->setEnabled(true);
+
+        QString fileName = QFileDialog::getSaveFileName(this, "Export PDF",
+                                                        QString(), "*.pdf");
+        if (!fileName.isEmpty()) {
+            if (QFileInfo(fileName).suffix().isEmpty())
+                fileName.append(".pdf");
+        childWindow->exportFileToPDF(fileName);
+        }
+        mBlurEffect->setEnabled(false);
+    }
+
 }
 
 void MainWindow::helpAbout()

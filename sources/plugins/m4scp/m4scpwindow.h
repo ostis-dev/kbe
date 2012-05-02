@@ -77,6 +77,16 @@ public:
 
     static QIcon findIcon(const QString &iconName);
 
+    /*!
+      */
+    void printFile();
+    /*!
+      */
+    void printPreviewFile();
+    /*!
+      */
+    void exportFileToPDF(const QString &fileName);
+
 private:
 
     M4SCpCodeEditor *mEditor;
@@ -86,7 +96,7 @@ private:
 private slots:
     //! Slot that recieve content changing
     void textChanged();
-
+    void printPreview(QPrinter *printer);
 };
 
 class M4SCpWindowFactory : public QObject,

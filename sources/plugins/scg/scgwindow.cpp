@@ -37,6 +37,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QPrinter>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -319,6 +320,27 @@ void SCgWindow::createToolBar()
 
     mToolBar->setWindowTitle(tr("SCg Tools"));
 }
+
+void SCgWindow::printFile()
+{
+
+}
+
+void SCgWindow::printPreviewFile()
+{
+
+}
+
+void SCgWindow::exportFileToPDF(const QString &fileName)
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(fileName);
+    printer.setOrientation(QPrinter::Landscape);
+    QPainter painter( &printer );
+    mScene->render( &painter, printer.pageRect(), mScene->sceneRect(), Qt::KeepAspectRatio );
+}
+
 
 QIcon SCgWindow::findIcon(const QString &iconName)
 {
@@ -693,6 +715,7 @@ void SCgWindow::stackCleanStateChanged(bool value)
 {
     emitEvent(EditorObserverInterface::ContentChanged);
 }
+
 
 
 // ---------------------

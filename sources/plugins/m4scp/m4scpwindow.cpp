@@ -34,7 +34,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
-
+#include <QPrintDialog>
+#include <QPrintPreviewDialog>
+#include <QPrinter>
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
@@ -155,6 +157,44 @@ QIcon M4SCpWindow::icon() const
 QIcon M4SCpWindow::findIcon(const QString &iconName)
 {
     return QIcon(":/m4scp/media/icons/" + iconName);
+}
+
+void M4SCpWindow::printFile()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintDialog *dlg = new QPrintDialog(&printer, this);
+    if (mEditor->textCursor().hasSelection())
+        dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
+    dlg->setWindowTitle(tr("Print Document"));
+    if (dlg->exec() == QDialog::Accepted) {
+        mEditor->print(&printer);
+    }
+    delete dlg;
+}
+
+void M4SCpWindow::printPreview(QPrinter *printer)
+{
+#ifdef QT_NO_PRINTER
+    Q_UNUSED(printer);
+#else
+    mEditor->print(printer);
+#endif
+}
+
+void M4SCpWindow::printPreviewFile()
+{
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintPreviewDialog preview(&printer, this);
+    connect(&preview, SIGNAL(paintRequested(QPrinter*)), SLOT(printPreview(QPrinter*)));
+    preview.exec();
+}
+
+void M4SCpWindow::exportFileToPDF(const QString &fileName)
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(fileName);
+    mEditor->document()->print(&printer);
 }
 
 void M4SCpWindow::textChanged()

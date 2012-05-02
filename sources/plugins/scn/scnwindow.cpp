@@ -120,6 +120,20 @@ QIcon SCnWindow::findIcon(const QString &iconName)
     return QIcon(":/media/icons/" + iconName);
 }
 
+void SCnWindow::printFile()
+{
+
+}
+
+void SCnWindow::printPreviewFile()
+{
+
+}
+
+void SCnWindow::exportFileToPDF(const QString &fileName)
+{
+
+}
 // ---------------------
 SCnWindowFactory::SCnWindowFactory(QObject *parent) :
     QObject(parent)

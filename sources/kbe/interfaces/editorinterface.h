@@ -144,6 +144,18 @@ public:
       */
     virtual void _setObserver(EditorObserverInterface *observer) { mObserver = observer; }
 
+    /*!
+      */
+    virtual void printFile() = 0;
+    /*!
+      */
+    virtual void printPreviewFile() = 0;
+    /*!
+      */
+    virtual void exportFileToPDF(const QString &fileName) = 0;
+
+
+
 protected:
     //! Holds file name for current document.
     QString mFileName;

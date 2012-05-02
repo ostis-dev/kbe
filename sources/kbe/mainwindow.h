@@ -136,6 +136,14 @@ private:
     //! Separator in main menu for recently files.
     QAction *separatorAct;
 
+    //! Actions for printing files.
+    QAction* printAction;
+    //! Actions for open print preview files.
+    QAction* printPreviewAction;
+    //! Actions for export file to PDF.
+    QAction* exportPDFAction;
+
+
     //! Contains all dockWidgets. Maps from objectName to DockWidget with this objectName. @see updateDockWidgets(bool).
     QMap<QString, QDockWidget*> mDockWidgets;
 
@@ -166,6 +174,10 @@ public slots:
     void fileSaveAll();
     void fileExportToImage();
     void fileExit();
+
+    void filePrint(QWidget* window = 0);
+    void filePrintPreview(QWidget* window = 0);
+    void fileExportPDF(QWidget* window = 0);
 
     void helpAbout();
     void helpAboutQt();

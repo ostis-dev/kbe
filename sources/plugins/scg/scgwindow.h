@@ -78,6 +78,16 @@ public:
     //! @return Undo stack for this window
     QUndoStack* undoStack() const;
 
+    /*!
+      */
+    void printFile();
+    /*!
+      */
+    void printPreviewFile();
+    /*!
+      */
+    void exportFileToPDF(const QString &fileName);
+
 protected:
 
     //! @copydoc EditorInterface::icon()
@@ -243,6 +253,7 @@ private slots:
     void deleteSelected();
 
     void stackCleanStateChanged(bool value);
+
 };
 
 class SCgWindowFactory : public QObject,

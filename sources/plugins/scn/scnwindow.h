@@ -62,6 +62,17 @@ public:
     //! Return icon by name
     static QIcon findIcon(const QString &iconName);
 
+
+    /*!
+      */
+    void printFile();
+    /*!
+      */
+    void printPreviewFile();
+    /*!
+      */
+    void exportFileToPDF(const QString &fileName);
+
 protected:
     //! Saved flag
     bool mIsSaved;

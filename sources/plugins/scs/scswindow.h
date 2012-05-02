@@ -73,6 +73,16 @@ public:
     */
     QIcon icon() const;
 
+    /*!
+      */
+    void printFile();
+    /*!
+      */
+    void printPreviewFile();
+    /*!
+      */
+    void exportFileToPDF(const QString &fileName);
+
     static QIcon findIcon(const QString &iconName);
 
 private:
@@ -83,6 +93,7 @@ private:
 private slots:
     //! Content text changed slot
     void textChanged();
+    void printPreview(QPrinter *printer);
 };
 
 class SCsWindowFactory : public QObject,

@@ -10,5 +10,8 @@
         <file>media/icons/mail.png</file>
         <file>media/icons/window-close.png</file>
         <file>media/startup/index.html</file>
+        <file>media/icons/document-print.png</file>
+        <file>media/icons/document-print-preview.png</file>
+        <file>media/icons/document-exportpdf.png</file>
     </qresource>
 </RCC>
