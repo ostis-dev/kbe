@@ -44,11 +44,28 @@ SCnFieldItem::SCnFieldItem(QObject *parent) :
                 | QGraphicsItem::ItemSendsGeometryChanges);
     setAcceptHoverEvents(true);
 
+
+    mMenu = new QMenu();
+    addNewItemAct = new QAction("Add Child", mMenu);
+    deleteItemAct = new QAction("Remove", mMenu);
+    editItemAct = new QAction("Edit", mMenu);
+
+    mMenu->addAction(editItemAct);
+    mMenu->addAction(addNewItemAct);
+    mMenu->addAction(deleteItemAct);
+
+    connect(addNewItemAct, SIGNAL(triggered()), SLOT(AddNewSlot()));
+    connect(editItemAct, SIGNAL(triggered()), SLOT(EditSlot()));
+    connect(deleteItemAct, SIGNAL(triggered()), SLOT(DeleteSlot()));
 }
+
 
 SCnFieldItem::~SCnFieldItem()
 {
-
+    delete mMenu;
+    delete addNewItemAct;
+    delete editItemAct;
+    delete deleteItemAct;
 }
 
 bool SCnFieldItem::isSCnFieldType(int type)
@@ -162,16 +179,162 @@ void SCnFieldItem::startEdit()
 
 void SCnFieldItem::applyEdit()
 {
-
+      update();
 }
 
 void SCnFieldItem::cancelEdit()
 {
+    mState = StateNormal;
 
 }
+
+void SCnFieldItem::keyPressEvent(QKeyEvent *event){
+
+    if(event->key() == Qt::Key_E){
+        this->startEdit();
+        changeValue();
+    }
+    if(event->key() == Qt::Key_Delete){
+        this->selfDeleting();
+    }
+}
+
+void SCnFieldItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(event->button() == Qt::RightButton)
+    {
+        mMenu->exec(event->screenPos());
+    }
+    QGraphicsItem::mousePressEvent(event);
+}
+
+void SCnFieldItem::EditSlot()
+{
+    this->startEdit();
+    changeValue();
+}
+
+void SCnFieldItem::DeleteSlot()
+{
+    this->selfDeleting();
+}
+
+void SCnFieldItem::AddNewSlot()
+{
+    SCnFieldItem *_newItem = new SCnFieldGlobalIdtf(this);
+    _newItem->setValue("NewItem");
+    _newItem->setParentItem(this);
+    SCnFieldGlobalIdtf *root_item = static_cast<SCnFieldGlobalIdtf*>(this);
+    while(root_item->parent()!=0)
+    {
+        root_item = static_cast<SCnFieldGlobalIdtf*>(root_item->parent());
+        root_item->updateOnChilds();
+    }
+    _newItem->startEdit();
+    _newItem->changeValue();
+}
+
+
+void SCnFieldItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mouseReleaseEvent(event);
+}
+
+
+void SCnFieldItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsItem::mouseDoubleClickEvent(event);
+    if(event->button() == Qt::LeftButton)
+        AddNewSlot();
+
+}
+
+
 
 void SCnFieldItem::changed(SCnFieldItem *field, SCnFieldItem::ChangeType changeType)
 {
     if (mEditorScene != 0)
         mEditorScene->itemChanged(field, changeType);
+}
+
+void SCnFieldItem::selfDeleting(){
+     SCnFieldGlobalIdtf *root_item = static_cast<SCnFieldGlobalIdtf*>(this->parent());
+
+     if(mEditorScene!=0){
+         mEditorScene->removeField(this);
+//         mEditorScene->update();
+     }
+     else{
+         root_item->mEditorScene->removeItem(this);
+         root_item->update();
+         root_item->mEditorScene->update();
+     }
+
+}
+
+QRectF SCnFieldItem::getChildrenBoundingRect() const{
+    return QRectF(0, 0, 100, 30);
+}
+
+void SCnFieldItem::changeValue()
+{
+
+
+    QDialog *dialog = new QDialog();
+    dialog->setModal(true);
+    dialog->setWindowTitle(tr("Change value"));
+
+
+    QLabel* label = new QLabel(tr("New value:"),dialog);
+    QTextEdit* lineEdit = new QTextEdit(dialog);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                     | QDialogButtonBox::Cancel);
+    buttonBox->setParent(dialog);
+
+    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    layout->addWidget(lineEdit);
+    layout->addWidget(buttonBox);
+
+    QCompleter *completer = new QCompleter(dialog);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+
+
+    lineEdit->setPlainText(mValue);
+    lineEdit->selectAll();
+
+
+    dialog->setLayout(layout);
+    lineEdit->setFocus();
+
+
+
+
+    dialog->show();
+
+    if (dialog->exec())
+    {
+        QString newValue = lineEdit->toPlainText();
+        if(mValue != newValue){
+            this->setValue(newValue);
+            applyEdit();
+            mState = StateHighlight;
+
+            SCnFieldGlobalIdtf *root_item = static_cast<SCnFieldGlobalIdtf*>(this->parent());
+
+            root_item->updateOnChilds();
+
+            if(mEditorScene !=0)
+                changed(this,BoundChanged);
+            else
+                root_item->changed(this,BoundChanged);
+
+
+
+        }
+    }
 }
