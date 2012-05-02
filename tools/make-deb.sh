@@ -44,7 +44,7 @@ make_catalog_structure()
 fill_catalog_structure_with_content() 
 {
   # Copying needed files into catalog structure
-  cp -r ./DEBIAN ./kbe/
+  cp -r ./debian ./kbe/
   #cp -r $PROJECT_SOURCES_ROOT/kbe/media ./kbe/usr/share/kbe/
   cp -r $PROJECT_SOURCES_ROOT/bin/* ./kbe/usr/lib/kbe
   cp ./files/kbe.desktop ./kbe/usr/share/applications/
@@ -64,9 +64,9 @@ fill_catalog_structure_with_content()
 
   echo -en "\033[37;1;41mMake *.deb pachage...\033[0m\n"
   cd ./kbe
-  md5deep -l usr/lib/kbe/kbe > ./DEBIAN/md5sums
-  md5deep -r -l usr/share >> ./DEBIAN/md5sums
-  chmod 644 ./DEBIAN/md5sums
+  md5deep -l usr/lib/kbe/kbe > ./debian/md5sums
+  md5deep -r -l usr/share >> ./debian/md5sums
+  chmod 644 ./debian/md5sums
   cd -
 }
 
@@ -81,11 +81,11 @@ set_attribute_value_in_file()
 
 make_changes_in_control_file()
 {
-  set_attribute_value_in_file 'Version' $VERSION DEBIAN/control
-  set_attribute_value_in_file 'Architecture' $ARCHITECTURE DEBIAN/control
+  set_attribute_value_in_file 'Version' $VERSION debian/control
+  set_attribute_value_in_file 'Architecture' $ARCHITECTURE debian/control
   # Calculate full size
   full_size=$(du -s ./kbe/usr | awk '{print $1}')
-  set_attribute_value_in_file 'Installed-Size' $full_size DEBIAN/control
+  set_attribute_value_in_file 'Installed-Size' $full_size debian/control
 }
 
 build_deb_package()

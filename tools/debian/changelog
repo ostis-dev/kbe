@@ -1,0 +1,60 @@
+kbe (0.3.0-ubuntu) precise; urgency=low
+  * Added plugins support
+  * Refactored user guide documentation
+  * Added scripts to make deb package on Ubuntu
+  * Fixed errors with file opening
+  * Disabled import/export menu
+  * Resources for each editor moved into qrc files, and now them compiled into plugin
+  * Added feedback dialog
+  * Added coding standards
+  * New tool icons set used
+  * Fixed possible bugs with tabs
+  * Added icons for tabs
+  * Added guide dialog on startup
+  * Added examples of files
+  * Added new files dialog, that allows to create files with supported formats
+
+  * scg. Improved drag and drop feature
+  * scg. Now if drag file on sc.g-node, then that file will be set as content
+  * scg. Fixed bug with sc.g-bus dragging
+  * scg. Fixed bug with sc.g-pair dragging into contour
+  * scg. Added object cloning
+  * scg. Added possibility to navigate in sc.g-document with keyboard
+  * scg. Added new command to select sc.g-elements
+  * scg. Added possibilit ot move text identifiers
+  * scg. Refactored undo/redo commands
+  * scg. Refactored scg modes
+  * scg. Added support of 0.1.0 version of SCg-code
+  * scg. Fixed bug with bus arrange
+  * scg. Improved type changing menu
+  * scg. Fixed bugs with copying
+  * scg. Changed rules of sc.g-contour drawing (Now it draws with rounded corners)
+  * scg. Changed rules of sc.g-border drawing (Now it draws with mark in left top corner)
+  * scg. Fixed bugs with exporting into image
+  * scg. Fixed bug with context menu calling (Disabled calling of context menu with keyboard)
+  * scg. Arrangers and slection tools grouped on toolbar
+
+  * m4scp. Added syntax highlighting
+  * m4scp. Added line numbers into editor
+  * m4scp. Added autocompletion of scp operators
+  * m4scp. Added icons into autocompletion list
+
+  * scs. Added syntax highlighting
+  * scs. Added line numbers into editor
+  * scs. Added autocompletion of includes, identifiers 
+
+-- Denis Koronchik <denis.koronchik@gmail.com>  Wed,  5 May 2012 23:43:49 +0200
+
+kbe (0.2.1-ubuntu) unstable; urgency=low
+
+  * Added new incos for commands
+
+  * scg. Added new arranger for tuples (It allows to arrange any node, that have bus with output or input pairs)
+  * scg. Added creation of nodes with content, by draging files into sc.g-window (Now you can just drag fiel into window to create node with) content of this file
+  * scg. Improved work with contours (Any object, that draged into contour will be added into it. Any object that dragged from contour will be removed from it)
+  * scg. Improved image selection (Now all supported formats showed, when you select image content with dialog)
+  * scg. Improved number content changing (Added maximum and minimum ranges. Invalid values hightlight added)
+  * scg. Fixed bug in line creation mode with last point deletion by right mouse button (Context menu opened each time, when user try to remove last point)
+  * scg. Fixed bug with arrangers (When apply arranger (grid) not all pairs calculates normaly, when they starts (finished) from any line object like bus or other pair)
+
+ -- gr1n <https://github.com/Gr1N>  Sun, 12 Feb 2012 18:34:12 +0300
