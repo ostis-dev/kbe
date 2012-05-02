@@ -36,7 +36,7 @@ M4SCpPlugin::M4SCpPlugin(QObject *parent) :
     mTranslator(0)
 {
     mTranslator = new QTranslator(this);
-    mTranslator->load("qrc:/media/translations/m4scp_" + QLocale::system().name());
+    mTranslator->load(":/m4scp/media/translations/m4scp_" + QLocale::system().name());
 }
 
 M4SCpPlugin::~M4SCpPlugin()

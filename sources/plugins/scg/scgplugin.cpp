@@ -37,6 +37,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTranslator>
 #include <QApplication>
 #include <QLocale>
+#include <QDebug>
 
 Q_EXPORT_PLUGIN2(scg, SCgPlugin)
 
@@ -45,7 +46,8 @@ SCgPlugin::SCgPlugin(QObject *parent) :
     mTranslator(0)
 {
     mTranslator = new QTranslator(this);
-    mTranslator->load("qrc:/media/translations/scg_" + QLocale::system().name());
+    bool res = mTranslator->load(":/scg/media/translations/scg_" + QLocale::system().name() + ".qm");
+    qDebug() << res;
 }
 
 SCgPlugin::~SCgPlugin()
