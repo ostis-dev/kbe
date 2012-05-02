@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCNWINDOW_H
 
 #include <QWidget>
+#include <QScrollBar>
 #include "interfaces/editorinterface.h"
 
 class SCnEditorScene;
