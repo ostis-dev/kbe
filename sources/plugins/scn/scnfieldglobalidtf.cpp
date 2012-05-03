@@ -29,7 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCnFieldGlobalIdtf::SCnFieldGlobalIdtf(QObject *parent) :
     SCnFieldItem(parent)
 {
-    mFont = QFont("Arial", 14);
+    mFont = QFont("Arial", 12);
     mFont.setBold(true);
     mFont.setItalic(true);
 }
@@ -50,9 +50,39 @@ QRectF SCnFieldGlobalIdtf::boundingRect() const
     QFontMetrics fm(mFont);
     QRectF textRect = fm.boundingRect(mValue);
 
-    QRectF childRect = childrenBoundingRect();
+    QRectF childRect = getChildrenBoundingRect();
+    QRectF ownRect = childrenBoundingRect();
+
 
     return textRect.united(childRect).adjusted(-10, -10, 20, 20);
+}
+
+
+QRectF SCnFieldGlobalIdtf::getChildrenBoundingRect() const{
+    qreal woffset = 0;
+    qreal hoffset = 0;
+
+    QFontMetrics fm(mFont);
+    QRectF textRect = fm.boundingRect(mValue);
+
+    QGraphicsItem *child = 0;
+    QList<QGraphicsItem*> _childItems = childItems();
+
+    foreach(child, _childItems)
+    {
+
+        SCnFieldItem *item = static_cast<SCnFieldItem*>(child);
+        QRectF temp = item->getChildrenBoundingRect();
+        woffset = qMax(woffset,temp.width());
+        hoffset = qMax(hoffset,temp.height());
+
+    }
+
+    QRectF rect;
+    rect.setWidth(woffset);
+    rect.setHeight(childrenBoundingRect().height());
+
+    return textRect.united(rect).adjusted(-10, 0, 50, 0);
 }
 
 void SCnFieldGlobalIdtf::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -65,4 +95,3 @@ void SCnFieldGlobalIdtf::paint(QPainter *painter, const QStyleOptionGraphicsItem
     painter->setFont(mFont);
     painter->drawText(5, 5, mValue);
 }
-

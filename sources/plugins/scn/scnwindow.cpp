@@ -34,10 +34,14 @@ SCnWindow::SCnWindow(QWidget *parent) :
 {
     mEditorView = new QGraphicsView(this);
     mEditorScene = new SCnEditorScene();
+   //mScrollBar
+    //mEditorScene->set
 
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     mEditorView->setScene(mEditorScene);
+mEditorView->horizontalScrollBar()->setEnabled(true);
+
 
 
     mEditorView->setCacheMode(QGraphicsView::CacheNone);//CacheBackground);
@@ -47,8 +51,10 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
 
-    mEditorView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //mEditorView->setDragMode(QGraphicsView::RubberBandDrag);
+    mEditorView->setSceneRect(0, 0, 99000,99000);
+    mEditorView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    mEditorView->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    mEditorView->setDragMode(QGraphicsView::RubberBandDrag);
 
     if (!mEditorScene->items().empty())
         mEditorView->centerOn(mEditorScene->items().first());

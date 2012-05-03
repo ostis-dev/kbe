@@ -27,6 +27,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QGraphicsScene>
 #include <QList>
+#include <QMenu>
+#include <QAction>
+#include <QMouseEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QGraphicsSceneContextMenuEvent>
 
 class SCnEditorScene : public QGraphicsScene
 {
@@ -67,15 +72,26 @@ public:
     //! Select previous field before specified \p field
     void selectPrevField(SCnFieldItem *field);
 
+
+
+
 private:
     //! Unselect all selected items
     void unselectItems();
-
     //! Recalculate all fields positions
     void updateFieldsPositions();
+    void AddNewItem();
+
 
 protected:
+
     void keyPressEvent(QKeyEvent *event);
+
+    /////////////////////
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+//    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
     //! Remove all fields from scene
     void removeAllFields();
@@ -91,10 +107,16 @@ protected:
     quint32 mLevelOffset;
     //! Vertical distance between fields
     quint32 mLevelDistance;
+    QMenu* mMenu;
 
 signals:
+    void needUpdate();
+
 
 public slots:
+    void updateItems(QRectF);
+    void menuActivated(QAction*);
+
 };
 
 #endif // SCNEDITOR_H

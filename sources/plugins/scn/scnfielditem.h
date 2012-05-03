@@ -25,6 +25,17 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QGraphicsItem>
+#include <QLabel>
+#include <QDialog>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QVBoxLayout>
+#include <QCompleter>
+#include <QDebug>
+#include <QMouseEvent>
+#include <QGraphicsSceneMouseEvent>
+#include <QMenu>
+#include <QAction>
 
 class SCnEditorScene;
 
@@ -77,6 +88,8 @@ public:
     virtual qreal childsOffset() const = 0;
     //! Update on childs changed. Called when any child changed, or added/removed
     virtual void updateOnChilds();
+    virtual QRectF getChildrenBoundingRect() const;
+
 
     //! Return current state
     FieldState state() const { return mState; }
@@ -93,6 +106,15 @@ protected:
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void keyPressEvent(QKeyEvent *event);
+
+    ////////
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
+//////////////
+
+
 
     // hover events
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -104,6 +126,8 @@ private:
       * @param changeType Changes type
       */
     void changed(SCnFieldItem *field, ChangeType changeType);
+    void changeValue();
+    void selfDeleting();
 
 protected:
     FieldState mState;
@@ -114,6 +138,10 @@ protected:
     QString mAttribute;
     //! Field value
     QString mValue;
+    QMenu * mMenu;
+    QAction * addNewItemAct;
+    QAction * deleteItemAct;
+    QAction * editItemAct;
 
 signals:
 
@@ -125,6 +153,9 @@ public slots:
     void applyEdit();
     //! Cancel edit without any changes
     void cancelEdit();
+    void AddNewSlot();
+    void EditSlot();
+    void DeleteSlot();
 };
 
 #endif // SCNFIELDITEM_H

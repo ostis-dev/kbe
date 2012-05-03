@@ -39,6 +39,7 @@ public:
 
 protected:
     QRectF boundingRect() const;
+    QRectF getChildrenBoundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     //! @copydoc SCnFieldItem::isSubitemsPossible

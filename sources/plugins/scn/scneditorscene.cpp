@@ -33,8 +33,18 @@ SCnEditorScene::SCnEditorScene(QObject *parent) :
     mLevelOffset(30),
     mLevelDistance(10)
 {
+
+    SCnFieldItem *root_item = new SCnFieldGlobalIdtf(this);
+    root_item->setValue("Item1");
+    appendField(root_item);
+    root_item->acceptedMouseButtons();
+    root_item->acceptDrops();
+
+
+    //root_item->scale();
+
     SCnFieldItem *pitem = new SCnFieldGlobalIdtf(this);
-    pitem->setValue("test");
+    pitem->setValue("Item");
     appendField(pitem);
 
     for (quint32 i = 0; i < 10; i++)
@@ -42,14 +52,11 @@ SCnEditorScene::SCnEditorScene(QObject *parent) :
         SCnFieldItem *item = new SCnFieldGlobalIdtf(pitem);
         item->setValue(QString("test %1").arg(i));
         item->setParentItem(pitem);
-
-        for (quint32 j = 0; j < 10; j++)
-        {
-            SCnFieldItem *jitem = new SCnFieldGlobalIdtf(pitem);
-            jitem->setValue(QString("test %1_%2").arg(i).arg(j));
-            jitem->setParentItem(item);
-        }
     }
+    mMenu = new QMenu();
+    mMenu->addAction("Add New Item");
+    connect(mMenu, SIGNAL(triggered(QAction*)), SLOT(menuActivated(QAction*)));
+
 }
 
 SCnEditorScene::~SCnEditorScene()
@@ -58,6 +65,11 @@ SCnEditorScene::~SCnEditorScene()
     foreach(item, mFields)
         delete item;
     mFields.clear();
+    delete mMenu;
+}
+
+void SCnEditorScene::updateItems(QRectF){
+    updateFieldsPositions();
 }
 
 SCnFieldItem* SCnEditorScene::appendField(SCnFieldItem *field, SCnFieldItem *afterField)
@@ -106,7 +118,7 @@ void SCnEditorScene::removeField(SCnFieldItem *field)
         }
     }
 
-    delete field;
+
 
     updateFieldsPositions();
 }
@@ -220,6 +232,51 @@ void SCnEditorScene::itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType c
     case SCnFieldItem::BoundChanged:
         updateFieldsPositions();
     };
+}
+
+void SCnEditorScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(event->button() == Qt::RightButton)
+    {
+        QList<QGraphicsItem*> selected = selectedItems();
+            if (selected.size() == 0)
+                mMenu->exec(event->screenPos());
+    }
+    QGraphicsScene::mousePressEvent(event);
+}
+
+void SCnEditorScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsScene::mouseReleaseEvent(event);
+}
+
+void SCnEditorScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGraphicsScene::mouseDoubleClickEvent(event);
+
+    if(event->button() == Qt::LeftButton)
+    {
+        AddNewItem();
+    }
+}
+
+void SCnEditorScene::AddNewItem()
+{
+    QList<QGraphicsItem*> selected = selectedItems();
+    if (selected.size() == 0)
+    {
+        SCnFieldItem* item = new SCnFieldGlobalIdtf(this);
+        item->setValue("newItem");
+        appendField(item);
+        item->EditSlot();
+    }
+    update();
+    updateFieldsPositions();
+}
+
+void SCnEditorScene::menuActivated(QAction *act)
+{
+    AddNewItem();
 }
 
 void SCnEditorScene::keyPressEvent(QKeyEvent *event)
