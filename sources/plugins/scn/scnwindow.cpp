@@ -40,7 +40,7 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     mEditorView->setScene(mEditorScene);
-
+mEditorView->horizontalScrollBar()->setEnabled(true);
 
 
 
@@ -50,7 +50,6 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setOptimizationFlag(QGraphicsView::DontAdjustForAntialiasing);
-    
 
     mEditorView->setSceneRect(0, 0, 99000,99000);
     mEditorView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
