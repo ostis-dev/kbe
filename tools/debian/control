@@ -3,7 +3,7 @@ Version: 0.3.0
 Section: science
 Priority: optional
 Architecture: i386
-Installed-Size: 1780
+Installed-Size: 20684
 Depends: libc6 (>= 2.3), libgcc1 (>= 1:4.1.1), libqt4-svg (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-xmlpatterns (>= 4:4.5.3), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.7.0~beta1)
 Maintainer: Nikita Grishko <grin.minsk@gmail.com>
 Homepage: https://github.com/deniskoronchik/kbe

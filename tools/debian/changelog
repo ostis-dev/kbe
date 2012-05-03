@@ -43,7 +43,7 @@ kbe (0.3.0-ubuntu) precise; urgency=low
   * scs. Added line numbers into editor
   * scs. Added autocompletion of includes, identifiers 
 
--- Denis Koronchik <denis.koronchik@gmail.com>  Wed,  5 May 2012 23:43:49 +0200
+ -- Denis Koronchik <denis.koronchik@gmail.com>  Wed, 5 May 2012 23:43:49 +0300
 
 kbe (0.2.1-ubuntu) unstable; urgency=low
 
