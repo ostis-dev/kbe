@@ -47,7 +47,7 @@
     <message>
         <location filename="../../mainwindow.ui" line="65"/>
         <source>View</source>
-        <translation>Просмотр</translation>
+        <translation type="unfinished">Вид</translation>
     </message>
     <message>
         <location filename="../../mainwindow.ui" line="75"/>

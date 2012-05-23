@@ -662,7 +662,7 @@ Just 1.6 and 2.0 versions supported.</source>
     <message>
         <location filename="../../scgwindow.cpp" line="669"/>
         <source>Edit</source>
-        <translation>Редактировать</translation>
+        <translation type="unfinished">Правка</translation>
     </message>
 </context>
 </TS>
