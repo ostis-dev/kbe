@@ -47,7 +47,7 @@
     <message>
         <location filename="../../mainwindow.ui" line="65"/>
         <source>View</source>
-        <translation type="unfinished">Вид</translation>
+        <translation>Вид</translation>
     </message>
     <message>
         <location filename="../../mainwindow.ui" line="75"/>
@@ -82,7 +82,7 @@
     <message>
         <location filename="../../mainwindow.ui" line="99"/>
         <source>Save as</source>
-        <translation>Сокранить как</translation>
+        <translation>Сохранить как</translation>
     </message>
     <message>
         <location filename="../../mainwindow.ui" line="107"/>
