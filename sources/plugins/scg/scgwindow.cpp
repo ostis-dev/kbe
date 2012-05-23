@@ -337,7 +337,7 @@ bool SCgWindow::loadFromFile(const QString &fileName)
     if (loader.load(fileName, mView->scene()))
     {
         mFileName = fileName;
-        setWindowTitle(mFileName + "[*]");
+        setWindowTitle(mFileName);
         emitEvent(EditorObserverInterface::ContentLoaded);
         return true;
     }else
@@ -351,7 +351,7 @@ bool SCgWindow::saveToFile(const QString &fileName)
     if (writer.save(fileName, mView->scene()))
     {
         mFileName = fileName;
-        setWindowTitle(mFileName + "[*]");
+        setWindowTitle(mFileName);
         mUndoStack->setClean();
         emitEvent(EditorObserverInterface::ContentSaved);
 
