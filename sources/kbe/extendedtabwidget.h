@@ -80,7 +80,7 @@ public slots:
      */
     int addSubWindow(EditorInterface* window);
 
-private:
+public:
 /*    //! Adds additional options in default menu
     void addMenu(QMdiSubWindow* wnd);*/
 

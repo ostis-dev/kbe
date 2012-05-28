@@ -30,7 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 ExtendedTabWidget::ExtendedTabWidget(QWidget *parent) :
-        QTabWidget(parent)
+    QTabWidget(parent)
 {
     QTabBar* tb = new QTabBar(this);
     tb->setSelectionBehaviorOnRemove(QTabBar::SelectPreviousTab);

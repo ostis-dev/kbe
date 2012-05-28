@@ -152,11 +152,10 @@ private:
     Widget2EditorInterfaceMap mWidget2EditorInterface;
 
 public slots:
-    /*! Update main menu.
-      */
     void updateMenu();
-    void updateSpcificViewMenu();
+    void updateSpecificViewMenu();
     void updateRecentFileActions();
+    void updateWindowTitle();
 
     void openRecentFile();
     void fileNew();

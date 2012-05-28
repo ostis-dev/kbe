@@ -86,10 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
     createToolBars();
 
     updateMenu();
-    updateSpcificViewMenu();
+    updateSpecificViewMenu();
     updateRecentFileActions();
-
-    setWindowTitle(tr("Knowledge Base source Editor - version %1").arg(VERSION_STR));
+    updateWindowTitle();
 
     new PluginManager();
     PluginManager::instance()->initialize(Config::pathPlugins.absolutePath());
@@ -192,7 +191,8 @@ void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
     case ContentLoaded:
     case ContentSaved:
         updateMenu();
-        updateSpcificViewMenu();
+        updateSpecificViewMenu();
+        updateWindowTitle();
         break;
     }
 }
@@ -237,7 +237,7 @@ void MainWindow::updateMenu()
     ui->actionClose_Others->setEnabled(mTabWidget->subWindowList().size() > 1);
 }
 
-void MainWindow::updateSpcificViewMenu()
+void MainWindow::updateSpecificViewMenu()
 {
     ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
     ui->menuView->clear();
@@ -270,6 +270,19 @@ void MainWindow::updateRecentFileActions()
         recentFileActs[j]->setVisible(false);
 
     separatorAct->setVisible(numRecentFiles > 0);
+}
+
+void MainWindow::updateWindowTitle()
+{
+    QWidget *window = mTabWidget->currentWidget();
+
+    if (window != 0)
+    {
+        setWindowTitle(tr("%1 - KBE version %2").arg(mTabWidget->tabTextFor(window)).arg(VERSION_STR));
+    }else
+    {
+        setWindowTitle(tr("Knowledge Base source Editor - version %1").arg(VERSION_STR));
+    }
 }
 
 void MainWindow::openRecentFile()
@@ -691,7 +704,8 @@ void MainWindow::subWindowHasChanged(int index)
         updateDockWidgets(true);
     }
 
-    updateSpcificViewMenu();
+    updateSpecificViewMenu();
+    updateWindowTitle();
 }
 
 void MainWindow::windowWillBeClosed(QWidget* w)
