@@ -57,7 +57,7 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
             QPointF itemPoint = mCurrentPointObject->mapFromScene(mousePos);
             if(p.contains(itemPoint))
             {
-                mScene->addPointCommand(mCurrentPointObject,itemPoint);
+                mScene->addPointCommand(mCurrentPointObject, mousePos);
                 event->accept();
                 return;
             }

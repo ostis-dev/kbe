@@ -565,7 +565,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
 
 SCgBaseCommand* SCgScene::addPointCommand(SCgPointObject* obj, const QPointF& point, SCgBaseCommand* parentCmd, bool addToStack)
 {
-    SCgPointObject::PointFVector oldPoints = obj->points();
+    SCgPointObject::PointFVector oldPoints = obj->scenePoints();
     SCgPointObject::PointFVector newPoints = oldPoints;
     int i = SCgPointObject::indexForPoint(oldPoints, point, obj->type() == SCgContour::Type ? true : false);
     newPoints.insert(i, point);
