@@ -737,6 +737,9 @@ void MainWindow::windowWillBeClosed(QWidget* w)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    QSettings settings;
+    settings.setValue(Config::settingsMainWindowGeometry, saveGeometry());
+
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;
