@@ -101,7 +101,7 @@ void SCgPointObject::setPoints(const PointFVector &points)
         createPointObjects();
     }
     ///////////////////////////////////////////////////
-    updatePosition();
+    positionChanged();
 }
 
 qreal SCgPointObject::distanceToSubpath(const QPointF& p0, const QPointF& p1, const QPointF& p)

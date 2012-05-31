@@ -76,7 +76,7 @@ void SCgCommandObjectDelete::undo()
             object->undel(mScene);
 
             object->setParentItem(parent);
-            object->updatePosition();
+            object->positionChanged();
         }
     }
 

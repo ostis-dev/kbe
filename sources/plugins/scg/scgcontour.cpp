@@ -95,7 +95,7 @@ void SCgContour::setPoints(const PointFVector &points)
     SCgPointObject::setPoints(points);
 }
 
-void SCgContour::updatePosition()
+void SCgContour::positionChanged()
 {
     updateShape();
 }
@@ -232,6 +232,6 @@ void SCgContour::changePointPosition(int pointIndex, const QPointF& newPos)
 {
     SCgPointObject::changePointPosition(pointIndex, newPos);
 
-    updatePosition();
+    positionChanged();
 }
 

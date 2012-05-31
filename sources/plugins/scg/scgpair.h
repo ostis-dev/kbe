@@ -85,16 +85,21 @@ public:
     }
 
 protected:
-    //! @see QGraphicsItem::boundingRect
+    //! @copydoc QGraphicsItem::boundingRect
     QRectF boundingRect() const;
-    //! @see QGraphicsItem::shape()
+    //! @copydoc QGraphicsItem::shape()
     QPainterPath shape() const;
-    //! @see QGraphicsItem::paint()
+    //! @copydoc QGraphicsItem::paint()
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     //! @see SCgObject::objectDelete(). DEPRECATED
     void objectDelete(SCgObject *object);
+    //! @copydoc SCgObject::itemChange
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+
     //! Factory method for creating point item by index.
     SCgPointGraphicsItem* createPointItem(int pointIndex);
+
+
 public:
     int type() const { return Type; }
 
@@ -103,7 +108,7 @@ private:
 
 public:
     //! Updates position for points
-    void updatePosition();
+    void positionChanged();
     //! @copydoc SCgObject::cross
     QPointF cross(const QPointF &from, float dot) const;
     //! @copydoc SCgObject::dotPos
@@ -144,6 +149,8 @@ private:
     bool mIsAccessory;
     //! Orientation flag
     bool mIsOrient;
+    //! Parent changing state flag
+    bool mIsParentChangeInProcess;
 
 };
 

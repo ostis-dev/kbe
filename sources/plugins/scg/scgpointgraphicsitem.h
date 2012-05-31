@@ -113,7 +113,7 @@ protected:
 
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
-        mParent->updatePosition();
+        mParent->positionChanged();
         QGraphicsItem::mouseReleaseEvent(event);
     }
     //! @see QGraphicsItem::ItemChange()

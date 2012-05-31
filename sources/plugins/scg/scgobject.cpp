@@ -207,7 +207,7 @@ void SCgObject::updateConnected()
     for (it = mConnectedObjects.begin(); it != mConnectedObjects.end(); it++)
     {
         if (!(*it)->isDead())
-            (*it)->updatePosition();
+            (*it)->positionChanged();
     }
 }
 
@@ -237,7 +237,7 @@ void SCgObject::setIdtfValue(const QString &idtf)
         mTextItem = 0;
     }
 
-    updatePosition();
+    positionChanged();
 }
 
 QString SCgObject::idtfValue() const

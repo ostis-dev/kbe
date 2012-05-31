@@ -524,6 +524,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
 
                 // If state really changed, then create command.
                 if(newObject->type() != SCgNode::Type || oldObject != newObject)
+                {
                     if(oldObject != newObject || oldPoint != newPoint)
                     {
                         if(!cmd)
@@ -531,6 +532,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
                         else
                             new SCgCommandChangeIncedentObject(this, p, role, newObject, newPoint, cmd);
                     }
+                }
             }
         }
         else if (item->type() == SCgTextItem::Type)
