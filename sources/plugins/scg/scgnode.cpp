@@ -140,7 +140,7 @@ QVariant SCgNode::itemChange(GraphicsItemChange change, const QVariant &value)
     return SCgObject::itemChange(change, value);
 }
 
-void SCgNode::updatePosition()
+void SCgNode::positionChanged()
 {
 }
 
@@ -265,7 +265,7 @@ void SCgNode::updateConnected()
 {
     SCgObject::updateConnected();
     if (mBus && !mBus->isDead())
-        mBus->updatePosition();
+        mBus->positionChanged();
 }
 
 void SCgNode::setContent(const QString& mimeType, const QVariant& data,

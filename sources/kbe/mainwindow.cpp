@@ -600,10 +600,11 @@ void MainWindow::helpAboutQt()
 void MainWindow::feedback()
 {
     QMessageBox::about(this, tr("Feedback"),
-                       QString("%1 e-mail: <a href=\"mailto:kbe@ostis.net\">kbe@ostis.net</a>."
-                               "<br/>%2 <a href=\"%3\">%4</a>.")
-                       .arg(tr("Founded errors description, new ideas and features you can send to"))
-                       .arg(tr("Also you can find our contact information on our"))
+                       QString("%1 <a href=\"http://forum.ostis.net/viewtopic.php?f=7&t=3\">%2</a>."
+                               "<br/>%3 <a href=\"%4\">%5</a>.")
+                       .arg(tr("Founded errors and new ideas you can write in"))
+                       .arg(tr("forum"))
+                       .arg(tr("Also you can find our contact information on "))
                        .arg("http://www.ostis.net/feedback.html")
                        .arg(tr("site")));
 }
@@ -736,6 +737,9 @@ void MainWindow::windowWillBeClosed(QWidget* w)
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    QSettings settings;
+    settings.setValue(Config::settingsMainWindowGeometry, saveGeometry());
+
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;

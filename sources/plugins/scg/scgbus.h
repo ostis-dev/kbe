@@ -53,7 +53,7 @@ public:
       */
     void undel(SCgScene *scene);
 
-    void updatePosition();
+    void positionChanged();
     //! @see SCgPointObject::updateShape;
     void updateShape();
     //! @see SCgObject::objectDelete;

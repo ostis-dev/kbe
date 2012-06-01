@@ -4,7 +4,7 @@
 <context>
     <name>ExtendedTabWidget</name>
     <message>
-        <location filename="../../extendedtabwidget.cpp" line="92"/>
+        <location filename="../../extendedtabwidget.cpp" line="89"/>
         <source>(Untitled)</source>
         <translation></translation>
     </message>
@@ -156,7 +156,7 @@
     </message>
     <message>
         <location filename="../../mainwindow.ui" line="176"/>
-        <location filename="../../mainwindow.cpp" line="589"/>
+        <location filename="../../mainwindow.cpp" line="602"/>
         <source>Feedback</source>
         <translation></translation>
     </message>
@@ -166,12 +166,12 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="92"/>
+        <location filename="../../mainwindow.cpp" line="284"/>
         <source>Knowledge Base source Editor - version %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="141"/>
+        <location filename="../../mainwindow.cpp" line="140"/>
         <source>Main Tools</source>
         <translation></translation>
     </message>
@@ -181,100 +181,110 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="293"/>
+        <location filename="../../mainwindow.cpp" line="281"/>
+        <source>%1 - KBE version %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="306"/>
         <source>Can&apos;t load file.
 File &quot;%1&quot; not found. </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="320"/>
+        <location filename="../../mainwindow.cpp" line="333"/>
         <source>List of available formats:</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="330"/>
+        <location filename="../../mainwindow.cpp" line="343"/>
         <source>OK</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="337"/>
+        <location filename="../../mainwindow.cpp" line="350"/>
         <source>Cancel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="370"/>
+        <location filename="../../mainwindow.cpp" line="383"/>
         <source>Open file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="404"/>
+        <location filename="../../mainwindow.cpp" line="417"/>
         <source>Can&apos;t load file.
 Unsupported file format &quot;%1&quot;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="420"/>
+        <location filename="../../mainwindow.cpp" line="433"/>
         <source>Can&apos;t save file.
 Unsupported file format &quot;%1&quot;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="476"/>
+        <location filename="../../mainwindow.cpp" line="489"/>
         <source>Save file to ..</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="549"/>
+        <location filename="../../mainwindow.cpp" line="562"/>
         <source>About KBE</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="550"/>
+        <location filename="../../mainwindow.cpp" line="563"/>
         <source>&lt;table&gt;&lt;tr valign=&quot;middle&quot;&gt;&lt;td align=&quot;left&quot;&gt;&lt;img src=&quot;%1&quot;&gt;&lt;/td&gt;&lt;td&gt;%2 %3: %4 &lt;br&gt; &lt;br&gt; Site: &lt;STYLE type=&quot;text/css&quot;&gt;a:link {text-decoration: none}&lt;/STYLE&gt;&lt;a href=&quot;http://www.ostis.net&quot;&gt;http://www.ostis.net&lt;/a&gt;&lt;br&gt; &lt;br&gt;Copyright  OSTIS.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;%5:&lt;ul&gt;&lt;li&gt;Denis Koronchik&lt;/li&gt;&lt;li&gt;Gumbar Ilya (zooner)&lt;/li&gt;&lt;li&gt;Harkunov Evgeny (filosov)&lt;/li&gt;&lt;/ul&gt;%6:&lt;ul&gt;&lt;li&gt;Witkowsky Dmitry (wagos)&lt;/li&gt;&lt;li&gt;Aliaksei Palkanau (lifus)&lt;/li&gt;&lt;li&gt;Nikita Grishko (Gr1N)&lt;/li&gt;&lt;li&gt;Denis Klimenko&lt;/li&gt;&lt;li&gt;Konstantin Savon (Konstantsin)&lt;/li&gt;&lt;li&gt;Sergei Yakimchik (Gudini)&lt;/li&gt;&lt;li&gt;Lapitsky Artem&lt;/li&gt;&lt;li&gt;Eugen Zakharich&lt;/li&gt;&lt;li&gt;Pavel Karpan (pioneer)&lt;/li&gt;&lt;li&gt;Dmitry Kolb (skif-sarmat)&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="575"/>
+        <location filename="../../mainwindow.cpp" line="588"/>
         <source>Knowledge Base source Editor </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="576"/>
+        <location filename="../../mainwindow.cpp" line="589"/>
         <source>version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="578"/>
+        <location filename="../../mainwindow.cpp" line="591"/>
         <source>Authors</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="579"/>
+        <location filename="../../mainwindow.cpp" line="592"/>
         <source>Contributors</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="592"/>
-        <source>Founded errors description, new ideas and features you can send to</source>
-        <translation></translation>
+        <location filename="../../mainwindow.cpp" line="605"/>
+        <source>Founded errors and new ideas you can write in</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="593"/>
-        <source>Also you can find our contact information on our</source>
-        <translation></translation>
+        <location filename="../../mainwindow.cpp" line="606"/>
+        <source>forum</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="595"/>
+        <location filename="../../mainwindow.cpp" line="607"/>
+        <source>Also you can find our contact information on </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="609"/>
         <source>site</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="712"/>
+        <location filename="../../mainwindow.cpp" line="727"/>
         <source>Save changes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="713"/>
+        <location filename="../../mainwindow.cpp" line="728"/>
         <source>Do you want to save changes in %1 ?</source>
         <translation></translation>
     </message>

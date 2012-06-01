@@ -80,7 +80,7 @@ QVariant SCgBus::itemChange(GraphicsItemChange change, const QVariant &value)
     return SCgObject::itemChange(change, value);
 }
 
-void SCgBus::updatePosition()
+void SCgBus::positionChanged()
 {
     // skip update if there are no points
     if (mPoints.empty())    return;
@@ -245,7 +245,7 @@ void SCgBus::setOwner(SCgNode *owner)
     }
     mOwner = owner;
     if (mOwner) mOwner->setBus(this);
-    updatePosition();
+    positionChanged();
 }
 
 SCgNode* SCgBus::owner() const
@@ -260,5 +260,5 @@ void SCgBus::changePointPosition(int pointIndex, const QPointF& newPos)
     if(!pointIndex)
         updateShape();
         else
-            updatePosition();
+            positionChanged();
 }

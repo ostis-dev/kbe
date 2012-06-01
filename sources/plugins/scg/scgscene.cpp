@@ -524,6 +524,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
 
                 // If state really changed, then create command.
                 if(newObject->type() != SCgNode::Type || oldObject != newObject)
+                {
                     if(oldObject != newObject || oldPoint != newPoint)
                     {
                         if(!cmd)
@@ -531,6 +532,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
                         else
                             new SCgCommandChangeIncedentObject(this, p, role, newObject, newPoint, cmd);
                     }
+                }
             }
         }
         else if (item->type() == SCgTextItem::Type)
@@ -565,7 +567,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
 
 SCgBaseCommand* SCgScene::addPointCommand(SCgPointObject* obj, const QPointF& point, SCgBaseCommand* parentCmd, bool addToStack)
 {
-    SCgPointObject::PointFVector oldPoints = obj->points();
+    SCgPointObject::PointFVector oldPoints = obj->scenePoints();
     SCgPointObject::PointFVector newPoints = oldPoints;
     int i = SCgPointObject::indexForPoint(oldPoints, point, obj->type() == SCgContour::Type ? true : false);
     newPoints.insert(i, point);

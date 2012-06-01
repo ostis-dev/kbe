@@ -67,7 +67,7 @@ public:
     void setContent(const QString& mimeType, const QVariant& data, const QString& fileName, SCgContent::ContType cType);
 
     void objectDelete(SCgObject *object);
-    void updatePosition();
+    void positionChanged();
     QPointF cross(const QPointF &from, float dot) const;
     float dotPos(const QPointF &point) const;
 public:

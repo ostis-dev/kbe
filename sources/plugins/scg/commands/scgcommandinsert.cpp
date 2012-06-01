@@ -63,7 +63,7 @@ void SCgCommandInsert::redo()
             mScene->addItem(object);
 
         object->setParentItem(mParent);
-        object->updatePosition();
+        object->positionChanged();
     }
 }
 

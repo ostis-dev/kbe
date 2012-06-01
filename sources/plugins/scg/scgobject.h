@@ -70,7 +70,7 @@ public:
     /*! Method to update object position.
       It calls when object need to recalculate it position.
       */
-    virtual void updatePosition() = 0;
+    virtual void positionChanged() = 0;
 
     /*! Method to set text idtf for object.
       */

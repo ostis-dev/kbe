@@ -69,7 +69,7 @@ void SCgCommandCreatePair::redo()
     if(mParentContour)
         mObject->setParentItem(mParentContour);
 
-    mObject->updatePosition();
+    mObject->positionChanged();
 
 }
 

@@ -48,7 +48,7 @@ public:
 
     /*! Updates contour data.
       */
-    void updatePosition();
+    void positionChanged();
 
     //! @see SCgPointObject::updateShape;
     void updateShape();
