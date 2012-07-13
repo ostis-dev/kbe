@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     /* creating tab widget */
     mTabWidget = new ExtendedTabWidget();
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
+    connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateMenu()));
 
     setCentralWidget(mTabWidget);
 
