@@ -55,7 +55,13 @@ void TemplateSCgObjectsBuilder::buildObjects(const TypeToObjectsMap& objects)
     foreach(SCgObject* obj, l)
     {
         if(! obj->parentItem())
-                obj->setPos(obj->pos() - bounds.topLeft());
+                obj->setPos(obj->scenePos() - bounds.topLeft());
+    }
+
+    foreach(SCgObject* obj, l)
+    {
+        if( obj->type() == QGraphicsItem::UserType + 3 )      // type SCgPair
+            obj->positionChanged();
     }
 }
 
