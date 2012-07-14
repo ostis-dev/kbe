@@ -119,6 +119,8 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     createActions();
 
     createToolBar();
+
+    setObjectName("SCgWindow");
 }
 
 SCgWindow::~SCgWindow()
