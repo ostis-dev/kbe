@@ -151,6 +151,8 @@ private:
       */
     Widget2EditorInterfaceMap mWidget2EditorInterface;
 
+    bool mIgnoreClose;
+
 public slots:
     void updateMenu();
     void updateSpecificViewMenu();

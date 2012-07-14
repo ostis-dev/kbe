@@ -94,14 +94,14 @@ bool ExtendedTabWidget::closeWindow(QWidget* wnd)
     Q_ASSERT_X(wnd,
                "bool ExtendedTabWidget::close(int index)",
                "Can't get window");
-
-    if(wnd->close())
-    {
-        emit tabBeforeClose(wnd);
-        removeTab(indexOf(wnd));
-        delete wnd;
-        tabsUpdate();
-        return true;
+    emit tabBeforeClose(wnd);
+    if (closeTab){
+        if(wnd->close()){
+            removeTab(indexOf(wnd));
+            delete wnd;
+            tabsUpdate();
+            return true;
+        }
     }
 
     return false;
@@ -171,3 +171,7 @@ void ExtendedTabWidget::addMenu(QMdiSubWindow* wnd)
     menu->addAction(MainWindow::getInstance()->ui->actionClose_All);
 }
 */
+void ExtendedTabWidget::closeCurrentTab(bool flag)
+{
+    closeTab = flag;
+}

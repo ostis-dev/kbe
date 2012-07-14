@@ -724,15 +724,23 @@ void MainWindow::windowWillBeClosed(QWidget* w)
     // check if it saved
     EditorInterface *editor = it.value();
     if (!editor->isSaved())
-    {
-        if (QMessageBox::question(this, tr("Save changes"),
-                                  tr("Do you want to save changes in %1 ?").arg(editor->currentFileName()),
-                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-        {
-            fileSave(it.key());
+    {        
+        int ret = QMessageBox::question(this, tr("Save changes"),
+                                        tr("Do you want to save changes in %1 ?").arg(editor->currentFileName()),
+                                        QMessageBox::Yes | QMessageBox::No| QMessageBox::Cancel);
+        switch(ret){
+            case QMessageBox::Yes:
+                fileSave(it.key());
+                break;
+            case QMessageBox::Cancel:
+                mTabWidget->closeCurrentTab(false);
+                mIgnoreClose = true;
+                return;
         }
-    }
 
+    }
+    mIgnoreClose = false;
+    mTabWidget->closeCurrentTab(true);
     mWidget2EditorInterface.erase(it);
 }
 
@@ -746,6 +754,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QWidget *widget = 0;
     foreach (widget, widgets)
         mTabWidget->closeWindow(widget);
+
+    if(mIgnoreClose)
+        event->ignore();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

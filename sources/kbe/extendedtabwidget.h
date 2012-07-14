@@ -48,6 +48,12 @@ public:
     //!@return list with tab widgets;
     QList<QWidget*> subWindowList() const;
 
+    /*! Set flag to indicate should given window closes or doesn't should
+     *
+     * @param flag true, if window should be closed, false otherwise
+     */
+    void closeCurrentTab(bool flag);
+
 protected:
     //! Watches for all child widgets (windows).
     bool eventFilter (QObject* watched, QEvent* event);
@@ -85,6 +91,9 @@ public:
     void addMenu(QMdiSubWindow* wnd);*/
 
     inline QString tabTextFor(QWidget* subWindow);
+
+private:
+    bool closeTab;
 };
 
 #endif /* EXTENDEDMDIAREA_H_ */
