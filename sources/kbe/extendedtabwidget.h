@@ -65,8 +65,11 @@ signals:
 public slots:
     //! Closes all subwindows except active
     void closeOtherDocuments();
-    //! Closes all subwindows
-    void closeAllDocuments();
+    /*!
+     * Closes all subwindows
+     * @return True, if all subwindows are closed.
+     */
+    bool closeAllDocuments();
     /*!
      * Closes window at index @p index.
      * If @p index = -1 closes current window.

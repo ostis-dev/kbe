@@ -725,14 +725,18 @@ void MainWindow::windowWillBeClosed(QWidget* w)
     EditorInterface *editor = it.value();
     if (!editor->isSaved())
     {
-        if (QMessageBox::question(this, tr("Save changes"),
+        int ret = QMessageBox::question(this, tr("Save changes"),
                                   tr("Do you want to save changes in %1 ?").arg(editor->currentFileName()),
-                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-        {
-            fileSave(it.key());
+                                  QMessageBox::Yes | QMessageBox::No |QMessageBox::Cancel);
+        switch(ret){
+            case QMessageBox::Yes:
+                        fileSave(it.key());
+                        break;
+            case QMessageBox::Cancel: return;
         }
     }
 
+    mTabWidget->closeWindow(w);
     mWidget2EditorInterface.erase(it);
 }
 
@@ -742,10 +746,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.setValue(Config::settingsMainWindowGeometry, saveGeometry());
 
     // close all child windows
-    QList<QWidget*> widgets = mWidget2EditorInterface.keys();
-    QWidget *widget = 0;
-    foreach (widget, widgets)
-        mTabWidget->closeWindow(widget);
+    if( !mTabWidget->closeAllDocuments() ) event->ignore();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
