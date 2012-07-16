@@ -97,7 +97,6 @@ bool ExtendedTabWidget::closeWindow(QWidget* wnd)
 
     if(wnd->close())
     {
-        emit tabBeforeClose(wnd);
         removeTab(indexOf(wnd));
         delete wnd;
         tabsUpdate();
@@ -124,21 +123,28 @@ void ExtendedTabWidget::closeOtherDocuments()
     QList<QWidget*>::const_iterator it = list.begin();
 
     for(; it != list.end(); it++)
+    {
         if (*it != currentWindow)
-            if (!(*it)->close())
+        {
+            emit tabBeforeClose(*it);
+            if(indexOf(*it)!=-1)
                 return;
+        }
+    }
 }
 
-void ExtendedTabWidget::closeAllDocuments()
+bool ExtendedTabWidget::closeAllDocuments()
 {
     QWidget* w = widget(0);
     while(w)
     {
-        if(!closeWindow(w))
-            return;
+        emit tabBeforeClose(w);
+        if(indexOf(w)!=-1)
+            return false;
         w = widget(0);
     }
     tabsUpdate();
+    return true;
 }
 
 void ExtendedTabWidget::close(int index)
@@ -146,7 +152,7 @@ void ExtendedTabWidget::close(int index)
     if (index == -1)
         index = currentIndex();
 
-    closeWindow(widget(index));
+    emit tabBeforeClose(widget(index));
 }
 
 int ExtendedTabWidget::addSubWindow(EditorInterface* window)
