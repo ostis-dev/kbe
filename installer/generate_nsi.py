@@ -14,6 +14,10 @@ if __name__ == "__main__":
 	
 	for (root, dirs, files) in os.walk('sources', False):
 		example = root.startswith('sources\example')
+		manual = root.startswith('sources\manual')
+		plugins = root.startswith('sources\plugins')
+		if manual or plugins:
+			continue
 		if example:
 			ex_inst += '\n\tSetOutPath "%s"\n' % root.replace("sources", "$INSTDIR")
 		else:
