@@ -71,7 +71,7 @@ bool ExtendedTabWidget::eventFilter(QObject* watched, QEvent* event)
     return QTabWidget::eventFilter(watched, event);
 }
 
-inline QString ExtendedTabWidget::tabTextFor(QWidget* subWindow)
+QString ExtendedTabWidget::tabTextFor(QWidget* subWindow)
 {
     if (!subWindow)
         return QString();

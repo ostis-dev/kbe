@@ -84,7 +84,7 @@ public:
 /*    //! Adds additional options in default menu
     void addMenu(QMdiSubWindow* wnd);*/
 
-    inline QString tabTextFor(QWidget* subWindow);
+    QString tabTextFor(QWidget* subWindow);
 };
 
 #endif /* EXTENDEDMDIAREA_H_ */
