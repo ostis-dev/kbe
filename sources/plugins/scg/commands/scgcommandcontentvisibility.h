@@ -53,4 +53,20 @@ protected:
     bool mVisibility;
 };
 
+class SCgCommandAllContentVisibility : public SCgBaseCommand
+{
+public:
+    explicit SCgCommandAllContentVisibility(SCgScene *scene, bool visibility, QUndoCommand *parent = 0);
+    virtual ~SCgCommandAllContentVisibility();
+
+protected:
+    void redo();
+    void undo();
+
+private:
+    bool mVisibility;
+    //! List contains nodes, that
+    QList<SCgNode*> mUnchangedNodeList;
+};
+
 #endif // SCGCOMMANDCONTENTVISIBILITY_H
