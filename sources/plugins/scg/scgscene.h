@@ -216,11 +216,13 @@ public:
     /*! Create undo/redo command to show/hide content
      * @param node Pointer to sc.g-node for content show/hide
      * @param visibility Visibility flag. True - to show content, False - to hide.
+     * @param allContent True, if all content showing needed, false - only one content showing needed
      * @param parentCmd Pointer to parend undo/redo command
      * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* changeContentVisibilityCommand(SCgNode *node,
                                                    bool visibility,
+                                                   bool allContent = false,
                                                    SCgBaseCommand* parentCmd = 0,
                                                    bool addToStack = true);
 
