@@ -70,6 +70,8 @@ private:
      */
     QAction* mActionChangeContent;
     QAction* mActionShowContent;
+    QAction* mActionShowAllContent;
+    QAction* mActionHideAllContent;
     QAction* mActionDeleteContent;
     QAction* mActionChangeIdtf;
     QAction* mActionDelete;
@@ -85,10 +87,10 @@ private:
     QAction* mActionSelectAll;
 
     QList<QAction*> mActionsList;
-    void craeteActions();
+    void createActions();
 
 private slots:
-    //! Update state of actions created by craeteActions() command.
+    //! Update state of actions created by createActions() command.
     void updateActionsState(int idx = 0);
 
     /*! Provides handling SelectAll menu event.

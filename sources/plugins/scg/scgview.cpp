@@ -44,12 +44,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     QGraphicsView(parent),
-    mContextMenu(0),
-    mContextObject(0),
-    mWindow(window),
-    isSceneRectControlled(false),
     mActionChangeContent(0),
     mActionShowContent(0),
+    mActionShowAllContent(0),
+    mActionHideAllContent(0),
     mActionDeleteContent(0),
     mActionChangeIdtf(0),
     mActionDelete(0),
@@ -58,8 +56,11 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     mActionCopy(0),
     mActionCut(0),
     mActionPaste(0),
-    mActionSelectAll(0)
-
+    mActionSelectAll(0),
+    mContextMenu(0),
+    mContextObject(0),
+    mWindow(window),
+    isSceneRectControlled(false)
 {
     setCacheMode(CacheNone);//CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -70,7 +71,7 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     setDragMode(QGraphicsView::RubberBandDrag);
     setAcceptDrops(true);
     connect(mWindow->undoStack(), SIGNAL(indexChanged(int)), this, SLOT(updateActionsState(int)) );
-    craeteActions();
+    createActions();
 }
 
 SCgView::~SCgView()
@@ -79,7 +80,7 @@ SCgView::~SCgView()
     mContextObject = 0;
 }
 
-void SCgView::craeteActions()
+void SCgView::createActions()
 {
     QAction* sep = new QAction(this);
     sep->setSeparator(true);
@@ -93,6 +94,12 @@ void SCgView::craeteActions()
     mActionShowContent->setCheckable(true);
     mActionShowContent->setShortcut(QKeySequence( tr("H") ));
     connect(mActionShowContent, SIGNAL(triggered(bool)), this, SLOT(setContentVisible(bool)));
+
+    mActionShowAllContent = new QAction(tr("Show all content"), mWindow);
+    connect(mActionShowAllContent, SIGNAL(triggered(bool)), this, SLOT(setContentVisible(bool)));
+
+    mActionHideAllContent = new QAction(tr("Hide all content"), mWindow);
+    connect(mActionHideAllContent, SIGNAL(triggered(bool)), this, SLOT(setContentVisible(bool)));
 
     mActionDeleteContent = new QAction(mWindow->findIcon("edit-content-delete.png"), tr("Delete content"), mWindow);
     mActionDeleteContent->setShortcut(QKeySequence( tr("D") ));
@@ -133,6 +140,8 @@ void SCgView::craeteActions()
 
     mActionsList.append(mActionChangeContent);
     mActionsList.append(mActionShowContent);
+    mActionsList.append(mActionShowAllContent);
+    mActionsList.append(mActionHideAllContent);
     mActionsList.append(mActionDeleteContent);
 
     sep = new QAction(this);
@@ -220,6 +229,21 @@ void SCgView::updateActionsState(int idx)
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
+
+    //check for showed/hidden contents
+    items = scene()->items();
+    SCgNode *node = 0;
+    bool oneContentShowed = false, oneContentHidden = false;
+    for(int i = 0; i < items.size(); ++i)
+    {
+        node = qgraphicsitem_cast<SCgNode*>(items.at(i));
+        if (node && node->isContentVisible())
+            oneContentShowed = true;
+        else if (node && !node->isContentVisible() && node->isContentData())
+            oneContentHidden = true;
+    }
+    mActionShowAllContent->setEnabled(oneContentHidden);
+    mActionHideAllContent->setEnabled(oneContentShowed);
 }
 
 QList<QAction*> SCgView::actions() const
@@ -450,22 +474,7 @@ void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
 
-    QString type = action->data().toString();
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, type);
-    QString idtf = mContextObject->idtfValue();
-    QString temp = idtf;
-    if (idtf.isEmpty())
-        return;
-    if (type.contains("var") && idtf.at(0) != '_')
-        idtf.prepend("_");
-    if (type.contains("const") && idtf.at(0) == '_')
-        idtf = idtf.remove(0, 1);
-    if (type.contains("role") && idtf.at(idtf.size() - 1) != '_')
-        idtf.append("_");
-    if (type.contains("relation") && idtf.at(idtf.size() - 1) != '*')
-        idtf.append("*");
-    if (idtf != temp)
-        static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, idtf);
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
 }
 
 void SCgView::changeContent()
@@ -485,12 +494,24 @@ void SCgView::changeContent()
 
 void SCgView::setContentVisible(bool visibility)
 {
-    Q_ASSERT(mContextObject && mContextObject->type() == SCgNode::Type);
+    QAction* _sender = static_cast<QAction*>(sender());
+    if (_sender == mActionShowContent)
+    {
+        Q_ASSERT(mContextObject && mContextObject->type() == SCgNode::Type);
 
-    SCgNode *node = static_cast<SCgNode*>(mContextObject);
+        SCgNode *node = static_cast<SCgNode*>(mContextObject);
 
-    if(visibility != node->isContentVisible())
-        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(node, visibility);
+        if(visibility != node->isContentVisible())
+            static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(node, visibility);
+    }
+    else if (_sender == mActionShowAllContent)
+    {
+        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(0, true, true);
+    }
+    else if(_sender == mActionHideAllContent)
+    {
+        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(0, false, true);
+    }
 }
 
 void SCgView::deleteContent()
