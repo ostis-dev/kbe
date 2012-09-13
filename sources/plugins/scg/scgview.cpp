@@ -43,22 +43,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
-        QGraphicsView(parent),
-        mContextMenu(0),
-        mContextObject(0),
-        mWindow(window),
-        isSceneRectControlled(false),
-        mActionChangeContent(0),
-        mActionShowContent(0),
-        mActionDeleteContent(0),
-        mActionChangeIdtf(0),
-        mActionDelete(0),
-        mActionContourDelete(0),
-        mActionSwapPairOrient(0),
-        mActionCopy(0),
-        mActionCut(0),
-        mActionPaste(0),
-        mActionSelectAll(0)
+    QGraphicsView(parent),
+    mContextMenu(0),
+    mContextObject(0),
+    mWindow(window),
+    isSceneRectControlled(false),
+    mActionChangeContent(0),
+    mActionShowContent(0),
+    mActionDeleteContent(0),
+    mActionChangeIdtf(0),
+    mActionDelete(0),
+    mActionContourDelete(0),
+    mActionSwapPairOrient(0),
+    mActionCopy(0),
+    mActionCut(0),
+    mActionPaste(0),
+    mActionSelectAll(0)
 
 {
     setCacheMode(CacheNone);//CacheBackground);
@@ -257,7 +257,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 
     if (mContextObject)
     {
-    	// creating menu actions depending on object type
+        // creating menu actions depending on object type
         if (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type)
         {
             // type changing
@@ -275,7 +275,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             if (mContextObject->type() == SCgNode::Type)
                 stype = "node";
             else if (mContextObject->type() == SCgPair::Type)
-                    stype = "pair";
+                stype = "pair";
 
             SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Const, types);
             for (iter = types.begin(); iter != types.end(); ++iter)
@@ -416,7 +416,7 @@ void SCgView::changeIdentifier()
     QLineEdit* lineEdit = new QLineEdit(&dialog);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+                                                       | QDialogButtonBox::Cancel);
     buttonBox->setParent(&dialog);
 
     connect(buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
@@ -443,6 +443,24 @@ void SCgView::changeIdentifier()
         QString newIdtf = lineEdit->text();
         if(oldIdtf != newIdtf)
             static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf);
+        if (newIdtf.isEmpty())
+            return;
+        QString newType;
+        QStringList splittedAlias = mContextObject->typeAlias().split("/");
+        if (newIdtf.at(0) == '_' &&
+                (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type))
+        {
+            if(splittedAlias.at(1) != "-")
+                splittedAlias[1] = "var";
+        }
+        if (newIdtf.at(newIdtf.size() - 1) == '_' && mContextObject->type() == SCgNode::Type)
+            splittedAlias[2] = "role";
+        if (newIdtf.at(newIdtf.size() - 1) == '*' && mContextObject->type() == SCgNode::Type)
+            splittedAlias[2] = "relation";
+        for (int i = 0; i < splittedAlias.size(); ++i)
+            newType.append(splittedAlias.at(i) + "/");
+        newType = newType.remove(newType.size() - 1, 1);
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newType);
     }
 }
 
@@ -450,7 +468,22 @@ void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
 
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    QString type = action->data().toString();
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, type);
+    QString idtf = mContextObject->idtfValue();
+    QString temp = idtf;
+    if (idtf.isEmpty())
+        return;
+    if (type.contains("var") && idtf.at(0) != '_')
+        idtf.prepend("_");
+    if (type.contains("const") && idtf.at(0) == '_')
+        idtf = idtf.remove(0, 1);
+    if (type.contains("role") && idtf.at(idtf.size() - 1) != '_')
+        idtf.append("_");
+    if (type.contains("relation") && idtf.at(idtf.size() - 1) != '*')
+        idtf.append("*");
+    if (idtf != temp)
+        static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, idtf);
 }
 
 void SCgView::changeContent()
