@@ -27,11 +27,11 @@ SCgCommandCreateContour::SCgCommandCreateContour(SCgScene *scene,
                                                  const QList<QGraphicsItem *> &childs,
                                                  const QVector<QPointF> &points,
                                                  SCgContour *parentContour,
-                                                 QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mPoints(points),
-    mChildObjects(childs),
-    mParentContour(parentContour)
+                                                 QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mPoints(points)
+    , mChildObjects(childs)
+    , mParentContour(parentContour)
 {
     mObject = mScene->createSCgContour(mPoints);
     connect(mObject, SIGNAL(destroyed()), this, SLOT(contourDestroyed()));

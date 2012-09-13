@@ -27,10 +27,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandPointsChange::SCgCommandPointsChange(SCgScene* scene,
                                                 SCgPointObject* obj,
                                                 const QVector<QPointF>& newPoints,
-                                                QUndoCommand* parent):
-            SCgBaseCommand(scene, obj, parent),
-            mOldPoints(obj->scenePoints()),
-            mNewPoints(newPoints)
+                                                QUndoCommand* parent)
+            : SCgBaseCommand(scene, obj, parent)
+            , mOldPoints(obj->scenePoints())
+            , mNewPoints(newPoints)
 {
     setText(QObject::tr("Change object's points"));
     if(obj->type() == SCgPair::Type)

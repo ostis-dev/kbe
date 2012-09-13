@@ -27,10 +27,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandContentChange::SCgCommandContentChange(SCgScene *scene,
                                                  SCgNode *node,
                                                  const SCgContent::ContInfo &contInfo,
-                                                 QUndoCommand *parent):
-    SCgBaseCommand(scene, mNode, parent),
-    mNode(node),
-    mContentInfo(contInfo)
+                                                 QUndoCommand *parent)
+    : SCgBaseCommand(scene, mNode, parent)
+    , mNode(node)
+    , mContentInfo(contInfo)
 {
     setText(QObject::tr("Change content"));
     mContentVisibility = mNode->isContentVisible();

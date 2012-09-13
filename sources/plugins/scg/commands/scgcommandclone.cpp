@@ -25,17 +25,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandClone::SCgCommandClone(SCgScene *scene,
                                  QList<SCgObject *> objList,
                                  SCgContour *parentContour,
-                                 QUndoCommand *parent) :
-    SCgCommandInsert(scene, objList, parentContour, parent) {
+                                 QUndoCommand *parent)
+    : SCgCommandInsert(scene, objList, parentContour, parent)
+{
     setText(QObject::tr("Clone"));
 }
 
-SCgCommandClone::~SCgCommandClone() {}
+SCgCommandClone::~SCgCommandClone()
+{
+}
 
-void SCgCommandClone::redo() {
+void SCgCommandClone::redo()
+{
     SCgCommandInsert::redo();
 }
 
-void SCgCommandClone::undo() {
+void SCgCommandClone::undo()
+{
     SCgCommandInsert::undo();
 }

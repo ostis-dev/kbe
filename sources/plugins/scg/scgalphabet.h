@@ -58,15 +58,15 @@ public:
     /* Structural types fo nodes */
     typedef enum    //! TODO: make new names
     {
-        NotDefine = 0,
-        General,
-        Abstract,
-        Material,
-        Struct,
-        Tuple,
-        Role,
-        Relation,
-        Group,
+        StructType_NotDefine = 0,
+        StructType_General,
+        StructType_Abstract,
+        StructType_Material,
+        StructType_Struct,
+        StructType_Tuple,
+        StructType_Role,
+        StructType_Relation,
+        StructType_Group,
         StructUnknown
     } SCgNodeStructType;
 
@@ -113,21 +113,41 @@ public:
     void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgObjectTypesMap &res);
 
     /*! Converts constant type string alias into code
-      @param alias String representation of const type alias
+      * @param alias String representation of const type alias
       */
     SCgConstType aliasToConstCode(const QString &alias) const;
     /*! Converts struct type string alias into code
-      @param alias String representation of struct type alias
+      * @param alias String representation of struct type alias
       */
     SCgNodeStructType aliasToStructCode(const QString &alias) const;
     /*! Converts positivity type string alias into code
-      @param alias String representation of positivity type alias
+      * @param alias String representation of positivity type alias
       */
     SCgPosType aliasToPositiveCode(const QString &alias) const;
     /*! Converts permanency type string alias into code
-      @param alias String representation of permanency type alias
+      * @param alias String representation of permanency type alias
       */
     SCgPermType aliasToPermanencyCode(const QString &alias) const;
+
+    /*! Converts const type code into string alias
+     * @param code Constant type code to convert
+     */
+    const QString& aliasFromConstCode(SCgConstType code) const;
+
+    /*! Converts struct type code into string alias
+     * @param code Struct type code to convert
+     */
+    const QString& aliasFromStructCode(SCgNodeStructType code) const;
+
+    /*! Converts positivity type code into string alias
+     * @param code Positivity code to convert
+     */
+    const QString& aliasFromPositiveCode(SCgPosType code) const;
+
+    /*! Converts permanency type code into string alias
+     * @param code Permanency type code to convert
+     */
+    const QString& aliasFromPermanencyCode(SCgPermType code) const;
 
 protected:
     QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgNodeStructType &type_struct);
@@ -135,25 +155,42 @@ protected:
 
 private:
 
-    static SCgAlphabet *mInstance;
+    static SCgAlphabet *msInstance;
     SCgObjectTypesMap mObjectTypes;
+    static QString msEmptyTypeAlias;
 
     //! Map to convert string representation of constant type into code
-    typedef QMap<QString, SCgConstType> SCgTypeAlias2ConstTypeMap;
-    SCgTypeAlias2ConstTypeMap mConstTypes;
+    typedef QMap<QString, SCgConstType> SCgAlias2ConstTypeMap;
+    SCgAlias2ConstTypeMap mConstTypes;
     QStringList mAlias2ConstType;
 
-    //! Map to convert string representation of structural node type into code
-    typedef QMap<QString, SCgNodeStructType> SCgTypeAlias2StructTypeMap;
-    SCgTypeAlias2StructTypeMap mStructTypes;
+    //! Map to convert string representation of struct type into code
+    typedef QMap<QString, SCgNodeStructType> SCgAlias2StructTypeMap;
+    SCgAlias2StructTypeMap mStructTypes;
 
     //! Map to convert string representation of positive type into code
-    typedef QMap<QString, SCgPosType> SCgTypeAlias2PosTypeMap;
-    SCgTypeAlias2PosTypeMap mPosTypes;
+    typedef QMap<QString, SCgPosType> SCgAlias2PosTypeMap;
+    SCgAlias2PosTypeMap mPosTypes;
 
     //! Map to convert string representation of permanent type into code
-    typedef QMap<QString, SCgPermType> SCgTypeAlias2PermTypeMap;
-    SCgTypeAlias2PermTypeMap mPermTypes;
+    typedef QMap<QString, SCgPermType> SCgAlias2PermTypeMap;
+    SCgAlias2PermTypeMap mPermTypes;
+
+    //! Map to convert constant type into string
+    typedef QMap<SCgConstType, QString> SCgConstType2AliasMap;
+    SCgConstType2AliasMap mConstAliases;
+
+    //! Map to convert struct type into string
+    typedef QMap<SCgNodeStructType, QString> SCgStructType2AliasMap;
+    SCgStructType2AliasMap mStructAliases;
+
+    //! Map to convert positivity type into string
+    typedef QMap<SCgPosType, QString> SCgPositivityType2AliasMap;
+    SCgPositivityType2AliasMap mPositivityAliases;
+
+    //! Map to convert permanency type into string
+    typedef QMap<SCgPermType, QString> SCgPermanencyType2AliasMap;
+    SCgPermanencyType2AliasMap mPermanencyAliases;
 
     //! Pattern that used to draw permanent, variable, accessory pairs
     static QVector<qreal> msPermVarAccesDashPattern;

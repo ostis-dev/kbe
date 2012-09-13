@@ -27,9 +27,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgCommandDeleteContour::SCgCommandDeleteContour(SCgScene *scene,
                                                  SCgContour *contour,
-                                                 QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mContour(contour)
+                                                 QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mContour(contour)
 {
     setText(QObject::tr("Delete contour"));
     Q_ASSERT_X(mContour != 0,

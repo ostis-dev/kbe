@@ -25,9 +25,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandObjectTypeChange::SCgCommandObjectTypeChange(SCgScene *scene,
                                                        SCgObject *object,
                                                        const QString &newType,
-                                                       QUndoCommand *parent) :
-        SCgBaseCommand(scene, object, parent),
-        mNewType(newType)
+                                                       QUndoCommand *parent)
+        : SCgBaseCommand(scene, object, parent)
+        , mNewType(newType)
 {
     setText(QObject::tr("Change object's type"));
     mOldType = mObject->typeAlias();
@@ -41,9 +41,11 @@ SCgCommandObjectTypeChange::~SCgCommandObjectTypeChange()
 void SCgCommandObjectTypeChange::redo()
 {
     mObject->setTypeAlias(mNewType);
+    SCgBaseCommand::redo();
 }
 
 void SCgCommandObjectTypeChange::undo()
 {
     mObject->setTypeAlias(mOldType);
+    SCgBaseCommand::undo();
 }

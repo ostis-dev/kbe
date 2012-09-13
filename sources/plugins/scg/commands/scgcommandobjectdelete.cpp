@@ -25,8 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgCommandObjectDelete::SCgCommandObjectDelete(SCgScene *scene,
                                                SCgObject *object,
-                                               QUndoCommand *parent) :
-        SCgBaseCommand(scene, object, parent)
+                                               QUndoCommand *parent)
+        : SCgBaseCommand(scene, object, parent)
 {
     setText(QObject::tr("Delete object"));
 }

@@ -373,7 +373,51 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
 
     SCgBaseCommand* cmd = new SCgCommandObjectIdtfChange(this, object, idtf, parentCmd);
 
-    if(addToStack)
+    // check if need to change object type
+    if (!idtf.isEmpty())
+    {
+        SCgAlphabet &alphabet = SCgAlphabet::getInstance();
+        bool typeChanged = false;
+        QStringList splittedAlias = object->typeAlias().split("/");
+        if (object->type() == SCgNode::Type || object->type() == SCgPair::Type)
+        {
+            if (idtf.startsWith('_') && splittedAlias.at(1) != alphabet.aliasFromConstCode(SCgAlphabet::Var))
+            {
+                splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Var);
+                typeChanged = true;
+            }
+        }
+
+        // check possible node types
+        if (object->type() == SCgNode::Type)
+        {
+            // role relation
+            if (idtf.endsWith('\''))
+            {
+                splittedAlias[2] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Role);
+                typeChanged = true;
+            }
+
+            // binary relation
+            if (idtf.endsWith('*'))
+            {
+                splittedAlias[2] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Relation);
+                typeChanged = true;
+            }
+        }
+
+        // if type changed, then make new type alias and setup it to object
+        if (typeChanged)
+        {
+            QString newType;
+            for (int i = 0; i < splittedAlias.size(); ++i)
+                newType.append(splittedAlias.at(i) + "/");
+
+            changeObjectTypeCommand(object, newType.mid(0, newType.size() - 1), cmd, false);
+        }
+    }
+
+    if (addToStack)
         mUndoStack->push(cmd);
 
     return cmd;
@@ -385,7 +429,7 @@ SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QStri
 
     SCgBaseCommand* cmd = new SCgCommandObjectTypeChange(this, object, type, parentCmd);
 
-    if(addToStack)
+    if (addToStack)
         mUndoStack->push(cmd);
 
     return cmd;

@@ -443,24 +443,6 @@ void SCgView::changeIdentifier()
         QString newIdtf = lineEdit->text();
         if(oldIdtf != newIdtf)
             static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf);
-        if (newIdtf.isEmpty())
-            return;
-        QString newType;
-        QStringList splittedAlias = mContextObject->typeAlias().split("/");
-        if (newIdtf.at(0) == '_' &&
-                (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type))
-        {
-            if(splittedAlias.at(1) != "-")
-                splittedAlias[1] = "var";
-        }
-        if (newIdtf.at(newIdtf.size() - 1) == '_' && mContextObject->type() == SCgNode::Type)
-            splittedAlias[2] = "role";
-        if (newIdtf.at(newIdtf.size() - 1) == '*' && mContextObject->type() == SCgNode::Type)
-            splittedAlias[2] = "relation";
-        for (int i = 0; i < splittedAlias.size(); ++i)
-            newType.append(splittedAlias.at(i) + "/");
-        newType = newType.remove(newType.size() - 1, 1);
-        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newType);
     }
 }
 

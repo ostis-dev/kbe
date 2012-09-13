@@ -23,8 +23,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcommandswappairorient.h"
 #include "scgpair.h"
 
-SCgCommandSwapPairOrient::SCgCommandSwapPairOrient(SCgScene *scene, SCgPair *pair, QUndoCommand *parent) :
-    SCgBaseCommand(scene, pair, parent)
+SCgCommandSwapPairOrient::SCgCommandSwapPairOrient(SCgScene *scene, SCgPair *pair, QUndoCommand *parent)
+    : SCgBaseCommand(scene, pair, parent)
 {
     setText(QObject::tr("Swap pair"));
 }
@@ -37,10 +37,14 @@ void SCgCommandSwapPairOrient::redo()
 {
     Q_ASSERT(mObject != 0 && mObject->type() == SCgPair::Type);
     static_cast<SCgPair*>(mObject)->swap();
+
+    SCgBaseCommand::redo();
 }
 
 void SCgCommandSwapPairOrient::undo()
 {
     Q_ASSERT(mObject != 0 && mObject->type() == SCgPair::Type);
     static_cast<SCgPair*>(mObject)->swap();
+
+    SCgBaseCommand::undo();
 }

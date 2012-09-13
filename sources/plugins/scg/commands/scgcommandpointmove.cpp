@@ -28,11 +28,11 @@ SCgCommandPointMove::SCgCommandPointMove(SCgScene* scene,
                                         int pointIndex,
                                         const QPointF& oldPos,
                                         const QPointF& newPos,
-                                        QUndoCommand* parent):
-    SCgBaseCommand(scene, obj, parent),
-    mPointIndex(pointIndex),
-    mOldPos(oldPos),
-    mNewPos(newPos)
+                                        QUndoCommand* parent)
+    : SCgBaseCommand(scene, obj, parent)
+    , mPointIndex(pointIndex)
+    , mOldPos(oldPos)
+    , mNewPos(newPos)
 {
     setText(QObject::tr("Move object's point"));
 }

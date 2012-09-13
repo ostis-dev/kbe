@@ -27,11 +27,11 @@ SCgCommandIdtfMove::SCgCommandIdtfMove(SCgTextItem *idtf,
                                        SCgScene *scene,
                                        const QPointF& oldPosition,
                                        const QPointF& newPosition,
-                                       QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mIdtfItem(idtf),
-    mOldPosition(oldPosition),
-    mNewPosition(newPosition)
+                                       QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mIdtfItem(idtf)
+    , mOldPosition(oldPosition)
+    , mNewPosition(newPosition)
 {
     setText(QObject::tr("Move identifier"));
 }

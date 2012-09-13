@@ -26,10 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandContentVisibility::SCgCommandContentVisibility(SCgScene *scene,
                                                          SCgNode *node,
                                                          bool visibility,
-                                                         QUndoCommand *parent) :
-    SCgBaseCommand(scene, node, parent),
-    mNode(node),
-    mVisibility(visibility)
+                                                         QUndoCommand *parent)
+    : SCgBaseCommand(scene, node, parent)
+    , mNode(node)
+    , mVisibility(visibility)
 {
     Q_ASSERT_X(mNode != 0,
                "SCgCommandContentVisibility::SCgCommandContentVisibility(SCgScene *scene,"

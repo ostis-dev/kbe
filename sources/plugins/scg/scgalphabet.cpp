@@ -35,7 +35,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define LINE_MARK_NEG_LENGTH  4.f
 #define LINE_MARK_FUZ_LENGTH  5.f
 
-SCgAlphabet* SCgAlphabet::mInstance = 0;
+SCgAlphabet* SCgAlphabet::msInstance = 0;
+QString SCgAlphabet::msEmptyTypeAlias = "-";
 
 QVector<qreal> SCgAlphabet::msPermVarAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msPermVarNoAccesDashPattern = QVector<qreal>();
@@ -52,19 +53,22 @@ SCgAlphabet::SCgAlphabet(QObject *parent) :
 
 SCgAlphabet& SCgAlphabet::getInstance()
 {
-    if (!mInstance)
+    if (!msInstance)
     {
-        mInstance = new SCgAlphabet;
-        mInstance->initialize();
+        msInstance = new SCgAlphabet;
+        msInstance->initialize();
     }
 
-    return *mInstance;
+    return *msInstance;
 }
 
 void SCgAlphabet::initialize()
 {
     mConstTypes["const"] = Const;
     mConstTypes["var"] = Var;
+
+    mConstAliases[Const] = "const";
+    mConstAliases[Var] = "var";
 
     mAlias2ConstType.push_back("const");
     mAlias2ConstType.push_back("var");
@@ -74,19 +78,38 @@ void SCgAlphabet::initialize()
     mPosTypes["neg"] = Negative;
     mPosTypes["fuz"] = Fuzzy;
 
+    mPositivityAliases[Positive] = "pos";
+    mPositivityAliases[Negative] = "neg";
+    mPositivityAliases[Fuzzy] = "fuz";
+
     mPermTypes["perm"] = Permanent;
     mPermTypes["temp"] = Temporary;
     mPermTypes["any"] = PermAny;
 
-    mStructTypes["not_define"] = NotDefine;
-    mStructTypes["general"] = General;
-    mStructTypes["abstract"] = Abstract;
-    mStructTypes["material"] = Material;
-    mStructTypes["struct"] = Struct;
-    mStructTypes["tuple"] = Tuple;
-    mStructTypes["role"] = Role;
-    mStructTypes["relation"] = Relation;
-    mStructTypes["group"] = Group;
+    mPermanencyAliases[Permanent] = "perm";
+    mPermanencyAliases[Temporary] = "temp";
+    mPermanencyAliases[PermAny] = "any";
+
+    mStructTypes["not_define"] = StructType_NotDefine;
+    mStructTypes["general"] = StructType_General;
+    mStructTypes["abstract"] = StructType_Abstract;
+    mStructTypes["material"] = StructType_Material;
+    mStructTypes["struct"] = StructType_Struct;
+    mStructTypes["tuple"] = StructType_Tuple;
+    mStructTypes["role"] = StructType_Role;
+    mStructTypes["relation"] = StructType_Relation;
+    mStructTypes["group"] = StructType_Group;
+
+
+    mStructAliases[StructType_NotDefine] = "not_define";
+    mStructAliases[StructType_General] = "general";
+    mStructAliases[StructType_Abstract] = "abstract";
+    mStructAliases[StructType_Material] = "material";
+    mStructAliases[StructType_Struct] = "struct";
+    mStructAliases[StructType_Tuple] = "tuple";
+    mStructAliases[StructType_Role] = "role";
+    mStructAliases[StructType_Relation] = "relation";
+    mStructAliases[StructType_Group] = "group";
 
     // initiliaze patterns
     msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH
@@ -113,28 +136,28 @@ void SCgAlphabet::initialize()
 
     QSize size(24, 24);
 
-    mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, NotDefine);
+    mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, StructType_NotDefine);
 
-    mObjectTypes["node/const/general"] = createNodeIcon(size, Const, General);
-    mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, Abstract);
-    mObjectTypes["node/const/material"] = createNodeIcon(size, Const, Material);
-    mObjectTypes["node/const/struct"] = createNodeIcon(size, Const, Struct);
-    mObjectTypes["node/const/tuple"] = createNodeIcon(size, Const, Tuple);
+    mObjectTypes["node/const/general"] = createNodeIcon(size, Const, StructType_General);
+    mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, StructType_Abstract);
+    mObjectTypes["node/const/material"] = createNodeIcon(size, Const, StructType_Material);
+    mObjectTypes["node/const/struct"] = createNodeIcon(size, Const, StructType_Struct);
+    mObjectTypes["node/const/tuple"] = createNodeIcon(size, Const, StructType_Tuple);
     //mObjectTypes["node/const/asymmetry"] = createNodeIcon(size, Const, Tuple);
-    mObjectTypes["node/const/role"] = createNodeIcon(size, Const, Role);
-    mObjectTypes["node/const/relation"] = createNodeIcon(size, Const, Relation);
-    mObjectTypes["node/const/group"] = createNodeIcon(size, Const, Group);
+    mObjectTypes["node/const/role"] = createNodeIcon(size, Const, StructType_Role);
+    mObjectTypes["node/const/relation"] = createNodeIcon(size, Const, StructType_Relation);
+    mObjectTypes["node/const/group"] = createNodeIcon(size, Const, StructType_Group);
 
     //mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
-    mObjectTypes["node/var/general"] = createNodeIcon(size, Var, General);
-    mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, Abstract);
-    mObjectTypes["node/var/material"] = createNodeIcon(size, Var, Material);
-    mObjectTypes["node/var/struct"] = createNodeIcon(size, Var, Struct);
-    mObjectTypes["node/var/tuple"] = createNodeIcon(size, Var, Tuple);
+    mObjectTypes["node/var/general"] = createNodeIcon(size, Var, StructType_General);
+    mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, StructType_Abstract);
+    mObjectTypes["node/var/material"] = createNodeIcon(size, Var, StructType_Material);
+    mObjectTypes["node/var/struct"] = createNodeIcon(size, Var, StructType_Struct);
+    mObjectTypes["node/var/tuple"] = createNodeIcon(size, Var, StructType_Tuple);
     //mObjectTypes["node/var/asymmetry"] = createNodeIcon(size, Var, Tuple);
-    mObjectTypes["node/var/role"] = createNodeIcon(size, Var, Role);
-    mObjectTypes["node/var/relation"] = createNodeIcon(size, Var, Relation);
-    mObjectTypes["node/var/group"] = createNodeIcon(size, Var, Group);
+    mObjectTypes["node/var/role"] = createNodeIcon(size, Var, StructType_Role);
+    mObjectTypes["node/var/relation"] = createNodeIcon(size, Var, StructType_Relation);
+    mObjectTypes["node/var/group"] = createNodeIcon(size, Var, StructType_Group);
 
 
     QSize pairSize(24, 24);
@@ -292,13 +315,45 @@ SCgAlphabet::SCgPermType SCgAlphabet::aliasToPermanencyCode(const QString &alias
     return mPermTypes[alias];
 }
 
+const QString& SCgAlphabet::aliasFromConstCode(SCgAlphabet::SCgConstType code) const
+{
+    if (!mConstAliases.contains(code))
+        return msEmptyTypeAlias;
+
+    return mConstAliases[code];
+}
+
+const QString& SCgAlphabet::aliasFromStructCode(SCgAlphabet::SCgNodeStructType code) const
+{
+    if (!mStructAliases.contains(code))
+        return msEmptyTypeAlias;
+
+    return mStructAliases[code];
+}
+
+const QString& SCgAlphabet::aliasFromPositiveCode(SCgAlphabet::SCgPosType code) const
+{
+    if (!mPositivityAliases.contains(code))
+        return msEmptyTypeAlias;
+
+    return mPositivityAliases[code];
+}
+
+const QString& SCgAlphabet::aliasFromPermanencyCode(SCgAlphabet::SCgPermType code) const
+{
+    if (!mPermanencyAliases.contains(code))
+        return msEmptyTypeAlias;
+
+    return mPermanencyAliases[code];
+}
+
 void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect,
                             const SCgConstType &type, const SCgNodeStructType &type_struct)
 {
 
     QColor brush_color =  QColor(255, 255, 255, 224);
     // to draw not defined nodes we just need to scale them
-    if (type_struct == NotDefine)
+    if (type_struct == StructType_NotDefine)
     {
         painter->scale(0.3f, 0.3f);
         brush_color = color;
@@ -314,7 +369,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
 
     QRectF bound = boundRect.adjusted(2, 2, -2, -2);
 
-    if (type_struct == NotDefine)
+    if (type_struct == StructType_NotDefine)
     {
         painter->drawEllipse(bound);
         return;
@@ -355,7 +410,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
     QPointF c, d;
     switch (type)
     {
-    case Struct:
+    case StructType_Struct:
         float w, h;
         w = boundRect.width() / 10.f;
         h = boundRect.height() / 10.f;
@@ -364,7 +419,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         painter->setBrush(QBrush(Qt::NoBrush));
         break;
 
-    case Abstract:
+    case StructType_Abstract:
     {
         QPen p = painter->pen();
         p.setWidthF(0);
@@ -381,7 +436,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         break;
     }
 
-    case Material:
+    case StructType_Material:
     {
         QPen p = painter->pen();
         p.setWidthF(0);
@@ -405,13 +460,13 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         break;
     }
 
-    case Tuple:
+    case StructType_Tuple:
         c = boundRect.center();
         d = QPointF(boundRect.width() / 2.0, 0.f);
         painter->drawLine(c - d, c + d);
         break;
 
-    case Role:
+    case StructType_Role:
         c = boundRect.center();
         d = QPointF(boundRect.width() / 2.0, 0.f);
         painter->drawLine(c - d, c + d);
@@ -419,12 +474,12 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         painter->drawLine(c - d, c + d);
         break;
 
-    case Relation:
+    case StructType_Relation:
         painter->drawLine(boundRect.topLeft(), boundRect.bottomRight());
         painter->drawLine(boundRect.topRight(), boundRect.bottomLeft());
         break;
 
-    case Group:
+    case StructType_Group:
         painter->drawLine(boundRect.topLeft(), boundRect.bottomRight());
         painter->drawLine(boundRect.topRight(), boundRect.bottomLeft());
         painter->drawLine(boundRect.left(), boundRect.center().y(), boundRect.right(), boundRect.center().y());

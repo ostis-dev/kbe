@@ -27,10 +27,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandInsert::SCgCommandInsert(SCgScene *scene,
                                    QList<SCgObject*> objList,
                                    SCgContour* parentContour,
-                                   QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mList(objList),
-    mParent(parentContour)
+                                   QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mList(objList)
+    , mParent(parentContour)
 {
     foreach(SCgObject* obj, mList)
         connect(obj, SIGNAL(destroyed(QObject*)), this, SLOT(objectFromListDestroyed(QObject*)));

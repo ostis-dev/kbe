@@ -24,9 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgCommandSelectedObjectMove::SCgCommandSelectedObjectMove(SCgScene *scene,
                                                             const SCgScene::ObjectUndoInfo& undoInfo,
-                                                            QUndoCommand *parent):
-        SCgBaseCommand(scene, 0, parent),
-        mUndoInfo(undoInfo)
+                                                            QUndoCommand *parent)
+        : SCgBaseCommand(scene, 0, parent)
+        , mUndoInfo(undoInfo)
 {
     setText(QObject::tr("Move items"));
 }

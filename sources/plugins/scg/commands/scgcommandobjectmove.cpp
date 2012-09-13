@@ -26,10 +26,10 @@ SCgCommandObjectMove::SCgCommandObjectMove( SCgScene *scene,
                                             SCgObject* obj,
                                             const QPointF& oldPos,
                                             const QPointF& newPos,
-                                            QUndoCommand *parent):
-        SCgBaseCommand(scene, obj, parent),
-        mOldPosition(oldPos),
-        mNewPosition(newPos)
+                                            QUndoCommand *parent)
+        : SCgBaseCommand(scene, obj, parent)
+        , mOldPosition(oldPos)
+        , mNewPosition(newPos)
 {
     setText(QObject::tr("Move item"));
 }

@@ -68,11 +68,20 @@ public:
 
     void objectDelete(SCgObject *object);
     void positionChanged();
+
+
     QPointF cross(const QPointF &from, float dot) const;
     float dotPos(const QPointF &point) const;
 public:
+
+    // ----- Type ----
     void setTypeAlias(const QString &typeAlias);
 
+    //! Returns structure type of this node
+    SCgAlphabet::SCgNodeStructType structType() const;
+
+
+    // ------ Contents ------
     /*! Shows content
       @see SCgNode::hideContent(), SCgNode::isContentVisible()
       */

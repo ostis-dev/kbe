@@ -29,11 +29,11 @@ SCgCommandCreateBus::SCgCommandCreateBus(SCgScene *scene,
                                            SCgNode *owner,
                                            const QVector<QPointF> &points,
                                            SCgContour *parentContour,
-                                           QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mOwner(owner),
-    mPoints(points),
-    mParentContour(parentContour)
+                                           QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mOwner(owner)
+    , mPoints(points)
+    , mParentContour(parentContour)
 {
     mObject = mScene->createSCgBus(mPoints, mOwner);
     connect(mObject, SIGNAL(destroyed()), this, SLOT(busDestroyed()));

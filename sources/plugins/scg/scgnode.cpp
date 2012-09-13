@@ -68,6 +68,11 @@ void SCgNode::setTypeAlias(const QString &typeAlias)
     updateType();
 }
 
+SCgAlphabet::SCgNodeStructType SCgNode::structType() const
+{
+    return mStructType;
+}
+
 void SCgNode::updateType()
 {    
     /* updating information based on type alias */

@@ -27,10 +27,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandCreateNode::SCgCommandCreateNode(SCgScene *scene,
                                            const QPointF &point,
                                            SCgContour *parentContour,
-                                           QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mPoint(point),
-    mParentContour(parentContour)
+                                           QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mPoint(point)
+    , mParentContour(parentContour)
 {
     mObject = mScene->createSCgNode(mPoint);
     connect(mObject, SIGNAL(destroyed()), this, SLOT(nodeDestroyed()));

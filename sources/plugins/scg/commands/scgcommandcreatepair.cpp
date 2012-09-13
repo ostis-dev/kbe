@@ -29,12 +29,12 @@ SCgCommandCreatePair::SCgCommandCreatePair(SCgScene *scene,
                                            SCgObject *beginObject,
                                            SCgObject *endObject,
                                            SCgContour *parentContour,
-                                           QUndoCommand *parent) :
-    SCgBaseCommand(scene, 0, parent),
-    mPoints(points),
-    mBeginObject(beginObject),
-    mEndObject(endObject),
-    mParentContour(parentContour)
+                                           QUndoCommand *parent)
+    : SCgBaseCommand(scene, 0, parent)
+    , mPoints(points)
+    , mBeginObject(beginObject)
+    , mEndObject(endObject)
+    , mParentContour(parentContour)
 {
     mObject = mScene->createSCgPair(mBeginObject, mEndObject, mPoints);
 
