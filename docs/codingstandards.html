@@ -247,6 +247,25 @@ class SomeClass
 };
 	</pre>
 	</li>
+	<li>All initialization of class members in constructor must start from new line. Each line that contains member initialization should be
+			idented by one tab. It should be like this:
+				<pre>
+cSomeClass::cSomeClass()
+	: mMember1(0)
+	, mMember2(0)
+	, ...
+{
+
+}
+				</pre>
+				rather like this:
+				<pre class="wrong">
+cSomeClass::cSomeClass(): mMember1(0), mMember2(0), ...
+{
+
+}
+				</pre>
+	</li>
 	<li>Use typedefs to declare template-based types that you use to avoid ugliness e.g.
 	<pre>typedef std::list<MyType*> MyTypeList;</pre>
 	</li>
