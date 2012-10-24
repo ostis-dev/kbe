@@ -53,4 +53,28 @@ protected:
     bool mVisibility;
 };
 
+class SCgCommandAllContentVisibility : public SCgBaseCommand
+{
+public:
+    /*! Constructor
+      @param    scene   Pointer to SCgScene that will be used for command working
+      @param    visibility    Visibility flag
+      @param    parent  Pointer to parent command
+    */
+    explicit SCgCommandAllContentVisibility(SCgScene *scene, bool visibility, QUndoCommand *parent = 0);
+    //! Destructor
+    virtual ~SCgCommandAllContentVisibility();
+
+protected:
+    //! @see    QUndoCommand::redo
+    void redo();
+    //! @see    QUndoCommand::undo
+    void undo();
+
+private:
+    //! Visibility flag
+    bool mVisibility;
+    QList<SCgNode*> mUnchangedNodeList;
+};
+
 #endif // SCGCOMMANDCONTENTVISIBILITY_H
