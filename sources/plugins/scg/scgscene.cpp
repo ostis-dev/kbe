@@ -423,6 +423,7 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
     return cmd;
 }
 
+
 SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QString &type, SCgBaseCommand* parentCmd, bool addToStack)
 {
     QString oldType = object->typeAlias();
@@ -464,14 +465,21 @@ SCgBaseCommand* SCgScene::swapPairOrientCommand(SCgPair *pair, SCgBaseCommand *p
     return cmd;
 }
 
-SCgBaseCommand* SCgScene::changeContentVisibilityCommand(SCgNode *node, bool visibility, SCgBaseCommand* parentCmd, bool addToStack)
+SCgBaseCommand* SCgScene::changeContentVisibilityCommand(SCgNode *node, bool visibility, bool allContent, SCgBaseCommand *parentCmd, bool addToStack)
 {
-    Q_ASSERT_X(node != 0,
-               "void SCgScene::changeContentVisibility(SCgNode *node, bool visibility)",
-               "Pointer to node object is null");
+    SCgBaseCommand* cmd = 0;
+    if (allContent)
+    {
+        cmd = new SCgCommandAllContentVisibility(this, visibility, parentCmd);
+    }
+    else {
+        Q_ASSERT_X(node != 0,
+                   "void SCgScene::changeContentVisibility(SCgNode *node, bool visibility)",
+                   "Pointer to node object is null");
 
-    SCgBaseCommand* cmd = new SCgCommandContentVisibility(this, node, visibility, parentCmd);
+        cmd = new SCgCommandContentVisibility(this, node, visibility, parentCmd);
 
+    }
     if(addToStack)
         mUndoStack->push(cmd);
 
