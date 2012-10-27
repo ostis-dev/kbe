@@ -50,7 +50,7 @@ public:
      *  @{
      */
     static const qreal minScale = 0.20;
-    static const qreal maxScale = 9.99;
+    static const qreal maxScale = 10.0;
     /*! @}*/
 
     /*! Constructor

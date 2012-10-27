@@ -131,8 +131,8 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     connect(action, SIGNAL(triggered()), this, SLOT(onZoomOut()));
 
     mScaleSlider = new QSlider(mToolBar);
-    mScaleSlider->setMinimum(10);
-    mScaleSlider->setMaximum(1000);
+    mScaleSlider->setMinimum(minScale*100);
+    mScaleSlider->setMaximum(maxScale*100);
     mScaleSlider->setValue(100);
     mScaleSlider->setOrientation(Qt::Horizontal);
     mScaleSlider->setFixedWidth(180);
