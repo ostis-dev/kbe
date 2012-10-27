@@ -523,16 +523,16 @@ void SCgView::deleteContent()
     static_cast<SCgScene*>(scene())->changeContentDataCommand(node, empty);
 }
 
-void SCgView::setScale(const QString& sc)
+void SCgView::setScale(int sc)
 {
     QTransform t = transform();
     //Default transform
     t.reset();
 
     //Getting percent value
-    QString str = sc;
-    str.remove("%");
-    double d = str.toDouble()/100.0;
+//    QString str = sc;
+//    str.remove("%");
+    double d = sc/100.0;
 
     //Checking if value d in proper range
     if (d < SCgWindow::minScale)

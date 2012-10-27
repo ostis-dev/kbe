@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QAction>
 #include <QUndoStack>
 #include <QComboBox>
-#include <QLineEdit>
+#include <QLabel>
 #include <QMimeData>
 #include <QActionGroup>
 #include <QBoxLayout>
@@ -63,17 +63,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
-const QStringList SCgWindow::mScales = QStringList()<< "25" << "50"
-                                                    << "75" << "100"
-                                                    << "125" << "150"
-                                                    << "175" << "200";
-const int SCgWindow::mScaleChangeStep = 25;
+const int SCgWindow::mScaleChangeStep = 10;
 
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),
     mView(0),
     mScene(0),
-    mZoomFactorLine(0),
     mMinimap(0),
     mUndoView(0),
     mFindWidget(0),
@@ -120,12 +115,53 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
 
     createToolBar();
 
+    mScaleBar = new QToolBar;
+    mScaleBar->setAllowedAreas(Qt::BottomToolBarArea);
+    mScaleBar->setFloatable(false);
+    QWidget *spacerWidget = new QWidget(mScaleBar);
+    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    spacerWidget->show();
+    mScaleBar->addWidget(spacerWidget);
+
+    //Zoom out
+    QAction *action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence::ZoomOut);
+    mScaleBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onZoomOut()));
+
+    mScaleSlider = new QSlider(mToolBar);
+    mScaleSlider->setMinimum(10);
+    mScaleSlider->setMaximum(1000);
+    mScaleSlider->setValue(100);
+    mScaleSlider->setOrientation(Qt::Horizontal);
+    mScaleSlider->setFixedWidth(180);
+    connect(mScaleSlider, SIGNAL(valueChanged(int)), mView, SLOT(setScale(int)));
+    connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
+    mScaleBar->addWidget(mScaleSlider);
+
+    mZoomFactorLabel = new QLabel("100%", mScaleBar);
+    mScaleBar->addWidget(mZoomFactorLabel);
+
+    action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence::ZoomIn);
+    mScaleBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
+
+    action = new QAction(mToolBar);
+    action->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(setDefaultScale()));
+
     setObjectName("SCgWindow");
 }
 
 SCgWindow::~SCgWindow()
 {
     delete mToolBar;
+    delete mZoomFactorLabel;
+    delete mScaleBar;
     delete mView;
     delete mUndoView;
     delete mMinimap;
@@ -289,36 +325,6 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onExportImage()));
 
-    //
-    mToolBar->addSeparator();
-    //
-    //Zoom in
-    action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("+", "Zoom in")));
-    mToolBar->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
-
-    //Scale combobox
-    QComboBox* b = new QComboBox(mToolBar);
-    b->setEditable(true);
-    b->setInsertPolicy(QComboBox::NoInsert);
-    b->addItems(SCgWindow::mScales);
-    b->setCurrentIndex(mScales.indexOf("100"));
-    mZoomFactorLine = b->lineEdit();
-    mZoomFactorLine->setInputMask("D90%");
-    mToolBar->addWidget(b);
-    connect(mZoomFactorLine, SIGNAL(textChanged(const QString&)), mView, SLOT(setScale(const QString&)));
-    connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
-
-    //Zoom out
-    action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("-", "Zoom out")));
-    mToolBar->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onZoomOut()));
-
-
     mToolBar->setWindowTitle(tr("SCg Tools"));
 }
 
@@ -476,31 +482,35 @@ void SCgWindow::onExportImage()
 
 void SCgWindow::onZoomIn()
 {
-    int oldScale = mZoomFactorLine->text().remove('%').toInt();
+    int oldScale = mZoomFactorLabel->text().remove('%').toInt();
     int newScale = oldScale + mScaleChangeStep;
 
     if(newScale > int(maxScale*100))
         newScale = int(maxScale*100);
 
-    mZoomFactorLine->setText(QString::number(newScale));
+    mScaleSlider->setValue(newScale);
 }
 
 void SCgWindow::onZoomOut()
 {
-    int oldScale = mZoomFactorLine->text().remove('%').toInt();
+    int oldScale = mZoomFactorLabel->text().remove('%').toInt();
     int newScale = oldScale - mScaleChangeStep;
 
     if(newScale < int(minScale*100))
         newScale = int(minScale*100);
+    mScaleSlider->setValue(newScale);
+}
 
-    mZoomFactorLine->setText(QString::number(newScale));
+void SCgWindow::setDefaultScale()
+{
+    mScaleSlider->setValue(100);
 }
 
 void SCgWindow::onViewScaleChanged(qreal newScale)
 {
-    qreal oldScale = mZoomFactorLine->text().remove('%').toDouble() / 100;
+    qreal oldScale = mZoomFactorLabel->text().remove('%').toDouble() / 100;
     if (newScale != oldScale)
-        mZoomFactorLine->setText(QString::number(int(newScale*100)));
+        mZoomFactorLabel->setText(QString::number(int(newScale*100)) + "%");
 }
 
 void SCgWindow::cut() const
@@ -625,6 +635,9 @@ void SCgWindow::activate(QMainWindow *window)
         window->addToolBar(Qt::LeftToolBarArea, tool_bar);
         tool_bar->show();
     }
+    window->addToolBar(Qt::BottomToolBarArea, mScaleBar);
+    mScaleBar->show();
+
     mUndoStack->setActive(true);
 }
 
@@ -634,6 +647,7 @@ void SCgWindow::deactivate(QMainWindow *window)
     deleteMenu();
 
     window->removeToolBar(toolBar());
+    window->removeToolBar(mScaleBar);
     mUndoStack->setActive(false);
 }
 
