@@ -105,6 +105,7 @@ public:
     bool haveBus() const;
     int contentType() const;
     const QString& contentMimeType() const;
+    bool contentVisible() const;
     const QString& contentFilename() const;
     const QVariant& contentData() const;
     /**@}*/
@@ -118,6 +119,7 @@ public:
     bool& haveBusRef();
     int& contentTypeRef();
     QString& contentMimeTypeRef();
+    bool& contentVisibleRef();
     QString& contentFilenameRef();
     QVariant& contentDataRef();
     /**@}*/
