@@ -34,6 +34,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
+    mIsTypeClonning(false),
+    mObjectType(0),
+    mCloningType(""),
     mCurrentPointObject(0)
 {
 
@@ -79,7 +82,7 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
-    if(event->buttons()==Qt::LeftButton && !mIsItemsMoved)
+    if(event->buttons()==Qt::LeftButton && !mIsItemsMoved && !mIsTypeClonning)
     {
         //We should use there current event position (not mStartPos) because of the delay between mousePress and mouseMove events.
         //______________________________________________________//
@@ -105,23 +108,36 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    if(mCurrentPointObject)
+    if (event->modifiers() == Qt::ShiftModifier && event->button() == Qt::LeftButton)
     {
-        QGraphicsItem *it = mScene->itemAt(event->scenePos());
-
-        if (it == 0 || (it != mCurrentPointObject && SCgObject::isSCgObjectType(it->type())))
+        SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
+        if (obj && (obj->type() == SCgNode::Type || obj->type() == SCgPair::Type))
         {
-            mCurrentPointObject->destroyPointObjects();
-            mCurrentPointObject = 0;
+            mIsTypeClonning = true;
+            mCloningType = obj->typeAlias();
+            mObjectType = obj->type();
+            event->accept();
         }
+    }
+    else
+    {
+        if(mCurrentPointObject)
+        {
+            QGraphicsItem *it = mScene->itemAt(event->scenePos());
 
-        /*QPainterPath p = mCurrentPointObject->shape();
+            if (it == 0 || (it != mCurrentPointObject && SCgObject::isSCgObjectType(it->type())))
+            {
+                mCurrentPointObject->destroyPointObjects();
+                mCurrentPointObject = 0;
+            }
+
+            /*QPainterPath p = mCurrentPointObject->shape();
         if(!p.contains(mCurrentPointObject->mapFromScene(event->scenePos())))
         {
             mCurrentPointObject->destroyPointObjects();
             mCurrentPointObject = 0;
         }*/
-    }else
+        }else
         {
             QPointF cur_pos = event->scenePos();
             QGraphicsItem* item = mScene->itemAt(cur_pos);
@@ -135,11 +151,12 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
             }
         }
 
-    // start cloning
-    if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
-    {
-        mScene->setEditMode(SCgScene::Mode_Clone);
-        event->accept();
+        // start cloning
+        if (event->modifiers() == Qt::ShiftModifier && mScene->selectedItems().contains(mScene->objectAt(event->scenePos())))
+        {
+            mScene->setEditMode(SCgScene::Mode_Clone);
+            event->accept();
+        }
     }
 }
 
@@ -160,22 +177,22 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
             case SCgIncidentPointGraphicsItem::Type:
             case SCgTextItem::Type:
             case SCgPair::Type:
-                {
-                    // exclude PointGraphicsItem's object, because it always has a parent item
-                    it.value().second.second = item->pos();
-                    continue;
-                }
+            {
+                // exclude PointGraphicsItem's object, because it always has a parent item
+                it.value().second.second = item->pos();
+                continue;
+            }
             case SCgNode::Type :
             case SCgContour::Type :
-                {
-                    newParent = findNearestParentContour(item);
-                    break;
-                }
+            {
+                newParent = findNearestParentContour(item);
+                break;
+            }
             case SCgBus::Type :
-                {
-                    SCgNode* node = qgraphicsitem_cast<SCgBus*>(item)->owner();
-                    newParent = findNearestParentContour(node);
-                }
+            {
+                SCgNode* node = qgraphicsitem_cast<SCgBus*>(item)->owner();
+                newParent = findNearestParentContour(node);
+            }
             default :
                 break;
             }
@@ -209,6 +226,15 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
         mIsItemsMoved = false;
         mUndoInfo.clear();
     }
+    else if (mIsTypeClonning)
+    {
+        SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
+        if (obj && obj->type() == mObjectType)
+            mScene->changeObjectTypeCommand(obj, mCloningType);
+        mIsTypeClonning = false;
+        mObjectType = 0;
+        mCloningType = "";
+    }
 }
 
 void SCgSelectMode::clean()
@@ -219,6 +245,9 @@ void SCgSelectMode::clean()
     if (mCurrentPointObject)
         mCurrentPointObject->destroyPointObjects();
     mCurrentPointObject = 0;
+    mIsTypeClonning = false;
+    mObjectType = 0;
+    mCloningType = "";
 }
 
 SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)

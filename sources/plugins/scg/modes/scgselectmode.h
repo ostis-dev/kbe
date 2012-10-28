@@ -61,6 +61,12 @@ private:
     SCgScene::ItemUndoInfo mUndoInfo;
     //! True if items positions have changed.
     bool mIsItemsMoved;
+    //! Showed if type cloning proccess is started
+    bool mIsTypeClonning;
+    //! Type of object that taken part in type clonning
+    int mObjectType;
+    //! Cloning type alias
+    QString mCloningType;
     //! Currently controlled pointObject.
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item
