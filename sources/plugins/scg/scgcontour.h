@@ -93,8 +93,12 @@ public:
     void changePointPosition(int pointIndex, const QPointF& newPos);
 
 protected:
+    //! Corner radius for drawing shape
+    static const qreal cornerRadius = 20.0;
+
     //! Contour shape
     QPainterPath mShape;
+
     //! Drawable shape
     QPainterPath mShapeDraw;
 
