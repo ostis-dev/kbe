@@ -290,6 +290,9 @@ bool GwfObjectInfoReader::parseNode(const QDomElement &element)
     if (!getAttributeString(contEl, "mime_type", nodeInfo->contentMimeTypeRef()))
         return false;
 
+    if (!getAttributeBool(contEl, "content_visibility", nodeInfo->contentVisibleRef()))
+        return false;
+
     // set content to nodeInfo
     if (cType > 0 && cType < 5)
     {
@@ -395,6 +398,24 @@ bool GwfObjectInfoReader::getAttributeString(const QDomElement &element, QString
     return false;
 }
 
+bool GwfObjectInfoReader::getAttributeBool(const QDomElement &element, QString attribute, bool &result)
+{
+    QString strResult;
+    if (!getAttributeString(element, attribute, strResult))
+        return false;
+    else
+        if (strResult == "false")
+            result = false;
+        else if (strResult == "true")
+            result = true;
+        else
+        {
+            errorBoolParse(element.tagName(), attribute);
+            return false;
+        }
+    return true;
+}
+
 bool GwfObjectInfoReader::getAttributeDouble(const QDomElement &element, QString attribute, double &result)
 {
     if (element.hasAttribute(attribute))
@@ -456,6 +477,11 @@ void GwfObjectInfoReader::errorHaventAttribute(QString element, QString attribut
 void GwfObjectInfoReader::errorFloatParse(QString element, QString attribute)
 {
     mLastError = QObject::tr("invalid float value in attribute '%1' of element '%2'").arg(attribute).arg(element);
+}
+
+void GwfObjectInfoReader::errorBoolParse(QString element, QString attribute)
+{
+    mLastError = QObject::tr("invalid bollean value in attribute '%1' of element '%2'").arg(attribute).arg(element);
 }
 
 void GwfObjectInfoReader::errorHaventContent(QString element)

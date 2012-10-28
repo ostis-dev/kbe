@@ -210,6 +210,7 @@ void GwfStreamWriter::writeContent(SCgNode *node)
 
     writeAttribute("type",QString::number(cType));
     writeAttribute("mime_type", node->contentMimeType());
+    writeAttribute("content_visibility", node->isContentVisible() ? "true" : "false");
     writeAttribute("file_name", node->contentFileName());
 
     switch(cType)
