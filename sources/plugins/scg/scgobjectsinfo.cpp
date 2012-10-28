@@ -133,6 +133,11 @@ const QString& SCgNodeInfo::contentMimeType() const
 {
     return d->mContentMimeType;
 }
+
+bool SCgNodeInfo::contentVisible() const
+{
+    return d->mContentVisible;
+}
 const QString& SCgNodeInfo::contentFilename() const
 {
     return d->mContentFilename;
@@ -157,6 +162,11 @@ int& SCgNodeInfo::contentTypeRef()
 QString& SCgNodeInfo::contentMimeTypeRef()
 {
     return d->mContentMimeType;
+}
+
+bool &SCgNodeInfo::contentVisibleRef()
+{
+    return d->mContentVisible;
 }
 QString& SCgNodeInfo::contentFilenameRef()
 {

@@ -84,6 +84,7 @@ private:
     bool mHaveBus;
     int mContentType;
     QString mContentMimeType;
+    bool mContentVisible;
     QString mContentFilename;
     QVariant mContentData;
 };

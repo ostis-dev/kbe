@@ -175,7 +175,8 @@ void DefaultSCgObjectBuilder::buildNode(SCgNodeInfo* info)
                          info->contentData(),
                          info->contentFilename(),
                          (SCgContent::ContType)info->contentType());
-
+        if (!node->contentData().isNull() && info->contentVisible())
+            node->showContent();
         setObjectInfo(node, info);
     }
 }

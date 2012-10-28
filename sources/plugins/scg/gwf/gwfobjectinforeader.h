@@ -109,6 +109,15 @@ private:
       */
     bool getAttributeString(const QDomElement &element, QString attribute, QString &result);
 
+    /*! Gets boolean value of attribute
+      @param element Element to get attribute value from.
+      @param attribute Attribute name.
+      @param result Reference to result receiver.
+
+      @return If value got normally, then return true, else - false
+      */
+    bool getAttributeBool(const QDomElement &element, QString attribute, bool &result);
+
     /*! Gets float value of attribute
       @param element Element to get attribute value from.
       @param attribute Attribute name.
@@ -146,6 +155,12 @@ private:
       @param attribute Attribute name.
       */
     void errorFloatParse(QString element, QString attribute);
+
+    /*! Generates last error message for error in boolean value parsing
+      @param element Element tag name.
+      @param attribute Attribute name.
+      */
+    void errorBoolParse(QString element, QString attribute);
 
     /*! Generates last error message for node without content tag
       @param element Element tag name
