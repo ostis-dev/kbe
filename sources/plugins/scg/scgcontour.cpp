@@ -31,8 +31,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsScene>
 #include <QVector2D>
 
-#define CONTOUR_CORNER_RADIUS 20.f
-
 SCgContour::SCgContour() :
         mColorBack(QColor(250, 250, 250, 224))
 {
@@ -106,37 +104,45 @@ void SCgContour::updateShape()
 
     mShape = QPainterPath();
 
+    // Generate control points to be used for path drawing
     PointFVector points;
     quint32 pointsSize = mPoints.size();
     for (quint32 i = 0; i < pointsSize; i++)
     {
         QPointF p2 = mPoints[(i + 1) % pointsSize];
         QPointF p1 = mPoints[i];
-        QVector2D dir(p2 - p1);
-        dir.normalize();
 
-        QPointF dv = dir.toPointF() * CONTOUR_CORNER_RADIUS;
+        QVector2D dir(p2 - p1);
+
+        // In case two points are placed close to each other
+        // we need to adjust corner radius.
+        qreal cornerRadiusAdjusted = cornerRadius;
+        qreal dirLength = dir.length();
+        if(dirLength < cornerRadius * 2)
+            cornerRadiusAdjusted = dirLength / 2;
+
+        dir.normalize();
+        QPointF dv = dir.toPointF() * cornerRadiusAdjusted;
+
         points.push_back(p1);
         points.push_back(p1 + dv);
         points.push_back(p2 - dv);
     }
 
-    // draw path
+    // Draw path using generated points
     quint32 psz3 = pointsSize * 3;
-    for (quint32 i = 0; i < pointsSize; i++)
+    for (quint32 i = 0; i < psz3; i += 3)
     {
-        quint32 idx = i * 3;
-
         if (i == 0)
-            mShape.moveTo(points[idx + 1]);
-        mShape.lineTo(points[idx + 2]);
-        mShape.quadTo(points[(idx + 3) % psz3], points[(idx + 4) % psz3]);
+            mShape.moveTo(points[i + 1]);
+        mShape.lineTo(points[i + 2]);
+        mShape.quadTo(points[(i + 3) % psz3], points[(i + 4) % psz3]);
     }
     mShape.closeSubpath();
 
     mShapeNormal = mShape;
+
     QPainterPathStroker path_stroker;
-    //path_stroker.setJoinStyle(Qt::MiterJoin);
     path_stroker.setWidth(SCgAlphabet::lineWidthForShape() + 2);
     mShape = path_stroker.createStroke(mShape);
 
