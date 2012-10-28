@@ -153,6 +153,13 @@ QString SCsCodeEditor::textUnderCursor()
 
 void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
  {
+    if ((e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_Tab)
+            || e->key() == Qt::Key_Backtab)
+    {
+        e->ignore();
+        return;
+    }
+
     if (mCompleter->popup()->isVisible())
     {
         switch (e->key())

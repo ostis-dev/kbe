@@ -222,6 +222,8 @@ bool SCgMode::movableAncestorIsSelected(const QGraphicsItem *item)
 
 void SCgMode::keyPress(QKeyEvent *event)
 {
+    // clean accepted state
+    event->setAccepted(false);
     if (event->key() == Qt::Key_Escape)
     {
         event->accept();

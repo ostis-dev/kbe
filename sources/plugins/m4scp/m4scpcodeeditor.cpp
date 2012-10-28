@@ -117,6 +117,13 @@ void M4SCpCodeEditor::resizeEvent(QResizeEvent *e)
 
 void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
 {
+    if ((e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_Tab)
+            || e->key() == Qt::Key_Backtab)
+    {
+        e->ignore();
+        return;
+    }
+
     if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return)
     {
         moveCursor(QTextCursor::PreviousBlock,QTextCursor::MoveAnchor);
