@@ -532,7 +532,7 @@ void SCgView::setScale(int sc)
     //Getting percent value
 //    QString str = sc;
 //    str.remove("%");
-    double d = sc/100.0;
+    double d = sc/9.99;
 
     //Checking if value d in proper range
     if (d < SCgWindow::minScale)

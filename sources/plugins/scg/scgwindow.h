@@ -154,8 +154,7 @@ private:
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;
 
-    //! Tool bar for scaling instruments
-    QToolBar *mScaleBar;
+    QWidget *mBottomBar;
 
     /**
      * \defgroup menu Menu
@@ -182,6 +181,9 @@ private:
 
     //! creates specific menus for this window. Called after window activation.
     void createMenu();
+
+    //! Creates widget containes control at the bottom part of window
+    void createBottomBar();
 
     //! Destroys specific menus created by createMenu(). Called after window deactivation.
     void deleteMenu();
