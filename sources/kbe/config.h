@@ -37,10 +37,16 @@ public:
      *  @{
      */
 
-    //! Setting name for recent file list.
+    //! Application root setting name
+    static const QString settingsApplicationRoot;
+    //! Key name for storing recent file list.
     static const QString settingsRecentFileList;
+    //! Root setting key name for Dock Geometries.
     static const QString settingsDocksGeometry;
+    //! Key for storing main window geometry
     static const QString settingsMainWindowGeometry;
+    //! Key for saving value indicating whether the guide dialog appears on startupt.
+    static const QString settingsShowStartupDialog;
     /*! @}*/
 };
 

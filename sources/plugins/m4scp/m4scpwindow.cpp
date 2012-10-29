@@ -55,8 +55,6 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     setLayout(layout);
 
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
-
-    setObjectName("M4SCpWindow");
 }
 
 M4SCpWindow::~M4SCpWindow()

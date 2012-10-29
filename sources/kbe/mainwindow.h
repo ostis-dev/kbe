@@ -112,6 +112,18 @@ private:
      */
     EditorInterface* createSubWindow(const QString& ext);
 
+    /*!
+     * Generates a key for QSettings.setValue() using given editor type @p editorType
+     * @param editorType Type of editor, key value should be generated for.
+     * @return A value that should be used as a key for QSettings.setValue() to save editor layout.
+     */
+    QString getSettingKeyValueForWindow(const QString& editorType) const;
+
+    /*!
+     * Saves main window layout including dock widgets and geometry.
+     */
+    void saveLayout() const;
+
 private:
     Ui::MainWindow *ui;
 
@@ -145,10 +157,8 @@ private:
      */
     QMap<QString, QByteArray> mStates;
 
-
     typedef QMap<QWidget*, EditorInterface*> Widget2EditorInterfaceMap;
-    /*! Map to convert widget to editor interface
-      */
+    //! Maps from widget to editor interface
     Widget2EditorInterfaceMap mWidget2EditorInterface;
 
 public slots:
