@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgmode.h"
 #include <QMap>
+#include <QCursor>
 
 class SCgPointObject;
 
@@ -67,6 +68,8 @@ private:
     int mObjectType;
     //! Cloning type alias
     QString mCloningType;
+    //! Cursor for type cloning
+    QCursor mCloningCursor;
     //! Currently controlled pointObject.
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item

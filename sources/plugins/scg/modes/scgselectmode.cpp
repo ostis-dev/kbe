@@ -31,6 +31,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpointgraphicsitem.h"
 
 #include <QDomDocument>
+#include <QGraphicsView>
+#include <QBitmap>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
@@ -39,7 +41,9 @@ SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mCloningType(""),
     mCurrentPointObject(0)
 {
-
+    QPixmap pix(":/scg/media/TypeClonningCursor.bmp");
+    pix.setMask(pix.createMaskFromColor(QColor("white")));
+    mCloningCursor = QCursor(pix);
 }
 
 SCgSelectMode::~SCgSelectMode()
@@ -108,7 +112,7 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    if (event->modifiers() == Qt::ShiftModifier && event->button() == Qt::LeftButton)
+    if (event->modifiers() == Qt::ControlModifier && event->button() == Qt::LeftButton)
     {
         SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
         if (obj && (obj->type() == SCgNode::Type || obj->type() == SCgPair::Type))
@@ -116,6 +120,7 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
             mIsTypeClonning = true;
             mCloningType = obj->typeAlias();
             mObjectType = obj->type();
+            mScene->views().at(0)->viewport()->setCursor(mCloningCursor);
             event->accept();
         }
     }
@@ -229,11 +234,12 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
     else if (mIsTypeClonning)
     {
         SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
-        if (obj && obj->type() == mObjectType)
+        if (obj && obj->type() == mObjectType && obj->typeAlias() != mCloningType)
             mScene->changeObjectTypeCommand(obj, mCloningType);
         mIsTypeClonning = false;
         mObjectType = 0;
         mCloningType = "";
+        mScene->views().at(0)->viewport()->setCursor(Qt::ArrowCursor);
     }
 }
 
