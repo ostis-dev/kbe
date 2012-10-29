@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QAction>
 #include <QUndoStack>
 #include <QComboBox>
-#include <QLineEdit>
+#include <QLabel>
 #include <QMimeData>
 #include <QActionGroup>
 #include <QBoxLayout>
@@ -36,6 +36,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenuBar>
 #include <QMenu>
 #include <QToolButton>
+#include <QPushButton>
 #include <QFileDialog>
 
 #include "scglayoutmanager.h"
@@ -63,17 +64,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
-const QStringList SCgWindow::mScales = QStringList()<< "25" << "50"
-                                                    << "75" << "100"
-                                                    << "125" << "150"
-                                                    << "175" << "200";
-const int SCgWindow::mScaleChangeStep = 25;
+const int SCgWindow::mScaleChangeStep = 10;
 
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),
     mView(0),
     mScene(0),
-    mZoomFactorLine(0),
     mMinimap(0),
     mUndoView(0),
     mFindWidget(0),
@@ -97,14 +93,11 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mView->setScene(mScene);
     mView->setSceneRect(0, 0, 1000, 1000);
 
-    mFindWidget = new SCgFindWidget(this);
-    connect(mFindWidget, SIGNAL(findNext()), this, SLOT(findNext()));
-    connect(mFindWidget, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
-    connect(mFindWidget, SIGNAL(find(QString)), this, SLOT(findTextChanged(QString)));
+    createBottomBar();
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(mView);
-    layout->addWidget(mFindWidget);
+    layout->addWidget(mBottomBar);
 
     setLayout(layout);
 
@@ -126,10 +119,11 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
 SCgWindow::~SCgWindow()
 {
     delete mToolBar;
+    delete mZoomFactorLabel;
+    delete mBottomBar;
     delete mView;
     delete mUndoView;
     delete mMinimap;
-    delete mFindWidget;
     delete mUndoStack;
 }
 
@@ -289,36 +283,6 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onExportImage()));
 
-    //
-    mToolBar->addSeparator();
-    //
-    //Zoom in
-    action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("+", "Zoom in")));
-    mToolBar->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
-
-    //Scale combobox
-    QComboBox* b = new QComboBox(mToolBar);
-    b->setEditable(true);
-    b->setInsertPolicy(QComboBox::NoInsert);
-    b->addItems(SCgWindow::mScales);
-    b->setCurrentIndex(mScales.indexOf("100"));
-    mZoomFactorLine = b->lineEdit();
-    mZoomFactorLine->setInputMask("D90%");
-    mToolBar->addWidget(b);
-    connect(mZoomFactorLine, SIGNAL(textChanged(const QString&)), mView, SLOT(setScale(const QString&)));
-    connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
-
-    //Zoom out
-    action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("-", "Zoom out")));
-    mToolBar->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onZoomOut()));
-
-
     mToolBar->setWindowTitle(tr("SCg Tools"));
 }
 
@@ -476,31 +440,35 @@ void SCgWindow::onExportImage()
 
 void SCgWindow::onZoomIn()
 {
-    int oldScale = mZoomFactorLine->text().remove('%').toInt();
+    int oldScale = mZoomFactorLabel->text().remove('%').toInt();
     int newScale = oldScale + mScaleChangeStep;
 
     if(newScale > int(maxScale*100))
         newScale = int(maxScale*100);
 
-    mZoomFactorLine->setText(QString::number(newScale));
+    mScaleSlider->setValue(newScale/10);
 }
 
 void SCgWindow::onZoomOut()
 {
-    int oldScale = mZoomFactorLine->text().remove('%').toInt();
+    int oldScale = mZoomFactorLabel->text().remove('%').toInt();
     int newScale = oldScale - mScaleChangeStep;
 
     if(newScale < int(minScale*100))
         newScale = int(minScale*100);
+    mScaleSlider->setValue(newScale/10);
+}
 
-    mZoomFactorLine->setText(QString::number(newScale));
+void SCgWindow::setDefaultScale()
+{
+    mScaleSlider->setValue(10);
 }
 
 void SCgWindow::onViewScaleChanged(qreal newScale)
 {
-    qreal oldScale = mZoomFactorLine->text().remove('%').toDouble() / 100;
+    qreal oldScale = mZoomFactorLabel->text().remove('%').toDouble() / 10;
     if (newScale != oldScale)
-        mZoomFactorLine->setText(QString::number(int(newScale*100)));
+        mZoomFactorLabel->setText(QString::number(int(newScale*100)) + "%");
 }
 
 void SCgWindow::cut() const
@@ -679,7 +647,59 @@ void SCgWindow::createMenu()
 
 //
 //    mViewMenu = new QMenu(tr("View"), this);
-//    mViewMenu ->addAction(mActionMinMap);
+    //    mViewMenu ->addAction(mActionMinMap);
+}
+
+void SCgWindow::createBottomBar()
+{
+    mBottomBar = new QWidget;
+    mBottomBar->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    QHBoxLayout *sliderLayout = new QHBoxLayout;
+
+    mFindWidget = new SCgFindWidget(this);
+    connect(mFindWidget, SIGNAL(findNext()), this, SLOT(findNext()));
+    connect(mFindWidget, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
+    connect(mFindWidget, SIGNAL(find(QString)), this, SLOT(findTextChanged(QString)));
+
+    sliderLayout->addWidget(mFindWidget);
+    QWidget *spacerWidget = new QWidget(mBottomBar);
+    spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    spacerWidget->show();
+    sliderLayout->addWidget(spacerWidget);
+
+    //Zoom out
+    QPushButton *button = new QPushButton(findIcon("tool-zoom-out.png"), "", mBottomBar);
+    button->setToolTip(tr("Zoom out"));
+    button->setShortcut(QKeySequence::ZoomOut);
+    sliderLayout->addWidget(button);
+    connect(button, SIGNAL(clicked()), this, SLOT(onZoomOut()));
+
+    mScaleSlider = new QSlider(mBottomBar);
+    mScaleSlider->setMinimum(minScale*10);
+    mScaleSlider->setMaximum(maxScale*10);
+    mScaleSlider->setValue(10);
+    mScaleSlider->setOrientation(Qt::Horizontal);
+    mScaleSlider->setFixedWidth(180);
+    connect(mScaleSlider, SIGNAL(valueChanged(int)), mView, SLOT(setScale(int)));
+    connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
+    sliderLayout->addWidget(mScaleSlider);
+
+    mZoomFactorLabel = new QLabel("100%", mBottomBar);
+    mZoomFactorLabel->setFixedWidth(35);
+    sliderLayout->addWidget(mZoomFactorLabel);
+
+    button = new QPushButton(findIcon("tool-zoom-in.png"), "", mBottomBar);
+    button->setToolTip(tr("Zoom in"));
+    button->setShortcut(QKeySequence::ZoomIn);
+    sliderLayout->addWidget(button);
+    connect(button, SIGNAL(clicked()), this, SLOT(onZoomIn()));
+
+    QAction *action = new QAction(mBottomBar);
+    action->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_0));
+    mBottomBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(setDefaultScale()));
+
+    mBottomBar->setLayout(sliderLayout);
 }
 
 void SCgWindow::deleteMenu()

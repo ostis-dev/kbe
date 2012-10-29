@@ -34,7 +34,8 @@ class SCgView;
 class SCgUndoView;
 
 class QToolBar;
-class QLineEdit;
+class QLabel;
+class QSlider;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -49,7 +50,7 @@ public:
      *  @{
      */
     static const qreal minScale = 0.20;
-    static const qreal maxScale = 9.99;
+    static const qreal maxScale = 10.0;
     /*! @}*/
 
     /*! Constructor
@@ -130,7 +131,10 @@ private:
     Mode2ActionMap mMode2Action;
 
     //! Contents current zoom factor.
-    QLineEdit* mZoomFactorLine;
+    QLabel* mZoomFactorLabel;
+
+    //! Scale slider
+    QSlider *mScaleSlider;
 
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
@@ -149,6 +153,8 @@ private:
 
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;
+
+    QWidget *mBottomBar;
 
     /**
      * \defgroup menu Menu
@@ -175,6 +181,9 @@ private:
 
     //! creates specific menus for this window. Called after window activation.
     void createMenu();
+
+    //! Creates widget containes control at the bottom part of window
+    void createBottomBar();
 
     //! Destroys specific menus created by createMenu(). Called after window deactivation.
     void deleteMenu();
@@ -209,6 +218,8 @@ private slots:
     void onZoomIn();
     //! Slot to handle a zoom out action
     void onZoomOut();
+    //! Slot for setting default scale factor
+    void setDefaultScale();
     //! Slot to set zoom factor value.
     void onViewScaleChanged(qreal newScaleValue);
 

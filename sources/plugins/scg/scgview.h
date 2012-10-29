@@ -119,7 +119,7 @@ signals:
 public slots:
 
     //! Slot for scale changing. (The string must be smth like this: "123%")
-    void setScale(const QString& sc);
+    void setScale(int sc);
 
     //! Overloaded function. @p scaleFactor must be in range of 0.1 ... 9.99 .
     void setScale(qreal scaleFactor);
