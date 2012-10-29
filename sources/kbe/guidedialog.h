@@ -25,8 +25,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDialog>
 
-#define SETTINGS_STARTUP_DIALOG_SHOW    "/kbe/startupdialog/show"
-
 class GuideDialog : public QDialog
 {
     Q_OBJECT

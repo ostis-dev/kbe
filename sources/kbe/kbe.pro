@@ -19,7 +19,8 @@ SOURCES += \
     extendedtabwidget.cpp \
     config.cpp \
     pluginmanager.cpp \
-    guidedialog.cpp
+    guidedialog.cpp \
+    newfiledialog.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -29,7 +30,8 @@ HEADERS += version.h \
     interfaces/plugininterface.h \
     pluginmanager.h \
     interfaces/editorinterface.h \
-    guidedialog.h
+    guidedialog.h \
+    newfiledialog.h
 
 FORMS += mainwindow.ui
 

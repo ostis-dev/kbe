@@ -21,6 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "guidedialog.h"
+#include "config.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -47,7 +48,7 @@ GuideDialog::GuideDialog(QWidget *parent) :
     connect(showCheckBox, SIGNAL(stateChanged(int)), this, SLOT(showStateChanged(int)));
 
     QSettings settings;
-    showCheckBox->setChecked(settings.value(SETTINGS_STARTUP_DIALOG_SHOW).toBool());
+    showCheckBox->setChecked(settings.value(Config::settingsShowStartupDialog).toBool());
 
     hlayout->addWidget(showCheckBox);
     hlayout->addWidget(closeButton);
@@ -66,5 +67,5 @@ GuideDialog::~GuideDialog()
 void GuideDialog::showStateChanged(int state)
 {
     QSettings settings;
-    settings.setValue(SETTINGS_STARTUP_DIALOG_SHOW, QVariant(state == Qt::Checked));
+    settings.setValue(Config::settingsShowStartupDialog, QVariant(state == Qt::Checked));
 }

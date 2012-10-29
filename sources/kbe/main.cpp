@@ -79,8 +79,8 @@ int main(int argc, char *argv[])
 
     QSettings settings;
     // check if startup dialog property exist
-    if (!settings.contains(SETTINGS_STARTUP_DIALOG_SHOW))
-        settings.setValue(SETTINGS_STARTUP_DIALOG_SHOW, QVariant(true));
+    if (!settings.contains(Config::settingsShowStartupDialog))
+        settings.setValue(Config::settingsShowStartupDialog, QVariant(true));
 
     // show startup dialog
 //    if (settings.value(SETTINGS_STARTUP_DIALOG_SHOW).toBool())
