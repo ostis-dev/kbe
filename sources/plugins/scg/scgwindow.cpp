@@ -86,9 +86,6 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mActionFind(0)//,
 //    mActionMinMap(0)
 {
-
-    //setObjectName(QString((quint32)this));
-
     mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////
     //Creating main environment
@@ -119,8 +116,6 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     createActions();
 
     createToolBar();
-
-    setObjectName("SCgWindow");
 }
 
 SCgWindow::~SCgWindow()
@@ -318,8 +313,11 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onZoomOut()));
 
-
     mToolBar->setWindowTitle(tr("SCg Tools"));
+    mToolBar->setObjectName("SCgMainToolBar");
+
+    //! @bug toolbar state is not saved
+    mToolBar->setMovable(false);
 }
 
 QIcon SCgWindow::findIcon(const QString &iconName)

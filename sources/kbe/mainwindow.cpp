@@ -28,6 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
 #include "guidedialog.h"
+#include "newfiledialog.h"
 
 #include "version.h"
 
@@ -48,7 +49,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCloseEvent>
 #include <QSettings>
 #include <QDockWidget>
-
 
 MainWindow* MainWindow::mInstance = 0;
 
@@ -140,6 +140,9 @@ void MainWindow::createToolBars()
     mToolBarFile->setObjectName("Main Tools");
     mToolBarFile->setWindowTitle(tr("Main Tools"));
     addToolBar(mToolBarFile);
+
+    //! @bug State of toolbars is not saved for now.
+    mToolBarFile->setMovable(false);
 }
 
 void MainWindow::createActions()
@@ -325,50 +328,20 @@ EditorInterface* MainWindow::createSubWindow(const QString& ext)
     return childWindow;
 }
 
+QString MainWindow::getSettingKeyValueForWindow(const QString& editorType) const
+{
+    return Config::settingsDocksGeometry + "/" + editorType;
+}
+
 void MainWindow::fileNew()
 {
     if (PluginManager::instance()->supportedFilesExt().size() > 0)
     {
-        QDialog *fileNewDlg = new QDialog(this);
-        QVBoxLayout *lay = new QVBoxLayout;
-        QLabel *lab = new QLabel(tr("List of available formats:"));
-
-        QListWidget *availableTypesList = new QListWidget;
-        availableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
-        availableTypesList->setIconSize(QSize(16, 16));
-
-        foreach (QString ext, PluginManager::instance()->supportedFilesExt())
-            availableTypesList->addItem(new QListWidgetItem(QIcon(), ext + " format (."+ ext + ")"));
-
-        QHBoxLayout *buttonLay = new QHBoxLayout;
-        QPushButton *butOk = new QPushButton(tr("OK"));
-
-        if (availableTypesList->count() > 0)
-            availableTypesList->item(0)->setSelected(true);
-        else
-            butOk->setEnabled(false);
-
-        QPushButton *butCancel = new QPushButton(tr("Cancel"));
-
-        buttonLay->addWidget(butOk, 1, Qt::AlignRight);
-        buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
-
-        lay->addWidget(lab);
-        lay->addWidget(availableTypesList);
-        lay->addLayout(buttonLay);
-        fileNewDlg->setLayout(lay);
-
-        connect(butOk, SIGNAL(clicked()), fileNewDlg, SLOT(accept()));
-        connect(butCancel, SIGNAL(clicked()), fileNewDlg, SLOT(reject()));
+        NewFileDialog *fileNewDlg = new NewFileDialog(PluginManager::instance()->supportedFilesExt().toList(), this);
 
         int dlgResult = fileNewDlg->exec();
         if (dlgResult == QDialog::Accepted)
-        {
-            QString str = availableTypesList->selectedItems().at(0)->text();
-            QString format = str.mid(0, str.indexOf(" "));
-            createSubWindow(format);
-        }
-
+            createSubWindow(fileNewDlg->selectedFormat());
     }
 }
 
@@ -633,18 +606,16 @@ void MainWindow::showEvent(QShowEvent *event)
 {
 }
 
-
 void MainWindow::updateDockWidgets(bool visible)
 {
     Q_ASSERT_X(mLastActiveWindow,
                "void MainWindow::updateDockWidgets(bool hide)",
                "window must be activated first!");
 
-    QString objName = mLastActiveWindow->widget()->objectName();
-
+    QString windowClassName = mLastActiveWindow->widget()->metaObject()->className();
     if(!visible)
     {
-        mStates[objName] = saveState();
+        mStates[windowClassName] = saveState();
         QMap<QString, QDockWidget*>::const_iterator it = mDockWidgets.begin();
         while(it != mDockWidgets.end())
         {
@@ -653,25 +624,23 @@ void MainWindow::updateDockWidgets(bool visible)
         }
     }else
     {
-        if(!mStates.contains(objName))
+        if(!mStates.contains(windowClassName))
         {
             // Read window state from settings.
             QSettings settings;
-            mStates[objName] = settings.value(Config::settingsDocksGeometry + "/" + objName).toByteArray();
+            mStates[windowClassName] = settings.value(getSettingKeyValueForWindow(windowClassName)).toByteArray();
         }
 
-        QByteArray b = mStates[objName];
+        QByteArray b = mStates[windowClassName];
 
         foreach(QWidget* w, mLastActiveWindow->widgetsForDocks())
         {
-
             if(!mDockWidgets.contains(w->objectName()))
             {
                 QDockWidget* d = new QDockWidget(w->windowTitle(), this);
                 mDockWidgets[w->objectName()] = d;
                 d->setObjectName(w->objectName());
             }
-
             mDockWidgets[w->objectName()]->setWidget(w);
 
             if(b.isEmpty())
@@ -725,9 +694,15 @@ void MainWindow::windowWillBeClosed(QWidget* w)
     EditorInterface *editor = it.value();
     if (!editor->isSaved())
     {
+        QString fileName = editor->currentFileName();
+
+        if(fileName.isEmpty())
+            //: Appers after 'Do you want to save changes in '
+            fileName = tr("newly created document");
+
         if (QMessageBox::question(this, tr("Save changes"),
-                                  tr("Do you want to save changes in %1 ?").arg(editor->currentFileName()),
-                                  QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+                                  tr("Do you want to save changes in %1 ?").arg(fileName),
+                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
         {
             fileSave(it.key());
         }
@@ -736,16 +711,30 @@ void MainWindow::windowWillBeClosed(QWidget* w)
     mWidget2EditorInterface.erase(it);
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::saveLayout() const
 {
     QSettings settings;
+
+    // Save window geometry (width, height) and layout
     settings.setValue(Config::settingsMainWindowGeometry, saveGeometry());
 
+    // Save layouts for all used editor types.
+    QMap<QString, QByteArray>::const_iterator i;
+    for(i = mStates.constBegin(); i != mStates.constEnd() ; i++)
+    {
+        settings.setValue(getSettingKeyValueForWindow(i.key()), i.value());
+    }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;
     foreach (widget, widgets)
         mTabWidget->closeWindow(widget);
+
+    saveLayout();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

@@ -24,7 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 QDir Config::pathPlugins = QDir("");
 
-const QString Config::settingsRecentFileList = "RecentFileList";
-const QString Config::settingsDocksGeometry = "DockWindowsGeometry";
+const QString Config::settingsApplicationRoot = "/kbe";
 
-const QString Config::settingsMainWindowGeometry = "MainWindowGeometry";
+const QString Config::settingsRecentFileList = Config::settingsApplicationRoot + "/RecentFileList";
+const QString Config::settingsDocksGeometry = Config::settingsApplicationRoot +"/DockWindowsGeometry";
+const QString Config::settingsMainWindowGeometry = Config::settingsApplicationRoot +"/MainWindowGeometry";
+const QString Config::settingsShowStartupDialog = Config::settingsApplicationRoot +"/StartupDialog/Show";
