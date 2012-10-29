@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgmode.h"
 #include <QMap>
+#include <QCursor>
 
 class SCgPointObject;
 
@@ -61,6 +62,14 @@ private:
     SCgScene::ItemUndoInfo mUndoInfo;
     //! True if items positions have changed.
     bool mIsItemsMoved;
+    //! Showed if type cloning proccess is started
+    bool mIsTypeClonning;
+    //! Type of object that taken part in type clonning
+    int mObjectType;
+    //! Cloning type alias
+    QString mCloningType;
+    //! Cursor for type cloning
+    QCursor mCloningCursor;
     //! Currently controlled pointObject.
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item
