@@ -68,6 +68,8 @@ const QStringList SCgWindow::mScales = QStringList()<< "25" << "50"
                                                     << "125" << "150"
                                                     << "175" << "200";
 const int SCgWindow::mScaleChangeStep = 25;
+const qreal SCgWindow::minScale = 0.20;
+const qreal SCgWindow::maxScale = 9.99;
 
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),

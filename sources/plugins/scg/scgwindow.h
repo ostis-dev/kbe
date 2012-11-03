@@ -45,12 +45,7 @@ class SCgWindow : public QWidget,
 public:
     //! Supported Mime-type for paste command.
     static const QString SupportedPasteMimeType;
-    /*! @defgroup scaleConstraints Scale Constraints
-     *  @{
-     */
-    static const qreal minScale = 0.20;
-    static const qreal maxScale = 9.99;
-    /*! @}*/
+
 
     /*! Constructor
       */
@@ -102,7 +97,14 @@ protected:
 private:
     //! List of scales.
     static const QStringList mScales;
-
+public:
+    /*! @defgroup scaleConstraints Scale Constraints
+     *  @{
+     */
+    static const qreal minScale;
+    static const qreal maxScale;
+    /*! @}*/
+private:
     //! @see onZoomIn(), onZoomOut()
     static const int mScaleChangeStep;
 
