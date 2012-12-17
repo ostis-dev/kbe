@@ -44,6 +44,7 @@ public:
         WT_UPDATELIST = 0,
         WT_GETUPDATE,
         WT_GETCHECKSUM,
+        WT_COMPARECHECKSUM,
         WT_READCONTENT,
         WT_INSTALL
     } WorkType;
@@ -63,11 +64,19 @@ protected:
     //! Reads downloaded update and show information about it
     void readUpdate();
 
+    //! Compare checksums
+    bool compareChecksums();
+
+    //! Install downloaded and extracted update
+    void installUpdate();
+
 private:
     //! Pointer to progress bar that shows update progress
     QProgressBar *mProgressBar;
     //! Pointer to label that shows current update stage
     QLabel *mLabel;
+    //! Pointer to label that shows current update progress
+    QLabel *mProgressLabel;
     //! Pointer to cancel button
     QPushButton *mCancelButton;
     //! Current version

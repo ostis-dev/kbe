@@ -44,11 +44,19 @@ bool UpdateExtractor::extract(const QString &archive, const QString &directory)
         return false;
 
     // create output directory if it doesn't exist
-    QFileInfo di(directory);
-    QDir _d(".");
-    if (di.exists())
+    QDir _d;
+    if (_d.exists(directory))
         _d.rmdir(directory);
+    else _d.mkdir(directory);
 
     QProcess proc;
-    return proc.execute("7z.exe", QStringList() << "x" << QString("-o%1").arg(directory) << archive) == 0;
+
+#ifdef Q_WS_X11
+    return proc.execute("unzip", QStringList() << "-o" << archive  << QString("-d %1").arg(directory)) == 0;
+#endif
+
+#ifdef Q_WS_WIN
+    return proc.execute("7za.exe", QStringList() << "-y" << "x" << QString("-o%1").arg(directory) << archive) == 0;
+#endif
+
 }
