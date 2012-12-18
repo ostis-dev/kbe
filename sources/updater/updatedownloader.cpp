@@ -58,9 +58,6 @@ void UpdateDownloader::doDownload(const QString &url, const QString &filePath)
     mFile = new QFile(filePath);
     if(!mFile->open(QIODevice::WriteOnly))
     {
-//        QMessageBox::information(this, "Downloader",
-//            tr("Unable to save the file %1: %2.")
-//            .arg(filename).arg(file->errorString()));
         delete mFile;
         mFile = 0;
         return;
@@ -68,7 +65,6 @@ void UpdateDownloader::doDownload(const QString &url, const QString &filePath)
 
     connect(mNetworkReply, SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
     connect(mNetworkReply, SIGNAL(finished()), this, SLOT(downloadFinished()));
-    //connect(mNetworkReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(downloadFailed()));
 
     emit started();
 }

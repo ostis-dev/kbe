@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "updatewindow.h"
 #include "updatedownloader.h"
 #include "updateextractor.h"
+#include "updateinstaller.h"
 
 #include <QProgressBar>
 #include <QPushButton>
@@ -33,6 +34,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QFile>
 #include <QLabel>
+#include <QCryptographicHash>
+#include <QTextStream>
 
 #define UPDATE_LIST "http://www.ostis.net/download/updates/updates.xml"
 #define UPDATE_FILE_PATH "_update.update"
@@ -42,15 +45,18 @@ UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
     QWidget(parent),
     mProgressBar(0),
     mLabel(0),
+    mProgressLabel(0),
     mCancelButton(0),
     mCurrentVersion(version),
     mCurrentWork(WT_UPDATELIST),
     mUpdateDownloader(0)
 {
     QVBoxLayout *vlayout = new QVBoxLayout(this);
-    QHBoxLayout *hlayout = new QHBoxLayout(this);
+    QHBoxLayout *hlayout = new QHBoxLayout();
 
     mLabel = new QLabel(tr("Stage"), this);
+
+    mProgressLabel = new QLabel(this);
 
     mProgressBar = new QProgressBar(this);
 
@@ -64,6 +70,7 @@ UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
 
     vlayout->addWidget(mLabel);
     vlayout->addLayout(hlayout);
+    vlayout->addWidget(mProgressLabel);
 
     setLayout(vlayout);
 
@@ -155,29 +162,74 @@ void UpdateWindow::downloadCheckSum()
     mUpdateDownloader->doDownload(mUpdatePath + ".checksum", UPDATE_CHECKSUM_PATH);
 }
 
+bool UpdateWindow::compareChecksums()
+{
+    QFile updateFile(UPDATE_FILE_PATH);
+    if (!updateFile.open(QIODevice::ReadOnly))
+        return false;
+    QByteArray fileData = updateFile.readAll();
+    QByteArray hashData = QCryptographicHash::hash(fileData,QCryptographicHash::Md5);
+    QString updateFileHash = QString(hashData.toHex());
+    QFile checksumFile(UPDATE_CHECKSUM_PATH);
+    if (!checksumFile.open(QIODevice::ReadOnly))
+        return false;
+    QTextStream textStream(&checksumFile);
+    QStringList list;
+    while (true) {
+        QString line = textStream.readLine();
+        if (line.isNull())
+            break;
+        else
+            list.append(line);
+    }
+    QString originalHash = list.at(1);
+    originalHash = originalHash.replace("md5: ","");
+    if (originalHash != updateFileHash)
+        return false;
+    return true;
+}
+
 void UpdateWindow::readUpdate()
 {
-    mCurrentWork = WT_READCONTENT;
+    mCurrentWork = WT_COMPARECHECKSUM;
 
-    mLabel->setText(tr("Reading update..."));
     workStarted();
 
-    // TODO: compare checksum
+    if(!compareChecksums())
+        workFailed();
+
+    mCurrentWork = WT_READCONTENT;
+    mLabel->setText(tr("Reading update..."));
+    mProgressLabel->setText(QString());
 
     // unpack
     UpdateExtractor extractor;
     if (!extractor.extract(UPDATE_FILE_PATH, "_update_files"))
         workFailed();
 
-
-
     workFinished();
+}
+
+void UpdateWindow::installUpdate()
+{
+    mCurrentWork = WT_INSTALL;
+
+    workStarted();
+
+    mLabel->setText(tr("Install update"));
+
+    // install
+    UpdateInstaller installer("_update_files");
+    if(!installer.installUpdate())
+        workFailed();
+    else workFinished();
 }
 
 void UpdateWindow::workProgress(qint64 finished, qint64 total)
 {
     mProgressBar->setRange(0, total);
     mProgressBar->setValue(finished);
+    mProgressLabel->setText(QString::number(finished/1024)+" kb / "+QString::number(total/1024) + " kb");
 }
 
 void UpdateWindow::workFinished()
@@ -198,6 +250,14 @@ void UpdateWindow::workFinished()
         readUpdate();
         break;
 
+    case WT_READCONTENT:
+        installUpdate();
+        break;
+
+    case WT_INSTALL:
+        QMessageBox::information(this, tr("Success!"), tr("Update completed."));
+        close();
+        break;
     default:
         break;
     }
@@ -211,10 +271,22 @@ void UpdateWindow::workStarted()
 
 void UpdateWindow::workFailed()
 {
-    if (mCurrentWork == WT_UPDATELIST)
-    {
-        QMessageBox::information(this, "Error", tr("Unable to download updates list"));
+    switch(mCurrentWork) {
+    case WT_UPDATELIST:
+        QMessageBox::information(this, tr("Error"), tr("Unable to download updates list"));
+        break;
+    case WT_COMPARECHECKSUM:
+        QMessageBox::information(this, tr("Error"), tr("Checksums don't match"));
+        break;
+    case WT_READCONTENT:
+        QMessageBox::information(this, tr("Error"), tr("Archive isn't extracted"));
+        break;
+    case WT_INSTALL:
+        QMessageBox::information(this, tr("Error"), tr("Update isn't installed"));
+        break;
     }
+    mProgressLabel->clear();
+    close();
 }
 
 void UpdateWindow::workCanceled()
@@ -225,11 +297,9 @@ void UpdateWindow::workCanceled()
     case WT_GETUPDATE:
         mUpdateDownloader->downloadCanceled();
         break;
-
     default:
         break;
     }
-
     close();
 }
 
