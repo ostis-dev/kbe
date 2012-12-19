@@ -18,11 +18,13 @@ HEADERS += \
     scnwindow.h \
     scneditorscene.h \
     scnfielditem.h \
-    scnfieldglobalidtf.h
+    scnfieldglobalidtf.h \
+    scninputdialog.h
 
 SOURCES += \
     scnplugin.cpp \
     scnwindow.cpp \
     scneditorscene.cpp \
     scnfielditem.cpp \
-    scnfieldglobalidtf.cpp
+    scnfieldglobalidtf.cpp \
+    scninputdialog.cpp
