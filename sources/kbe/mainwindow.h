@@ -184,7 +184,7 @@ public slots:
     //! Current tab has changed
     void subWindowHasChanged(int index);
     //! tab will definitely be closed
-    void windowWillBeClosed(QWidget* w);
+    bool windowWillBeClosed(QWidget* w);
 
     /*! Updates state of dockWidgets for current active window (@see mLastActiveWindow).
      * This slot keep in touch with all widgets, returned by mLastActiveWindow->widgetsForDocks() (@see BaseWindow::widgetsForDocks()).
