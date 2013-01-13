@@ -25,6 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QMainWindow>
 #include <QMap>
+#include <QDir>
 #include "extendedtabwidget.h"
 #include "interfaces/editorinterface.h"
 
@@ -160,6 +161,8 @@ private:
     typedef QMap<QWidget*, EditorInterface*> Widget2EditorInterfaceMap;
     //! Maps from widget to editor interface
     Widget2EditorInterfaceMap mWidget2EditorInterface;
+
+    QDir mLastDir;
 
 public slots:
     void updateMenu();

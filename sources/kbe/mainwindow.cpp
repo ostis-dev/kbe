@@ -70,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mLastDir = QDir(QCoreApplication::applicationDirPath());
+
     /* creating tab widget */
     mTabWidget = new ExtendedTabWidget();
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
@@ -353,6 +355,7 @@ void MainWindow::fileOpen()
     QFileDialog dlg;
 
     mBlurEffect->setEnabled(true);
+    dlg.setDirectory(mLastDir);
     QString fileName = dlg.getOpenFileName(this,
                                            tr("Open file"),
                                            "",
@@ -361,6 +364,7 @@ void MainWindow::fileOpen()
                                            options);
     if (!fileName.isEmpty())
         load(fileName);
+    mLastDir = QDir(fileName);
     mBlurEffect->setEnabled(false);
 }
 
@@ -457,7 +461,7 @@ void MainWindow::fileSaveAs(QWidget* window)
 
 
     QString selectedFilter;
-    QString fileName = QCoreApplication::applicationDirPath() + "/" + childWindow->currentFileName();
+    QString fileName = mLastDir.path() + "/" + childWindow->currentFileName();
     mBlurEffect->setEnabled(true);
     fileName = QFileDialog::getSaveFileName(this,
                                             tr("Save file to .."),
@@ -465,6 +469,7 @@ void MainWindow::fileSaveAs(QWidget* window)
                                             formatsStr,
                                             &selectedFilter,
                                             options);
+    mLastDir = QDir(fileName);
     if(!fileName.isEmpty())
     {
         //! TODO: use regular expression
