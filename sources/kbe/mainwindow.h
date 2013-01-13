@@ -25,6 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QMainWindow>
 #include <QMap>
+#include <QDir>
 #include "extendedtabwidget.h"
 #include "interfaces/editorinterface.h"
 
@@ -161,6 +162,8 @@ private:
     //! Maps from widget to editor interface
     Widget2EditorInterfaceMap mWidget2EditorInterface;
 
+    QDir mLastDir;
+
 public slots:
     void updateMenu();
     void updateSpecificViewMenu();
@@ -184,7 +187,7 @@ public slots:
     //! Current tab has changed
     void subWindowHasChanged(int index);
     //! tab will definitely be closed
-    void windowWillBeClosed(QWidget* w);
+    bool windowWillBeClosed(QWidget* w);
 
     /*! Updates state of dockWidgets for current active window (@see mLastActiveWindow).
      * This slot keep in touch with all widgets, returned by mLastActiveWindow->widgetsForDocks() (@see BaseWindow::widgetsForDocks()).

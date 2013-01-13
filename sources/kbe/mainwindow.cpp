@@ -70,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mLastDir = QDir(QCoreApplication::applicationDirPath());
+
     /* creating tab widget */
     mTabWidget = new ExtendedTabWidget();
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
@@ -353,6 +355,7 @@ void MainWindow::fileOpen()
     QFileDialog dlg;
 
     mBlurEffect->setEnabled(true);
+    dlg.setDirectory(mLastDir);
     QString fileName = dlg.getOpenFileName(this,
                                            tr("Open file"),
                                            "",
@@ -361,6 +364,7 @@ void MainWindow::fileOpen()
                                            options);
     if (!fileName.isEmpty())
         load(fileName);
+    mLastDir = QDir(fileName);
     mBlurEffect->setEnabled(false);
 }
 
@@ -457,7 +461,7 @@ void MainWindow::fileSaveAs(QWidget* window)
 
 
     QString selectedFilter;
-    QString fileName = QCoreApplication::applicationDirPath() + "/" + childWindow->currentFileName();
+    QString fileName = mLastDir.path() + "/" + childWindow->currentFileName();
     mBlurEffect->setEnabled(true);
     fileName = QFileDialog::getSaveFileName(this,
                                             tr("Save file to .."),
@@ -465,6 +469,7 @@ void MainWindow::fileSaveAs(QWidget* window)
                                             formatsStr,
                                             &selectedFilter,
                                             options);
+    mLastDir = QDir(fileName);
     if(!fileName.isEmpty())
     {
         //! TODO: use regular expression
@@ -679,7 +684,7 @@ void MainWindow::subWindowHasChanged(int index)
     updateWindowTitle();
 }
 
-void MainWindow::windowWillBeClosed(QWidget* w)
+bool MainWindow::windowWillBeClosed(QWidget* w)
 {
     QMap<QWidget*, EditorInterface*>::iterator it = mWidget2EditorInterface.find(w);
 
@@ -700,15 +705,21 @@ void MainWindow::windowWillBeClosed(QWidget* w)
             //: Appers after 'Do you want to save changes in '
             fileName = tr("newly created document");
 
-        if (QMessageBox::question(this, tr("Save changes"),
-                                  tr("Do you want to save changes in %1 ?").arg(fileName),
-                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
+        int question = QMessageBox::question(this, tr("Save changes"),
+                                             tr("Do you want to save changes in %1 ?").arg(fileName),
+                                             QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
+
+        if (question == QMessageBox::Yes)
         {
             fileSave(it.key());
+        }
+        if(question == QMessageBox::Cancel){
+            return false;
         }
     }
 
     mWidget2EditorInterface.erase(it);
+    return true;
 }
 
 void MainWindow::saveLayout() const
@@ -731,8 +742,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;
-    foreach (widget, widgets)
-        mTabWidget->closeWindow(widget);
+    foreach (widget, widgets){
+        if(!mTabWidget->closeWindow(widget)){
+            event->ignore();
+            return;
+        }
+    }
 
     saveLayout();
 }
