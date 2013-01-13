@@ -679,7 +679,7 @@ void MainWindow::subWindowHasChanged(int index)
     updateWindowTitle();
 }
 
-void MainWindow::windowWillBeClosed(QWidget* w)
+bool MainWindow::windowWillBeClosed(QWidget* w)
 {
     QMap<QWidget*, EditorInterface*>::iterator it = mWidget2EditorInterface.find(w);
 
@@ -700,15 +700,21 @@ void MainWindow::windowWillBeClosed(QWidget* w)
             //: Appers after 'Do you want to save changes in '
             fileName = tr("newly created document");
 
-        if (QMessageBox::question(this, tr("Save changes"),
-                                  tr("Do you want to save changes in %1 ?").arg(fileName),
-                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
+        int question = QMessageBox::question(this, tr("Save changes"),
+                                             tr("Do you want to save changes in %1 ?").arg(fileName),
+                                             QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
+
+        if (question == QMessageBox::Yes)
         {
             fileSave(it.key());
+        }
+        if(question == QMessageBox::Cancel){
+            return false;
         }
     }
 
     mWidget2EditorInterface.erase(it);
+    return true;
 }
 
 void MainWindow::saveLayout() const
@@ -731,8 +737,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;
-    foreach (widget, widgets)
-        mTabWidget->closeWindow(widget);
+    foreach (widget, widgets){
+        if(!mTabWidget->closeWindow(widget)){
+            event->ignore();
+            return;
+        }
+    }
 
     saveLayout();
 }

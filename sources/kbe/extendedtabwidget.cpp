@@ -95,9 +95,9 @@ bool ExtendedTabWidget::closeWindow(QWidget* wnd)
                "bool ExtendedTabWidget::close(int index)",
                "Can't get window");
 
-    if(wnd->close())
+    if(emit tabBeforeClose(wnd))
     {
-        emit tabBeforeClose(wnd);
+        wnd->close();
         removeTab(indexOf(wnd));
         delete wnd;
         tabsUpdate();
