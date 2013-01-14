@@ -55,8 +55,9 @@ protected:
 signals:
     /*! This signal will send when any of tabs before closing(the tab will definitely closed).
      * @param w Widget in closed tab.
+     * @return True, if tab will be closed.
      */
-    void tabBeforeClose(QWidget* w);
+    bool tabBeforeClose(QWidget* w);
 
     /*! Tabs updated signal. Calls when new tab added, or any tab removed.
       */
