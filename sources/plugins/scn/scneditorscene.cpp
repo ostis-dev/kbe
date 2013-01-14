@@ -37,25 +37,27 @@ SCnEditorScene::SCnEditorScene(QObject *parent) :
     pitem->setValue("test");
     appendField(pitem);
 
-    for (quint32 i = 0; i < 10; i++)
+    for (quint32 i = 0; i < 5; i++)
     {
         SCnFieldItem *item = new SCnFieldGlobalIdtf(pitem);
         item->setValue(QString("test %1").arg(i));
         item->setParentItem(pitem);
 
-        for (quint32 j = 0; j < 10; j++)
+        for (quint32 j = 0; j < 5; j++)
         {
-            SCnFieldItem *jitem = new SCnFieldGlobalIdtf(pitem);
+            SCnFieldItem *jitem = new SCnFieldGlobalIdtf(item);
             jitem->setValue(QString("test %1_%2").arg(i).arg(j));
             jitem->setParentItem(item);
         }
     }
+
+    inputDialog = new SCnInputDialog();
+    connect(inputDialog, SIGNAL(textRecieved(QString)), this, SLOT(setTextForSelectedField(QString)));
 }
 
 SCnEditorScene::~SCnEditorScene()
 {
-    SCnFieldItem *item = 0;
-    foreach(item, mFields)
+    foreach(SCnFieldItem *item, mFields)
         delete item;
     mFields.clear();
 }
@@ -94,21 +96,21 @@ SCnFieldItem* SCnEditorScene::appendField(SCnFieldItem *field, SCnFieldItem *aft
 
 void SCnEditorScene::removeField(SCnFieldItem *field)
 {
-    Q_ASSERT(mFields.contains(field));
-
-    removeItem(field);
-    for (qint32 i = 0; i < mFields.size(); i++)
+    if (!mFields.contains(field))
     {
-        if (mFields[i] == field)
+        SCnFieldItem* parent = parentField(field);
+        removeItem(field);
+
+        delete field;
+
+        while (parent)
         {
-            mFields.remove(i);
-            break;
+            parent->updateOnChilds();
+            parent = parentField(parent);
         }
+
+        updateFieldsPositions();
     }
-
-    delete field;
-
-    updateFieldsPositions();
 }
 
 void SCnEditorScene::removeAllFields()
@@ -119,62 +121,87 @@ void SCnEditorScene::removeAllFields()
     mFields.clear();
 }
 
-SCnFieldItem* SCnEditorScene::nextField(SCnFieldItem *field)
-{
-    FieldItems::iterator it, it1;
-    for (it = mFields.begin(); it != mFields.end(); ++it)
+SCnFieldItem* SCnEditorScene::nextField(SCnFieldItem *field, bool withLevelChange)
+{    
+    SCnFieldItem *nextField = 0;
+    bool prevFieldComingFlag = false;
+    QGraphicsItem *parentItem = field->parentItem();
+    if (!parentItem)
+        return 0;
+    QList<QGraphicsItem *> items = withLevelChange
+            ? this->items()
+            : parentItem->childItems();
+    foreach(QGraphicsItem *item, items)
     {
-        if (*it == field)
+        if (nextField->isSCnFieldType(item->type()))
         {
-            it1 = it + 1;
-            if (it1 != mFields.end())
-                return *it1;
-            break;
+            nextField = static_cast<SCnFieldItem*>(item);
+            if (prevFieldComingFlag)
+                return nextField;
+            if (nextField == field)
+                prevFieldComingFlag = true;
         }
     }
-
     return 0;
 }
 
-SCnFieldItem* SCnEditorScene::prevField(SCnFieldItem *field)
+SCnFieldItem* SCnEditorScene::prevField(SCnFieldItem *field, bool withLevelChange)
 {
-    FieldItems::iterator it, it1;
-    for (it = mFields.begin(); it != mFields.end(); ++it)
+    SCnFieldItem *prevField;
+    SCnFieldItem *nextField = 0;
+    QGraphicsItem *parentItem = field->parentItem();
+    if (!parentItem)
+        return 0;
+    QList<QGraphicsItem *> items = withLevelChange
+            ? this->items()
+            : parentItem->childItems();
+    foreach (QGraphicsItem *item, items)
     {
-        if (it == mFields.begin())
+        if (nextField->isSCnFieldType(item->type()))
         {
-            it1 = it;
-            continue;
+            prevField = nextField;
+            nextField = static_cast<SCnFieldItem*>(item);
+            if (nextField == field)
+                return prevField;
         }
-
-        if (*it == field)
-            return *it1;
-
-        it1 = it;
     }
-
     return 0;
 }
 
-void SCnEditorScene::selectNextField(SCnFieldItem *field)
+SCnFieldItem* SCnEditorScene::parentField(SCnFieldItem *field)
 {
-    SCnFieldItem *next = nextField(field);
-    if (next != 0)
+    SCnFieldItem *parentField = 0;
+    QGraphicsItem *parentItem = field->parentItem();
+    if (parentItem && field->isSCnFieldType(parentItem->type()))
     {
-        unselectItems();
-        next->setSelected(true);
-        views().first()->centerOn(next);
+        parentField = static_cast<SCnFieldItem *>(parentItem);
     }
+    return parentField;
 }
 
-void SCnEditorScene::selectPrevField(SCnFieldItem *field)
+SCnFieldItem* SCnEditorScene::childField(SCnFieldItem *field)
 {
-    SCnFieldItem *prev = prevField(field);
-    if (prev != 0)
+    SCnFieldItem *childField = 0;
+    QGraphicsItem *firstChildItem = 0;
+    QList<QGraphicsItem *> childItems = field->childItems();
+    if (!childItems.isEmpty())
+    {
+        firstChildItem = childItems.first();
+        if (field->isSCnFieldType(firstChildItem->type()))
+        {
+            childField = static_cast<SCnFieldItem *>(firstChildItem);
+        }
+    }
+    return childField;
+}
+
+void SCnEditorScene::selectField(SCnFieldItem *field)
+{
+    if (field)
     {
         unselectItems();
-        prev->setSelected(true);
-        views().first()->centerOn(prev);
+        field->setSelected(true);
+        views().first()->centerOn(field);
     }
 }
 
@@ -215,7 +242,6 @@ void SCnEditorScene::itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType c
 {
     switch (changeType)
     {
-
     case SCnFieldItem::StateChanged:
     case SCnFieldItem::BoundChanged:
         updateFieldsPositions();
@@ -225,30 +251,132 @@ void SCnEditorScene::itemChanged(SCnFieldItem *field, SCnFieldItem::ChangeType c
 void SCnEditorScene::keyPressEvent(QKeyEvent *event)
 {
     QList<QGraphicsItem*> selected = selectedItems();
-
     if (selected.size() == 1)
     {
-        SCnFieldItem *field = qgraphicsitem_cast<SCnFieldItem*>(selected.first());
-
-        if (field != 0 && field->state() != SCnFieldItem::StateEdit)
+        SCnFieldItem *field = static_cast<SCnFieldItem*>(selected.first());
+        if (field)
         {
             SCnFieldItem::FieldState state = field->state();
-
             if (state == SCnFieldItem::StateSelected)
             {
                 if (event->key() == Qt::Key_Down)
-                    selectNextField(field);
-                if (event->key() == Qt::Key_Up)
-                    selectPrevField(field);
-
+                {
+                    if (event->modifiers() & Qt::ShiftModifier)
+                    {
+                        moveFieldDown(field);
+                    }
+                    else
+                    {
+                        selectField(nextField(field, false));
+                    }
+                }
+                else if (event->key() == Qt::Key_Up)
+                {
+                    if (event->modifiers() & Qt::ShiftModifier)
+                    {
+                        moveFieldUp(field);
+                    }
+                    else
+                    {
+                        selectField(prevField(field, false));
+                    }
+                }
+                else if (event->key() == Qt::Key_Left)
+                {
+                    selectField(parentField(field));
+                }
+                else if (event->key() == Qt::Key_Right)
+                {
+                    selectField(childField(field));
+                }
+                else if (event->key() == Qt::Key_Enter)
+                {
+                    //field->startEdit();
+                    inputDialog->show();
+                    inputDialog->setExistingText(field->value());
+                }
+                else if (event->key() == Qt::Key_Insert)
+                {
+                    insertField(field);
+                }
+                else if (event->key() == Qt::Key_Delete)
+                {
+                    removeField(field);
+                }
             }
-
-            // change level
-
+            else if (state == SCnFieldItem::StateEdit)
+            {
+                if (event->key() == Qt::Key_Enter)
+                {
+                    field->applyEdit();
+                }
+                else if (event->key() == Qt::Key_Escape)
+                {
+                    field->cancelEdit();
+                }
+            }
         }
     }
 
     QGraphicsScene::keyPressEvent(event);
-
 }
 
+void SCnEditorScene::moveFieldUp(SCnFieldItem *field)
+{
+    SCnFieldItem *previous = prevField(field, false);
+    if (previous)
+    {
+        swapFields(field, previous);
+        //field->stackBefore(previous);
+    }
+}
+
+void SCnEditorScene::moveFieldDown(SCnFieldItem *field)
+{
+    SCnFieldItem *next = nextField(field, false);
+    if (next)
+    {
+        swapFields(field, next);
+        //next->stackBefore(field);
+    }
+}
+
+void SCnEditorScene::swapFields(SCnFieldItem *field_1, SCnFieldItem *field_2)
+{
+    QGraphicsItem *parent = field_1->parentItem();
+    if (parent == field_2->parentItem())
+    {
+        QList<QGraphicsItem *> *children = &parent->childItems();
+        int index_1 = children->indexOf(field_1);
+        int index_2 = children->indexOf(field_2);
+        if (index_1 >= 0 && index_2 >= 0)
+        {
+            children->swap(index_1, index_2);
+            static_cast<SCnFieldItem*>(parent)->updateOnChilds();
+            updateFieldsPositions();
+        }
+    }
+}
+
+void SCnEditorScene::insertField(SCnFieldItem *field)
+{
+    SCnFieldItem *item = new SCnFieldGlobalIdtf(field);
+    item->setValue("new field");
+    item->setParentItem(field);
+    while (field)
+    {
+        field->updateOnChilds();
+        field = parentField(field);
+    }
+    updateFieldsPositions();
+}
+
+void SCnEditorScene::setTextForSelectedField(const QString &text)
+{
+    QList<QGraphicsItem*> selected = selectedItems();
+    if (selected.size() == 1)
+    {
+        SCnFieldItem *field = static_cast<SCnFieldItem*>(selected.first());
+        field->setValue(text);
+    }
+}

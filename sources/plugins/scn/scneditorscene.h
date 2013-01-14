@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCNEDITOR_H
 
 #include "scnfielditem.h"
+#include "scninputdialog.h"
 
 #include <QGraphicsScene>
 #include <QList>
@@ -50,22 +51,45 @@ public:
 
     /*! Get pointer to field, that located after specified \p field
       * @param field Pointer to scn-field for get next
+      * @param withLevelChange true, if level changing allowed
       * @return Return pointer to scn-field, that located after \p field.
       * If \p field is a first field, then return 0
       */
-    SCnFieldItem* nextField(SCnFieldItem *field);
+    SCnFieldItem* nextField(SCnFieldItem *field, bool withLevelChange);
 
     /*! Get pointer to field, that located before specified \p field
       * @param field Pointer to scn-field for get previous
+      * @param withLevelChange true, if level changing allowed
       * @return Return pointer to scn-field, that located before \p field
       * If \p field is a last field, then return 0
       */
-    SCnFieldItem* prevField(SCnFieldItem *field);
+    SCnFieldItem* prevField(SCnFieldItem *field, bool withLevelChange);
 
-    //! Select next field after specified \p field
-    void selectNextField(SCnFieldItem *field);
-    //! Select previous field before specified \p field
-    void selectPrevField(SCnFieldItem *field);
+    /*!
+      * @param field Pointer to scn-field for get parent
+      * @return Return pointer to parent scn-field
+      * If \p field is the root field, then return 0
+      */
+    SCnFieldItem* parentField(SCnFieldItem *field);
+
+    /*!
+      * @param field Pointer to scn-field for get child
+      * @return Return pointer to the first child scn-field
+      * If \p field is a leaf field, then return 0
+      */
+    SCnFieldItem* childField(SCnFieldItem *field);
+
+
+    //! Select specified \p field
+    void selectField(SCnFieldItem *field);
+    //! Move up specified \p field
+    void moveFieldUp(SCnFieldItem *field);
+    //! Move down specified \p field
+    void moveFieldDown(SCnFieldItem *field);
+    //! Swap specified \p field_1 with specified \p field_2
+    void swapFields(SCnFieldItem *field_1, SCnFieldItem *field_2);
+    //! Add new field as child of \p field
+    void insertField(SCnFieldItem *field);
 
 private:
     //! Unselect all selected items
@@ -76,6 +100,7 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    //void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
     //! Remove all fields from scene
     void removeAllFields();
@@ -92,9 +117,13 @@ protected:
     //! Vertical distance between fields
     quint32 mLevelDistance;
 
+    //! Dialog for input SCn-text
+    SCnInputDialog *inputDialog;
+
 signals:
 
 public slots:
+    void setTextForSelectedField(const QString &text);
 };
 
 #endif // SCNEDITOR_H

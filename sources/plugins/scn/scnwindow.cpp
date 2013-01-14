@@ -34,6 +34,7 @@ SCnWindow::SCnWindow(QWidget *parent) :
 {
     mEditorView = new QGraphicsView(this);
     mEditorScene = new SCnEditorScene();
+    //mEditorScene->setSceneRect(QRectF(0, 0, 1024, 768));
 
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
