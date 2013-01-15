@@ -290,8 +290,9 @@ bool GwfObjectInfoReader::parseNode(const QDomElement &element)
     if (!getAttributeString(contEl, "mime_type", nodeInfo->contentMimeTypeRef()))
         return false;
 
-    if (!getAttributeBool(contEl, "content_visibility", nodeInfo->contentVisibleRef()))
-        return false;
+    if(contEl.hasAttribute("content_visibility"))
+        if (!getAttributeBool(contEl, "content_visibility", nodeInfo->contentVisibleRef()))
+            return false;
 
     // set content to nodeInfo
     if (cType > 0 && cType < 5)
