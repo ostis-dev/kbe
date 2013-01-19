@@ -19,7 +19,8 @@ HEADERS += \
     m4scpcodecompleter.h \
     m4scpplugin.h \
     m4scpcodeanalyzer.h \
-    m4scpblockdata.h
+    m4scpblockdata.h \
+    m4scpfinddialog.h
 
 SOURCES += \
     m4scpwindow.cpp \
@@ -28,7 +29,8 @@ SOURCES += \
     m4scpcodeeditor.cpp \
     m4scpcodecompleter.cpp \
     m4scpplugin.cpp \
-    m4scpcodeanalyzer.cpp
+    m4scpcodeanalyzer.cpp \
+    m4scpfinddialog.cpp
 
 RESOURCES += \
     m4scp.qrc
