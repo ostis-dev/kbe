@@ -34,6 +34,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QShortcut>
 
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
@@ -50,9 +51,13 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     mEditor->setTabStopWidth(20);
 
     mHighlighter = new M4SCpSyntaxHighlighter(mEditor->document());
+    mFindDialog = new M4SCpFindDialog(mEditor);
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(mEditor);
     setLayout(layout);
+
+    mFindReplaceShortcut = new QShortcut(Qt::CTRL+Qt::Key_F, this);
+    connect(mFindReplaceShortcut, SIGNAL(activated()), this, SLOT(shortcutPressed()));
 
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
@@ -61,6 +66,7 @@ M4SCpWindow::~M4SCpWindow()
 {
     delete mHighlighter;
     delete mEditor;
+    delete mFindDialog;
 }
 
 QWidget* M4SCpWindow::widget()
@@ -193,4 +199,10 @@ QStringList M4SCpWindowFactory::supportedFormatsExt()
     list << "m4scp";
 
     return list;
+}
+
+void M4SCpWindow::shortcutPressed()
+{
+    mFindDialog->clearLinesEdits();
+    mFindDialog->show();
 }
