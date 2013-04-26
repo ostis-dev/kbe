@@ -20,30 +20,31 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCSSYNTAXHIGHLIGHTER_H
-#define SCSSYNTAXHIGHLIGHTER_H
+#include "scsstdhighlightingrule.h"
 
-#include "scsabstracthighlightingrule.h"
-
-#include <QVector>
-#include <QSyntaxHighlighter>
-
-
-class SCsAbstractHighlightingRule;
-
-class SCsSyntaxHighlighter : public QSyntaxHighlighter
+SCsStdHighlightingRule::SCsStdHighlightingRule()
 {
-public:
-    SCsSyntaxHighlighter(QTextDocument *parent, QList<SCsAbstractHighlightingRule*> highlightingRules);
-    void highlightBlock(const QString &text);
-    void setFormating(int, int, QTextCharFormat);
-    void setCurBlockState(int state);
-    int prevBlockState();
-	int curBlockState();
+}
 
-private:
-    QList<SCsAbstractHighlightingRule*> mHighlightingRules;
+SCsStdHighlightingRule::SCsStdHighlightingRule(QRegExp pattern, QTextCharFormat format)
+    : SCsAbstractHighlightingRule(format)
+{
+    mPattern = pattern;
+}
 
-};
+QRegExp SCsStdHighlightingRule::getPattern()
+{
+    return mPattern;
+}
 
-#endif // SCSSYNTAXHIGHLIGHTER_H
+void SCsStdHighlightingRule::assignFormat(SCsSyntaxHighlighter *highliter, const QString& text)
+{
+    QRegExp expression(mPattern);
+    int index = expression.indexIn(text);
+    while (index >= 0)
+    {
+        int length = expression.matchedLength();
+        highliter->setFormating(index,length, format());
+        index = expression.indexIn(text, index + length);
+    }
+}

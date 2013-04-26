@@ -25,38 +25,55 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPlainTextEdit>
 #include <QModelIndex>
+#include <QGridLayout>
+#include <QLabel>
 
 class SCsCodeAnalyzer;
+class SCsCodeAnalyzer;
 class SCsCodeCompleter;
+class SCsFindWidget;
+class SCsErrorTableWidget;
+class SCsCodeErrorAnalyzer;
 
 class SCsCodeEditor : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    SCsCodeEditor(QWidget* parent = 0);
+    SCsCodeEditor(QWidget* parent = 0, SCsErrorTableWidget *errorTable = 0);
     void lineNumberAreaPaintEvent(QPaintEvent* event);
     int lineNumberAreaWidth();
 
     void setDocumentPath(const QString &path);
-
+   
 protected:
     void resizeEvent(QResizeEvent *event);
     void keyPressEvent(QKeyEvent *e);
+    inline bool isLineWithError(int line);
 
     QString textUnderCursor();
 
+    void updateErrorAnalyzer();
+
 private slots:
+	void setErrorsLines(QSet<int> lines);
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &, int);
     void insertCompletion(QModelIndex index);
     void updateAnalyzer();
+	void moveTextCursor(int line, int charPos);
 
 private:
     QWidget *mLineNumberArea;
-    SCsCodeAnalyzer *mAnalyzer;
+	SCsCodeAnalyzer *mAnalyzer;
     SCsCodeCompleter *mCompleter;
+    SCsErrorTableWidget *mErrorTable;
+	SCsCodeErrorAnalyzer *mErrorAnalyzer;
 
+    QSet<int> mErrorLines;
+    QPixmap mErrorPixmap;
+	int mLastCursorPosition;
+	bool mIsTextInsert;
 };
 
 class SCsLineNumberArea : public QWidget
@@ -84,5 +101,4 @@ private:
     int mEndSelectionBlockNumber;
 
 };
-
 #endif // SCSCODEEDITOR_H

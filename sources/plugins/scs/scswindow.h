@@ -26,13 +26,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces/editorinterface.h"
 #include "scscodeeditor.h"
 #include "scssyntaxhighlighter.h"
-
 #include <QWidget>
+
+class SCsFindWidget;
+class SCsErrorTableWidget;
 
 class EditorInterface;
 
 class SCsWindow : public QWidget,
-                  public EditorInterface
+        public EditorInterface
 
 {
     Q_OBJECT
@@ -78,15 +80,27 @@ public:
 private:
     SCsCodeEditor *mEditor;
     SCsSyntaxHighlighter *mHighlighter;
+    SCsFindWidget *mFindWidget;
+    SCsErrorTableWidget *mErrorTable;
     bool mIsSaved;
 
 private slots:
     //! Content text changed slot
     void textChanged();
+    void findNext();
+
+    //! Handle find previous button pressed event
+    void findPrevious();
+
+    //! Text in find edit line changed.
+    void findTextChanged(const QString &ttf);
+
+    void showTextSearch();
+    void onEscapePressed();
 };
 
 class SCsWindowFactory : public QObject,
-                         public EditorFactoryInterface
+        public EditorFactoryInterface
 {
     Q_OBJECT
     Q_INTERFACES(EditorFactoryInterface)
