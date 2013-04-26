@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/scs">
+        <file>media/icons/error.png</file>
+        <file>media/icons/find-close.png</file>
+        <file>media/icons/find-next.png</file>
+        <file>media/icons/find-previous.png</file>
+    </qresource>
+</RCC>
