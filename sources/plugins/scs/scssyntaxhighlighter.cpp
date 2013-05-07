@@ -50,3 +50,9 @@ int SCsSyntaxHighlighter::prevBlockState()
 {
     return previousBlockState();
 }
+
+
+int SCsSyntaxHighlighter::curBlockState()
+{
+	return currentBlockState();
+}

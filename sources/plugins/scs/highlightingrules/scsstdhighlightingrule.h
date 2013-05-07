@@ -20,30 +20,21 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef SCSSYNTAXHIGHLIGHTER_H
-#define SCSSYNTAXHIGHLIGHTER_H
+#ifndef SCSSTDHIGHLIGHTINGRULE_H
+#define SCSSTDHIGHLIGHTINGRULE_H
 
 #include "scsabstracthighlightingrule.h"
 
-#include <QVector>
-#include <QSyntaxHighlighter>
-
-
-class SCsAbstractHighlightingRule;
-
-class SCsSyntaxHighlighter : public QSyntaxHighlighter
+class SCsStdHighlightingRule : public SCsAbstractHighlightingRule
 {
 public:
-    SCsSyntaxHighlighter(QTextDocument *parent, QList<SCsAbstractHighlightingRule*> highlightingRules);
-    void highlightBlock(const QString &text);
-    void setFormating(int, int, QTextCharFormat);
-    void setCurBlockState(int state);
-    int prevBlockState();
-	int curBlockState();
+    SCsStdHighlightingRule();
+    SCsStdHighlightingRule(QRegExp pattern, QTextCharFormat format);
+    QRegExp getPattern();
+    virtual void assignFormat(SCsSyntaxHighlighter* highlighter, const QString& text);
 
 private:
-    QList<SCsAbstractHighlightingRule*> mHighlightingRules;
-
+    QRegExp mPattern;
 };
 
-#endif // SCSSYNTAXHIGHLIGHTER_H
+#endif // SCSSTDHIGHLIGHTINGRULE_H

@@ -21,10 +21,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scswindow.h"
-#include "config.h"
 #include "scshighlightingrulespool.h"
 #include "scscodeeditor.h"
 #include "scssyntaxhighlighter.h"
+#include "scsfindwidget.h"
+#include "scserrortablewidget.h"
+
 
 #include <QHBoxLayout>
 #include <QIcon>
@@ -33,24 +35,55 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QShortcut>
+#include <QTextCodec>
 
 SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
     mEditor(0),
     mHighlighter(0),
-    mIsSaved(false)
+    mIsSaved(false),
+    mErrorTable(0)
 {
-    mEditor = new SCsCodeEditor();
+
+
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+
+    mErrorTable = new SCsErrorTableWidget(this);
+
+    mEditor = new SCsCodeEditor(this,mErrorTable);
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
     mEditor->setFont(font);
     mEditor->setPalette(QPalette(QPalette::Background, Qt::white));
     mEditor->setTabStopWidth(20);
 
+    mFindWidget = new SCsFindWidget(this);
+    connect(mFindWidget, SIGNAL(findNext()), this, SLOT(findNext()));
+    connect(mFindWidget, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
+    connect(mFindWidget, SIGNAL(find(QString)), this, SLOT(findTextChanged(QString)));
+
     mHighlighter = new SCsSyntaxHighlighter(mEditor->document(), SCsHighlightingRulesPool::getInstance()->rules());
+
+
+
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(mEditor);
+    if( mErrorTable != NULL )
+        layout->addWidget(mErrorTable);
+    layout->addWidget(mFindWidget);
+
+    layout->setStretch(0,5);
+    layout->setStretch(1,2);
+    layout->setStretch(2,2);
     setLayout(layout);
+
+    QShortcut *shortcut = new QShortcut(QKeySequence::Find,this);
+    connect(shortcut,SIGNAL(activated()),this,SLOT(showTextSearch()));
+    shortcut = new QShortcut(QKeySequence(Qt::Key_Escape),this);
+    connect(shortcut,SIGNAL(activated()),this,SLOT(onEscapePressed()));
+
 
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
@@ -116,11 +149,11 @@ bool SCsWindow::saveToFile(const QString &fileName)
     QFile fileOut(fileName);
     if (!fileOut.open(QFile::WriteOnly | QFile::Text))
     {
-         QMessageBox::warning(0, tr("error"),
-                              tr("Can't save file %1:\n%2.")
-                              .arg(fileName)
-                              .arg(fileOut.errorString()));
-         return false;
+        QMessageBox::warning(0, tr("error"),
+                             tr("Can't save file %1:\n%2.")
+                             .arg(fileName)
+                             .arg(fileOut.errorString()));
+        return false;
     }
     QTextStream out(&fileOut);
     out << mEditor->document()->toPlainText();
@@ -189,4 +222,42 @@ QStringList SCsWindowFactory::supportedFormatsExt()
     list << "scs";
 
     return list;
+}
+
+
+
+void SCsWindow::findNext()
+{
+    mEditor->find(mFindWidget->text(), mFindWidget->getFlags());
+}
+
+void SCsWindow::findPrevious()
+{
+    mEditor->find(mFindWidget->text(), mFindWidget->getFlags() | QTextDocument::FindBackward);
+}
+
+void SCsWindow::findTextChanged(const QString &ttf)
+{
+    QTextCursor cursor = mEditor->document()->find(ttf, 0, mFindWidget->getFlags());
+    if(!cursor.isNull())
+        mEditor->setTextCursor(cursor);
+}
+
+void SCsWindow::showTextSearch()
+{
+    mFindWidget->show(mEditor->textCursor().selectedText());
+}
+
+
+void SCsWindow::onEscapePressed()
+{
+    if(mFindWidget->isVisible())
+    {
+        mFindWidget->hide();
+    }
+    else
+        if( mErrorTable != NULL )
+            if(mErrorTable->isVisible())
+                mErrorTable->hide();
+    mEditor->setFocus();
 }

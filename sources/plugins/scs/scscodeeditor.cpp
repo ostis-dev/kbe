@@ -20,6 +20,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
+
+
 #include "scscodeeditor.h"
 
 #include <QPainter>
@@ -27,19 +29,34 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QStandardItemModel>
+#include <QDebug>
 #include "scscodeanalyzer.h"
 #include "scscodecompleter.h"
+#include "scsfindwidget.h"
+#include "scserrortablewidget.h"
+#include "scscodeerroranalyzer.h"
 
-SCsCodeEditor::SCsCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
+#include "scsparserwrapper.h"
+
+#define SPACE_FOR_ERROR_LABEL 20
+
+SCsCodeEditor::SCsCodeEditor(QWidget *parent, SCsErrorTableWidget *errorTable) :
+	 QPlainTextEdit(parent)
+    ,mLastCursorPosition(0)
+	,mIsTextInsert(false)
+	,mErrorTable(errorTable)
 {
     mLineNumberArea = new SCsLineNumberArea(this);
-    mAnalyzer = new SCsCodeAnalyzer(this);
+	mAnalyzer = new SCsCodeAnalyzer(this);
     mCompleter = new SCsCodeCompleter(this);
+    mErrorAnalyzer = new SCsCodeErrorAnalyzer(mErrorTable,this);
 
     mCompleter->setWidget(this);
     mCompleter->setCompletionMode(QCompleter::PopupCompletion);
     mCompleter->setCaseSensitivity(Qt::CaseSensitive);
     mCompleter->setModelSorting(QCompleter::CaseInsensitivelySortedModel);
+
+    mErrorPixmap = QPixmap(":scs/media/icons/error.png").scaledToHeight(15);
 
     connect(mCompleter, SIGNAL(activated(QModelIndex)), this, SLOT(insertCompletion(QModelIndex)));
 
@@ -47,7 +64,9 @@ SCsCodeEditor::SCsCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
     connect(this, SIGNAL(textChanged()), this, SLOT(updateAnalyzer()));
-
+	connect(mErrorAnalyzer,SIGNAL(errorLines(QSet<int>)),this,SLOT(setErrorsLines(QSet<int>)));
+    if( mErrorTable != NULL )
+        connect(mErrorTable, SIGNAL(errorAt(int,int)), this, SLOT(moveTextCursor(int,int)));
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
@@ -55,8 +74,7 @@ SCsCodeEditor::SCsCodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
 void SCsCodeEditor::setDocumentPath(const QString &path)
 {
-    mAnalyzer->setDocumentPath(path);
-    mAnalyzer->parse( toPlainText(), (QStandardItemModel*)mCompleter->model() );
+	mAnalyzer->parse(toPlainText(), (QStandardItemModel*)mCompleter->model());
 }
 
 int SCsCodeEditor::lineNumberAreaWidth()
@@ -71,7 +89,7 @@ int SCsCodeEditor::lineNumberAreaWidth()
 
     int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
 
-    return space;
+    return space + SPACE_FOR_ERROR_LABEL;
 }
 
 void SCsCodeEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
@@ -134,6 +152,8 @@ void SCsCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
              painter.setPen(Qt::black);
              painter.drawText(0, top, mLineNumberArea->width(), fontMetrics().height(),
                               Qt::AlignRight, number);
+             if(isLineWithError(blockNumber+1))
+                 painter.drawPixmap(4,top+2,mErrorPixmap);
          }
 
          block = block.next();
@@ -160,6 +180,17 @@ void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
         return;
     }
 
+//     if (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_F)
+//     {
+//         mFinder->show();
+//         mFinder->setFocus();
+//         mCompleter->popup()->update();
+//         return;
+//     }
+
+	if(e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_R)
+        updateErrorAnalyzer();
+
     if (mCompleter->popup()->isVisible())
     {
         switch (e->key())
@@ -176,6 +207,12 @@ void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
         }
      }
 
+//     if (e->key() == Qt::Key_Escape && mFinder->isVisible())
+//     {
+//          mFinder->hide();
+//          return;
+//     }
+
      bool isShortcut = ((e->modifiers() & Qt::ControlModifier) && e->key() == Qt::Key_E);
      if (!isShortcut)
          QPlainTextEdit::keyPressEvent(e);
@@ -189,9 +226,9 @@ void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
 
      if (!isShortcut && ( hasModifier ||
                           e->text().isEmpty() ||
-                          completionPrefix.length() < SCsCodeCompleter::MinCompletetionLength ||
-                          !SCsCodeAnalyzer::isIdentifier(e->text().right(1)) ||
-                          mAnalyzer->isInEmptyBlock(textCursor().position()) ))
+                          completionPrefix.length() < SCsCodeCompleter::MinCompletetionLength /* ||
+						  !SCsCodeAnalyzer::isIdentifier(e->text().right(1))  ||
+						  mAnalyzer->isInEmptyBlock(textCursor().position())*/ ))
      {
          mCompleter->popup()->hide();
          return;
@@ -218,16 +255,62 @@ void SCsCodeEditor::insertCompletion(QModelIndex index)
     tc.movePosition(QTextCursor::EndOfWord);
     tc.insertText(templ.right(extra));
     setTextCursor(tc);
+
+	mIsTextInsert = true;
 }
 
 void SCsCodeEditor::updateAnalyzer()
 {
+
     QStandardItemModel* completerModel = static_cast<QStandardItemModel*>(mCompleter->model());
 
     QTextCursor tc = textCursor();
+
     tc.select( QTextCursor::WordUnderCursor );
     QString currentWord = tc.selectedText();
 
+    mLastCursorPosition = tc.position();
     mAnalyzer->ignoreUpdate(currentWord);
+
     mAnalyzer->update(toPlainText(), completerModel);
+}
+
+
+bool SCsCodeEditor::isLineWithError(int line)
+{
+    return mErrorLines.contains(line);
+}
+
+void SCsCodeEditor::setErrorsLines(QSet<int> lines)
+{
+    mErrorLines = lines;
+}
+
+
+
+void SCsCodeEditor::updateErrorAnalyzer()
+{
+
+    QString text = document()->toPlainText();
+
+    mErrorAnalyzer->parse(text);
+
+	update();
+}
+
+
+void SCsCodeEditor::moveTextCursor(int line, int charPos)
+{
+
+	if(charPos<0)
+		charPos = 0;
+
+	QTextCursor cursor = textCursor();
+	cursor.movePosition(QTextCursor::Start);
+	
+	cursor.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, line-1);
+	cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, charPos);
+
+	setTextCursor(cursor);
+	setFocus(Qt::ShortcutFocusReason);
 }
