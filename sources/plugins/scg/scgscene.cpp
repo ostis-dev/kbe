@@ -58,6 +58,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "commands/scgcommandpointschange.h"
 #include "commands/scgcommandidtfmove.h"
 #include "commands/scgcommandswappairorient.h"
+#include "commands/scgcommandremovebreakpoints.h"
+#include "commands/scgcommandminimizecontour.h"
 
 #include <QUrl>
 #include <QFile>
@@ -690,6 +692,35 @@ SCgBaseCommand* SCgScene::createContourCommand(const QList<QGraphicsItem*>& chil
     return cmd;
 }
 
+SCgBaseCommand * SCgScene::removeBreakPointsCommand(SCgPair *pair, SCgBaseCommand *parentCmd, bool addToStack)
+{
+    Q_ASSERT_X(pair != 0,
+               "SCgBaseCommand* SCgScene::removeBreakPointsCommand(SCgPair *pair, SCgBaseCommand *parentCmd, bool addToStack)",
+               "Pointer to object is null");
+
+    SCgBaseCommand *cmd = new SCgCommandRemoveBreakPoints(this, pair, parentCmd);
+
+    if (addToStack) {
+        mUndoStack->push(cmd);
+    }
+
+    return cmd;
+}
+
+SCgBaseCommand * SCgScene::minimizeContourCommand(SCgContour *contour, SCgBaseCommand *parentCmd, bool addToStack)
+{
+    Q_ASSERT_X(contour != 0,
+               "SCgBaseCommand* SCgScene::minimizeContourCommand(SCgContour *contour, SCgBaseCommand *parentCmd, bool addToStack)",
+               "Pointer to object is null");
+
+    SCgBaseCommand *cmd = new SCgCommandMinimizeContour(this, contour, parentCmd);
+
+    if (addToStack) {
+        mUndoStack->push(cmd);
+    }
+
+    return cmd;
+}
 
 SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj,
                                                       const QPointF& newPos,

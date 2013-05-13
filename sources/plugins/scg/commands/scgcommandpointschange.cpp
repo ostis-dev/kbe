@@ -45,7 +45,6 @@ SCgCommandPointsChange::SCgCommandPointsChange(SCgScene* scene,
 
 SCgCommandPointsChange::~SCgCommandPointsChange()
 {
-
 }
 
 void SCgCommandPointsChange::redo()

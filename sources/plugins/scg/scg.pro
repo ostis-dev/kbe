@@ -87,7 +87,11 @@ HEADERS += \
     modes/scgcontourmode.h \
     modes/scgclonemode.h \
     modes/scgbusmode.h \
-    commands/scgcommandswappairorient.h
+    commands/scgcommandswappairorient.h \
+    arrangers/scgarrangerenergybased.h \
+    commands/scgcommandremovebreakpoints.h \
+    commands/scgcommandminimizecontour.h \
+    arrangers/scgforcecalculator.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -162,7 +166,11 @@ SOURCES += \
     modes/scgcontourmode.cpp \
     modes/scgclonemode.cpp \
     modes/scgbusmode.cpp \
-    commands/scgcommandswappairorient.cpp
+    commands/scgcommandswappairorient.cpp \
+    arrangers/scgarrangerenergybased.cpp \
+    commands/scgcommandremovebreakpoints.cpp \
+    commands/scgcommandminimizecontour.cpp \
+    arrangers/scgforcecalculator.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
