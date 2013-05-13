@@ -30,6 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QColor>
 #include <QGraphicsScene>
 #include <QVector2D>
+#include <QSet>
 
 SCgContour::SCgContour() :
         mColorBack(QColor(250, 250, 250, 224))
@@ -96,6 +97,74 @@ void SCgContour::setPoints(const PointFVector &points)
 void SCgContour::positionChanged()
 {
     updateShape();
+}
+
+void SCgContour::minimize()
+{
+    setPoints(minimizedPoints());
+}
+
+SCgPointObject::PointFVector SCgContour::minimizedPoints() const
+{
+    // Collect items which is a scgObject:
+    QSet<SCgObject *> scgObjects;
+    foreach(QGraphicsItem* item, childItems())
+    {
+        if (SCgObject::isSCgObjectType(item->type()))
+        {
+            SCgObject *scgObject = static_cast<SCgObject*>(item);
+            scgObjects.insert(scgObject);
+        }
+    }
+
+    if (!scgObjects.isEmpty()) {
+        // Find min and max points:
+        qreal minX, minY, maxX, maxY;
+
+        QSet<SCgObject *>::const_iterator it;
+        it = scgObjects.begin();
+        SCgObject *firstObj = *it;
+        QRectF firstObjRect = firstObj->boundingRect();
+
+        minX = firstObj->mapToScene(firstObjRect.topLeft()).x();
+        minY = firstObj->mapToScene(firstObjRect.topLeft()).y();
+        maxX = firstObj->mapToScene(firstObjRect.bottomRight()).x();
+        maxY = firstObj->mapToScene(firstObjRect.bottomRight()).y();
+
+        for (++it; it != scgObjects.end(); ++it) {
+            SCgObject *obj = *it;
+            QRectF objRect = obj->boundingRect();
+
+            QPointF topLeft = obj->mapToScene(objRect.topLeft());
+            QPointF bottomRight = obj->mapToScene(objRect.bottomRight());
+
+            if (topLeft.x() < minX) {
+                minX = topLeft.x();
+            }
+            if (topLeft.y() < minY) {
+                minY = topLeft.y();
+            }
+            if (bottomRight.x() > maxX) {
+                maxX = bottomRight.x();
+            }
+            if (bottomRight.y() > maxY) {
+                maxY = bottomRight.y();
+            }
+        }
+
+        // Increase distance from borders:
+        minX -= borderDistance;
+        minY -= borderDistance;
+        maxX += borderDistance;
+        maxY += borderDistance;
+
+        // Remove all points and set only 4 corner points:
+        PointFVector newPoints;
+        newPoints << QPointF(minX, minY) << QPointF(maxX, minY)
+                  << QPointF(maxX, maxY) << QPointF(minX, maxY);
+
+        return newPoints;
+    }
 }
 
 void SCgContour::updateShape()

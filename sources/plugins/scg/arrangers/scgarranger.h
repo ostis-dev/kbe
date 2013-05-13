@@ -35,7 +35,7 @@ class QGraphicsItem;
 class SCgBaseCommand;
 
 /*! To create new arranger you should implement 4 functions:
- *   bool userMenu();
+ *   bool configDialog();
  *   void startOperation();
  *   int type();
  *   QString name();
@@ -73,8 +73,15 @@ protected:
 
     //! Command for changing node position.
     void registerCommand(SCgObject* obj, const QPointF& newPos);
+
     //! Command for changing pointObject points.
     void registerCommand(SCgPointObject* obj, const QVector<QPointF>& newPoints);
+
+    //! Command for removing all break points of pairs.
+    void registerCommandRemoveBreakPoints(SCgPair *pair);
+
+    //! Command for minimizing contour.
+    void registerCommandMinimizeContour(SCgContour *contour);
 
     //! Deletes all ghosts from scene.
     void deleteGhosts();
