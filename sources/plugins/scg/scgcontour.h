@@ -50,6 +50,14 @@ public:
       */
     void positionChanged();
 
+    //! Minimizes size and leaves only 4 points:
+    void minimize();
+
+    /*! Get 4 points of minimized contour
+      @return Minimized contour points
+      */
+    PointFVector minimizedPoints() const;
+
     //! @see SCgPointObject::updateShape;
     void updateShape();
 
@@ -95,6 +103,9 @@ public:
 protected:
     //! Corner radius for drawing shape
     static const qreal cornerRadius = 20.0;
+
+    //! Distance from border to content for minimized contour:
+    static const qreal borderDistance = 20.0;
 
     //! Contour shape
     QPainterPath mShape;

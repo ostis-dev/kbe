@@ -70,7 +70,7 @@ void SCgArranger::registerCommand(SCgObject* obj, const QPointF& newPos)
     if(!mParentCommand)
         mParentCommand = mScene->changeObjectPositionCommand(obj, newPos, 0, false);
     else
-    	mScene->changeObjectPositionCommand(obj, newPos, mParentCommand, false);
+        mScene->changeObjectPositionCommand(obj, newPos, mParentCommand, false);
 }
 
 void SCgArranger::registerCommand(SCgPointObject* obj, const QVector<QPointF>& newPoints)
@@ -79,7 +79,25 @@ void SCgArranger::registerCommand(SCgPointObject* obj, const QVector<QPointF>& n
     if(!mParentCommand)
         mParentCommand = mScene->changeObjectPointsCommand(obj, newPoints, 0, false);
     else
-    	mScene->changeObjectPointsCommand(obj, newPoints, mParentCommand, false);
+        mScene->changeObjectPointsCommand(obj, newPoints, mParentCommand, false);
+}
+
+void SCgArranger::registerCommandRemoveBreakPoints(SCgPair *pair)
+{
+    if (!mParentCommand) {
+        mParentCommand = mScene->removeBreakPointsCommand(pair, 0, false);
+    } else {
+        mScene->removeBreakPointsCommand(pair, mParentCommand, false);
+    }
+}
+
+void SCgArranger::registerCommandMinimizeContour(SCgContour *contour)
+{
+    if (!mParentCommand) {
+        mParentCommand = mScene->minimizeContourCommand(contour, 0, false);
+    } else {
+        mScene->minimizeContourCommand(contour, mParentCommand, false);
+    }
 }
 
 SCgObject* SCgArranger::createGhost(SCgObject* obj, qreal opacityLevel)
