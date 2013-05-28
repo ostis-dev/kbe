@@ -9,7 +9,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../commands/scgcommandclone.cpp" line="30"/>
+        <location filename="../../commands/scgcommandclone.cpp" line="31"/>
         <source>Clone</source>
         <translation></translation>
     </message>
@@ -22,6 +22,16 @@
         <location filename="../../commands/scgcommandcontentvisibility.cpp" line="39"/>
         <source>Change content visibility</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../../commands/scgcommandcontentvisibility.cpp" line="72"/>
+        <source>Show all content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../commands/scgcommandcontentvisibility.cpp" line="74"/>
+        <source>Hide all content</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../commands/scgcommandcreatebus.cpp" line="40"/>
@@ -141,37 +151,42 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="307"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="310"/>
         <source>Content type &apos;%1&apos; doesn&apos;t supported for now</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="312"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="315"/>
         <source>Unknown content type &apos;%1&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="434"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="455"/>
         <source>There are no points data for element &apos;%1&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="453"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="474"/>
         <source>&apos;%1&apos; element haven&apos;t &apos;%2&apos; attribute</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="458"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="479"/>
         <source>invalid float value in attribute &apos;%1&apos; of element &apos;%2&apos;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="463"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="484"/>
+        <source>invalid bollean value in attribute &apos;%1&apos; of element &apos;%2&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="489"/>
         <source>node element &apos;%1&apos; haven&apos;t content tag</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../gwf/gwfobjectinforeader.cpp" line="468"/>
+        <location filename="../../gwf/gwfobjectinforeader.cpp" line="494"/>
         <source>type &apos;%1&apos; is unknown for element &apos;%2&apos;</source>
         <translation></translation>
     </message>
@@ -181,7 +196,7 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgcontour.cpp" line="41"/>
+        <location filename="../../scgcontour.cpp" line="40"/>
         <source>sc.g-contour</source>
         <translation></translation>
     </message>
@@ -196,7 +211,7 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgdefaultobjectbuilder.cpp" line="224"/>
+        <location filename="../../scgdefaultobjectbuilder.cpp" line="225"/>
         <source>Try to create contour (&quot;%1&quot;) with less than 3 points.</source>
         <translation></translation>
     </message>
@@ -206,8 +221,18 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgpair.cpp" line="45"/>
+        <location filename="../../scgpair.cpp" line="47"/>
         <source>sc.g-pair</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../commands/scgcommandminimizecontour.cpp" line="34"/>
+        <source>Minimize contour&apos;s size</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../commands/scgcommandremovebreakpoints.cpp" line="36"/>
+        <source>Remove pair&apos;s break points</source>
         <translation></translation>
     </message>
 </context>
@@ -240,6 +265,69 @@ Just 1.6 and 2.0 versions supported.</source>
     <message>
         <location filename="../../scgcontentstring.cpp" line="69"/>
         <source>Word wrap</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>SCgEnergyBasedArranger</name>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="99"/>
+        <source>Energy-based Arranger Parameters</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="102"/>
+        <source>Spring rate:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="106"/>
+        <source>Spring rate</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="108"/>
+        <source>Spring length:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="112"/>
+        <source>Natural spring length</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="114"/>
+        <source>Node repulsion factor:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="118"/>
+        <source>Repulsive force factor between real nodes</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="120"/>
+        <source>Fake node repulsion factor:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="124"/>
+        <source>Repulsive force factor between real and fake nodes</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="126"/>
+        <source>Shift factor:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="130"/>
+        <source>Shift force factor</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../arrangers/scgarrangerenergybased.cpp" line="154"/>
+        <source>Energy-based arrange</source>
         <translation></translation>
     </message>
 </context>
@@ -312,17 +400,17 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgScene</name>
     <message>
-        <location filename="../../scgscene.cpp" line="843"/>
+        <location filename="../../scgscene.cpp" line="928"/>
         <source>File opening error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="849"/>
+        <location filename="../../scgscene.cpp" line="934"/>
         <source>Unsupported extention</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="850"/>
+        <location filename="../../scgscene.cpp" line="935"/>
         <source>Current file&apos;s extention doesn&apos;t supported</source>
         <translation></translation>
     </message>
@@ -374,114 +462,124 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgView</name>
     <message>
-        <location filename="../../scgview.cpp" line="88"/>
-        <location filename="../../scgview.cpp" line="190"/>
+        <location filename="../../scgview.cpp" line="89"/>
+        <location filename="../../scgview.cpp" line="199"/>
         <source>Set content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="89"/>
+        <location filename="../../scgview.cpp" line="90"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="92"/>
+        <location filename="../../scgview.cpp" line="93"/>
         <source>Show content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="94"/>
+        <location filename="../../scgview.cpp" line="95"/>
         <source>H</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="97"/>
+        <location filename="../../scgview.cpp" line="98"/>
+        <source>Show all content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../scgview.cpp" line="101"/>
+        <source>Hide all content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../scgview.cpp" line="104"/>
         <source>Delete content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="98"/>
+        <location filename="../../scgview.cpp" line="105"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="101"/>
-        <location filename="../../scgview.cpp" line="413"/>
+        <location filename="../../scgview.cpp" line="108"/>
+        <location filename="../../scgview.cpp" line="437"/>
         <source>Change identifier</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="102"/>
+        <location filename="../../scgview.cpp" line="109"/>
         <source>I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="105"/>
+        <location filename="../../scgview.cpp" line="112"/>
         <source>Delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="109"/>
+        <location filename="../../scgview.cpp" line="116"/>
         <source>Delete contour</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="110"/>
+        <location filename="../../scgview.cpp" line="117"/>
         <source>Backspace</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="113"/>
+        <location filename="../../scgview.cpp" line="120"/>
         <source>Swap orientation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="114"/>
+        <location filename="../../scgview.cpp" line="121"/>
         <source>S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="117"/>
+        <location filename="../../scgview.cpp" line="124"/>
         <source>Copy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="121"/>
+        <location filename="../../scgview.cpp" line="128"/>
         <source>Cut</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="125"/>
+        <location filename="../../scgview.cpp" line="132"/>
         <source>Paste</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="129"/>
+        <location filename="../../scgview.cpp" line="136"/>
         <source>Select All</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="185"/>
+        <location filename="../../scgview.cpp" line="194"/>
         <source>Change content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="264"/>
+        <location filename="../../scgview.cpp" line="288"/>
         <source>Change type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="268"/>
+        <location filename="../../scgview.cpp" line="292"/>
         <source>Const</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="269"/>
+        <location filename="../../scgview.cpp" line="293"/>
         <source>Var</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="415"/>
+        <location filename="../../scgview.cpp" line="439"/>
         <source>New identifier:</source>
         <translation></translation>
     </message>
@@ -602,65 +700,76 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="271"/>
+        <location filename="../../scgwindow.cpp" line="265"/>
+        <source>Energy-based layout</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../scgwindow.cpp" line="267"/>
+        <source>9</source>
+        <comment>Energy-based layout</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../scgwindow.cpp" line="279"/>
         <source>Select input/output</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="277"/>
+        <location filename="../../scgwindow.cpp" line="285"/>
         <source>Select subgraph</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="284"/>
+        <location filename="../../scgwindow.cpp" line="292"/>
         <source>Export image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="286"/>
+        <location filename="../../scgwindow.cpp" line="294"/>
         <source>0</source>
         <comment>Export image</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="294"/>
+        <location filename="../../scgwindow.cpp" line="302"/>
         <source>Zoom in</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="296"/>
+        <location filename="../../scgwindow.cpp" line="304"/>
         <source>+</source>
         <comment>Zoom in</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="313"/>
+        <location filename="../../scgwindow.cpp" line="321"/>
         <source>Zoom out</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="315"/>
+        <location filename="../../scgwindow.cpp" line="323"/>
         <source>-</source>
         <comment>Zoom out</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="320"/>
+        <location filename="../../scgwindow.cpp" line="327"/>
         <source>SCg Tools</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="445"/>
+        <location filename="../../scgwindow.cpp" line="461"/>
         <source>%1 image (*.%1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="453"/>
+        <location filename="../../scgwindow.cpp" line="469"/>
         <source>Export file to ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="669"/>
+        <location filename="../../scgwindow.cpp" line="685"/>
         <source>Edit</source>
         <translation></translation>
     </message>

@@ -201,6 +201,8 @@ private slots:
     void onVerticalAlignment();
     //! Slot to handle a horizontal alignment action
     void onHorizontalAlignment();
+    //! Slot to handle a energy-based layout action
+    void onEnergyBasedLayout();
     //! Slot to handle select input/output action
     void onSelectInputOutput();
     //! Slot to handle select subgraph action

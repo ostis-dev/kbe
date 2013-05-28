@@ -316,6 +316,24 @@ public:
                                          SCgBaseCommand* parentCmd = 0,
                                          bool addToStack = true);
 
+    /*! Create undo/redo command to remove break points of sc.g-pair
+     * @param pair Pointer to sc.g-pair
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
+    SCgBaseCommand * removeBreakPointsCommand(SCgPair *pair,
+                                             SCgBaseCommand *parentCmd = 0,
+                                             bool addToStack = true);
+
+    /*! Create undo/redo command to minimize contour
+     * @param contour Pointer to sc.g-contour
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
+    SCgBaseCommand * minimizeContourCommand(SCgContour *contour,
+                                           SCgBaseCommand *parentCmd = 0,
+                                           bool addToStack = true);
+
     /*! Create undo/redo command to change object position
      * @param obj Pointer to changed sc.g-object
      * @param newPos New Object position
