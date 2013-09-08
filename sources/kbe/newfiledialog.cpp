@@ -21,6 +21,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "newfiledialog.h"
+#include "pluginmanager.h"
+#include "interfaces/editorinterface.h"
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -28,7 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 #include <QPushButton>
 
-NewFileDialog::NewFileDialog(const QStringList &availableTypes, QWidget *parent) :
+NewFileDialog::NewFileDialog(QWidget *parent) :
     QDialog(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
@@ -36,14 +38,16 @@ NewFileDialog::NewFileDialog(const QStringList &availableTypes, QWidget *parent)
 
     mAvailableTypesList = new QListWidget(this);
     mAvailableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
-    mAvailableTypesList->setIconSize(QSize(16, 16));
+    mAvailableTypesList->setIconSize(QSize(32, 32));
 
-    for (int i = 0; i< availableTypes.length(); ++i)
+    QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactories().values();
+    QList<EditorFactoryInterface*>::iterator it, itEnd = factories.end();
+
+    for (it = factories.begin(); it != itEnd; ++it)
     {
-        QString ext = availableTypes.at(i);
         /// @todo add custom icon and tooltip support.
-        QListWidgetItem *itemToAdd = new QListWidgetItem(QIcon(), ext + " " + tr("format") + "(."+ ext + ")");
-        itemToAdd->setData(ExtensionPayloadRole, ext);
+        QListWidgetItem *itemToAdd = new QListWidgetItem((*it)->icon(), (*it)->name());
+        itemToAdd->setData(EditorTypeRole, (*it)->name());
         mAvailableTypesList->addItem(itemToAdd);
     }
 
@@ -74,7 +78,7 @@ NewFileDialog::~NewFileDialog()
 {
 }
 
-QString NewFileDialog::selectedFormat() const
+QString NewFileDialog::selectedEditor() const
 {
-    return mAvailableTypesList->selectedItems().at(0)->data(ExtensionPayloadRole).toString();
+    return mAvailableTypesList->selectedItems().at(0)->data(EditorTypeRole).toString();
 }

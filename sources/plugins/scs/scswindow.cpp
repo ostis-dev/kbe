@@ -185,7 +185,7 @@ QIcon SCsWindow::icon() const
 
 QIcon SCsWindow::findIcon(const QString &iconName)
 {
-    return QIcon(":/media/icons/" + iconName);
+    return QIcon(":/scs/media/icons/" + iconName);
 }
 
 void SCsWindow::textChanged()
@@ -193,37 +193,6 @@ void SCsWindow::textChanged()
     mIsSaved = false;
     emitEvent(EditorObserverInterface::ContentChanged);
 }
-
-
-// ---------------------
-SCsWindowFactory::SCsWindowFactory(QObject *parent) :
-    QObject(parent)
-{
-}
-
-SCsWindowFactory::~SCsWindowFactory()
-{
-}
-
-const QString& SCsWindowFactory::name() const
-{
-    static QString name = "scs";
-    return name;
-}
-
-EditorInterface* SCsWindowFactory::createInstance()
-{
-    return new SCsWindow("");
-}
-
-QStringList SCsWindowFactory::supportedFormatsExt()
-{
-    QStringList list;
-    list << "scs";
-
-    return list;
-}
-
 
 
 void SCsWindow::findNext()
@@ -260,4 +229,39 @@ void SCsWindow::onEscapePressed()
             if(mErrorTable->isVisible())
                 mErrorTable->hide();
     mEditor->setFocus();
+}
+
+
+// ---------------------
+SCsWindowFactory::SCsWindowFactory(QObject *parent) :
+    QObject(parent)
+{
+}
+
+SCsWindowFactory::~SCsWindowFactory()
+{
+}
+
+const QString& SCsWindowFactory::name() const
+{
+    static QString name = "scs";
+    return name;
+}
+
+EditorInterface* SCsWindowFactory::createInstance()
+{
+    return new SCsWindow("");
+}
+
+QStringList SCsWindowFactory::supportedFormatsExt()
+{
+    QStringList list;
+    list << "scs";
+
+    return list;
+}
+
+QIcon SCsWindowFactory::icon() const
+{
+    return SCsWindow::findIcon("mime_type.png");
 }

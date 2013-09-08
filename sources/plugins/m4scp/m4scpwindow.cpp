@@ -194,3 +194,8 @@ QStringList M4SCpWindowFactory::supportedFormatsExt()
 
     return list;
 }
+
+QIcon M4SCpWindowFactory::icon() const
+{
+    return M4SCpWindow::findIcon("mime_type.png");
+}

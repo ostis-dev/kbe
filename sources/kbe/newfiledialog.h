@@ -15,20 +15,16 @@ class NewFileDialog : public QDialog
     /* Available payloads for QListWidgetItem */
     enum Payload
     {
-        ExtensionPayloadRole = 0
+        EditorTypeRole = 0
     };
 public:
-    /*!
-     * Creates an instance of NewFileDialog with specified list of available formats \p availableFormats.
-     * \param availableFormats List with extensions of available formats.
-     */
-    explicit NewFileDialog(const QStringList &availableTypes, QWidget *parent = 0);
+    explicit NewFileDialog(QWidget *parent = 0);
     virtual ~NewFileDialog();
 
     /*!
      * \return Format currently selected by the user
      */
-    QString selectedFormat() const;
+    QString selectedEditor() const;
 signals:
     
 public slots:

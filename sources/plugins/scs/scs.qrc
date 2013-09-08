@@ -4,5 +4,6 @@
         <file>media/icons/find-close.png</file>
         <file>media/icons/find-next.png</file>
         <file>media/icons/find-previous.png</file>
+        <file>media/icons/mime_type.png</file>
     </qresource>
 </RCC>

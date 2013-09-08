@@ -264,6 +264,8 @@ public:
     EditorInterface* createInstance();
     //! @copydoc EditorFactoryInterface::supportedFormatsExt
     QStringList supportedFormatsExt();
+    //! @copydoc EditorFactoryInterface::icon
+    QIcon icon() const;
 
 };
 
