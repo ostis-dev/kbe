@@ -125,14 +125,13 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
         EditorFactoryInterface* factory = qobject_cast<EditorFactoryInterface*>(_interface);
         if (factory != 0)
         {
+            QString type = factory->name();
+            Q_ASSERT(mEditorFactories.find(type) == mEditorFactories.end());
+            mEditorFactories[type] = factory;
             QStringList extList = factory->supportedFormatsExt();
             QString ext;
-            foreach(ext, extList)
-            {
-                Q_ASSERT(mEditorFactories.find(ext) == mEditorFactories.end());
-                mEditorFactories[ext] = factory;
+            foreach(ext, extList)             
                 mSupportedExtensions << ext;
-            }
 
             continue;
         }
@@ -145,7 +144,7 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
 QString PluginManager::openFilters() const
 {
     QString filters;
-    QSet<QString>::const_iterator it;
+    tExtensionsSet::const_iterator it;
     for (it = mSupportedExtensions.begin(); it != mSupportedExtensions.end(); ++it)
     {
         if (!filters.isEmpty())
@@ -174,15 +173,20 @@ QString PluginManager::saveFilters(const QStringList &supExtensions) const
     return filters;
 }
 
-const QSet<QString>& PluginManager::supportedFilesExt() const
+const PluginManager::tExtensionsSet& PluginManager::supportedFilesExt() const
 {
     return mSupportedExtensions;
 }
 
-EditorInterface* PluginManager::createWindow(const QString &ext)
+const PluginManager::tEditorFactoryInterfacesMap& PluginManager::editorFactories() const
+{
+    return mEditorFactories;
+}
+
+EditorInterface* PluginManager::createWindow(const QString &type)
 {
     // trying to find factory
-    QMap<QString, EditorFactoryInterface*>::iterator it = mEditorFactories.find(ext);
+    tEditorFactoryInterfacesMap::iterator it = mEditorFactories.find(type);
 
     Q_ASSERT(it != mEditorFactories.end());
 

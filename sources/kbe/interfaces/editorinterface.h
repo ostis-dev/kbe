@@ -169,6 +169,9 @@ public:
 
     //! Return file extensions supported by that type of window
     virtual QStringList supportedFormatsExt() = 0;
+
+    //! Return icon, that associated with editor factory
+    virtual QIcon icon() const = 0;
 };
 
 

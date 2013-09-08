@@ -314,12 +314,12 @@ void MainWindow::openRecentFile()
     }
 }
 
-EditorInterface* MainWindow::createSubWindow(const QString& ext)
+EditorInterface* MainWindow::createSubWindow(const QString& type)
 {
     EditorInterface* childWindow = 0;
 
-    if (PluginManager::instance()->supportedFilesExt().contains(ext))
-        childWindow = PluginManager::instance()->createWindow(ext);
+    if (PluginManager::instance()->editorFactories().contains(type))
+        childWindow = PluginManager::instance()->createWindow(type);
     else
         return 0;
 
@@ -337,13 +337,13 @@ QString MainWindow::getSettingKeyValueForWindow(const QString& editorType) const
 
 void MainWindow::fileNew()
 {
-    if (PluginManager::instance()->supportedFilesExt().size() > 0)
+    if (PluginManager::instance()->editorFactories().size() > 0)
     {
-        NewFileDialog *fileNewDlg = new NewFileDialog(PluginManager::instance()->supportedFilesExt().toList(), this);
+        NewFileDialog *fileNewDlg = new NewFileDialog(this);
 
         int dlgResult = fileNewDlg->exec();
         if (dlgResult == QDialog::Accepted)
-            createSubWindow(fileNewDlg->selectedFormat());
+            createSubWindow(fileNewDlg->selectedEditor());
     }
 }
 

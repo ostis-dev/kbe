@@ -108,10 +108,10 @@ private:
 
     /*!
      * Fabric method for creating subWindow.
-     * @param ext File format extension
+     * @param type String that represents window type
      * @return created window.
      */
-    EditorInterface* createSubWindow(const QString& ext);
+    EditorInterface* createSubWindow(const QString& type);
 
     /*!
      * Generates a key for QSettings.setValue() using given editor type @p editorType

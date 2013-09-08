@@ -739,3 +739,8 @@ QStringList SCgWindowFactory::supportedFormatsExt()
     res << "gwf";
     return res;
 }
+
+QIcon SCgWindowFactory::icon() const
+{
+    return SCgWindow::findIcon("mime_type.png");
+}

@@ -21,8 +21,7 @@ lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMA
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
 
-RESOURCES += \
-    scs.qrc
+RESOURCES += scs.qrc
 
 INCLUDEPATH += \
     scsparser \

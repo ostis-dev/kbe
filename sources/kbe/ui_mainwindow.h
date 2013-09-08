@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Mon Apr 16 11:15:33 2012
-**      by: Qt User Interface Compiler version 4.8.1
+** Created: Sun Sep 8 17:07:39 2013
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -87,12 +87,13 @@ public:
         actionFeedback->setObjectName(QString::fromUtf8("actionFeedback"));
         actionGuide = new QAction(MainWindow);
         actionGuide->setObjectName(QString::fromUtf8("actionGuide"));
+        actionGuide->setEnabled(false);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 25));
+        menuBar->setGeometry(QRect(0, 0, 600, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuExport = new QMenu(menuFile);
