@@ -73,14 +73,22 @@ public:
     //! Return set of supported file extensions
     const tExtensionsSet& supportedFilesExt() const;
 
-    //! Return map of registered editor factories
-    const tEditorFactoryInterfacesMap& editorFactories() const;
+    //! Return map of registered editor factories by types
+    const tEditorFactoryInterfacesMap& editorFactoriesByType() const;
+    //! Return map of registered editor factories by file extensions
+    const tEditorFactoryInterfacesMap& editorFactoriesByExt() const;
+
+    /*! Create editor for specified window type
+      * @param type String that represents window type
+      * @return If window created, then return pointer to it; otherwise returns null.
+      */
+    EditorInterface* createWindowByType(const QString &type);
 
     /*! Create editor for specified file extension
-      * @param type String that represents window type
-      * @return Return pointer to created window
-      */
-    EditorInterface* createWindow(const QString &type);
+     * @param ext File extension
+     * @return If window created, then return pointer to it; otherwise returns null.
+     */
+    EditorInterface* createWindowByExt(const QString &ext);
 
 protected:
     /*! Load plugin with specified \p path
@@ -100,8 +108,10 @@ protected:
     tPluginLoadersMap mPluginLoaders;
     //! List of supported extensions
     tExtensionsSet mSupportedExtensions;
-    //! Registered factories
-    tEditorFactoryInterfacesMap mEditorFactories;
+    //! Registered factories by types
+    tEditorFactoryInterfacesMap mEditorFactoriesByType;
+    //! REgistered factories by extinsions
+    tEditorFactoryInterfacesMap mEditorFactoriesByExt;
 
 signals:
 

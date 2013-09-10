@@ -126,12 +126,15 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
         if (factory != 0)
         {
             QString type = factory->name();
-            Q_ASSERT(mEditorFactories.find(type) == mEditorFactories.end());
-            mEditorFactories[type] = factory;
+            Q_ASSERT(mEditorFactoriesByType.find(type) == mEditorFactoriesByType.end());
+            mEditorFactoriesByType[type] = factory;
             QStringList extList = factory->supportedFormatsExt();
             QString ext;
-            foreach(ext, extList)             
+            foreach(ext, extList)
+            {
                 mSupportedExtensions << ext;
+                mEditorFactoriesByExt[ext] = factory;
+            }
 
             continue;
         }
@@ -178,17 +181,33 @@ const PluginManager::tExtensionsSet& PluginManager::supportedFilesExt() const
     return mSupportedExtensions;
 }
 
-const PluginManager::tEditorFactoryInterfacesMap& PluginManager::editorFactories() const
+const PluginManager::tEditorFactoryInterfacesMap& PluginManager::editorFactoriesByType() const
 {
-    return mEditorFactories;
+    return mEditorFactoriesByType;
 }
 
-EditorInterface* PluginManager::createWindow(const QString &type)
+const PluginManager::tEditorFactoryInterfacesMap& PluginManager::editorFactoriesByExt() const
+{
+    return mEditorFactoriesByExt;
+}
+
+EditorInterface* PluginManager::createWindowByType(const QString &type)
 {
     // trying to find factory
-    tEditorFactoryInterfacesMap::iterator it = mEditorFactories.find(type);
+    tEditorFactoryInterfacesMap::iterator it = mEditorFactoriesByType.find(type);
 
-    Q_ASSERT(it != mEditorFactories.end());
+    Q_ASSERT(it != mEditorFactoriesByType.end());
+
+    return (*it)->createInstance();
+}
+
+
+EditorInterface* PluginManager::createWindowByExt(const QString &ext)
+{
+    // trying to find factory
+    tEditorFactoryInterfacesMap::iterator it = mEditorFactoriesByExt.find(ext);
+
+    Q_ASSERT(it != mEditorFactoriesByExt.end());
 
     return (*it)->createInstance();
 }

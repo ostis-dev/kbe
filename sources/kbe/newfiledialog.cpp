@@ -40,7 +40,7 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     mAvailableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
     mAvailableTypesList->setIconSize(QSize(32, 32));
 
-    QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactories().values();
+    QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactoriesByType().values();
     QList<EditorFactoryInterface*>::iterator it, itEnd = factories.end();
 
     for (it = factories.begin(); it != itEnd; ++it)

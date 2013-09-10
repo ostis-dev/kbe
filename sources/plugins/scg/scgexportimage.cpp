@@ -57,6 +57,7 @@ bool SCgExportImage::doExport(SCgScene *scene, const QString &fileName)
     QSize imgSize(sz.width() + 10, sz.height() + 10);
 
     QImage img(imgSize, QImage::Format_ARGB32_Premultiplied);
+    img.fill(Qt::transparent);
     if (!img.isNull())
     {
         QPainter painter(&img);

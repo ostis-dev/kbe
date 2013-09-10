@@ -26,7 +26,7 @@ build_source_files()
 {
   echo -en "\033[37;1;41mBuild binary...\033[0m\n"
   sed '/updater/d' all.pro > all_linux.pro
-  qmake all_linux.pro
+  qmake-qt4 all_linux.pro
   make
 }
 

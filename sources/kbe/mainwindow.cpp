@@ -314,12 +314,28 @@ void MainWindow::openRecentFile()
     }
 }
 
-EditorInterface* MainWindow::createSubWindow(const QString& type)
+EditorInterface* MainWindow::createSubWindowByType(const QString& type)
 {
     EditorInterface* childWindow = 0;
 
-    if (PluginManager::instance()->editorFactories().contains(type))
-        childWindow = PluginManager::instance()->createWindow(type);
+    if (PluginManager::instance()->editorFactoriesByType().contains(type))
+        childWindow = PluginManager::instance()->createWindowByType(type);
+    else
+        return 0;
+
+    mWidget2EditorInterface[childWindow->widget()] = childWindow;
+    mTabWidget->addSubWindow(childWindow);
+    childWindow->_setObserver(this);
+
+    return childWindow;
+}
+
+EditorInterface* MainWindow::createSubWindowByExt(const QString& ext)
+{
+    EditorInterface* childWindow = 0;
+
+    if (PluginManager::instance()->editorFactoriesByExt().contains(ext))
+        childWindow = PluginManager::instance()->createWindowByExt(ext);
     else
         return 0;
 
@@ -337,13 +353,13 @@ QString MainWindow::getSettingKeyValueForWindow(const QString& editorType) const
 
 void MainWindow::fileNew()
 {
-    if (PluginManager::instance()->editorFactories().size() > 0)
+    if (PluginManager::instance()->editorFactoriesByType().size() > 0)
     {
         NewFileDialog *fileNewDlg = new NewFileDialog(this);
 
         int dlgResult = fileNewDlg->exec();
         if (dlgResult == QDialog::Accepted)
-            createSubWindow(fileNewDlg->selectedEditor());
+            createSubWindowByType(fileNewDlg->selectedEditor());
     }
 }
 
@@ -374,7 +390,7 @@ void MainWindow::load(QString fileName)
     QString ext = fi.suffix();
     if(PluginManager::instance()->supportedFilesExt().contains(ext))
     {
-        EditorInterface* childWindow = createSubWindow(ext);
+        EditorInterface* childWindow = createSubWindowByExt(ext);
 
         if (childWindow->loadFromFile(fileName))
         {
