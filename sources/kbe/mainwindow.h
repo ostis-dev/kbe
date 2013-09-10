@@ -107,11 +107,18 @@ private:
     bool checkSubWindowSavedState();
 
     /*!
-     * Fabric method for creating subWindow.
+     * Create window by specified type
      * @param type String that represents window type
-     * @return created window.
+     * @return If window created, then return pointer to it. Otherwise it returns null.
      */
-    EditorInterface* createSubWindow(const QString& type);
+    EditorInterface* createSubWindowByType(const QString& type);
+
+    /*!
+     * Create window for specified fiel extension support
+     * @param ext File extension
+     * @return If window created, then return pointer to it. Otherwise it returns null.
+     */
+    EditorInterface* createSubWindowByExt(const QString& ext);
 
     /*!
      * Generates a key for QSettings.setValue() using given editor type @p editorType
