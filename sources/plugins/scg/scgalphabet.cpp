@@ -164,7 +164,7 @@ void SCgAlphabet::initialize()
 
     // scg core pairs
     mObjectTypes["pair/-/-/-/orient/accessory"] = createPairIcon(pairSize, "pair/-/-/-/orient/accessory");
-    mObjectTypes["pair/-/-/-/noorien"] = createPairIcon(pairSize, "pair/-/-/-/noorien");
+    mObjectTypes["pair/-/-/-/noorient"] = createPairIcon(pairSize, "pair/-/-/-/noorient");
     mObjectTypes["pair/-/-/-/orient"] = createPairIcon(pairSize, "pair/-/-/-/orient");
 
     // scg extencion pairs
