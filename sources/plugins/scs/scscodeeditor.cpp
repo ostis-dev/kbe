@@ -308,8 +308,14 @@ void SCsCodeEditor::moveTextCursor(int line, int charPos)
 	QTextCursor cursor = textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	
-	cursor.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor, line-1);
-	cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::MoveAnchor, charPos);
+    cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, line-1);
+    if( cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor) )
+    {
+        if( cursor.columnNumber() < charPos)
+            charPos = 0;
+    }
+    cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
+    cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, charPos-1);
 
 	setTextCursor(cursor);
 	setFocus(Qt::ShortcutFocusReason);
