@@ -28,10 +28,11 @@ INCLUDEPATH += \
     highlightingrules
 
 HEADERS += \
-    highlightingrules/scshighlightingrulespool.h \
-    highlightingrules/scsmultilinehighlightingrule.h \
-    highlightingrules/scsabstracthighlightingrule.h \
     highlightingrules/scsstdhighlightingrule.h \
+    highlightingrules/scsmultilinehighlightingrule.h \
+    highlightingrules/scsmultilinecommenthighlightingrule.h \
+    highlightingrules/scshighlightingrulespool.h \
+    highlightingrules/scsabstracthighlightingrule.h \
     scsparser/scsparserexception.h \
     scsparser/scsparserwrapper.h \
     scsparser/SCsCLexer.h \
@@ -48,10 +49,12 @@ HEADERS += \
     scscodeanalyzer.h \
     scscodecompleter.h
 
+
 SOURCES += \
-    highlightingrules/scshighlightingrulespool.cpp \
-    highlightingrules/scsmultilinehighlightingrule.cpp \
     highlightingrules/scsstdhighlightingrule.cpp \
+    highlightingrules/scsmultilinehighlightingrule.cpp \
+    highlightingrules/scsmultilinecommenthighlightingrule.cpp \
+    highlightingrules/scshighlightingrulespool.cpp \
     highlightingrules/scsabstracthighlightingrule.cpp \
     scsparser/scsparserwrapper.cpp \
     scsparser/scsparserexception.cpp \
@@ -69,4 +72,4 @@ SOURCES += \
     scssyntaxhighlighter.cpp \
     scscodecompleter.cpp
 
-LIBS+= -lantlr3c
+
