@@ -132,22 +132,22 @@ public:
     /*! Converts const type code into string alias
      * @param code Constant type code to convert
      */
-    const QString& aliasFromConstCode(SCgConstType code) const;
+    QString aliasFromConstCode(SCgConstType code) const;
 
     /*! Converts struct type code into string alias
      * @param code Struct type code to convert
      */
-    const QString& aliasFromStructCode(SCgNodeStructType code) const;
+    QString aliasFromStructCode(SCgNodeStructType code) const;
 
     /*! Converts positivity type code into string alias
      * @param code Positivity code to convert
      */
-    const QString& aliasFromPositiveCode(SCgPosType code) const;
+    QString aliasFromPositiveCode(SCgPosType code) const;
 
     /*! Converts permanency type code into string alias
      * @param code Permanency type code to convert
      */
-    const QString& aliasFromPermanencyCode(SCgPermType code) const;
+    QString aliasFromPermanencyCode(SCgPermType code) const;
 
 protected:
     QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgNodeStructType &type_struct);
