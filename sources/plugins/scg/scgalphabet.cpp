@@ -315,7 +315,7 @@ SCgAlphabet::SCgPermType SCgAlphabet::aliasToPermanencyCode(const QString &alias
     return mPermTypes[alias];
 }
 
-const QString& SCgAlphabet::aliasFromConstCode(SCgAlphabet::SCgConstType code) const
+QString SCgAlphabet::aliasFromConstCode(SCgAlphabet::SCgConstType code) const
 {
     if (!mConstAliases.contains(code))
         return msEmptyTypeAlias;
@@ -323,7 +323,7 @@ const QString& SCgAlphabet::aliasFromConstCode(SCgAlphabet::SCgConstType code) c
     return mConstAliases[code];
 }
 
-const QString& SCgAlphabet::aliasFromStructCode(SCgAlphabet::SCgNodeStructType code) const
+QString SCgAlphabet::aliasFromStructCode(SCgAlphabet::SCgNodeStructType code) const
 {
     if (!mStructAliases.contains(code))
         return msEmptyTypeAlias;
@@ -331,7 +331,7 @@ const QString& SCgAlphabet::aliasFromStructCode(SCgAlphabet::SCgNodeStructType c
     return mStructAliases[code];
 }
 
-const QString& SCgAlphabet::aliasFromPositiveCode(SCgAlphabet::SCgPosType code) const
+QString SCgAlphabet::aliasFromPositiveCode(SCgAlphabet::SCgPosType code) const
 {
     if (!mPositivityAliases.contains(code))
         return msEmptyTypeAlias;
@@ -339,7 +339,7 @@ const QString& SCgAlphabet::aliasFromPositiveCode(SCgAlphabet::SCgPosType code) 
     return mPositivityAliases[code];
 }
 
-const QString& SCgAlphabet::aliasFromPermanencyCode(SCgAlphabet::SCgPermType code) const
+QString SCgAlphabet::aliasFromPermanencyCode(SCgAlphabet::SCgPermType code) const
 {
     if (!mPermanencyAliases.contains(code))
         return msEmptyTypeAlias;
