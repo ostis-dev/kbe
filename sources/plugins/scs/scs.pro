@@ -10,7 +10,9 @@ CONFIG       += plugin
 OBJECTS_DIR = obj
 MOC_DIR = moc
 
-
+unix {
+    LIBS+= -lantlr3c
+}
 
 TRANSLATIONS += media/translations/scs_en_EN.ts \
                 media/translations/scs_ru_RU.ts
