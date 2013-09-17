@@ -71,6 +71,8 @@ int main(int argc, char *argv[])
     //splash.showMessage(a.tr("Create interface"), Qt::AlignBottom | Qt::AlignHCenter);
     MainWindow::getInstance()->show();
 
+    a.processEvents();
+
     for(int i = 1; i < argc; i++)
     {
         QString arg = a.arguments().at(i);
@@ -81,6 +83,8 @@ int main(int argc, char *argv[])
     // check if startup dialog property exist
     if (!settings.contains(Config::settingsShowStartupDialog))
         settings.setValue(Config::settingsShowStartupDialog, QVariant(true));
+
+    MainWindow::getInstance()->updateWindowTitle();
 
     // show startup dialog
 //    if (settings.value(SETTINGS_STARTUP_DIALOG_SHOW).toBool())
