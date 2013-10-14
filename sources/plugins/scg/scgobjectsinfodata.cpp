@@ -59,7 +59,8 @@ SCgNodeInfoData::SCgNodeInfoData(const SCgNode* obj): mPos(obj->scenePos()),
                                     mContentMimeType(obj->contentMimeType()),
                                     mContentVisible(obj->isContentVisible()),
                                     mContentFilename(obj->contentFileName()),
-                                    mContentData(obj->contentData())
+                                    mContentData(obj->contentData()),
+                                    mIdtfPos((int)obj->idtfPos())
 {
 
 }
@@ -71,7 +72,8 @@ SCgNodeInfoData::SCgNodeInfoData(const SCgNodeInfoData &other): QSharedData(othe
                                     mContentMimeType(other.mContentMimeType),
                                     mContentVisible(other.mContentVisible),
                                     mContentFilename(other.mContentFilename),
-                                    mContentData(other.mContentData)
+                                    mContentData(other.mContentData),
+                                    mIdtfPos(other.mIdtfPos)
 {
 
 }
