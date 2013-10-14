@@ -114,7 +114,7 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->button() == Qt::LeftButton)
     {
-        SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
+        SCgObject *obj = dynamic_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
         if (obj && (obj->type() == SCgNode::Type || obj->type() == SCgPair::Type))
         {
             mIsTypeClonning = true;
