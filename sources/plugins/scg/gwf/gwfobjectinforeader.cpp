@@ -273,6 +273,12 @@ bool GwfObjectInfoReader::parseNode(const QDomElement &element)
     if (!getAttributeDouble(element, "x", x) || !getAttributeDouble(element, "y", y))
         return false;
 
+
+    // get identifier position
+    int& idtfPos = nodeInfo->idtfPosRef();
+    if (!getAttributeInt(element, "idtf_pos", idtfPos))
+        idtfPos = 0;
+
     // get content element
     QDomElement contEl = element.firstChildElement("content");
     if (contEl.isNull())

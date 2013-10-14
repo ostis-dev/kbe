@@ -178,6 +178,8 @@ void DefaultSCgObjectBuilder::buildNode(SCgNodeInfo* info)
         if (!node->contentData().isNull() && info->contentVisible())
             node->showContent();
         setObjectInfo(node, info);
+        node->setIdtfPos((SCgNode::IdentifierPosition)info->idtfPos());
+
     }
 }
 

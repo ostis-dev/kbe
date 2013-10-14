@@ -108,6 +108,7 @@ public:
     bool contentVisible() const;
     const QString& contentFilename() const;
     const QVariant& contentData() const;
+    int idtfPos() const;
     /**@}*/
 
     /**
@@ -122,6 +123,7 @@ public:
     bool& contentVisibleRef();
     QString& contentFilenameRef();
     QVariant& contentDataRef();
+    int& idtfPosRef();
     /**@}*/
 
 private:

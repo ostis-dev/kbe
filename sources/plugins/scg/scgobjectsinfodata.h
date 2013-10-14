@@ -87,6 +87,7 @@ private:
     bool mContentVisible;
     QString mContentFilename;
     QVariant mContentData;
+    int mIdtfPos;
 };
 
 

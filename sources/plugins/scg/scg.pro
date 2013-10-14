@@ -91,7 +91,8 @@ HEADERS += \
     arrangers/scgarrangerenergybased.h \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
-    arrangers/scgforcecalculator.h
+    arrangers/scgforcecalculator.h \
+    scgnodetextitem.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -170,7 +171,8 @@ SOURCES += \
     arrangers/scgarrangerenergybased.cpp \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
-    arrangers/scgforcecalculator.cpp
+    arrangers/scgforcecalculator.cpp \
+    scgnodetextitem.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
