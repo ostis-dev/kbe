@@ -114,8 +114,11 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->button() == Qt::LeftButton)
     {
-        SCgObject *obj = dynamic_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
-        if (obj && (obj->type() == SCgNode::Type || obj->type() == SCgPair::Type))
+        QGraphicsItem *pItem = mScene->itemAt(event->scenePos());
+        if (!pItem || (pItem->type() != SCgNode::Type && pItem->type() != SCgPair::Type))
+            return;
+        SCgObject *obj = static_cast<SCgObject*>(pItem);
+        if (obj)
         {
             mIsTypeClonning = true;
             mCloningType = obj->typeAlias();
@@ -233,9 +236,13 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
     }
     else if (mIsTypeClonning)
     {
-        SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos()));
-        if (obj && obj->type() == mObjectType && obj->typeAlias() != mCloningType)
-            mScene->changeObjectTypeCommand(obj, mCloningType);
+        QGraphicsItem *pItem = mScene->itemAt(event->scenePos());
+        if (pItem && pItem->type() == mObjectType)
+        {
+            SCgObject *obj = static_cast<SCgObject*>(pItem);
+            if (obj && obj->typeAlias() != mCloningType)
+                mScene->changeObjectTypeCommand(obj, mCloningType);
+        }
         mIsTypeClonning = false;
         mObjectType = 0;
         mCloningType = "";
