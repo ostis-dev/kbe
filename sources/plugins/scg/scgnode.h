@@ -37,13 +37,13 @@ friend class SCgBus;
 
 public:
     enum { Type = UserType + 2 };
-    enum IdentifierPosition
+    typedef enum
 	{
 		BottomRight = 0,
 		BottomLeft,
 		TopLeft,
 		TopRight
-    };
+    }IdentifierPosition;
     /*! Type for qgraphicsitem_cast
       */
     int type() const { return Type; }

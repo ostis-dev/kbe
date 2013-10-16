@@ -1,9 +1,32 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2010 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see .
+-----------------------------------------------------------------------------
+*/
+
 #include <QGraphicsSceneMouseEvent>
 #include "scgnodetextitem.h"
 
 
 SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene* scene )
-    :SCgTextItem(str,(QGraphicsItem*)parent,scene), mTextPos(idtfPos)
+    : SCgTextItem(str,(QGraphicsItem*)parent,scene)
+    , mTextPos(idtfPos)
 {
     Q_CHECK_PTR(parent);
     mParentItem = parent;
@@ -11,8 +34,9 @@ SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::I
 }
 
 
-SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene *scene):
-    SCgTextItem((QGraphicsItem*)parent, scene), mTextPos(idtfPos)
+SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene *scene)
+    : SCgTextItem((QGraphicsItem*)parent, scene)
+    , mTextPos(idtfPos)
 {
     Q_CHECK_PTR(parent);
     mParentItem = parent;
@@ -27,14 +51,14 @@ SCgNodeTextItem::~SCgNodeTextItem()
 void SCgNodeTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 
-	if( (flags() & QGraphicsItem::ItemIsMovable) != 0 )
+    if ((flags() & QGraphicsItem::ItemIsMovable) != 0)
         setTextPos(posToIdtfPos(mapToParent(event->pos())));
 }
 
 
 void SCgNodeTextItem::setTextPos(SCgNode::IdentifierPosition pos)
 {
-    if(mTextPos != pos)
+    if (mTextPos != pos)
     {
         mTextPos = pos;
         updateTextPos(mTextPos);
@@ -48,18 +72,18 @@ SCgNode::IdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) 
 	qreal x = point.x();
 	qreal y = point.y();
 
-	if(qFuzzyIsNull(x))
-		x+=1;
-	if(qFuzzyIsNull(y))
-		y+=1;
+	if (qFuzzyIsNull(x))
+        x += 1;
+	if (qFuzzyIsNull(y))
+        y += 1;
 
-	if( x > 0 )
-		if( y > 0)
+    if (x > 0)
+        if (y > 0)
             idtfPos = SCgNode::BottomRight;
 		else
             idtfPos = SCgNode::TopRight;
 	else
-		if( y > 0)
+        if (y > 0)
             idtfPos = SCgNode::BottomLeft;
 		else
             idtfPos = SCgNode::TopLeft;
@@ -75,10 +99,10 @@ void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
 
 	QPointF newPos = parentRect.bottomRight() - QPointF(rect.x(),rect.y());
 
-    if( pos == SCgNode::BottomLeft || pos == SCgNode::TopLeft )
+    if (pos == SCgNode::BottomLeft || pos == SCgNode::TopLeft)
 		newPos.rx() = parentRect.left() - rect.width() - rect.x();
 
-    if( pos == SCgNode::TopLeft || pos == SCgNode::TopRight )
+    if (pos == SCgNode::TopLeft || pos == SCgNode::TopRight)
 		newPos.ry() = parentRect.top() - rect.height() - rect.y();
 
 	setPos(newPos);

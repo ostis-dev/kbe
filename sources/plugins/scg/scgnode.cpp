@@ -164,7 +164,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
         mContentViewer->hide();
 
     if(mBus)
-    	mBus->del(delList);
+        mBus->del(delList);
 
     SCgObject::del(delList);
 }
@@ -172,7 +172,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
 void SCgNode::undel(SCgScene* scene)
 {
     if(mBus)
-    	mBus->undel(scene);
+        mBus->undel(scene);
 
     SCgObject::undel(scene);
     if(mIsContentVisible)
@@ -363,53 +363,56 @@ void SCgNode::setBus(SCgBus *bus)
 
 void SCgNode::setIdtfValue(const QString &idtf)
 {
-	mIdtfValue = idtf;
-	if(idtf != "")
-	{
-		if (!mTextItem)
-		{
-			mTextItem = new SCgNodeTextItem(idtf,this);
+    mIdtfValue = idtf;
+    if (idtf != "")
+    {
+        if (!mTextItem)
+        {
+            mTextItem = new SCgNodeTextItem(idtf,this);
 
-			QFont font("Times New Roman [Arial]", 10, 10, false);
-			font.setBold(true);
-			font.setItalic(true);
+            QFont font("Times New Roman [Arial]", 10, 10, false);
+            font.setBold(true);
+            font.setItalic(true);
 
-			mTextItem->setFont(font);
-			mTextItem->setParentItem(this);
-			mTextItem->setZValue(7);
-			mTextItem->setDefaultTextColor(scg_cfg_get_value_color(scg_text_element_color_normal));
-		}
-		mTextItem->setPlainText(mIdtfValue);
-	} else if (mTextItem)
-	{
-		delete mTextItem;
-		mTextItem = 0;
-	}
+            mTextItem->setFont(font);
+            mTextItem->setParentItem(this);
+            mTextItem->setZValue(7);
+            mTextItem->setDefaultTextColor(scg_cfg_get_value_color(scg_text_element_color_normal));
+        }
+        mTextItem->setPlainText(mIdtfValue);
+    }
+    else if (mTextItem)
+    {
+        delete mTextItem;
+        mTextItem = 0;
+    }
 
-	positionChanged();
+    positionChanged();
 }
 
 SCgNode::IdentifierPosition SCgNode::idtfPos() const
 {
-	if(!mTextItem)
-		return DEFAULT_IDTF_POS;
+    if (!mTextItem)
+        return DEFAULT_IDTF_POS;
 
-	SCgNodeTextItem* pItem = dynamic_cast<SCgNodeTextItem*>(mTextItem);
-	Q_CHECK_PTR(pItem);
-	if(pItem)
-		return pItem->textPos();
+    SCgNodeTextItem* pItem = static_cast<SCgNodeTextItem*>(mTextItem);
+    Q_CHECK_PTR(pItem);
 
-	return DEFAULT_IDTF_POS;
+    if (pItem)
+        return pItem->textPos();
+
+    return DEFAULT_IDTF_POS;
 }
 
 
 void SCgNode::setIdtfPos(IdentifierPosition pos)
 {
-    if(!mTextItem)
+    if (!mTextItem)
         return;
 
-	SCgNodeTextItem* pItem = dynamic_cast<SCgNodeTextItem*>(mTextItem);
-	Q_CHECK_PTR(pItem);
-	if(pItem)
-		pItem->setTextPos(pos);
+    SCgNodeTextItem* pItem = static_cast<SCgNodeTextItem*>(mTextItem);
+    Q_CHECK_PTR(pItem);
+
+    if (pItem)
+        pItem->setTextPos(pos);
 }
