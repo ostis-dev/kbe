@@ -41,6 +41,8 @@ public:
     explicit SCgNodeTextItem(SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
     virtual ~SCgNodeTextItem();
 
+    //! Return a type of graphics item as integer
+    virtual int type() const { return Type; }
 protected:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
