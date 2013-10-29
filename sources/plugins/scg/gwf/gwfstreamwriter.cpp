@@ -195,6 +195,7 @@ void GwfStreamWriter::writeNode( SCgObject *obj)
     SCgNode *node = static_cast<SCgNode*>(obj);
 
     writeAttribute("haveBus", node->bus() ? "true" : "false");
+    writeAttribute("idtf_pos", QString::number((int)node->idtfPos()));
 
     writeContent(node);
 

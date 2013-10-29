@@ -26,11 +26,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontentviewer.h"
 #include "scgbus.h"
 #include "scgview.h"
+#include "scgnodetextitem.h"
+#include "scgconfig.h"
 
 #include <QPainter>
 #include <QVector2D>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+
+#define DEFAULT_IDTF_POS BottomRight
 
 SCgNode::SCgNode(QGraphicsItem *parent, QGraphicsScene *scene) :
     SCgObject(parent, scene),
@@ -160,7 +164,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
         mContentViewer->hide();
 
     if(mBus)
-    	mBus->del(delList);
+        mBus->del(delList);
 
     SCgObject::del(delList);
 }
@@ -168,7 +172,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
 void SCgNode::undel(SCgScene* scene)
 {
     if(mBus)
-    	mBus->undel(scene);
+        mBus->undel(scene);
 
     SCgObject::undel(scene);
     if(mIsContentVisible)
@@ -354,4 +358,61 @@ SCgBus* SCgNode::bus() const
 void SCgNode::setBus(SCgBus *bus)
 {
     mBus = bus;
+}
+
+
+void SCgNode::setIdtfValue(const QString &idtf)
+{
+    mIdtfValue = idtf;
+    if (idtf != "")
+    {
+        if (!mTextItem)
+        {
+            mTextItem = new SCgNodeTextItem(idtf,this);
+
+            QFont font("Times New Roman [Arial]", 10, 10, false);
+            font.setBold(true);
+            font.setItalic(true);
+
+            mTextItem->setFont(font);
+            mTextItem->setParentItem(this);
+            mTextItem->setZValue(7);
+            mTextItem->setDefaultTextColor(scg_cfg_get_value_color(scg_text_element_color_normal));
+        }
+        mTextItem->setPlainText(mIdtfValue);
+    }
+    else if (mTextItem)
+    {
+        delete mTextItem;
+        mTextItem = 0;
+    }
+
+    positionChanged();
+}
+
+SCgNode::IdentifierPosition SCgNode::idtfPos() const
+{
+    if (!mTextItem)
+        return DEFAULT_IDTF_POS;
+
+    SCgNodeTextItem* pItem = static_cast<SCgNodeTextItem*>(mTextItem);
+    Q_CHECK_PTR(pItem);
+
+    if (pItem)
+        return pItem->textPos();
+
+    return DEFAULT_IDTF_POS;
+}
+
+
+void SCgNode::setIdtfPos(IdentifierPosition pos)
+{
+    if (!mTextItem)
+        return;
+
+    SCgNodeTextItem* pItem = static_cast<SCgNodeTextItem*>(mTextItem);
+    Q_CHECK_PTR(pItem);
+
+    if (pItem)
+        pItem->setTextPos(pos);
 }

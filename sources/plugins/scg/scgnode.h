@@ -37,11 +37,26 @@ friend class SCgBus;
 
 public:
     enum { Type = UserType + 2 };
+    typedef enum
+	{
+		BottomRight = 0,
+		BottomLeft,
+		TopLeft,
+		TopRight
+    }IdentifierPosition;
     /*! Type for qgraphicsitem_cast
       */
     int type() const { return Type; }
 
     explicit SCgNode(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+
+	void setIdtfValue(const QString &idtf);
+
+	void setIdtfPos(IdentifierPosition pos);
+	IdentifierPosition idtfPos() const;
+
+	QRectF boundingRect() const;
+
     virtual ~SCgNode();
 
 private:
@@ -49,7 +64,6 @@ private:
     void updateType();
 
 protected:
-    QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     void paintStruct(QPainter *painter);

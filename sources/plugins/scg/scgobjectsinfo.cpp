@@ -147,6 +147,11 @@ const QVariant& SCgNodeInfo::contentData() const
     return d->mContentData;
 }
 
+int SCgNodeInfo::idtfPos() const
+{
+    return d->mIdtfPos;
+}
+
 QPointF& SCgNodeInfo::posRef()
 {
     return d->mPos;
@@ -175,6 +180,11 @@ QString& SCgNodeInfo::contentFilenameRef()
 QVariant& SCgNodeInfo::contentDataRef()
 {
     return d->mContentData;
+}
+
+int& SCgNodeInfo::idtfPosRef()
+{
+    return d->mIdtfPos;
 }
 
 //________________________________________________

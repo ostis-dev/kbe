@@ -30,6 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtextitem.h"
 #include "scgpointgraphicsitem.h"
 #include "scgcontentfactory.h"
+#include "scgnodetextitem.h"
 
 #include "modes/scgbusmode.h"
 #include "modes/scgpairmode.h"
@@ -589,7 +590,7 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
                 }
             }
         }
-        else if (item->type() == SCgTextItem::Type)
+        else if (item->type() == SCgTextItem::Type || item->type() == SCgNodeTextItem::Type)
         {
             if(!cmd)
                 cmd = new SCgCommandIdtfMove(static_cast<SCgTextItem*>(item),
