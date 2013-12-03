@@ -1,7 +1,6 @@
 #!/bin/bash
 
 VERSION=0.3.0
-ARCHITECTURE=$(dpkg-architecture -qDEB_BUILD_ARCH)
 PROJECT_SOURCES_ROOT=../sources
 
 install_dependency_if_not_yet_installed()
@@ -13,13 +12,19 @@ install_dependency_if_not_yet_installed()
   fi
 }
 
+# Check dpkg-dev before use dpkg-architecture
+install_dependency_if_not_yet_installed dpkg-dev
+ARCHITECTURE=$(dpkg-architecture -qDEB_BUILD_ARCH)
+
 install_all_dependencies_if_not_yet_installed()
 {
   echo -en "\033[37;1;41mCheck dependencies...\033[0m\n"
   install_dependency_if_not_yet_installed md5deep
+  install_dependency_if_not_yet_installed gcc
   install_dependency_if_not_yet_installed qt4-dev-tools
   install_dependency_if_not_yet_installed make
   install_dependency_if_not_yet_installed fakeroot
+  install_dependency_if_not_yet_installed libantlr3c-dev
 }
 
 build_source_files()
@@ -47,6 +52,7 @@ fill_catalog_structure_with_content()
 {
   # Copying needed files into catalog structure
   cp -r ./DEBIAN ./kbe/
+  #cp -r $PROJECT_SOURCES_ROOT/kbe/media ./kbe/usr/share/kbe/
   cp -r $PROJECT_SOURCES_ROOT/bin/plugins/* ./kbe/usr/lib/kbe
   cp $PROJECT_SOURCES_ROOT/bin/kbe ./kbe/usr/bin/kbe
   cp ./files/kbe.desktop ./kbe/usr/share/applications/
@@ -72,7 +78,7 @@ fill_catalog_structure_with_content()
 }
 
 set_attribute_value_in_file()
-{ 
+{
   local attribute=$1
   local value=$2
   local file=$3
