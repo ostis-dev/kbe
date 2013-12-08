@@ -71,6 +71,8 @@ public:
     */
     void _update();
 
+    void activate(QMainWindow *window);
+
     /*! Get icon specified for window type
     */
     QIcon icon() const;

@@ -1,4 +1,24 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
 
+Copyright (c) 2010 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
 
 #include "SCsCLexer.h"
 #include "SCsCParser.h"
@@ -18,9 +38,15 @@ SCsParser::SCsParser(QObject *parent) :
 
 }
 
-pANTLR3_INPUT_STREAM SCsParser::createInputStream(const std::string &text)
+SCsParser::~SCsParser()
 {
-    pANTLR3_INPUT_STREAM    input;
+
+}
+
+
+pANTLR3_INPUT_STREAM SCsParser::createInputStream(const std::string &text) const
+{
+    pANTLR3_INPUT_STREAM    input = 0;
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
     input = antlr3StringStreamNew((pANTLR3_UINT8)text.c_str(),ANTLR3_ENC_UTF8,text.length(),(pANTLR3_UINT8)"scs");
@@ -33,10 +59,10 @@ pANTLR3_INPUT_STREAM SCsParser::createInputStream(const std::string &text)
 }
 
 
-QSet<int> SCsParser::getErrorLines(const QString &text)
+QSharedPointer<SCsParserErrorLinesArray> SCsParser::getErrorLines(const QString &text) const
 {
 
-	QSet<int> errorLines;
+	QSharedPointer<SCsParserErrorLinesArray> errorLines = QSharedPointer<SCsParserErrorLinesArray>(new SCsParserErrorLinesArray());
 
 	pANTLR3_INPUT_STREAM    input;
 	pSCsCLexer lxr;
@@ -47,13 +73,13 @@ QSet<int> SCsParser::getErrorLines(const QString &text)
     std::string strData = text.toStdString();
     input = createInputStream(strData);
 
-    if(input == NULL)
+    if (input == NULL)
 	{
 		return errorLines;
 	}
 
 	lxr = SCsCLexerNew(input);
-	if( lxr == NULL )
+	if (lxr == NULL)
 	{
         input->free(input);
 		return errorLines;
@@ -61,7 +87,7 @@ QSet<int> SCsParser::getErrorLines(const QString &text)
 
 
 	tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lxr));
-	if( tstream == NULL )
+	if (tstream == NULL)
 	{
         lxr->free(lxr);
         input->free(input);
@@ -70,7 +96,7 @@ QSet<int> SCsParser::getErrorLines(const QString &text)
 
 	
 	psr = SCsCParserNew(tstream);
-	if( psr == NULL )
+	if (psr == NULL)
 	{
         tstream->free(tstream);
         lxr->free(lxr);
@@ -83,15 +109,15 @@ QSet<int> SCsParser::getErrorLines(const QString &text)
 	_ParserException *psrEx = ParserHeadException();
 	_LexerException *lxrEx = LexerHeadException();
 
-	while(psrEx)
+	while (psrEx)
 	{
-		errorLines.insert(psrEx->mLine);
+		errorLines->insert(psrEx->mLine);
 		psrEx = psrEx->pNextException;
 	}
 
-	while(lxrEx)
+	while (lxrEx)
 	{
-		errorLines.insert(lxrEx->mLine);
+		errorLines->insert(lxrEx->mLine);
 		lxrEx = lxrEx->pNextException;
 	}
 
@@ -108,10 +134,10 @@ QSet<int> SCsParser::getErrorLines(const QString &text)
 
 
 
-QVector<SCsParserException> SCsParser::getExceptions(const QString &text)
+QSharedPointer<SCsParserExceptionArray> SCsParser::getExceptions(const QString &text) const
 {
 
-	QVector<SCsParserException> exceptions;
+	QSharedPointer<SCsParserExceptionArray> exceptions = QSharedPointer<SCsParserExceptionArray>(new SCsParserExceptionArray());
 
 	pANTLR3_INPUT_STREAM    input;
 	pSCsCLexer lxr;
@@ -121,32 +147,34 @@ QVector<SCsParserException> SCsParser::getExceptions(const QString &text)
     std::string strData = text.toStdString();
     input = createInputStream(strData);
 
-	if( input == NULL )
+	if (input == NULL)
 	{
-		input->free(input);
 		return exceptions;
 	}
 
 	lxr = SCsCLexerNew(input);
-	if( lxr == NULL )
+	if (lxr == NULL)
 	{
-		lxr->free(lxr);
+        input->free(input);
 		return exceptions;
 	}
 
 
 	tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lxr));
-	if( tstream == NULL )
+	if (tstream == NULL)
 	{
-		tstream->free(tstream);
+        input->free(input);
+        lxr->free(lxr);
 		return exceptions;
 	}
 
 
 	psr = SCsCParserNew(tstream);
-	if( psr == NULL )
+	if (psr == NULL)
 	{
-		psr->free(psr);
+        input->free(input);
+        lxr->free(lxr);
+        tstream->free(tstream);
 		return exceptions;
 	}
 
@@ -155,15 +183,15 @@ QVector<SCsParserException> SCsParser::getExceptions(const QString &text)
 	_ParserException *psrEx = ParserHeadException();
 	_LexerException *lxrEx = LexerHeadException();
 
-	while(psrEx)
+	while (psrEx)
 	{
-		exceptions.push_back(SCsParserException(SCsParserException::PARSER, psrEx->mLine, psrEx->mCharPositionInLine, psrEx->mType));
+		exceptions->push_back(SCsParserException(SCsParserException::PARSER, psrEx->mLine, psrEx->mCharPositionInLine, psrEx->mType));
 		psrEx = psrEx->pNextException;
 	}
 
-	while(lxrEx)
+	while (lxrEx)
 	{
-		exceptions.push_back(SCsParserException(SCsParserException::LEXER, lxrEx->mLine, lxrEx->mCharPositionInLine, lxrEx->mType));
+		exceptions->push_back(SCsParserException(SCsParserException::LEXER, lxrEx->mLine, lxrEx->mCharPositionInLine, lxrEx->mType));
 		lxrEx = lxrEx->pNextException;
 	}
 
@@ -179,18 +207,10 @@ QVector<SCsParserException> SCsParser::getExceptions(const QString &text)
 }
 
 
-
-SCsParser::~SCsParser()
+QSharedPointer<SCsParserTokenArray> SCsParser::getTokens(const QString &text) const
 {
 
-}
-
-
-
-QVector<SCsParserToken> SCsParser::getTokens(const QString &text)
-{
-
-	QVector<SCsParserToken> token;
+	QSharedPointer<SCsParserTokenArray> token = QSharedPointer<SCsParserTokenArray>(new SCsParserTokenArray());
 	pANTLR3_INPUT_STREAM    input;
 	pSCsCLexer lxr;
 	pANTLR3_COMMON_TOKEN_STREAM	    tstream; 
@@ -198,24 +218,24 @@ QVector<SCsParserToken> SCsParser::getTokens(const QString &text)
     std::string strData = text.toStdString();
     input = createInputStream(strData);
 
-	if( input == NULL )
+	if (input == NULL)
 	{
-		input->free(input);
 		return token;
 	}
 
 	lxr = SCsCLexerNew(input);
-	if( lxr == NULL )
+	if (lxr == NULL)
 	{
-		lxr->free(lxr);
+        input->free(input);
 		return token;
 	}
 
 
 	tstream = antlr3CommonTokenStreamSourceNew(ANTLR3_SIZE_HINT, TOKENSOURCE(lxr));
-	if( tstream == NULL )
+	if (tstream == NULL)
 	{
-		tstream->free(tstream);
+        input->free(input);
+        lxr->free(lxr);
 		return token;
 	}
 
@@ -228,13 +248,12 @@ QVector<SCsParserToken> SCsParser::getTokens(const QString &text)
 	{
 		tok = (pANTLR3_COMMON_TOKEN) tokens->elements[i].element; 
 		tokText = tok->getText(tok);
-		token.append(SCsParserToken(tok->getType(tok), QString((char*)tokText->chars), tok->getLine(tok), tok->getCharPositionInLine(tok)));
+		token->append(SCsParserToken(tok->getType(tok), QString((char*)tokText->chars), tok->getLine(tok), tok->getCharPositionInLine(tok)));
 	}
-
-	
 
 	freeLexerExceptionList();
 	freeParserExceptionList();
+
 	tstream->free(tstream);
 	lxr->free(lxr);
 	input->free(input);
@@ -243,20 +262,20 @@ QVector<SCsParserToken> SCsParser::getTokens(const QString &text)
 }
 
 
-QSet<QString> SCsParser::getIdentifier(const QString &text)
+QSharedPointer<SCsParserIdtfArray> SCsParser::getIdentifier(const QString &text) const
 {
-	QSet<QString> idtf;
+	QSharedPointer<SCsParserIdtfArray> idtf = QSharedPointer<SCsParserIdtfArray>(new SCsParserIdtfArray());
 
- 	QVector<SCsParserToken> token = getTokens(text);
- 	QVector<SCsParserToken>::iterator it = token.begin();
-	while (it!=token.end())
+ 	QSharedPointer<SCsParserTokenArray> token = getTokens(text);
+ 	QVector<SCsParserToken>::iterator it;
+
+	for (it = token->begin(); it != token->end(); ++it)
 	{
-		if(it->tokenType() == NAME)
-		{
-			idtf.insert(it->tokenText());
-		}
-		++it;
+		if (it->tokenType() == NAME)
+			idtf->insert(it->tokenText());
 	}
+
+	token->clear();
 
 	return idtf;
 }

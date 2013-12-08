@@ -49,7 +49,7 @@ SCsCodeEditor::SCsCodeEditor(QWidget *parent, SCsErrorTableWidget *errorTable) :
     mLineNumberArea = new SCsLineNumberArea(this);
 	mAnalyzer = new SCsCodeAnalyzer(this);
     mCompleter = new SCsCodeCompleter(this);
-    mErrorAnalyzer = new SCsCodeErrorAnalyzer(mErrorTable,this);
+    mErrorAnalyzer = new SCsCodeErrorAnalyzer(this, mErrorTable);
 
     mCompleter->setWidget(this);
     mCompleter->setCompletionMode(QCompleter::PopupCompletion);
@@ -65,11 +65,14 @@ SCsCodeEditor::SCsCodeEditor(QWidget *parent, SCsErrorTableWidget *errorTable) :
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
     connect(this, SIGNAL(textChanged()), this, SLOT(updateAnalyzer()));
 	connect(mErrorAnalyzer,SIGNAL(errorLines(QSet<int>)),this,SLOT(setErrorsLines(QSet<int>)));
-    if( mErrorTable != NULL )
+
+    if (mErrorTable != NULL)
         connect(mErrorTable, SIGNAL(errorAt(int,int)), this, SLOT(moveTextCursor(int,int)));
 
     updateLineNumberAreaWidth(0);
     highlightCurrentLine();
+
+    setLineWrapMode(QPlainTextEdit::NoWrap);
 }
 
 void SCsCodeEditor::setDocumentPath(const QString &path)
@@ -118,22 +121,22 @@ void SCsCodeEditor::resizeEvent(QResizeEvent *e)
 
 void SCsCodeEditor::highlightCurrentLine()
 {
-     QList<QTextEdit::ExtraSelection> extraSelections;
+	QList<QTextEdit::ExtraSelection> extraSelections;
 
-     if (!isReadOnly())
-     {
-         QTextEdit::ExtraSelection selection;
+	if (!isReadOnly())
+	{
+		QTextEdit::ExtraSelection selection;
 
-         QColor lineColor = QColor(Qt::yellow).lighter(160);
+		QColor lineColor = QColor(Qt::yellow).lighter(160);
 
-         selection.format.setBackground(lineColor);
-         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
-         selection.cursor = textCursor();
-         selection.cursor.clearSelection();
-         extraSelections.append(selection);
-     }
+		selection.format.setBackground(lineColor);
+		selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+		selection.cursor = textCursor();
+		selection.cursor.clearSelection();
+		extraSelections.append(selection);
+	}
 
-     setExtraSelections(extraSelections);
+	setExtraSelections(extraSelections);
 }
 
 void SCsCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -152,7 +155,7 @@ void SCsCodeEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
              painter.setPen(Qt::black);
              painter.drawText(0, top, mLineNumberArea->width(), fontMetrics().height(),
                               Qt::AlignRight, number);
-             if(isLineWithError(blockNumber+1))
+             if (isLineWithError(blockNumber+1))
                  painter.drawPixmap(4,top+2,mErrorPixmap);
          }
 
@@ -188,7 +191,7 @@ void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
 //         return;
 //     }
 
-	if(e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_R)
+	if (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_R)
         updateErrorAnalyzer();
 
     if (mCompleter->popup()->isVisible())
@@ -272,8 +275,19 @@ void SCsCodeEditor::updateAnalyzer()
     mLastCursorPosition = tc.position();
     mAnalyzer->ignoreUpdate(currentWord);
 
-    mAnalyzer->update(toPlainText(), completerModel);
+    mAnalyzer->asynchUpdate(toPlainText(), completerModel);
 }
+
+void SCsCodeEditor::updateErrorAnalyzer()
+{
+
+	QString text = document()->toPlainText();
+
+	mErrorAnalyzer->parse(text);
+
+	//update();
+}
+
 
 
 bool SCsCodeEditor::isLineWithError(int line)
@@ -281,20 +295,9 @@ bool SCsCodeEditor::isLineWithError(int line)
     return mErrorLines.contains(line);
 }
 
-void SCsCodeEditor::setErrorsLines(QSet<int> lines)
+void SCsCodeEditor::setErrorsLines(const QSet<int> &lines)
 {
     mErrorLines = lines;
-}
-
-
-
-void SCsCodeEditor::updateErrorAnalyzer()
-{
-
-    QString text = document()->toPlainText();
-
-    mErrorAnalyzer->parse(text);
-
 	update();
 }
 
@@ -302,20 +305,23 @@ void SCsCodeEditor::updateErrorAnalyzer()
 void SCsCodeEditor::moveTextCursor(int line, int charPos)
 {
 
-	if(charPos<0)
+    if (charPos<0)
 		charPos = 0;
 
-	QTextCursor cursor = textCursor();
+    if (line < 0)
+        line = 0;
+
+    QTextCursor cursor = textCursor();
 	cursor.movePosition(QTextCursor::Start);
 	
     cursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, line-1);
-    if( cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor) )
+    if (cursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor))
     {
-        if( cursor.columnNumber() < charPos)
+        if (cursor.columnNumber() < charPos)
             charPos = 0;
     }
     cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
-    cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, charPos-1);
+    cursor.movePosition(QTextCursor::Right, QTextCursor::MoveAnchor, charPos+1);
 
 	setTextCursor(cursor);
 	setFocus(Qt::ShortcutFocusReason);
