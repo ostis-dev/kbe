@@ -33,6 +33,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 
 class QStandardItemModel;
+class SCsParseExtractIdftAsynchTask;
+class SCsAsynchParser;
 
 
 class SCsCodeAnalyzer : public QObject
@@ -55,6 +57,8 @@ public:
       */
     void update(const QString &text, QStandardItemModel *model);
 
+	void asynchUpdate(const QString &text, QStandardItemModel *model);
+
     /*! Force to ignore the addition of an \p identifier during the next update
       * (identifier wouldn't be added to autocomleter item model)
       * @param identifier String that contains identifier
@@ -67,14 +71,19 @@ public:
     static bool isIdentifier(const QString &text);
 
 protected:
-    void fillModel(QStandardItemModel *model);
-	void extractIdentifiers(const QString &text, QSet<QString> *identifiers);
+    void fillModel(QStandardItemModel *model, const QSet<QString> &idtfs);
+	void extractIdentifiers(const QString &text, QSet<QString> &identifiers);
+
+private slots:
+	void asynchUpdateExtractIdftFinished();
 
 private:
 	const static QRegExp msIdentifierExp;
     QSet<QString> mDocumentIdentifiers;
     QSet<QString> mIgnoreIdentifiers;
-
+	QStandardItemModel* mUpdateModel;
+    SCsAsynchParser* mAsynchParser;
+    bool mIsBusy;
 };
 
 

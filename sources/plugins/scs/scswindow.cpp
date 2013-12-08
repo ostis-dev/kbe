@@ -52,7 +52,7 @@ SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
 
     mErrorTable = new SCsErrorTableWidget(this);
 
-    mEditor = new SCsCodeEditor(this,mErrorTable);
+    mEditor = new SCsCodeEditor(this, mErrorTable);
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
     mEditor->setFont(font);
@@ -231,6 +231,12 @@ void SCsWindow::onEscapePressed()
     mEditor->setFocus();
 }
 
+
+void SCsWindow::activate(QMainWindow *window)
+{
+    EditorInterface::activate(window);
+    mEditor->setFocus();
+}
 
 // ---------------------
 SCsWindowFactory::SCsWindowFactory(QObject *parent) :

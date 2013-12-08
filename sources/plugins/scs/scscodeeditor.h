@@ -54,8 +54,10 @@ protected:
 
     void updateErrorAnalyzer();
 
+public slots:
+	void setErrorsLines(const QSet<int> &lines);
+
 private slots:
-	void setErrorsLines(QSet<int> lines);
     void updateLineNumberAreaWidth(int newBlockCount);
     void highlightCurrentLine();
     void updateLineNumberArea(const QRect &, int);
@@ -97,8 +99,6 @@ protected:
 
 private:
     SCsCodeEditor *mCodeEditor;
-    int mStartSelectionBlockNumber;
-    int mEndSelectionBlockNumber;
 
 };
 #endif // SCSCODEEDITOR_H
