@@ -1,0 +1,13 @@
+Source: kbe
+Section: science
+Priority: optional
+Maintainer: Nikita Grishko <grin.minsk@gmail.com>
+Homepage: https://github.com/deniskoronchik/kbe
+Build-Depends: debhelper (>= 8.0.0), cdbs, libqt4-dev, qt4-qmake, libantlr3c-dev
+
+Package: kbe
+Architecture: i386
+Depends: libc6 (>= 2.3), libgcc1 (>= 1:4.1.1), libqt4-svg (>= 4:4.5.3), libqt4-xml (>= 4:4.5.3), libqt4-xmlpatterns (>= 4:4.5.3), libqtcore4 (>= 4:4.7.0~beta1), libqtgui4 (>= 4:4.7.0~beta1), libantlr3c-3.2-0
+Description: KBE - Knowledge Base source Editor
+ This is a specialized tool that allow to create knowledge bases for intelligent systems based on OSTIS technology.
+ It include such extensions as SCg-code editor (graphical editor of semantic networks), m4scp editor (editor of scp programs that used to process knowledges), scs editor (string representation of semantic networks)

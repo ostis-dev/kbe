@@ -6,7 +6,7 @@ PROJECT_SOURCES_ROOT=../sources
 install_dependency_if_not_yet_installed()
 {
   local dependency=$1
-  if ! dpkg -l | grep $dependency
+  if ! dpkg -l | cut -d" " -f3 | grep $dependency
   then
 	sudo apt-get install $dependency
   fi
@@ -30,8 +30,8 @@ install_all_dependencies_if_not_yet_installed()
 build_source_files()
 {
   echo -en "\033[37;1;41mBuild binary...\033[0m\n"
-  sed -i 's/Config::pathPlugins = root_dir;/Config::pathPlugins = "\/usr\/lib\/kbe";/' kbe/main.cpp;
-  sed -i 's/Config::pathPlugins.cd("plugins");/\/\/Config::pathPlugins.cd("plugins");/' kbe/main.cpp;
+  sed -i 's/Config::pathPlugins = root_dir;/Config::pathPlugins = "\/usr\/lib\/kbe";/' kbe/main.cpp
+  sed -i 's/Config::pathPlugins.cd("plugins");/\/\/Config::pathPlugins.cd("plugins");/' kbe/main.cpp
   sed '/updater/d' all.pro > all_linux.pro
   qmake-qt4 all_linux.pro
   make
@@ -105,8 +105,8 @@ build_deb_package()
 clean()
 {
   echo -en "\033[37;1;41mRemove temporary data...\033[0m\n"
-  sed -i 's/Config::pathPlugins = "\/usr\/lib\/kbe";/Config::pathPlugins = root_dir;/' $PROJECT_SOURCES_ROOT/kbe/main.cpp;
-  sed -i 's/\/\/Config::pathPlugins.cd("plugins");/Config::pathPlugins.cd("plugins");/' $PROJECT_SOURCES_ROOT/kbe/main.cpp;
+  sed -i 's/Config::pathPlugins = "\/usr\/lib\/kbe";/Config::pathPlugins = root_dir;/' $PROJECT_SOURCES_ROOT/kbe/main.cpp
+  sed -i 's/\/\/Config::pathPlugins.cd("plugins");/Config::pathPlugins.cd("plugins");/' $PROJECT_SOURCES_ROOT/kbe/main.cpp
   rm $PROJECT_SOURCES_ROOT/all_linux.pro
   rm -r ./kbe
   find $PROJECT_SOURCES_ROOT/ -name 'Makefile' -type f -print0 | xargs -0 rm
