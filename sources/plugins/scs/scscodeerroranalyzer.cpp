@@ -1,47 +1,48 @@
 #include "scscodeerroranalyzer.h"
-#include "scsparserwrapper.h"
+#include "scscodeeditor.h"
 
 #include "scserrortablewidget.h"
-#include "scsparserexception.h"
+#include "scsasynchparser.h"
 #include <antlr3exception.h>
 
-SCsCodeErrorAnalyzer::SCsCodeErrorAnalyzer(SCsErrorTableWidget *errorTable, QObject *parent /* = 0 */)
-	:  QObject(parent), mErrorTable(errorTable)
+SCsCodeErrorAnalyzer::SCsCodeErrorAnalyzer(SCsCodeEditor* editor, SCsErrorTableWidget *errorTable)
+	:  QObject(editor)
+	, mEditor(editor)
+	, mErrorTable(errorTable)
+    , mAsynchParser(0)
 {
+	Q_CHECK_PTR(mEditor);
 
+    mAsynchParser = new SCsAsynchParser(this);
+
+    connect(mAsynchParser,SIGNAL(parseExceptionsFinished()),SLOT(parseExceptionFinished()));
 }
 
 void SCsCodeErrorAnalyzer::parse(QString &text)
 {
-	SCsParser psr;
-	QVector<SCsParserException> exeptions =  psr.getExceptions(text);
-	QSet<int> lines;
-	for(int i=0; i<exeptions.size(); ++i)
-		lines.insert(exeptions[i].line());
+    if (mAsynchParser->doWork() || text.isEmpty())
+        return;
 
-	emit errorLines(lines);
-
-	showError(exeptions);
+    mAsynchParser->parseExceptions(text);
 }
 
 
-void SCsCodeErrorAnalyzer::showError(QVector<SCsParserException> &exceptions)
+void SCsCodeErrorAnalyzer::showError(const QVector<SCsParserException> &exceptions) const
 {
 
-    if(mErrorTable == NULL)
+    if (mErrorTable == NULL)
         return;
 
 	mErrorTable->clear();
 
-	QVector<SCsParserException>::iterator it=exceptions.begin();
-	while( it != exceptions.end())
+	QVector<SCsParserException>::const_iterator it;
+	for (it = exceptions.begin(); it != exceptions.end(); ++it)
 	{
         QString description = getErrorDescription(*it);
-        mErrorTable->addError(description,it->line(),it->positionInLine());
-		it++;
+        mErrorTable->addError(description, it->line(), it->positionInLine());
 	}
 
-	if(!exceptions.isEmpty())
+	if (!exceptions.isEmpty())
 		mErrorTable->show();
 	else
 		mErrorTable->hide();
@@ -49,7 +50,7 @@ void SCsCodeErrorAnalyzer::showError(QVector<SCsParserException> &exceptions)
 }
 
 
-QString SCsCodeErrorAnalyzer::getErrorDescription(SCsParserException &ex)
+QString SCsCodeErrorAnalyzer::getErrorDescription(const SCsParserException &ex) const
 {
 	QString descr;
 	SCsParserException::ExceptionType type = ex.getExceptionType();
@@ -87,4 +88,27 @@ QString SCsCodeErrorAnalyzer::getErrorDescription(SCsParserException &ex)
 	}
 
 	return descr;
+}
+
+
+void SCsCodeErrorAnalyzer::parseExceptionFinished()
+{
+    Q_ASSERT(mAsynchParser->isParseExceptionsResultPresent());
+
+    if (!mAsynchParser->isParseExceptionsResultPresent())
+        return;
+
+    QSharedPointer<SCsParserExceptionArray> exceptions = mAsynchParser->parseExceptionsResult();
+
+    if (exceptions.isNull())
+        return;
+
+    QSet<int> lines;
+    for (int i=0; i<exceptions->size(); ++i)
+        lines.insert(exceptions->at(i).line());
+
+    emit errorLines(lines);
+
+    showError(*exceptions);
+
 }

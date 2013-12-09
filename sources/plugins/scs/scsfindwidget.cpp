@@ -68,7 +68,8 @@ SCsFindWidget::~SCsFindWidget()
 
 }
 
-QTextDocument::FindFlags SCsFindWidget::getFlags(){
+QTextDocument::FindFlags SCsFindWidget::getFlags() const
+{
     QTextDocument::FindFlags searchFlags;
 
     if (mCaseSensitiveCheck->isChecked())
