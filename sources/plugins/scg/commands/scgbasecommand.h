@@ -23,7 +23,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGBASECOMMAND_H
 #define SCGBASECOMMAND_H
 
-#include <QUndoCommand>
+
+#include <QtWidgets/QUndoCommand>
 #include "../scgscene.h"
 
 class SCgObject;

@@ -88,6 +88,10 @@ public:
     //! Return field value
     const QString& value() const { return mValue; }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 protected:
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

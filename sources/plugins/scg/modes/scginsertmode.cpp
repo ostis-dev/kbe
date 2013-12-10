@@ -26,9 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtemplateobjectbuilder.h"
 #include "scgwindow.h"
 #include <QDomDocument>
-#include <QGraphicsView>
-#include <QApplication>
+#include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QApplication>
 #include <QClipboard>
+#include <QMimeData>
 
 SCgInsertMode::SCgInsertMode(SCgScene* parent):
     SCgMode(parent),

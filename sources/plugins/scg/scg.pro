@@ -1,4 +1,5 @@
-QT += xml
+
+QT += xml widgets concurrent
 
 TARGET        = $$qtLibraryTarget(scg)
 TEMPLATE      = lib
@@ -173,6 +174,7 @@ SOURCES += \
     commands/scgcommandminimizecontour.cpp \
     arrangers/scgforcecalculator.cpp \
     scgnodetextitem.cpp
+
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts

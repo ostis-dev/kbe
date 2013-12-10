@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scsparserwrapper.h"
 
 #include <QtCore>
+#include <QtConcurrent/QtConcurrent>
 
 QSharedPointer<SCsParserExceptionArray> parseExceptionsFn(const QString &text)
 {

@@ -31,7 +31,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSet>
 
 
-
 SCsParser::SCsParser(QObject *parent) :
     QObject(parent)
 {

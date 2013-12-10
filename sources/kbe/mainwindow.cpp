@@ -32,6 +32,27 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "version.h"
 
+<<<<<<< HEAD
+#include <QtWidgets/QMdiSubWindow>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QStyleFactory>
+#include <QSignalMapper>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QUndoGroup>
+#include <QtWidgets/QMessageBox>
+#include <QUrl>
+#include <QtWidgets/QGraphicsBlurEffect>
+#include <QCloseEvent>
+#include <QSettings>
+#include <QtWidgets/QDockWidget>
+
+#include <QMimeData>
+=======
 #include <QMdiSubWindow>
 #include <QToolBar>
 #include <QStyleFactory>
@@ -49,6 +70,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCloseEvent>
 #include <QSettings>
 #include <QDockWidget>
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 MainWindow* MainWindow::mInstance = 0;
 
@@ -70,8 +92,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+<<<<<<< HEAD
+=======
     mLastDir = QDir(QCoreApplication::applicationDirPath());
 
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     /* creating tab widget */
     mTabWidget = new ExtendedTabWidget();
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
@@ -314,6 +339,14 @@ void MainWindow::openRecentFile()
     }
 }
 
+<<<<<<< HEAD
+EditorInterface* MainWindow::createSubWindow(const QString& ext)
+{
+    EditorInterface* childWindow = 0;
+
+    if (PluginManager::instance()->supportedFilesExt().contains(ext))
+        childWindow = PluginManager::instance()->createWindow(ext);
+=======
 EditorInterface* MainWindow::createSubWindowByType(const QString& type)
 {
     EditorInterface* childWindow = 0;
@@ -336,6 +369,7 @@ EditorInterface* MainWindow::createSubWindowByExt(const QString& ext)
 
     if (PluginManager::instance()->editorFactoriesByExt().contains(ext))
         childWindow = PluginManager::instance()->createWindowByExt(ext);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     else
         return 0;
 
@@ -353,6 +387,15 @@ QString MainWindow::getSettingKeyValueForWindow(const QString& editorType) const
 
 void MainWindow::fileNew()
 {
+<<<<<<< HEAD
+    if (PluginManager::instance()->supportedFilesExt().size() > 0)
+    {
+        NewFileDialog *fileNewDlg = new NewFileDialog(PluginManager::instance()->supportedFilesExt().toList(), this);
+
+        int dlgResult = fileNewDlg->exec();
+        if (dlgResult == QDialog::Accepted)
+            createSubWindow(fileNewDlg->selectedFormat());
+=======
     if (PluginManager::instance()->editorFactoriesByType().size() > 0)
     {
         NewFileDialog *fileNewDlg = new NewFileDialog(this);
@@ -360,6 +403,7 @@ void MainWindow::fileNew()
         int dlgResult = fileNewDlg->exec();
         if (dlgResult == QDialog::Accepted)
             createSubWindowByType(fileNewDlg->selectedEditor());
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     }
 }
 
@@ -371,7 +415,10 @@ void MainWindow::fileOpen()
     QFileDialog dlg;
 
     mBlurEffect->setEnabled(true);
+<<<<<<< HEAD
+=======
     dlg.setDirectory(mLastDir);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     QString fileName = dlg.getOpenFileName(this,
                                            tr("Open file"),
                                            "",
@@ -380,7 +427,10 @@ void MainWindow::fileOpen()
                                            options);
     if (!fileName.isEmpty())
         load(fileName);
+<<<<<<< HEAD
+=======
     mLastDir = QDir(fileName);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     mBlurEffect->setEnabled(false);
 }
 
@@ -390,7 +440,11 @@ void MainWindow::load(QString fileName)
     QString ext = fi.suffix();
     if(PluginManager::instance()->supportedFilesExt().contains(ext))
     {
+<<<<<<< HEAD
+        EditorInterface* childWindow = createSubWindow(ext);
+=======
         EditorInterface* childWindow = createSubWindowByExt(ext);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
         if (childWindow->loadFromFile(fileName))
         {
@@ -477,7 +531,11 @@ void MainWindow::fileSaveAs(QWidget* window)
 
 
     QString selectedFilter;
+<<<<<<< HEAD
+    QString fileName = QCoreApplication::applicationDirPath() + "/" + childWindow->currentFileName();
+=======
     QString fileName = mLastDir.path() + "/" + childWindow->currentFileName();
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     mBlurEffect->setEnabled(true);
     fileName = QFileDialog::getSaveFileName(this,
                                             tr("Save file to .."),
@@ -485,7 +543,10 @@ void MainWindow::fileSaveAs(QWidget* window)
                                             formatsStr,
                                             &selectedFilter,
                                             options);
+<<<<<<< HEAD
+=======
     mLastDir = QDir(fileName);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     if(!fileName.isEmpty())
     {
         //! TODO: use regular expression
@@ -700,7 +761,11 @@ void MainWindow::subWindowHasChanged(int index)
     updateWindowTitle();
 }
 
+<<<<<<< HEAD
+void MainWindow::windowWillBeClosed(QWidget* w)
+=======
 bool MainWindow::windowWillBeClosed(QWidget* w)
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 {
     QMap<QWidget*, EditorInterface*>::iterator it = mWidget2EditorInterface.find(w);
 
@@ -721,6 +786,17 @@ bool MainWindow::windowWillBeClosed(QWidget* w)
             //: Appers after 'Do you want to save changes in '
             fileName = tr("newly created document");
 
+<<<<<<< HEAD
+        if (QMessageBox::question(this, tr("Save changes"),
+                                  tr("Do you want to save changes in %1 ?").arg(fileName),
+                                  QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
+        {
+            fileSave(it.key());
+        }
+    }
+
+    mWidget2EditorInterface.erase(it);
+=======
         int question = QMessageBox::question(this, tr("Save changes"),
                                              tr("Do you want to save changes in %1 ?").arg(fileName),
                                              QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Yes);
@@ -736,6 +812,7 @@ bool MainWindow::windowWillBeClosed(QWidget* w)
 
     mWidget2EditorInterface.erase(it);
     return true;
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 }
 
 void MainWindow::saveLayout() const
@@ -758,12 +835,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;
+<<<<<<< HEAD
+    foreach (widget, widgets)
+        mTabWidget->closeWindow(widget);
+=======
     foreach (widget, widgets){
         if(!mTabWidget->closeWindow(widget)){
             event->ignore();
             return;
         }
     }
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
     saveLayout();
 }

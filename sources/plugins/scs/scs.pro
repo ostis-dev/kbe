@@ -1,4 +1,4 @@
-
+QT += widgets concurrent
 TARGET        = $$qtLibraryTarget(scs)
 TEMPLATE      = lib
 INCLUDEPATH  += ../../kbe
@@ -40,7 +40,7 @@ HEADERS += \
     scsparser/SCsCLexer.h \
     scsparser/SCsCParser.h \
     scsparser/scscparserdefs.h \
-	scsparser/scsasynchparser.h \
+        scsparser/scsasynchparser.h \
     scswindow.h \
     scsplugin.h \
     scscodeerroranalyzer.h \
@@ -64,7 +64,7 @@ SOURCES += \
     scsparser/SCsCLexer.c \
     scsparser/SCsCParser.c \
     scsparser/scscparserdefs.c \
-	scsparser/scsasynchparser.cpp \
+        scsparser/scsasynchparser.cpp \
     scswindow.cpp \
     scserrortablewidget.cpp \
     scscodeeditor.cpp \
@@ -75,5 +75,8 @@ SOURCES += \
     scscodeanalyzer.cpp \
     scssyntaxhighlighter.cpp \
     scscodecompleter.cpp
+
+
+
 
 

@@ -22,6 +22,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "updateinstaller.h"
 
+<<<<<<< HEAD
+UpdateInstaller::UpdateInstaller(const QString &patchPath, QObject *parent) :
+    QObject(parent)
+=======
 #include <QFileInfo>
 #include <QDir>
 #include <QDomDocument>
@@ -29,12 +33,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 UpdateInstaller::UpdateInstaller(const QString &patchPath, QObject *parent) :
     QObject(parent),
     mPatchPath(patchPath)
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 {
 }
 
 UpdateInstaller::~UpdateInstaller()
 {
 }
+<<<<<<< HEAD
+=======
 
 bool UpdateInstaller::installUpdate()
 {
@@ -196,3 +203,4 @@ bool UpdateInstaller::cleanUpdates()
     return true;
 }
 */
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417

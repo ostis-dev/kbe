@@ -1,4 +1,6 @@
 
+QT += widgets
+
 TARGET        = $$qtLibraryTarget(m4scp)
 TEMPLATE      = lib
 INCLUDEPATH  += ../../kbe
@@ -9,7 +11,6 @@ CONFIG       += plugin
 
 OBJECTS_DIR = obj
 MOC_DIR = moc
-
 
 HEADERS += \
     m4scpwindow.h \

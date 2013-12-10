@@ -22,21 +22,21 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgwindow.h"
 
-#include <QToolBar>
-#include <QApplication>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QApplication>
 #include <QClipboard>
-#include <QAction>
-#include <QUndoStack>
-#include <QComboBox>
-#include <QLineEdit>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QUndoStack>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 #include <QMimeData>
-#include <QActionGroup>
-#include <QBoxLayout>
-#include <QMainWindow>
-#include <QMenuBar>
-#include <QMenu>
-#include <QToolButton>
-#include <QFileDialog>
+#include <QtWidgets/QActionGroup>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QFileDialog>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -261,15 +261,7 @@ void SCgWindow::createToolBar()
     alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onHorizontalAlignment()));
 
-    // Energy-based layout
-    action = new QAction(findIcon("tool-align-energy.png"), tr("Energy-based layout"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("9", "Energy-based layout")));
-    alignButton->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onEnergyBasedLayout()));
-
-
-    // selection group button
+    // selection gtoup button
     QToolButton *selectButton = new QToolButton(mToolBar);
     selectButton->setIcon(findIcon("tool-select-group.png"));
     selectButton->setPopupMode(QToolButton::InstantPopup);
@@ -431,6 +423,7 @@ void SCgWindow::onEnergyBasedLayout()
 {
     SCgLayoutManager::instance().arrange(mView, SCgEnergyBasedArranger::Type);
 }
+
 
 void SCgWindow::onSelectInputOutput()
 {
@@ -744,3 +737,4 @@ QIcon SCgWindowFactory::icon() const
 {
     return SCgWindow::findIcon("mime_type.png");
 }
+

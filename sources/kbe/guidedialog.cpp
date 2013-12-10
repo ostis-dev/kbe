@@ -23,12 +23,21 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "guidedialog.h"
 #include "config.h"
 
+<<<<<<< HEAD
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QCheckBox>
+#include <QSettings>
+#include <QtWidgets/QPushButton>
+=======
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QTextBrowser>
 #include <QCheckBox>
 #include <QSettings>
 #include <QPushButton>
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 GuideDialog::GuideDialog(QWidget *parent) :
     QDialog(parent)

@@ -29,10 +29,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpair.h"
 #include "scgtextitem.h"
 #include "scgpointgraphicsitem.h"
-#include "scgnodetextitem.h"
 
 #include <QDomDocument>
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsView>
+#include <QTransform>
 #include <QBitmap>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
@@ -59,7 +59,7 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
     // left button
     if (event->button() == Qt::LeftButton)
     {
-        QGraphicsItem *item = mScene->itemAt(mousePos);
+        QGraphicsItem *item = mScene->itemAt(mousePos, QTransform());
         if(mCurrentPointObject)
         {
             QPainterPath p = mCurrentPointObject->lineShape();
@@ -115,11 +115,8 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     if (event->modifiers() == Qt::ControlModifier && event->button() == Qt::LeftButton)
     {
-        QGraphicsItem *pItem = mScene->itemAt(event->scenePos());
-        if (!pItem || (pItem->type() != SCgNode::Type && pItem->type() != SCgPair::Type))
-            return;
-        SCgObject *obj = static_cast<SCgObject*>(pItem);
-        if (obj)
+        SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos(), QTransform()));
+        if (obj && (obj->type() == SCgNode::Type || obj->type() == SCgPair::Type))
         {
             mIsTypeClonning = true;
             mCloningType = obj->typeAlias();
@@ -132,7 +129,7 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
     {
         if(mCurrentPointObject)
         {
-            QGraphicsItem *it = mScene->itemAt(event->scenePos());
+            QGraphicsItem *it = mScene->itemAt(event->scenePos(),QTransform());
 
             if (it == 0 || (it != mCurrentPointObject && SCgObject::isSCgObjectType(it->type())))
             {
@@ -149,7 +146,7 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
         }else
         {
             QPointF cur_pos = event->scenePos();
-            QGraphicsItem* item = mScene->itemAt(cur_pos);
+            QGraphicsItem* item = mScene->itemAt(cur_pos,QTransform());
             if(item && SCgObject::isSCgPointObjectType(item->type()))
             {
                 mCurrentPointObject = static_cast<SCgPointObject*>(item);
@@ -185,7 +182,6 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
             case SCgPointGraphicsItem::Type:
             case SCgIncidentPointGraphicsItem::Type:
             case SCgTextItem::Type:
-            case SCgNodeTextItem::Type:
             case SCgPair::Type:
             {
                 // exclude PointGraphicsItem's object, because it always has a parent item
@@ -221,7 +217,7 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
             else
             {
                 // we need check if items under cursor contain old parent item
-                if (mScene->itemAt(item->scenePos()) != oldParent)
+                if (mScene->itemAt(item->scenePos(), QTransform()) != oldParent)
                 {
                     it.value().second.second = item->scenePos();
                     item->setParentItem(0);
@@ -238,13 +234,9 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
     }
     else if (mIsTypeClonning)
     {
-        QGraphicsItem *pItem = mScene->itemAt(event->scenePos());
-        if (pItem && pItem->type() == mObjectType)
-        {
-            SCgObject *obj = static_cast<SCgObject*>(pItem);
-            if (obj && obj->typeAlias() != mCloningType)
-                mScene->changeObjectTypeCommand(obj, mCloningType);
-        }
+        SCgObject *obj = static_cast<SCgObject*>(mScene->itemAt(event->scenePos(),QTransform()));
+        if (obj && obj->type() == mObjectType && obj->typeAlias() != mCloningType)
+            mScene->changeObjectTypeCommand(obj, mCloningType);
         mIsTypeClonning = false;
         mObjectType = 0;
         mCloningType = "";

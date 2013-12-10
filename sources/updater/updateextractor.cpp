@@ -44,6 +44,15 @@ bool UpdateExtractor::extract(const QString &archive, const QString &directory)
         return false;
 
     // create output directory if it doesn't exist
+<<<<<<< HEAD
+    QFileInfo di(directory);
+    QDir _d(".");
+    if (di.exists())
+        _d.rmdir(directory);
+
+    QProcess proc;
+    return proc.execute("7z.exe", QStringList() << "x" << QString("-o%1").arg(directory) << archive) == 0;
+=======
     QDir _d;
     if (_d.exists(directory))
         _d.rmdir(directory);
@@ -59,4 +68,5 @@ bool UpdateExtractor::extract(const QString &archive, const QString &directory)
     return proc.execute("7za.exe", QStringList() << "-y" << "x" << QString("-o%1").arg(directory) << archive) == 0;
 #endif
 
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 }

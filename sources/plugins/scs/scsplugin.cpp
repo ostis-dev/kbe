@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDir>
 
-Q_EXPORT_PLUGIN2(scs, SCsPlugin)
+//Q_EXPORT_PLUGIN2(scs, SCsPlugin)
 
 SCsPlugin::SCsPlugin(QObject *parent) :
     QObject(parent)

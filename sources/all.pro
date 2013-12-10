@@ -1,6 +1,9 @@
 
 QT       += core
 
+QT       += widgets
+
+
 TEMPLATE = subdirs
 
 CONFIG += ordered

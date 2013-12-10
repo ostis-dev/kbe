@@ -23,7 +23,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef STARTUPDIALOG_H
 #define STARTUPDIALOG_H
 
+<<<<<<< HEAD
+#include <QtWidgets/QDialog>
+=======
 #include <QDialog>
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 class GuideDialog : public QDialog
 {

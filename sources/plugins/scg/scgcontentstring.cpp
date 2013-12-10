@@ -24,11 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgnode.h"
 
-#include <QLabel>
-#include <QTextEdit>
-#include <QCheckBox>
-#include <QVBoxLayout>
-
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QTextEdit>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QVBoxLayout>
 
 SCgContentStringViewer::SCgContentStringViewer(QGraphicsItem *parent) :
         SCgContentViewer(parent),

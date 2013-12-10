@@ -33,13 +33,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangerhorizontal.h"
 #include "arrangers/scgarrangertuple.h"
 #include "arrangers/scgarrangervertical.h"
-#include "arrangers/scgarrangerenergybased.h"
 
 #include <QTranslator>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QLocale>
 
-Q_EXPORT_PLUGIN2(scg, SCgPlugin)
+#include "arrangers/scgarrangerenergybased.h"
 
 SCgPlugin::SCgPlugin(QObject *parent) :
     QObject(parent),

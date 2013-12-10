@@ -33,7 +33,8 @@ SCgCommandCreateNode::SCgCommandCreateNode(SCgScene *scene,
     , mParentContour(parentContour)
 {
     mObject = mScene->createSCgNode(mPoint);
-    connect(mObject, SIGNAL(destroyed()), this, SLOT(nodeDestroyed()));
+    if (mObject)
+        connect(mObject, SIGNAL(destroyed()), this, SLOT(nodeDestroyed()));
 
     setText(QObject::tr("Create node"));
 }

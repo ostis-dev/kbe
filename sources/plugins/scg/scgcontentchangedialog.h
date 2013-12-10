@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGCONTENTCHANGEDIALOG_H
 #define SCGCONTENTCHANGEDIALOG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
 #include "scgcontent.h"
 #include <QValidator>

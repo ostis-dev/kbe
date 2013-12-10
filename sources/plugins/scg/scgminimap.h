@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGMINIMAP_H
 #define SCGMINIMAP_H
 
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 
 class SCgView;
 

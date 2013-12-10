@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scscodecompleter.h"
 #include "QStandardItemModel"
-#include <QAbstractItemView>
+#include <QtWidgets/QAbstractItemView>
 
 SCsCodeCompleter::SCsCodeCompleter(QObject *parent) :
     QCompleter(parent)

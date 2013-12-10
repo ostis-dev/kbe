@@ -24,6 +24,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define UPDATEINSTALLER_H
 
 #include <QObject>
+<<<<<<< HEAD
+=======
 #include <QList>
 
 class QFileInfo;
@@ -33,6 +35,7 @@ struct Rule {
     bool action;
     QString fileName;
 };
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 /*! Class that installs specified update package
   */
@@ -43,6 +46,12 @@ public:
     explicit UpdateInstaller(const QString &patchPath, QObject *parent = 0);
     virtual ~UpdateInstaller();
 
+<<<<<<< HEAD
+signals:
+    
+public slots:
+    
+=======
     /*! Installs updates
       * @return Return true, if updates installed wihtout any errors; otherwise return false
       */
@@ -94,6 +103,7 @@ protected:
     QString cpCheck(const QFileInfo &fileInfo);
 
     //bool cleanUpdates();
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 };
 
 #endif // UPDATEINSTALLER_H

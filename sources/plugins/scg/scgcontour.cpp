@@ -28,9 +28,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 
 #include <QColor>
-#include <QGraphicsScene>
+
+#include <QtWidgets/QGraphicsScene>
 #include <QVector2D>
 #include <QSet>
+
 
 SCgContour::SCgContour() :
         mColorBack(QColor(250, 250, 250, 224))

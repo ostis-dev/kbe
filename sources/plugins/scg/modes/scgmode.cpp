@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgnode.h"
 
 #include <QPainterPath>
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 #include <QVector2D>
 
 #define KEYBOARD_SELECTION_RANGE 30.f

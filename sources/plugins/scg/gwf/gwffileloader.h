@@ -28,6 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QPair>
 #include <QVector>
 #include <QPointF>
+#include <QObject>
 
 class SCgScene;
 class SCgObject;
