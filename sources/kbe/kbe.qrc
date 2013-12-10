@@ -9,12 +9,46 @@
         <file>media/icons/help-browser.png</file>
         <file>media/icons/mail.png</file>
         <file>media/icons/window-close.png</file>
-        <file>media/startup/index.html</file>
         <file>media/startup/css/ie.css</file>
-        <file>media/startup/css/style.css</file>
         <file>media/startup/images/bg-content.gif</file>
         <file>media/startup/images/bottom-shadow.gif</file>
         <file>media/translations/lang_en_EN.qm</file>
         <file>media/translations/lang_ru_RU.qm</file>
+        <file>media/startup/images/_question.jpg</file>
+        <file>media/startup/images/_shesterenki.jpg</file>
+        <file>media/startup/images/file_new.png</file>
+        <file>media/startup/images/iFolder_add.png</file>
+        <file>media/startup/images/main_bg.jpg</file>
+        <file>media/startup/images/web.png</file>
+        <file>media/startup/css/style.css</file>
+        <file>media/startup/references/changelog.html</file>
+        <file>media/startup/references/codingstandards.html</file>
+        <file>media/startup/references/install.html</file>
+        <file>media/startup/references/license.html</file>
+        <file>media/startup/references/ostis-logo.png</file>
+        <file>media/startup/references/readme.html</file>
+        <file>media/startup/references/style.css</file>
+        <file>media/startup/images/_komanda.jpg</file>
+        <file>media/startup/index.html</file>
+        <file>media/startup/references/down.png</file>
+        <file>media/startup/references/image.jpg</file>
+        <file>media/startup/references/tutorial.html</file>
+        <file>media/startup/references/1.png</file>
+        <file>media/startup/references/2.png</file>
+        <file>media/startup/references/3.png</file>
+        <file>media/startup/references/4.png</file>
+        <file>media/startup/references/5.png</file>
+        <file>media/startup/references/7.PNG</file>
+        <file>media/startup/references/8.png</file>
+        <file>media/startup/references/9.png</file>
+        <file>media/startup/references/10.png</file>
+        <file>media/startup/references/11.png</file>
+        <file>media/startup/references/12.png</file>
+        <file>media/startup/references/13.png</file>
+        <file>media/startup/references/14.png</file>
+        <file>media/startup/references/15.png</file>
+        <file>media/startup/references/61.png</file>
+        <file>media/startup/references/62.png</file>
+        <file>media/startup/references/style_tutorial.css</file>
     </qresource>
 </RCC>
