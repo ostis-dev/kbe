@@ -25,8 +25,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "platform.h"
 #include "mainwindow.h"
 #include "guidedialog.h"
+#include "startpage.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QTranslator>
 #include <QLocale>
 #include <QTextCodec>
@@ -37,11 +38,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
-
+#include <QTextCodec>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    QTextCodec* codec = QTextCodec::codecForName("cp1251");
+    QTextCodec::setCodecForCStrings(codec);
+    QTextCodec::setCodecForTr(codec);
 
     a.setOrganizationName("OSTIS");
     a.setOrganizationDomain("ostis.net");
@@ -81,17 +86,21 @@ int main(int argc, char *argv[])
 
     QSettings settings;
     // check if startup dialog property exist
-    if (!settings.contains(Config::settingsShowStartupDialog))
-        settings.setValue(Config::settingsShowStartupDialog, QVariant(true));
+//    if (settings.contains(Config::settingsShowStartupDialog))
+//        settings.setValue(Config::settingsShowStartupDialog, QVariant(true));
+
 
     MainWindow::getInstance()->updateWindowTitle();
 
     // show startup dialog
-//    if (settings.value(SETTINGS_STARTUP_DIALOG_SHOW).toBool())
-//    {
-//        GuideDialog startDialog(MainWindow::getInstance());
-//        startDialog.exec();
-//    }
+    if (settings.value(Config::settingsShowStartupDialog).toBool())
+    {
+        GuideDialog startDialog(MainWindow::getInstance());
+        startDialog.exec();
+    }
+
+//    StartPage startPage(MainWindow::getInstance());
+//    startPage.exec();
 
     //splash.finish(&w);
     return a.exec();

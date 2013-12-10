@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "pluginmanager.h"
 #include "guidedialog.h"
 #include "newfiledialog.h"
+#include "parametersdialog.h"
 
 #include "version.h"
 
@@ -166,6 +167,8 @@ void MainWindow::createActions()
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
     connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(fileSaveAll()));
     connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(fileExportToImage()));
+
+    connect(ui->actionOptions, SIGNAL(triggered()), this, SLOT(viewParameters()));
 
     connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()) );
     connect(ui->actionClose, SIGNAL(triggered()), mTabWidget, SLOT(close()));
@@ -501,6 +504,13 @@ void MainWindow::fileSaveAs(QWidget* window)
 
 }
 
+void MainWindow::viewParameters()
+{
+    ParametersDialog paramDialog(this); //= new ParametersDialog(this);
+
+    paramDialog.exec();
+}
+
 void MainWindow::fileSaveAll()
 {
 //    for(int i = 0; i < mTabWidget->subWindowList().size(); i++) {
@@ -577,6 +587,9 @@ void MainWindow::helpAbout()
                           "<li>Eugen Zakharich</li>"
                           "<li>Pavel Karpan (pioneer)</li>"
                           "<li>Dmitry Kolb (skif-sarmat)</li>"
+                          "<li>Vitaly Protas</li>"
+                          "<li>Yury Myshkevich</li>"
+                          "<li>Roman Lebedinsky</li>"
                           "</ul>"
                           "</td></tr></table>")
                        .arg(QString(":/media/icons/help-about-logo.png"))

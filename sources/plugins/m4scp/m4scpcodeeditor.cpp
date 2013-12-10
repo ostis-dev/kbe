@@ -24,12 +24,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpblockdata.h"
 #include "m4scpcodecompleter.h"
 #include "m4scpsyntax.h"
+#include "m4scpfinder.h"
 
 #include <QPainter>
 #include <QTextBlock>
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QTextDocumentFragment>
+
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     QPlainTextEdit(parent),
@@ -43,6 +45,7 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
     setLineWrapMode(QPlainTextEdit::NoWrap);
     extraArea = new ExtraArea(this);
 
+
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateExtraAreaWidth()));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateExtraArea(QRect,int)));
     connect(this, SIGNAL(selectionChanged()), this, SLOT(changeSelection()));
@@ -50,7 +53,9 @@ M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :
 
     updateExtraAreaWidth();
 
-    // create auto completer
+
+
+ // create auto completer
     mCompleter = new M4SCpCodeCompleter(this);
     mCompleter->initDictionary();
     mCompleter->setWidget(this);
@@ -123,6 +128,8 @@ void M4SCpCodeEditor::keyPressEvent(QKeyEvent *e)
         e->ignore();
         return;
     }
+
+
 
     if(BlockData::data(textCursor().block())->isFolded() && e->key()==Qt::Key_Return)
     {

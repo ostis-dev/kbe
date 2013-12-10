@@ -29,13 +29,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCheckBox>
 #include <QSettings>
 #include <QPushButton>
+#include <QDebug>
+#include <QDesktopServices>
+#include <QString>
+#include <QApplication>
 
 GuideDialog::GuideDialog(QWidget *parent) :
     QDialog(parent)
 {
+    setWindowTitle(tr("Welcome to KBE 3.1"));
+
     QVBoxLayout *vlayout = new QVBoxLayout(this);
 
-    QTextBrowser *browser = new QTextBrowser(this);
+    browser = new QTextBrowser(this);
     browser->setSource(QUrl("qrc:/media/startup/index.html"));
 
     vlayout->addWidget(browser);
@@ -57,7 +63,9 @@ GuideDialog::GuideDialog(QWidget *parent) :
 
     setLayout(vlayout);
 
-    setFixedSize(575, 500);
+    setFixedSize(875, 500);
+
+    connect(browser, SIGNAL(anchorClicked(QUrl)), this, SLOT(openRef(QUrl)));
 }
 
 GuideDialog::~GuideDialog()
@@ -68,4 +76,26 @@ void GuideDialog::showStateChanged(int state)
 {
     QSettings settings;
     settings.setValue(Config::settingsShowStartupDialog, QVariant(state == Qt::Checked));
+}
+
+void GuideDialog::openRef(QUrl url)
+{
+    QString urlString = url.toString();
+    QString urlStringRigth = urlString;
+    urlString.resize(4);
+
+    if (urlString != "http")
+    {
+        QString pathDir = QApplication::applicationDirPath();
+        int i = pathDir.lastIndexOf("kbe");
+        pathDir.resize(i + 4);
+        pathDir += "sources/kbe/";
+        urlStringRigth.remove(0,5);
+        pathDir += urlStringRigth;
+        QDesktopServices::openUrl(QUrl(pathDir));
+    }
+    else
+        QDesktopServices::openUrl(url);
+
+    browser->setSource(QUrl("qrc:/media/startup/index.html"));
 }
