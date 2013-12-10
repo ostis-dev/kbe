@@ -31,7 +31,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QCompleter(parent)
 {
-
     QStandardItemModel *_mItemModel = new QStandardItemModel(parent);
     setModel(_mItemModel);
     popup()->setIconSize(QSize(16, 16));

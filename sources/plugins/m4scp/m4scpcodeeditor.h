@@ -25,7 +25,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPlainTextEdit>
 #include <QModelIndex>
-#include <QShortcut>
 
 class M4SCpCodeCompleter;
 

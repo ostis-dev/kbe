@@ -24,9 +24,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define STARTUPDIALOG_H
 
 #include <QDialog>
-#include <QUrl>
-#include <QTextBrowser>
-#include <QSettings>
 
 class GuideDialog : public QDialog
 {
@@ -35,14 +32,10 @@ public:
     explicit GuideDialog(QWidget *parent = 0);
     virtual ~GuideDialog();
     
-private:
-    QTextBrowser *browser;
-
 signals:
     
 public slots:
     void showStateChanged(int state);
-    void openRef(QUrl url);
 };
 
 #endif // STARTUPDIALOG_H

@@ -19,8 +19,7 @@ HEADERS += \
     m4scpcodecompleter.h \
     m4scpplugin.h \
     m4scpcodeanalyzer.h \
-    m4scpblockdata.h \
-    m4scpfinder.h
+    m4scpblockdata.h
 
 SOURCES += \
     m4scpwindow.cpp \
@@ -29,8 +28,7 @@ SOURCES += \
     m4scpcodeeditor.cpp \
     m4scpcodecompleter.cpp \
     m4scpplugin.cpp \
-    m4scpcodeanalyzer.cpp \
-    m4scpfinder.cpp
+    m4scpcodeanalyzer.cpp
 
 RESOURCES += \
     m4scp.qrc
@@ -43,5 +41,3 @@ lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
-
-

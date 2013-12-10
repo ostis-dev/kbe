@@ -34,7 +34,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 #include <QScrollBar>
 #include <QDialog>
-#include <QDebug>
 #include <QLabel>
 #include <QDialogButtonBox>
 #include <QLineEdit>
@@ -548,28 +547,6 @@ void SCgView::setScale(const QString& sc)
     emit(scaleChanged(transform().mapRect(QRectF(0, 0, 1, 1)).width()));
 }
 
-void SCgView::setScale(int scale) {
-
-    QTransform t = transform();
-    //Default transform
-    t.reset();
-
-    //Getting percent value
-    double d = (double)scale/100.0;
-
-    //Checking if value d in proper range
-    if (d < SCgWindow::minScale)
-        d = SCgWindow::minScale;
-    else
-        if (d > SCgWindow::maxScale)
-            d = SCgWindow::maxScale;
-
-    //Setting transformation
-    setTransform(t.scale(d,d),false);
-
-    emit(scaleChanged(transform().mapRect(QRectF(0, 0, 1, 1)).width()));
-}
-
 void SCgView::setScale(qreal scaleFactor)
 {
     // Factor, that will be set.
@@ -586,10 +563,10 @@ void SCgView::setScale(qreal scaleFactor)
             factor = SCgWindow::maxScale;
         // calculates factor, that fit in proper range(0.2 .. 9.99)
         scaleFactor = factor / currFacror;
-
     }
 
     scale(scaleFactor, scaleFactor);
+
     emit(scaleChanged(factor));
 }
 

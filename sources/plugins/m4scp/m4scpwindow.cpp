@@ -24,7 +24,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpcodeeditor.h"
 #include "m4scpsyntaxhighlighter.h"
 #include "m4scpplugin.h"
-#include "m4scpfinder.h"
 
 #include "config.h"
 
@@ -35,19 +34,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
-#include <QShortcut>
-#include <QPoint>
-#include <QPalette>
+
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
     mEditor(0),
     mHighlighter(0),
-    mIsSaved(false),
-    findShortcutF(0),
-    findShortcutH(0)
+    mIsSaved(false)
 {
-
     mEditor = new M4SCpCodeEditor();
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
@@ -60,13 +54,6 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     layout->addWidget(mEditor);
     setLayout(layout);
 
-    FindDialog = new M4SCpFinder(mEditor);
-
-    findShortcutF = new QShortcut(Qt::CTRL + Qt::Key_F, this);
-    connect(findShortcutF, SIGNAL(activated()), this, SLOT(viewFindWindow()));
-    findShortcutH = new QShortcut(Qt::CTRL + Qt::Key_H, this);
-    connect(findShortcutH, SIGNAL(activated()), this, SLOT(viewFindWindow()));
-
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 
@@ -74,7 +61,6 @@ M4SCpWindow::~M4SCpWindow()
 {
     delete mHighlighter;
     delete mEditor;
-    delete FindDialog;
 }
 
 QWidget* M4SCpWindow::widget()
@@ -212,9 +198,4 @@ QStringList M4SCpWindowFactory::supportedFormatsExt()
 QIcon M4SCpWindowFactory::icon() const
 {
     return M4SCpWindow::findIcon("mime_type.png");
-}
-
-void M4SCpWindow::viewFindWindow()
-{
-    FindDialog->show();
 }

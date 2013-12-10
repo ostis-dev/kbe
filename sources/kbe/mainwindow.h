@@ -26,7 +26,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMainWindow>
 #include <QMap>
 #include <QDir>
-#include "parametersdialog.h"
 #include "extendedtabwidget.h"
 #include "interfaces/editorinterface.h"
 
@@ -187,8 +186,6 @@ public slots:
     void fileSaveAll();
     void fileExportToImage();
     void fileExit();
-
-    void viewParameters();
 
     void helpAbout();
     void helpAboutQt();

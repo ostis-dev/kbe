@@ -41,18 +41,12 @@ public:
     QAction *actionClose;
     QAction *actionFeedback;
     QAction *actionGuide;
-    //------------------------
-    QAction *actionOptions;
-    //------------------------
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuExport;
     QMenu *menuHelp;
     QMenu *menuView;
-    //------------------------
-    QMenu *menuOptions;
-    //------------------------
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -60,10 +54,6 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(600, 400);
-        //----------------------------------------------------------
-        actionOptions = new QAction(MainWindow);
-        actionOptions->setObjectName(QString::fromUtf8("actionOptions"));
-        //----------------------------------------------------------
         actionNew = new QAction(MainWindow);
         actionNew->setObjectName(QString::fromUtf8("actionNew"));
         actionOpen = new QAction(MainWindow);
@@ -106,18 +96,9 @@ public:
         menuBar->setGeometry(QRect(0, 0, 600, 21));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
-        //--------------------------------------
-        menuOptions = new QMenu(menuBar);
-        menuOptions->setObjectName(QString::fromUtf8("menuOptions"));
-        //--------------------------------------
         menuExport = new QMenu(menuFile);
         menuExport->setObjectName(QString::fromUtf8("menuExport"));
         menuExport->setEnabled(false);
-        //////////
-        //menuExport = new QMenu(menuOptions);
-        //menuExport->setObjectName(QString::fromUtf8("menuExport"));
-        //menuExport->setEnabled(false);
-        /////////////
         menuHelp = new QMenu(menuBar);
         menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
         menuView = new QMenu(menuBar);
@@ -128,7 +109,6 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
-        menuBar->addAction(menuOptions->menuAction());
         menuBar->addAction(menuView->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuFile->addAction(actionNew);
@@ -145,9 +125,6 @@ public:
         menuFile->addAction(actionClose_Others);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
-        //------------------------------------------------
-        menuOptions->addAction(actionOptions);
-        //------------------------------------------------
         menuExport->addAction(actionTo_image);
         menuHelp->addAction(actionAbout);
         menuHelp->addAction(actionAbout_Qt);
@@ -172,9 +149,6 @@ public:
         actionSave_as->setShortcut(QString());
         actionExit->setText(QApplication::translate("MainWindow", "Exit", 0, QApplication::UnicodeUTF8));
         actionExit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
-        //-----------------------------------------------------------------------------
-        actionOptions->setText(QApplication::translate("MainWindow", "Parameters", 0, QApplication::UnicodeUTF8));
-        //-----------------------------------------------------------------------------
         actionAbout->setText(QApplication::translate("MainWindow", "About ...", 0, QApplication::UnicodeUTF8));
         actionAbout->setShortcut(QApplication::translate("MainWindow", "F1", 0, QApplication::UnicodeUTF8));
         actionImport->setText(QApplication::translate("MainWindow", "Import", 0, QApplication::UnicodeUTF8));
@@ -190,9 +164,6 @@ public:
         actionFeedback->setText(QApplication::translate("MainWindow", "Feedback", 0, QApplication::UnicodeUTF8));
         actionGuide->setText(QApplication::translate("MainWindow", "Guide", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
-        //-----------------------------------------------------------------------------
-        menuOptions->setTitle(QApplication::translate("MainWindow", "Options", 0, QApplication::UnicodeUTF8));
-        //-----------------------------------------------------------------------------
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));

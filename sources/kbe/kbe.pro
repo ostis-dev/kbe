@@ -20,8 +20,7 @@ SOURCES += \
     config.cpp \
     pluginmanager.cpp \
     guidedialog.cpp \
-    newfiledialog.cpp \
-    parametersdialog.cpp
+    newfiledialog.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -32,8 +31,7 @@ HEADERS += version.h \
     pluginmanager.h \
     interfaces/editorinterface.h \
     guidedialog.h \
-    newfiledialog.h \
-    parametersdialog.h
+    newfiledialog.h
 
 FORMS += mainwindow.ui
 
@@ -53,11 +51,3 @@ RC_FILE = kbe.rc
 
 OBJECTS_DIR = obj
 MOC_DIR = moc
-
-
-
-
-
-
-
-
