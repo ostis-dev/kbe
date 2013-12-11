@@ -51,6 +51,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSettings>
 #include <QtWidgets/QDockWidget>
 
+#include <QMimeData>
+
 MainWindow* MainWindow::mInstance = 0;
 
 MainWindow* MainWindow::getInstance()

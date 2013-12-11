@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCSABSTRACTHIGHLIGHTINGRULE_H
 #define SCSABSTRACTHIGHLIGHTINGRULE_H
 
-#include "scssyntaxhighlighter.h"
+#include "../scssyntaxhighlighter.h"
 
 #include <QTextCharFormat>
 

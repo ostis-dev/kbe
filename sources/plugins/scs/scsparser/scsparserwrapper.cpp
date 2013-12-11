@@ -47,11 +47,13 @@ pANTLR3_INPUT_STREAM SCsParser::createInputStream(const std::string &text) const
 {
     pANTLR3_INPUT_STREAM    input = 0;
 
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#ifdef Q_OS_WIN32
     input = antlr3StringStreamNew((pANTLR3_UINT8)text.c_str(),ANTLR3_ENC_UTF8,text.length(),(pANTLR3_UINT8)"scs");
-#elif defined( __APPLE_CC__)
+#endif
+#ifdef Q_OS_MAC
     input = antlr3StringStreamNew((pANTLR3_UINT8)text.c_str(),ANTLR3_ENC_UTF8,text.length(),(pANTLR3_UINT8)"scs");
-#else
+#endif
+#ifdef Q_OS_LINUX
     input = antlr3NewAsciiStringCopyStream((pANTLR3_UINT8)text.c_str(),text.length(),(pANTLR3_UINT8)"scs");
 #endif
     return input;

@@ -21,6 +21,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "newfiledialog.h"
+#include "pluginmanager.h"
+#include "interfaces/editorinterface.h"
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
@@ -28,7 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QKeyEvent>
 #include <QtWidgets/QPushButton>
 
-NewFileDialog::NewFileDialog(const QStringList &availableTypes, QWidget *parent) :
+NewFileDialog::NewFileDialog(QWidget *parent) :
     QDialog(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
