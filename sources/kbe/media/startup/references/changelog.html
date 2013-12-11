@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body bgcolor="#000033" dir="ltr" lang="en-US" link="#ffff00" text="#ccccff">
+
+<p class="header" align="center"><img alt="" src="ostis-logo.png"></p>
+<p class="header" align="center">OSTIS (Open Semantic Technology for Intelligent Systems)</p>
+<p class="header" align="center">Knowledge Base source Editor</p>
+<p class="header" align="center">Change Log</p>
+
+<hr width="90%">
+<p class="mainheader"> v0.3.1(Integrator)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="add">Added guide dialog on startup</li>
+	<li class="change">Refactored conservation of the last directory</li>
+	<li class="change">Improved file save dialog when closing the program</li>
+	<li class="fix">Fixed bug of window title</li>
+	<li class="change">Refactored assembly of deb package </li>
+	<li class="add">Added the ability to switch between tabs</li>
+	<li class="change">Refactored loading plugins under linux </li>
+	<li class="add">Added instruction of creating and editing scg-constructions</li> <p class="comment">Opens in the browser</p></li>
+	<li class="change">Improved the icons of instruments</li>
+
+	<p class="header">SCg-editor</p>
+	<li class="add">Added pop-up messages when you hover over the button "allocation" and "alignment"</li>	
+	<li class="change">Refactored scaling command</li>
+	<li class="change">Limited the movement of identifier</li>
+	<li class="fix">Fixed bugs with contour</li>
+	<li class="add">Added saving and loading the state of content</li>	
+	<li class="add">Added command of opening of all content</li>	
+	<li class="add">Added binding  identifier with the type</li>		
+	<li class="add">Added copying the type of item</li>
+	<li class="fix">Fixed bug of maintain the position of floating windows</li>
+	<li class="add">Added commands of opening and closing of content</li>
+	<li class="fix">Fixed bug of opening old .gwf files</li>
+
+	<p class="header">M4Scp editor</p>
+	<li class="add">Added functions of searching and replacing of text</li>
+	
+	<p class="header">SCs editor</p>
+	<li class="add">Added support for standard 0.2.0</li>
+	
+</ul>
+
+
+
+
+<hr width="90%">
+<p class="mainheader"> v0.3.0(Integrator)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="add">Added plugins support</li>
+	<li class="change">Refactored user guide documentation<p class="comment">Now it made in tex format</p></li>
+	<li class="add">Added scripts to make deb package on Ubuntu</li>
+	<li class="fix">Fixed errors with file opening</li>
+	<li class="remove">Disabled import/export menu</li>
+	<li class="change">Resources for each editor moved into qrc files, and now them compiled into plugin</li>
+	<li class="add">Added feedback dialog</li>
+	<li class="add">Added coding standards</li>
+	<li class="change">New tool icons set used</li>
+	<li class="fix">Fixed possible bugs with tabs <p class="commnet">There was possibility to make tool crashed, when working with tabs</p></li>
+	<li class="change">Added icons for tabs</li>
+	<li class="add">Added examples of files</li>
+	<li class="add">Added new files dialog, that allows to create files with supported formats</li>
+	
+	<p class="header">SCg-editor</p>
+	<li class="add">Improved drag and drop feature <p class="comment">Now if drag file on sc.g-node, then that file will be set as content</p></li>
+	<li class="fix">Fixed bug with sc.g-bus dragging <p class="comment">Sometimes it crashes tool</p></li>
+	<li class="fix">Fixed bug with sc.g-pair dragging into contour <p class="comment">Now if you drag two sc.g-nodes with sc.g-pair into sc.g-contour, then sc.g-pair also will be added into sc.g-contour</p></li>
+	<li class="add">Added object cloning <p class="comment">Now you can clone selected objects by Shift + mouse dragging</p></li>
+	<li class="add">Added possibility to navigate in sc.g-document with keyboard</li>
+	<li class="add">Added new command to select sc.g-elements <p class="comment">For now there are two commands: select input/output sc.g-pairs, select subgraph</p></li>
+	<li class="add">Added possibilit ot move text identifiers</li>
+	<li class="add">Added automatical type changing for sc.g-element depending on their text identifiers</li>
+	<li class="change">Refactored undo/redo commands <p class="comment">They moved into specified directory</p></li>
+	<li class="change">Refactored scg modes <p class="comment">They moved into separate directory, and class names was changed</p></li>
+	<li class="add">Added support of 0.1.0 version of SCg-code</li>
+	<li class="fix">Fixed bug with bus arrange</li>
+	<li class="change">Improved type changing menu <p class="comment">Now it supports common types of objects</p></li>
+	<li class="fix">Fixed bugs with copying</li>
+	<li class="change">Changed rules of sc.g-contour drawing <p class="comment">Now it draws with rounded corners</p></li>
+	<li class="change">Changed rules of sc.g-border drawing <p class="comment">Now it draws with mark in left top corner</p></li>
+	<li class="fix">Fixed bugs with exporting into image</li>
+	<li class="fix">Fixed bug with context menu calling <p class="comment">Disabled calling of context menu with keyboard</p></li>
+	<li class="change">Arrangers and slection tools grouped on toolbar</li>
+	<li class="fix">Fixed bug with content change dialog size under linux</li>
+	
+	<p class="header">M4Scp editor</p>
+	<li class="add">Added syntax highlighting</li>
+	<li class="add">Added line numbers into editor</li>
+	<li class="add">Added autocompletion of scp operators</li>
+	<li class="add">Added icons into autocompletion list</li>
+	
+	<p class="header">SCs editor</p>
+	<li class="add">Added syntax highlighting</li>
+	<li class="add">Added line numbers into editor</li>
+	<li class="add">Added autocompletion of includes, identifiers <p class="comment">It also parse included files and add identifiers from them</p></li>
+</ul>
+
+<hr width="90%">
+<p class="mainheader"> v0.2.1(Opener)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="add">Added new incos for commands</li>
+	<li class="change">Fixed installer <p class="comment">Now it works with windows 7</p></li>
+	<p class="header">SCg-editor changes</p>
+	<li class="add">Added new arranger for tuples<p class="comment">It allow to arrange any node, that have bus with output or input pairs</p></li>
+	<li class="add">Added creation of nodes with content, by draging files into sc.g-window<p class="comment">Now you can just drag fiel into window to create node with content of this file</p></li>
+	<li class="change">Improved work with contours<p class="comment">Any object, that draged into contour will be added into it. Any object that dragged from contour will be removed from it</p></li>
+	<li class="change">Improved image selection<p class="comment">Now all supported formats showed, when you select image content with dialog</p></li>
+	<li class="change">Improved number content changing<p class="comment">Added maximum and minimum ranges. Invalid values hightlight added.</p></li>
+	<li class="fix">Fixed bug in line creation mode with last point deletion by right mouse button<p class="comment">Context menu opened each time, when user try to remove last point</p></li>
+	<li class="fix">Fixed bug with arrangers<p class="comment">When apply arranger (grid) not all pairs calculates normaly, when they starts (finished) from any line object like bus or other pair</p></li>
+</ul>
+
+<hr width="90%">
+<p class="mainheader"> v0.2.0(Opener)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="change">Application logo was changed</li>
+	<li class="add">Now main menu reconstructing with available operations, depending on active window</li>
+	<li class="fix">Fixed bug with drag and drop on linux</li>
+	<li class="fix">Fixed bug with image export<p class="comment">It wasn't possible to export into image before document saving</p></li>
+	<p class="header">SCg-editor changes</p>
+	<li class="fix">Fixed bug with bus deletion<p class="comment">It wasn't possible to create bus from node, after another bus (from that node) deletion</p></li>
+	<li class="fix">Fixed bug with node deletion<p class="comment">Bus associated to node wans't delete</p></li>
+	<li class="fix">Fixed bug with just contour deletion command display in history</li>
+	<li class="fix">Fixed bugs with russian translation</li>
+	<li class="fix">Fixed bug with content dialog size</li>		
+
+</ul>
+
+
+<hr width="90%">
+<p class="mainheader"> v0.2.0 rc1 (Opener)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="add">Added support of file opening that passed as arguments</li>	
+	<li class="add">Added command to save all documents</li>
+	<li class="add">Added command to close all (other, current) tabs</li>
+	<li class="fix">Fixed error with icons drawing</li>
+	<li class="add">Icons for tabs were added</li>
+	<li class="add">Errors with tabs naming were fixed</li>
+	<li class="add">Memory leaks and high cpu usage problems were fixed</li>
+	<li class="add">List of recently opened documents was added</li>
+	
+	<p class="header">SCg-editor changes</p>
+	<li class="add">Added commands to work with linear object points</li>
+	<li class="add">Added commands to work with arc incident points</li>
+	<li class="add">Copy, cut, paste commands added</li>
+	<li class="add">Added control of undo/redo stack</li>
+	<li class="add">Added minimap</li>
+	<!--<li class="add">Added video content support</li>-->
+	<li class="add">Added filters of supported formats for content type</li>
+	<li class="add">Now it possible to grab scene with middle mouse button</li>
+	<li class="add">Possibility to move objects with Ctrl+Arrow keys added</li>
+	<li class="add">Possibility to align linear objects during creation (Shift button)</li>
+	<li class="add">Possibility to find object by identifiers added (Ctrl+F)</li>
+	
+	<li class="fix">Problems with undo/redo commands were fixed</li>
+	<li class="fix">Problems with binary pairs saving were fixed</li>
+	<li class="fix">Error with contour and bus identifiers loading was fixed</li>
+	<li class="fix">Problem with "predmet" nodes drawing was fixed</li>
+	<li class="fix">Error with contour was fixed<p class="comment">Some of arcs wasn't work correctly in contours</p></li>
+	<li class="fix">Problems with gwf file opening were fixed</li>
+	<li class="fix">Errors in objects arrange were fixed</li>
+	
+	<li class="change">Change object type menu re-structured<p class="comment">Now type changing menu have hierarhy structure. That structure depends on possible types</p></li>
+	<li class="change">Arc width changed, to make it easier to pick it with mouse</li>
+	
+</ul>
+
+
+<p class="mainheader"> v0.1.3 (Trailblazer)</p>
+<ul>
+	<p class="header">Common changes</p>
+		
+	<p class="header">SCg-editor changes</p>
+	<li class="add">Added select all function</li>
+	<li class="add">Added hotkeys for align buttons</li>
+	<li class="add">Added temporary pairs drawing</li>
+	<li class="add">Added zoom</li>
+	<li class="fix">Fixed support for old GWF files</li>
+	<li class="fix">Fixed error with content setting<p class="comment">Content set every time, even on cancel button press</p></li>
+	<li class="fix">Fixed ask to save<p class="comment">System asked to save file on window close, even it not changed since last save</p></li>
+	<li class="fix">Fixed error two and more bus for node<p class="comment">Not it is impossible to add more that one bus for node</p></li>
+	<li class="remove">Ctrl key remove from hotkeys sequences on SCg-toolbar</li>
+</ul>
+
+
+<p class="mainheader"> v0.1.2 (Trailblazer)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="change">Path to media files changed to absolute<p class="comment">Now tool makes absolute path to media files based on relative paths on startup</p></li>
+	<li class="add">Added check for document save on closing</li>
+	<li class="fix">Fixed error with toolbar names</li>
+	<li class="fix">Fixed error with menu items enabling/disabling</li>
+	<li class="fix">Fixed error with tab names<p class="comment">For now name for tabs set correctly</p></li>
+		
+	<p class="header">SCg-editor changes</p>
+	<li class="removed">Group type changing removed</li>
+	<li class="add">Added possibility to work with contour element (remove, change type and etc.)</li>
+	<li class="add">Added work with contour child elements</li>
+	<li class="fix">Fixed undo operation for contour creation</li>
+	<li class="add">Added unbounded size for canvas</li>
+	<li class="add">Added possibility for bus, pair and contours creation inside contours</li>
+	<li class="add">Added vertical, horizontal and grid alignment</li>
+	<li class="fix">Fixed error with contour identificators <p class="comment">Tool crashed when moved contour with identifier</p></li>
+	<li class="fix">Fixed errors with GWF files opening</li>
+	<li class="add">Added hotkeys</li>
+	<li class="add">Add work with z-ccordinates<p class="comment">For now selected object have fewer z-coordinate and draw above others</p></li>
+	<li class="add">Add drawing of subject nodes</li>
+	<li class="add">Add possibility to set identifier for bus</li>
+	<li class="add">Add operation to remove contour without removing child elements</li>
+	<li class="fix">Fixed error with image content drawing</li>
+	<li class="add">Add possibility to set empty content to node</li>
+	<li class="add">Added redo/undo operation for content showing</li>
+	<li class="add">Added redo/undo operation for content set</li>
+	
+</ul>
+
+<p class="mainheader"> v0.1.1 (Trailblazer)</p>
+<ul>
+	<p class="header">Common changes</p>
+	<li class="change">Some code refactored to Qt code style</li>
+	<li class="change">Save/load subsystem rewrited</li>
+	<p class="header">SCg-editor changes</p>
+	<li class="add"> Group selections added</li>
+	<li class="add"> Group type changing <p class="comment">It is possible to change type for more than one selected element</p></li>
+	<li>Contents:</li>
+		<ul>
+			<li class="add">Added content showing and changing</li>
+			<li class="add">Added content loading</li>
+			<li class="add">Added support of image content</li>
+			<li class="add">Added numerical content</li>
+			<li class="add">Added automatical wrap for strings</li>
+			<li class="fix">Fixed drawing of content boundings<p class="comment">Content boundings was wrong after content adding</p></li>
+		</ul>
+	<li class="fix">Fixed identifiers for SCgPairs</li>
+	<li class="fix">Background drawing in image exporting. <p class="comment">Background doesn't draw into exported image.</p></li>
+	<li>Undo/Redo commands:</li>
+		<ul>
+			<li class="add">Added object deletion command</li>
+			<li class="add">Added identifier changing command</li>
+			<li class="add">Added type changing command</li>
+		</ul>
+	
+</ul>
+
+<p class="mainheader"> v0.1.0 rc1 (Trailblazer)</p>
+
+<ul>
+	<p class="header">Common changes</p>
+	<li>Base interface for an multidocument application</li>
+	<li>Mechanism for Undo/Redo</li>
+	<li>Export to image</li>
+	<p class="header">SCg-editor changes</p>
+	<li>Base SCg-alphabet support: SCg-node, SCg-pair, SCg-bus, SCg-contour</li>
+	<li>GWF format support</li>
+	<li>Base interfaces and mechanisms for contents</li>
+	<li>Object identifiers</li>
+	<li>Object deletion</li>
+	<li>String content support</li>
+	<li>Undo/Redo commands:</li>
+		<ul>
+			<li>Object creation</li>
+		</ul>
+</ul>
+
+<hr width="90%">
+<p align="center">Copyright &copy; 2010 by The OSTIS Team
+<script>
+<!--//hide script from old browsers
+document.write( "Last modified "+ document.lastModified );
+//end hiding contents -->
+</script></p>
+
+</body>
