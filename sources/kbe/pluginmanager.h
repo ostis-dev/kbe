@@ -46,14 +46,11 @@ private:
     static PluginManager *mInstance;
 
 public:
-<<<<<<< HEAD
-=======
     typedef QMap<QString, QPluginLoader*> tPluginLoadersMap;
     typedef QSet<QString> tExtensionsSet;
     typedef QMap<QString, EditorFactoryInterface*> tEditorFactoryInterfacesMap;
 
 public:
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
     /*! Initialize plugin manager and all available plugins
       * @param _dirPath Path to directory that contains plugins
@@ -73,16 +70,6 @@ public:
       */
     QString saveFilters(const QStringList &supExtensions) const;
 
-<<<<<<< HEAD
-    //! Return list of supported file extensions
-    const QSet<QString>& supportedFilesExt() const;
-
-    /*! Create editor for specified file extension
-      * @param ext File extension
-      * @return Return pointer to created window
-      */
-    EditorInterface* createWindow(const QString &ext);
-=======
     //! Return set of supported file extensions
     const tExtensionsSet& supportedFilesExt() const;
 
@@ -102,7 +89,6 @@ public:
      * @return If window created, then return pointer to it; otherwise returns null.
      */
     EditorInterface* createWindowByExt(const QString &ext);
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 protected:
     /*! Load plugin with specified \p path
@@ -116,15 +102,6 @@ protected:
       */
     void processLoadPlugin(PluginInterface *pluginInterface);
 
-<<<<<<< HEAD
-protected:
-    //! Map of used plugin loaders
-    QMap<QString, QPluginLoader*> mPluginLoaders;
-    //! List of supported extensions
-    QSet<QString> mSupportedExtensions;
-    //! Registered factories
-    QMap<QString, EditorFactoryInterface*> mEditorFactories;
-=======
 
 protected:
     //! Map of used plugin loaders
@@ -135,7 +112,6 @@ protected:
     tEditorFactoryInterfacesMap mEditorFactoriesByType;
     //! REgistered factories by extinsions
     tEditorFactoryInterfacesMap mEditorFactoriesByExt;
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 signals:
 

@@ -20,11 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-<<<<<<< HEAD
-     <height>25</height>
-=======
      <height>21</height>
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

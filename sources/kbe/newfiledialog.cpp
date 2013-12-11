@@ -21,7 +21,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "newfiledialog.h"
-<<<<<<< HEAD
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
@@ -30,18 +29,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets/QPushButton>
 
 NewFileDialog::NewFileDialog(const QStringList &availableTypes, QWidget *parent) :
-=======
-#include "pluginmanager.h"
-#include "interfaces/editorinterface.h"
-
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QListWidget>
-#include <QKeyEvent>
-#include <QPushButton>
-
-NewFileDialog::NewFileDialog(QWidget *parent) :
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     QDialog(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
@@ -49,16 +36,6 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
 
     mAvailableTypesList = new QListWidget(this);
     mAvailableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);
-<<<<<<< HEAD
-    mAvailableTypesList->setIconSize(QSize(16, 16));
-
-    for (int i = 0; i< availableTypes.length(); ++i)
-    {
-        QString ext = availableTypes.at(i);
-        /// @todo add custom icon and tooltip support.
-        QListWidgetItem *itemToAdd = new QListWidgetItem(QIcon(), ext + " " + tr("format") + "(."+ ext + ")");
-        itemToAdd->setData(ExtensionPayloadRole, ext);
-=======
     mAvailableTypesList->setIconSize(QSize(32, 32));
 
     QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactoriesByType().values();
@@ -69,7 +46,6 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
         /// @todo add custom icon and tooltip support.
         QListWidgetItem *itemToAdd = new QListWidgetItem((*it)->icon(), (*it)->name());
         itemToAdd->setData(EditorTypeRole, (*it)->name());
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
         mAvailableTypesList->addItem(itemToAdd);
     }
 
@@ -100,13 +76,7 @@ NewFileDialog::~NewFileDialog()
 {
 }
 
-<<<<<<< HEAD
-QString NewFileDialog::selectedFormat() const
-{
-    return mAvailableTypesList->selectedItems().at(0)->data(ExtensionPayloadRole).toString();
-=======
 QString NewFileDialog::selectedEditor() const
 {
     return mAvailableTypesList->selectedItems().at(0)->data(EditorTypeRole).toString();
->>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 }
