@@ -4,9 +4,7 @@
         <file>media/icons/edit-copy.png</file>
         <file>media/icons/edit-cut.png</file>
         <file>media/icons/edit-delete.png</file>
-        <file>media/icons/edit-find.png</file>
         <file>media/icons/edit-find-replace.png</file>
-        <file>media/icons/edit-paste.png</file>
         <file>media/icons/edit-redo.png</file>
         <file>media/icons/edit-select-all.png</file>
         <file>media/icons/edit-undo.png</file>
@@ -22,16 +20,18 @@
         <file>media/icons/tool-contour.png</file>
         <file>media/icons/tool-pair.png</file>
         <file>media/icons/tool-select.png</file>
-        <file>media/icons/tool-zoom-in.png</file>
-        <file>media/icons/tool-zoom-out.png</file>
         <file>media/icons/tool-export-image.png</file>
-        <file>media/icons/tool-align.png</file>
-        <file>media/icons/tool-select-group.png</file>
         <file>media/icons/tool-select-inout.png</file>
         <file>media/icons/tool-select-subgraph.png</file>
         <file>media/translations/scg_en_EN.qm</file>
         <file>media/translations/scg_ru_RU.qm</file>
         <file>media/TypeClonningCursor.bmp</file>
+        <file>media/icons/edit-find.png</file>
+        <file>media/icons/edit-paste.png</file>
+        <file>media/icons/tool-align.png</file>
         <file>media/icons/tool-align-energy.png</file>
+        <file>media/icons/tool-select-group.png</file>
+        <file>media/icons/tool-zoom-in.png</file>
+        <file>media/icons/tool-zoom-out.png</file>
     </qresource>
 </RCC>
