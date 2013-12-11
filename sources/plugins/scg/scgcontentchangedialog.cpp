@@ -26,12 +26,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontentdialog.h"
 #include "scgnode.h"
 
-#include <QComboBox>
-#include <QPushButton>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
-#include <QLabel>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
 
 SCgContentChangeDialog* SCgContentChangeDialog::mInstance = 0;
 

@@ -1,8 +1,13 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
+<<<<<<< HEAD
+** Created: Mon Apr 16 11:15:33 2012
+**      by: Qt User Interface Compiler version 4.8.1
+=======
 ** Created: Sat Sep 14 13:49:29 2013
 **      by: Qt User Interface Compiler version 4.8.4
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,6 +16,17 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+<<<<<<< HEAD
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QWidget>
+=======
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
@@ -20,6 +36,7 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QStatusBar>
 #include <QtGui/QWidget>
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 QT_BEGIN_NAMESPACE
 
@@ -87,13 +104,20 @@ public:
         actionFeedback->setObjectName(QString::fromUtf8("actionFeedback"));
         actionGuide = new QAction(MainWindow);
         actionGuide->setObjectName(QString::fromUtf8("actionGuide"));
+<<<<<<< HEAD
+=======
         actionGuide->setEnabled(false);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
+<<<<<<< HEAD
+        menuBar->setGeometry(QRect(0, 0, 600, 25));
+=======
         menuBar->setGeometry(QRect(0, 0, 600, 21));
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuExport = new QMenu(menuFile);
@@ -138,6 +162,37 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
+<<<<<<< HEAD
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
+        actionNew->setText(QApplication::translate("MainWindow", "New", 0));
+        actionNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0));
+        actionOpen->setText(QApplication::translate("MainWindow", "Open", 0));
+        actionOpen->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
+        actionSave->setText(QApplication::translate("MainWindow", "Save", 0));
+        actionSave->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
+        actionSave_as->setText(QApplication::translate("MainWindow", "Save as", 0));
+        actionSave_as->setShortcut(QString());
+        actionExit->setText(QApplication::translate("MainWindow", "Exit", 0));
+        actionExit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
+        actionAbout->setText(QApplication::translate("MainWindow", "About ...", 0));
+        actionAbout->setShortcut(QApplication::translate("MainWindow", "F1", 0));
+        actionImport->setText(QApplication::translate("MainWindow", "Import", 0));
+        actionTo_image->setText(QApplication::translate("MainWindow", "Image", 0));
+        actionAbout_Qt->setText(QApplication::translate("MainWindow", "About Qt ...", 0));
+        actionSave_all->setText(QApplication::translate("MainWindow", "Save all", 0));
+        actionSave_all->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
+        actionClose_All->setText(QApplication::translate("MainWindow", "Close All", 0));
+        actionClose_All->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+W", 0));
+        actionClose_Others->setText(QApplication::translate("MainWindow", "Close Others", 0));
+        actionClose->setText(QApplication::translate("MainWindow", "Close", 0));
+        actionClose->setShortcut(QApplication::translate("MainWindow", "Ctrl+W", 0));
+        actionFeedback->setText(QApplication::translate("MainWindow", "Feedback", 0));
+        actionGuide->setText(QApplication::translate("MainWindow", "Guide", 0));
+        menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
+        menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0));
+        menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0));
+        menuView->setTitle(QApplication::translate("MainWindow", "View", 0));
+=======
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
         actionNew->setText(QApplication::translate("MainWindow", "New", 0, QApplication::UnicodeUTF8));
         actionNew->setShortcut(QApplication::translate("MainWindow", "Ctrl+N", 0, QApplication::UnicodeUTF8));
@@ -167,6 +222,7 @@ public:
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     } // retranslateUi
 
 };

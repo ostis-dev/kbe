@@ -26,10 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgbus.h"
 #include "scgcontour.h"
 
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QFile>
 #include <QTextCodec>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 
 
 GWFFileWriter::GWFFileWriter()

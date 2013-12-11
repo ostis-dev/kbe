@@ -23,14 +23,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgminimap.h"
 #include "scgview.h"
 
-#include <QGraphicsScene>
-#include <QHBoxLayout>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QHBoxLayout>
 #include <QPaintEvent>
-#include <QGraphicsRectItem>
+#include <QtWidgets/QGraphicsRectItem>
 #include <QBrush>
-#include <QScrollBar>
+#include <QtWidgets/QScrollBar>
 #include <QDragMoveEvent>
-#include <QRubberBand>
+#include <QtWidgets/QRubberBand>
 #include <QPaintEvent>
 
 SCgMinimap::SCgMinimap(SCgView *view, QWidget *parent) :

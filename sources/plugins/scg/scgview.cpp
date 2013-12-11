@@ -30,16 +30,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
-#include <QMenu>
+#include <QtWidgets/QMenu>
 #include <QKeyEvent>
-#include <QScrollBar>
-#include <QDialog>
-#include <QLabel>
-#include <QDialogButtonBox>
-#include <QLineEdit>
-#include <QLayout>
-#include <QUndoStack>
-#include <QCompleter>
+#include <QtWidgets/QScrollBar>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QUndoStack>
+#include <QtWidgets/QCompleter>
 #include <QFileInfo>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
@@ -589,7 +589,7 @@ void SCgView::updateSceneRect(const QRectF& rect)
         QPointF topLeft = mapToScene(0,0);
         QPointF bottomRight = mapToScene(viewport()->width(),viewport()->height());
         QRectF vis(topLeft,bottomRight);
-        QRectF result = rect.adjusted(-100,-100,100,100).unite(vis).unite(sceneRect());
+        QRectF result = rect.adjusted(-100,-100,100,100).united(vis).united(sceneRect());
         setSceneRect(result);
 
         emit sceneRectChanged(result);

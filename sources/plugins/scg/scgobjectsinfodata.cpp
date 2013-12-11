@@ -61,6 +61,7 @@ SCgNodeInfoData::SCgNodeInfoData(const SCgNode* obj): mPos(obj->scenePos()),
                                     mContentFilename(obj->contentFileName()),
                                     mContentData(obj->contentData()),
                                     mIdtfPos((int)obj->idtfPos())
+
 {
 
 }

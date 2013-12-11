@@ -4,8 +4,8 @@
 #include "scgpair.h"
 #include "scgbus.h"
 
-#include <QMessageBox>
-#include <QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QApplication>
 
 SCgVerticalArranger::SCgVerticalArranger(QObject *parent) :
     SCgArranger(parent)

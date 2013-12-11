@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgundoviewmodel.h"
 
-#include <QUndoStack>
+#include <QtWidgets/QUndoStack>
 #include <QItemSelectionModel>
 #include <QBrush>
 
@@ -189,4 +189,11 @@ void SCgUndoViewModel::setCleanIcon(const QIcon &icon)
 QIcon SCgUndoViewModel::cleanIcon() const
 {
     return m_clean_icon;
+}
+
+void SCgUndoViewModel::reset()
+{
+    beginResetModel();
+  //  m_stack->clear();
+    endResetModel();
 }

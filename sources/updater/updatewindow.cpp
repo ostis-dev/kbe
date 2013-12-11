@@ -23,7 +23,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "updatewindow.h"
 #include "updatedownloader.h"
 #include "updateextractor.h"
+<<<<<<< HEAD
+=======
 #include "updateinstaller.h"
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 #include <QProgressBar>
 #include <QPushButton>
@@ -34,8 +37,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QFile>
 #include <QLabel>
+<<<<<<< HEAD
+=======
 #include <QCryptographicHash>
 #include <QTextStream>
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 #define UPDATE_LIST "http://www.ostis.net/download/updates/updates.xml"
 #define UPDATE_FILE_PATH "_update.update"
@@ -45,19 +51,29 @@ UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
     QWidget(parent),
     mProgressBar(0),
     mLabel(0),
+<<<<<<< HEAD
+=======
     mProgressLabel(0),
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     mCancelButton(0),
     mCurrentVersion(version),
     mCurrentWork(WT_UPDATELIST),
     mUpdateDownloader(0)
 {
     QVBoxLayout *vlayout = new QVBoxLayout(this);
+<<<<<<< HEAD
+    QHBoxLayout *hlayout = new QHBoxLayout(this);
+
+    mLabel = new QLabel(tr("Stage"), this);
+
+=======
     QHBoxLayout *hlayout = new QHBoxLayout();
 
     mLabel = new QLabel(tr("Stage"), this);
 
     mProgressLabel = new QLabel(this);
 
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     mProgressBar = new QProgressBar(this);
 
     mCancelButton = new QPushButton(tr("Cancel"), this);
@@ -70,7 +86,10 @@ UpdateWindow::UpdateWindow(const QString &version, QWidget *parent) :
 
     vlayout->addWidget(mLabel);
     vlayout->addLayout(hlayout);
+<<<<<<< HEAD
+=======
     vlayout->addWidget(mProgressLabel);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
     setLayout(vlayout);
 
@@ -162,6 +181,16 @@ void UpdateWindow::downloadCheckSum()
     mUpdateDownloader->doDownload(mUpdatePath + ".checksum", UPDATE_CHECKSUM_PATH);
 }
 
+<<<<<<< HEAD
+void UpdateWindow::readUpdate()
+{
+    mCurrentWork = WT_READCONTENT;
+
+    mLabel->setText(tr("Reading update..."));
+    workStarted();
+
+    // TODO: compare checksum
+=======
 bool UpdateWindow::compareChecksums()
 {
     QFile updateFile(UPDATE_FILE_PATH);
@@ -201,12 +230,18 @@ void UpdateWindow::readUpdate()
     mCurrentWork = WT_READCONTENT;
     mLabel->setText(tr("Reading update..."));
     mProgressLabel->setText(QString());
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
     // unpack
     UpdateExtractor extractor;
     if (!extractor.extract(UPDATE_FILE_PATH, "_update_files"))
         workFailed();
 
+<<<<<<< HEAD
+
+
+    workFinished();
+=======
     workFinished();
 }
 
@@ -223,13 +258,17 @@ void UpdateWindow::installUpdate()
     if(!installer.installUpdate())
         workFailed();
     else workFinished();
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 }
 
 void UpdateWindow::workProgress(qint64 finished, qint64 total)
 {
     mProgressBar->setRange(0, total);
     mProgressBar->setValue(finished);
+<<<<<<< HEAD
+=======
     mProgressLabel->setText(QString::number(finished/1024)+" kb / "+QString::number(total/1024) + " kb");
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 }
 
 void UpdateWindow::workFinished()
@@ -250,6 +289,8 @@ void UpdateWindow::workFinished()
         readUpdate();
         break;
 
+<<<<<<< HEAD
+=======
     case WT_READCONTENT:
         installUpdate();
         break;
@@ -258,6 +299,7 @@ void UpdateWindow::workFinished()
         QMessageBox::information(this, tr("Success!"), tr("Update completed."));
         close();
         break;
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     default:
         break;
     }
@@ -271,6 +313,12 @@ void UpdateWindow::workStarted()
 
 void UpdateWindow::workFailed()
 {
+<<<<<<< HEAD
+    if (mCurrentWork == WT_UPDATELIST)
+    {
+        QMessageBox::information(this, "Error", tr("Unable to download updates list"));
+    }
+=======
     switch(mCurrentWork) {
     case WT_UPDATELIST:
         QMessageBox::information(this, tr("Error"), tr("Unable to download updates list"));
@@ -287,6 +335,7 @@ void UpdateWindow::workFailed()
     }
     mProgressLabel->clear();
     close();
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 }
 
 void UpdateWindow::workCanceled()
@@ -297,9 +346,17 @@ void UpdateWindow::workCanceled()
     case WT_GETUPDATE:
         mUpdateDownloader->downloadCanceled();
         break;
+<<<<<<< HEAD
+
     default:
         break;
     }
+
+=======
+    default:
+        break;
+    }
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
     close();
 }
 

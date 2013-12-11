@@ -24,7 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCNEDITOR_H
 
 #include "scnfielditem.h"
+<<<<<<< HEAD
+=======
 #include "scninputdialog.h"
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 #include <QGraphicsScene>
 #include <QList>
@@ -51,6 +54,24 @@ public:
 
     /*! Get pointer to field, that located after specified \p field
       * @param field Pointer to scn-field for get next
+<<<<<<< HEAD
+      * @return Return pointer to scn-field, that located after \p field.
+      * If \p field is a first field, then return 0
+      */
+    SCnFieldItem* nextField(SCnFieldItem *field);
+
+    /*! Get pointer to field, that located before specified \p field
+      * @param field Pointer to scn-field for get previous
+      * @return Return pointer to scn-field, that located before \p field
+      * If \p field is a last field, then return 0
+      */
+    SCnFieldItem* prevField(SCnFieldItem *field);
+
+    //! Select next field after specified \p field
+    void selectNextField(SCnFieldItem *field);
+    //! Select previous field before specified \p field
+    void selectPrevField(SCnFieldItem *field);
+=======
       * @param withLevelChange true, if level changing allowed
       * @return Return pointer to scn-field, that located after \p field.
       * If \p field is a first field, then return 0
@@ -90,6 +111,7 @@ public:
     void swapFields(SCnFieldItem *field_1, SCnFieldItem *field_2);
     //! Add new field as child of \p field
     void insertField(SCnFieldItem *field);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
 private:
     //! Unselect all selected items
@@ -100,7 +122,10 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+<<<<<<< HEAD
+=======
     //void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 
     //! Remove all fields from scene
     void removeAllFields();
@@ -117,6 +142,11 @@ protected:
     //! Vertical distance between fields
     quint32 mLevelDistance;
 
+<<<<<<< HEAD
+signals:
+
+public slots:
+=======
     //! Dialog for input SCn-text
     SCnInputDialog *inputDialog;
 
@@ -124,6 +154,7 @@ signals:
 
 public slots:
     void setTextForSelectedField(const QString &text);
+>>>>>>> bf0c1d6d3442b4bad1171f3e79d21965c3b6c417
 };
 
 #endif // SCNEDITOR_H

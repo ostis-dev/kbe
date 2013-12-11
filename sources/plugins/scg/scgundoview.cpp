@@ -51,4 +51,3 @@ void SCgUndoView::setStack(QUndoStack* st)
 
     vm->setStack(st);
 }
-

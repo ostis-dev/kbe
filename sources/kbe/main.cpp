@@ -26,15 +26,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "guidedialog.h"
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QTranslator>
 #include <QLocale>
 #include <QTextCodec>
 #include <QFileInfo>
 #include <QDir>
 #include <QFile>
-#include <QSplashScreen>
-#include <QMessageBox>
+#include <QtWidgets/QSplashScreen>
+#include <QtWidgets/QMessageBox>
 #include <QDebug>
 #include <QSettings>
 
@@ -96,3 +96,4 @@ int main(int argc, char *argv[])
     //splash.finish(&w);
     return a.exec();
 }
+

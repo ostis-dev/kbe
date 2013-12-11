@@ -27,12 +27,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "config.h"
 
-#include <QHBoxLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QIcon>
-#include <QUndoStack>
+#include <QtWidgets/QUndoStack>
 #include <QDir>
 #include <QFileInfo>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QTextStream>
 
 
@@ -53,6 +53,10 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QVBoxLayout *layout = new QVBoxLayout();
     layout->addWidget(mEditor);
     setLayout(layout);
+
+    mEditor->setFocus();
+    mEditor->grabKeyboard();
+    mEditor->repaint();
 
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }

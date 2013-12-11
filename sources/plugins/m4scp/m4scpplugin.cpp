@@ -26,10 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QDir>
 #include <QTranslator>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QLocale>
 
-Q_EXPORT_PLUGIN2(m4scp, M4SCpPlugin)
+//Q_EXPORT_PLUGIN2(m4scp, M4SCpPlugin)
 
 M4SCpPlugin::M4SCpPlugin(QObject *parent) :
     QObject(parent),

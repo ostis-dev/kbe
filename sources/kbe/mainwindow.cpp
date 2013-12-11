@@ -32,23 +32,24 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "version.h"
 
-#include <QMdiSubWindow>
-#include <QToolBar>
-#include <QStyleFactory>
+
+#include <QtWidgets/QMdiSubWindow>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QStyleFactory>
 #include <QSignalMapper>
-#include <QFileDialog>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QListWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QUndoGroup>
-#include <QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QUndoGroup>
+#include <QtWidgets/QMessageBox>
 #include <QUrl>
-#include <QGraphicsBlurEffect>
+#include <QtWidgets/QGraphicsBlurEffect>
 #include <QCloseEvent>
 #include <QSettings>
-#include <QDockWidget>
+#include <QtWidgets/QDockWidget>
 
 MainWindow* MainWindow::mInstance = 0;
 
@@ -314,6 +315,7 @@ void MainWindow::openRecentFile()
     }
 }
 
+
 EditorInterface* MainWindow::createSubWindowByType(const QString& type)
 {
     EditorInterface* childWindow = 0;
@@ -353,6 +355,7 @@ QString MainWindow::getSettingKeyValueForWindow(const QString& editorType) const
 
 void MainWindow::fileNew()
 {
+
     if (PluginManager::instance()->editorFactoriesByType().size() > 0)
     {
         NewFileDialog *fileNewDlg = new NewFileDialog(this);
@@ -371,7 +374,9 @@ void MainWindow::fileOpen()
     QFileDialog dlg;
 
     mBlurEffect->setEnabled(true);
+
     dlg.setDirectory(mLastDir);
+
     QString fileName = dlg.getOpenFileName(this,
                                            tr("Open file"),
                                            "",
@@ -380,7 +385,6 @@ void MainWindow::fileOpen()
                                            options);
     if (!fileName.isEmpty())
         load(fileName);
-    mLastDir = QDir(fileName);
     mBlurEffect->setEnabled(false);
 }
 

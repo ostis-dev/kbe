@@ -79,4 +79,3 @@ const QStringList& TemplateSCgObjectsBuilder::errorList()const
 {
     return mDecoratedBuilder->errorList();
 }
-

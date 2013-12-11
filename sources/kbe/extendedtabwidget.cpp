@@ -24,9 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QMenu>
-#include <QTabBar>
-#include <QMdiSubWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QTabBar>
+#include <QtWidgets/QMdiSubWindow>
 
 
 ExtendedTabWidget::ExtendedTabWidget(QWidget *parent) :

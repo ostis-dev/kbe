@@ -150,5 +150,3 @@ void SCsCodeAnalyzer::asynchUpdateExtractIdftFinished()
 
 	mIsBusy = false;
 }
-
-

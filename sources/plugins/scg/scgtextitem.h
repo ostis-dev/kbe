@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGTEXTITEM_H
 #define SCGTEXTITEM_H
 
-#include <QGraphicsTextItem>
+#include <QtWidgets/QGraphicsTextItem>
 
 /**
 * @brief Class represents a graphics item for object's identifier

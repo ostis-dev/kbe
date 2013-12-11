@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 
 #include "scgdefaultobjectbuilder.h"
 #include "scgobjectsinfo.h"
@@ -178,8 +178,6 @@ void DefaultSCgObjectBuilder::buildNode(SCgNodeInfo* info)
         if (!node->contentData().isNull() && info->contentVisible())
             node->showContent();
         setObjectInfo(node, info);
-        node->setIdtfPos((SCgNode::IdentifierPosition)info->idtfPos());
-
     }
 }
 

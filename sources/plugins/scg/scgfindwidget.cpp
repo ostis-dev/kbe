@@ -24,13 +24,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgplugin.h"
 #include "scgwindow.h"
 
-#include <QApplication>
-#include <QBoxLayout>
-#include <QToolButton>
-#include <QAction>
-#include <QLineEdit>
-#include <QLabel>
-#include <QCheckBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QCheckBox>
 #include <QHideEvent>
 
 SCgFindWidget::SCgFindWidget(QWidget *parent):

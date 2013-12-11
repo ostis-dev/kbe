@@ -91,4 +91,3 @@ void SCgPairMode::mouseMove(QGraphicsSceneMouseEvent *event)
     }
     SCgMode::mouseMove(event);
 }
-

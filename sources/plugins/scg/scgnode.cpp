@@ -26,13 +26,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontentviewer.h"
 #include "scgbus.h"
 #include "scgview.h"
-#include "scgnodetextitem.h"
-#include "scgconfig.h"
-
 #include <QPainter>
 #include <QVector2D>
-#include <QGraphicsScene>
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsView>
+#include "scgnodetextitem.h"
 
 #define DEFAULT_IDTF_POS BottomRight
 
@@ -164,7 +162,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
         mContentViewer->hide();
 
     if(mBus)
-        mBus->del(delList);
+    	mBus->del(delList);
 
     SCgObject::del(delList);
 }
@@ -172,7 +170,7 @@ void SCgNode::del(QList<SCgObject*> &delList)
 void SCgNode::undel(SCgScene* scene)
 {
     if(mBus)
-        mBus->undel(scene);
+    	mBus->undel(scene);
 
     SCgObject::undel(scene);
     if(mIsContentVisible)
@@ -359,7 +357,6 @@ void SCgNode::setBus(SCgBus *bus)
 {
     mBus = bus;
 }
-
 
 void SCgNode::setIdtfValue(const QString &idtf)
 {
