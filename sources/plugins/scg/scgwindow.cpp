@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgwindow.h"
 
 #include <QToolBar>
+#include <QSlider>
 #include <QApplication>
 #include <QClipboard>
 #include <QAction>
@@ -76,7 +77,6 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),
     mView(0),
     mScene(0),
-    mZoomFactorLine(0),
     mMinimap(0),
     mUndoView(0),
     mFindWidget(0),
@@ -305,16 +305,18 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
 
-    //Scale combobox
-    QComboBox* b = new QComboBox(mToolBar);
-    b->setEditable(true);
-    b->setInsertPolicy(QComboBox::NoInsert);
-    b->addItems(SCgWindow::mScales);
-    b->setCurrentIndex(mScales.indexOf("100"));
-    mZoomFactorLine = b->lineEdit();
-    mZoomFactorLine->setInputMask("D90%");
-    mToolBar->addWidget(b);
-    connect(mZoomFactorLine, SIGNAL(textChanged(const QString&)), mView, SLOT(setScale(const QString&)));
+    //Zoom slider
+    mZoomSlider = new QSlider(Qt::Vertical);
+
+    mZoomSlider->setInvertedAppearance(false);
+    mZoomSlider->setRange(25, 200);
+    mZoomSlider->setTickPosition(QSlider::TicksAbove);
+    mZoomSlider->setTickInterval(25);
+    mZoomSlider->setFixedHeight(150);
+    mZoomSlider->setSliderPosition(100);
+
+    mToolBar->addWidget(mZoomSlider);
+    connect(mZoomSlider, SIGNAL(valueChanged(int)), mView, SLOT(setScale(int)));
     connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
 
     //Zoom out
@@ -490,31 +492,30 @@ void SCgWindow::onExportImage()
 
 void SCgWindow::onZoomIn()
 {
-    int oldScale = mZoomFactorLine->text().remove('%').toInt();
+    int oldScale = mZoomSlider->value();
     int newScale = oldScale + mScaleChangeStep;
 
     if(newScale > int(maxScale*100))
         newScale = int(maxScale*100);
 
-    mZoomFactorLine->setText(QString::number(newScale));
+    mZoomSlider->setSliderPosition(newScale);
 }
 
 void SCgWindow::onZoomOut()
 {
-    int oldScale = mZoomFactorLine->text().remove('%').toInt();
+    int oldScale = mZoomSlider->value();
     int newScale = oldScale - mScaleChangeStep;
 
     if(newScale < int(minScale*100))
         newScale = int(minScale*100);
-
-    mZoomFactorLine->setText(QString::number(newScale));
+    mZoomSlider->setSliderPosition(newScale);
 }
 
 void SCgWindow::onViewScaleChanged(qreal newScale)
 {
-    qreal oldScale = mZoomFactorLine->text().remove('%').toDouble() / 100;
+    qreal oldScale = mZoomSlider->value() / 100;
     if (newScale != oldScale)
-        mZoomFactorLine->setText(QString::number(int(newScale*100)));
+        mZoomSlider->setSliderPosition((int(newScale*100)));
 }
 
 void SCgWindow::cut() const

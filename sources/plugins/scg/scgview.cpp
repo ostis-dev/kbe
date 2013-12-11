@@ -547,6 +547,29 @@ void SCgView::setScale(const QString& sc)
     emit(scaleChanged(transform().mapRect(QRectF(0, 0, 1, 1)).width()));
 }
 
+void SCgView::setScale(int scale) {
+
+    QTransform t = transform();
+    //Default transform
+    t.reset();
+
+    //Getting percent value
+    double d = (double)scale/100.0;
+
+    //Checking if value d in proper range
+    if (d < SCgWindow::minScale)
+        d = SCgWindow::minScale;
+    else
+        if (d > SCgWindow::maxScale)
+            d = SCgWindow::maxScale;
+
+    //Setting transformation
+    setTransform(t.scale(d,d),false);
+
+    emit(scaleChanged(transform().mapRect(QRectF(0, 0, 1, 1)).width()));
+}
+
+
 void SCgView::setScale(qreal scaleFactor)
 {
     // Factor, that will be set.

@@ -35,6 +35,7 @@ class SCgUndoView;
 
 class QToolBar;
 class QLineEdit;
+class QSlider;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -131,9 +132,6 @@ private:
     //! Map for storing mode-action relation
     Mode2ActionMap mMode2Action;
 
-    //! Contents current zoom factor.
-    QLineEdit* mZoomFactorLine;
-
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
 
@@ -145,6 +143,9 @@ private:
 
     //! Tool bar
     QToolBar *mToolBar;
+
+    //! Slider
+    QSlider *mZoomSlider;
 
     //! Undo stack
     QUndoStack *mUndoStack;
