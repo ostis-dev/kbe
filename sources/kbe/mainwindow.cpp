@@ -29,6 +29,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "pluginmanager.h"
 #include "guidedialog.h"
 #include "newfiledialog.h"
+#include "parametersdialog.h"
 
 #include "version.h"
 
@@ -166,7 +167,7 @@ void MainWindow::createActions()
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
     connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(fileSaveAll()));
     connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(fileExportToImage()));
-
+    connect(ui->actionEdit, SIGNAL(triggered()), this, SLOT(viewParameters()));
     connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()) );
     connect(ui->actionClose, SIGNAL(triggered()), mTabWidget, SLOT(close()));
     connect(ui->actionClose_Others, SIGNAL(triggered()), mTabWidget, SLOT(closeOtherDocuments()));
@@ -499,6 +500,13 @@ void MainWindow::fileSaveAs(QWidget* window)
 
     mBlurEffect->setEnabled(false);
 
+}
+
+void MainWindow::viewParameters()
+{
+    ParametersDialog paramDialog(this); //= new ParametersDialog(this);
+
+    paramDialog.exec();
 }
 
 void MainWindow::fileSaveAll()
