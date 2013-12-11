@@ -92,7 +92,44 @@ HEADERS += \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
     arrangers/scgforcecalculator.h \
-    scgnodetextitem.h
+    scgnodetextitem.h \
+    antlr3treeparser.h \
+    antlr3tokenstream.h \
+    antlr3string.h \
+    antlr3rewritestreams.h \
+    antlr3recognizersharedstate.h \
+    antlr3parsetree.h \
+    antlr3parser.h \
+    antlr3memory.h \
+    antlr3lexer.h \
+    antlr3intstream.h \
+    antlr3interfaces.h \
+    antlr3input.h \
+    antlr3filestream.h \
+    antlr3exception.h \
+    antlr3errors.h \
+    antlr3encodings.h \
+    antlr3defs.h \
+    antlr3debugeventlistener.h \
+    antlr3cyclicdfa.h \
+    antlr3convertutf.h \
+    antlr3commontreenodestream.h \
+    antlr3commontreeadaptor.h \
+    antlr3commontree.h \
+    antlr3commontoken.h \
+    antlr3collections.h \
+    antlr3bitset.h \
+    antlr3basetreeadaptor.h \
+    antlr3basetree.h \
+    antlr3baserecognizer.h \
+    antlr3.h \
+    gwf/parser/scsParser.h \
+    gwf/parser/scsLexer.h \
+    gwf/parser/scsparserast.h \
+    gwf/scsfileloader.h \
+    gwf/scsobjectinforeader.h
+
+
 
 SOURCES += \
     scgwindow.cpp \
@@ -172,7 +209,36 @@ SOURCES += \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
     arrangers/scgforcecalculator.cpp \
-    scgnodetextitem.cpp
+    scgnodetextitem.cpp \
+    antlr3treeparser.c \
+    antlr3tokenstream.c \
+    antlr3string.c \
+    antlr3rewritestreams.c \
+    antlr3parser.c \
+    antlr3lexer.c \
+    antlr3intstream.c \
+    antlr3inputstream.c \
+    antlr3filestream.c \
+    antlr3exception.c \
+    antlr3encodings.c \
+    antlr3debughandlers.c \
+    antlr3cyclicdfa.c \
+    antlr3convertutf.c \
+    antlr3commontreenodestream.c \
+    antlr3commontreeadaptor.c \
+    antlr3commontree.c \
+    antlr3commontoken.c \
+    antlr3collections.c \
+    antlr3bitset.c \
+    antlr3basetreeadaptor.c \
+    antlr3basetree.c \
+    antlr3baserecognizer.c \
+    gwf/parser/scsParser.c \
+    gwf/parser/scsLexer.c \
+    gwf/parser/scsparserast.cpp \
+    gwf/scsfileloader.cpp \
+    gwf/scsobjectinforeader.cpp
+
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
@@ -182,3 +248,6 @@ lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
+
+OTHER_FILES += \
+    gwf/SCsC.tokens

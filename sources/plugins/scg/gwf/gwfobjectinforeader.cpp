@@ -30,6 +30,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgbus.h"
 #include "scgcontour.h"
 #include "scgpair.h"
+#include <QDebug>
 
 GwfObjectInfoReader::GwfObjectInfoReader(bool isOwner) :
     mIsOwner(isOwner),
@@ -236,8 +237,9 @@ bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo*
     if(info->objectType() == SCgPair::Type || info->objectType() == SCgNode::Type)
     {
         QString& type = info->typeAliasRef();
+
         if (getAttributeString(element, "type", type))
-        {
+        {           
             if (!mGWFType2TypeAlias.contains(type))
             {
                 errorUnknownElementType(element.tagName(), type);
@@ -278,6 +280,7 @@ bool GwfObjectInfoReader::parseNode(const QDomElement &element)
     int& idtfPos = nodeInfo->idtfPosRef();
     if (!getAttributeInt(element, "idtf_pos", idtfPos))
         idtfPos = 0;
+
 
     // get content element
     QDomElement contEl = element.firstChildElement("content");

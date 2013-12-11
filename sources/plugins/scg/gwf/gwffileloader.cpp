@@ -31,6 +31,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QDomDocument>
 #include <QFile>
+#include <QDebug>
+#include <qfileinfo.h>
 
 GWFFileLoader::GWFFileLoader()
 {
@@ -79,7 +81,7 @@ bool GWFFileLoader::load(QString file_name, QObject *output)
 
 
     /////////////////////////////////////////////
-    // Read document
+    // Read GWF document
     GwfObjectInfoReader reader;
     if (! reader.read(document))
     {
@@ -100,7 +102,7 @@ bool GWFFileLoader::load(QString file_name, QObject *output)
 
         showLastError();
     }
-    /////////////////////////////////////////////
+    ////////////////////////////////////////////
 
     return true;
 }

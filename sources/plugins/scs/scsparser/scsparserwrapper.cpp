@@ -27,7 +27,8 @@ pANTLR3_INPUT_STREAM SCsParser::createInputStream(const std::string &text)
 #elif defined( __APPLE_CC__)
     input = antlr3StringStreamNew((pANTLR3_UINT8)text.c_str(),ANTLR3_ENC_UTF8,text.length(),(pANTLR3_UINT8)"scs");
 #else
-    input = antlr3NewAsciiStringCopyStream((pANTLR3_UINT8)text.c_str(),text.length(),(pANTLR3_UINT8)"scs");
+    input = antlr3StringStreamNew((pANTLR3_UINT8)text.c_str(),ANTLR3_ENC_UTF8,text.length(),(pANTLR3_UINT8)"scs");
+    //input = antlr3NewAsciiStringCopyStream((pANTLR3_UINT8)text.c_str(),text.length(),(pANTLR3_UINT8)"scs");
 #endif
     return input;
 }

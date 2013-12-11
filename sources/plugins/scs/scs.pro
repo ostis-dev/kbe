@@ -10,9 +10,7 @@ CONFIG       += plugin
 OBJECTS_DIR = obj
 MOC_DIR = moc
 
-unix {
-    LIBS+= -lantlr3c
-}
+LIBS+= -lantlr3c
 
 TRANSLATIONS += media/translations/scs_en_EN.ts \
                 media/translations/scs_ru_RU.ts
@@ -49,7 +47,37 @@ HEADERS += \
     scsfindwidget.h \
     scssyntaxhighlighter.h \
     scscodeanalyzer.h \
-    scscodecompleter.h
+    scscodecompleter.h \
+    antlr3treeparser.h \
+    antlr3tokenstream.h \
+    antlr3string.h \
+    antlr3rewritestreams.h \
+    antlr3recognizersharedstate.h \
+    antlr3parsetree.h \
+    antlr3parser.h \
+    antlr3memory.h \
+    antlr3lexer.h \
+    antlr3intstream.h \
+    antlr3interfaces.h \
+    antlr3input.h \
+    antlr3filestream.h \
+    antlr3exception.h \
+    antlr3errors.h \
+    antlr3encodings.h \
+    antlr3defs.h \
+    antlr3debugeventlistener.h \
+    antlr3cyclicdfa.h \
+    antlr3convertutf.h \
+    antlr3commontreenodestream.h \
+    antlr3commontreeadaptor.h \
+    antlr3commontree.h \
+    antlr3commontoken.h \
+    antlr3collections.h \
+    antlr3bitset.h \
+    antlr3basetreeadaptor.h \
+    antlr3basetree.h \
+    antlr3baserecognizer.h \
+    antlr3.h
 
 
 SOURCES += \
@@ -72,6 +100,29 @@ SOURCES += \
     scserrortablewidgetitem.cpp \
     scscodeanalyzer.cpp \
     scssyntaxhighlighter.cpp \
-    scscodecompleter.cpp
+    scscodecompleter.cpp \
+    antlr3treeparser.c \
+    antlr3tokenstream.c \
+    antlr3string.c \
+    antlr3rewritestreams.c \
+    antlr3parser.c \
+    antlr3lexer.c \
+    antlr3intstream.c \
+    antlr3inputstream.c \
+    antlr3filestream.c \
+    antlr3exception.c \
+    antlr3encodings.c \
+    antlr3debughandlers.c \
+    antlr3cyclicdfa.c \
+    antlr3convertutf.c \
+    antlr3commontreenodestream.c \
+    antlr3commontreeadaptor.c \
+    antlr3commontree.c \
+    antlr3commontoken.c \
+    antlr3collections.c \
+    antlr3bitset.c \
+    antlr3basetreeadaptor.c \
+    antlr3basetree.c \
+    antlr3baserecognizer.c
 
 

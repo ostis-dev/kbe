@@ -32,7 +32,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <limits>
 
-#include "scsparserwrapper.h"
+#include "../scs/scsparser/scsparserwrapper.h"
 
 const QRegExp SCsCodeAnalyzer::msIdentifierExp("([A-Za-z0-9_.#]+)");
 

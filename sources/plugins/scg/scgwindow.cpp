@@ -37,6 +37,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QDebug>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -57,6 +58,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "gwf/gwffileloader.h"
 #include "gwf/gwffilewriter.h"
 #include "gwf/gwfobjectinforeader.h"
+#include "gwf/scsfileloader.h"
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
@@ -343,16 +345,41 @@ QIcon SCgWindow::icon() const
 
 bool SCgWindow::loadFromFile(const QString &fileName)
 {
-    GWFFileLoader loader;
+    QFileInfo * fileExt = new QFileInfo(fileName);
 
-    if (loader.load(fileName, mView->scene()))
+    if(fileExt->suffix()=="gwf")
     {
-        mFileName = fileName;
-        setWindowTitle(mFileName);
-        emitEvent(EditorObserverInterface::ContentLoaded);
-        return true;
-    }else
-        return false;
+        GWFFileLoader loader;
+
+        if (loader.load(fileName, mView->scene()))
+        {
+            mFileName = fileName;
+            setWindowTitle(mFileName);
+            emitEvent(EditorObserverInterface::ContentLoaded);
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    if(fileExt->suffix()=="scs2")
+    {
+        ScsFileLoader loader;
+
+        if (loader.load(fileName, mView->scene()))
+        {
+            mFileName = fileName;
+            setWindowTitle(mFileName);
+            emitEvent(EditorObserverInterface::ContentLoaded);
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    return false;
 }
 
 bool SCgWindow::saveToFile(const QString &fileName)
@@ -675,6 +702,7 @@ QStringList SCgWindow::supportedFormatsExt() const
 {
     QStringList res;
     res << "gwf";
+    res << "scs2";
     return res;
 }
 
@@ -737,6 +765,7 @@ QStringList SCgWindowFactory::supportedFormatsExt()
 {
     QStringList res;
     res << "gwf";
+    res << "scs2";
     return res;
 }
 

@@ -68,6 +68,7 @@ public:
 
 protected:
     void fillModel(QStandardItemModel *model);
+public:
 	void extractIdentifiers(const QString &text, QSet<QString> *identifiers);
 
 private:
