@@ -270,6 +270,8 @@ public:
 
     QWidget* createNewParametersTab();
 
+    QString getDescription() const;
+
 };
 
 #endif // SCGWINDOW_H

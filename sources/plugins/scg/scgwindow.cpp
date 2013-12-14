@@ -738,6 +738,11 @@ QWidget* SCgWindowFactory::createNewParametersTab()
     return new QWidget();
 }
 
+QString SCgWindowFactory::getDescription() const
+{
+    return "SCg plugin designed for creating and editing SCg constructions. These constructs are used as fragments of the knowledge base";
+}
+
 QStringList SCgWindowFactory::supportedFormatsExt()
 {
     QStringList res;

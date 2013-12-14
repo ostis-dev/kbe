@@ -99,6 +99,11 @@ QWidget* SCsWindowFactory::createNewParametersTab()
     return new QWidget();
 }
 
+QString SCsWindowFactory::getDescription() const
+{
+    return "SCs plugin designed for creating and editing SCs constructions. These constructs are used as fragments of the knowledge base";
+}
+
 QWidget* SCsWindow::widget()
 {
     return this;

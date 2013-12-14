@@ -116,6 +116,8 @@ public:
     QIcon icon() const;
 
     QWidget* createNewParametersTab();
+
+    QString getDescription() const;
 };
 
 #endif // M4SCPWINDOW_H

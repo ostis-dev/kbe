@@ -206,6 +206,11 @@ QWidget* M4SCpWindowFactory::createNewParametersTab()
     return new QWidget();
 }
 
+QString M4SCpWindowFactory::getDescription() const
+{
+    return "File format designed to store m4scp description scp-programs, which is based on macro definitions language m4";
+}
+
 QStringList M4SCpWindowFactory::supportedFormatsExt()
 {
     QStringList list;

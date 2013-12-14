@@ -120,5 +120,7 @@ public:
 
     QWidget* createNewParametersTab();
 
+    QString getDescription() const;
+
 };
 #endif // SCSWINDOW_H

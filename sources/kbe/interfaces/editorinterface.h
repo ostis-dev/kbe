@@ -176,6 +176,9 @@ public:
 
     //! Create new tab in parameters window
     virtual QWidget* createNewParametersTab() = 0;
+
+    //! Set ToolTip on plugin in NewFile dialog
+    virtual QString getDescription() const = 0;
 };
 
 
