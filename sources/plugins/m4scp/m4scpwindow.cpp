@@ -35,7 +35,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
-
+#include <QShortcut>
+#include <QPoint>
+#include <QFontDialog>
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
@@ -45,6 +47,7 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     findShortcutF(0),
     findShortcutH(0)
 {
+
     mEditor = new M4SCpCodeEditor();
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
@@ -57,7 +60,7 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     layout->addWidget(mEditor);
     setLayout(layout);
 
-    FindDialog = new M4SCpFinder(mEditor);
+    mFindDialog = new M4SCpFinder(mEditor);
 
     findShortcutF = new QShortcut(Qt::CTRL + Qt::Key_F, this);
     connect(findShortcutF, SIGNAL(activated()), this, SLOT(viewFindWindow()));
@@ -71,7 +74,7 @@ M4SCpWindow::~M4SCpWindow()
 {
     delete mHighlighter;
     delete mEditor;
-    delete FindDialog;
+    delete mFindDialog;
 }
 
 QWidget* M4SCpWindow::widget()
@@ -210,8 +213,8 @@ QIcon M4SCpWindowFactory::icon() const
 {
     return M4SCpWindow::findIcon("mime_type.png");
 }
+
 void M4SCpWindow::viewFindWindow()
 {
-    FindDialog->show();
+    mFindDialog->show();
 }
-
