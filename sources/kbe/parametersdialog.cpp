@@ -1,6 +1,8 @@
 #include "parametersdialog.h"
 #include "config.h"
 #include "guidedialog.h"
+#include "interfaces/editorinterface.h"
+#include "pluginmanager.h"
 
 #include <QDialog>
 #include <QLabel>
@@ -10,6 +12,7 @@
 #include <QSettings>
 #include <QCheckBox>
 #include <QPushButton>
+#include <QListWidget>
 
 ParametersDialog::ParametersDialog(QWidget *parent):
     QDialog(parent)
@@ -24,12 +27,20 @@ ParametersDialog::ParametersDialog(QWidget *parent):
     horizontal->addWidget(buttonOk);
     horizontal->addWidget(buttonCancel);
 
-    QVBoxLayout *vertical = new QVBoxLayout();
-
     QTabWidget *tabWidget = new QTabWidget;
     tabWidget->addTab(new GeneralParametersTab(), tr("General"));
-    tabWidget->addTab(new M4SCpParametersTab(), tr("M4SCp"));
-    tabWidget->addTab(new SCgParametersTab(), tr("SCg"));
+
+    QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactoriesByType().values();
+    QList<EditorFactoryInterface*>::iterator it, itEnd = factories.end();
+
+    for (it = factories.begin(); it != itEnd; ++it)
+    {
+        /// @todo add custom icon and tooltip support.
+
+        tabWidget->addTab((*it)->createNewParametersTab() , (*it)->name());
+    }
+
+    QVBoxLayout *vertical = new QVBoxLayout();
     vertical->addWidget(tabWidget);
     vertical->addLayout(horizontal);
     setLayout(vertical);
@@ -66,26 +77,3 @@ void GeneralParametersTab::showStateChanged(int state)
 {
     settings.setValue(Config::settingsShowStartupDialog, QVariant(showStartupDialog->isChecked()));
 }
-
-M4SCpParametersTab::M4SCpParametersTab(QWidget *parent):
-    QWidget(parent)
-{
-    QVBoxLayout *verticalM = new QVBoxLayout();
-    QLabel *label1M = new QLabel("METKAM");
-    QLabel *label2M = new QLabel("METKA2M");
-    verticalM->addWidget(label1M);
-    verticalM->addWidget(label2M);
-    setLayout(verticalM);
-}
-
-SCgParametersTab::SCgParametersTab(QWidget *parent):
-    QWidget(parent)
-{
-    QVBoxLayout *verticalS = new QVBoxLayout();
-    QLabel *label1S = new QLabel("METKAS");
-    QLabel *label2S = new QLabel("METKA2S");
-    verticalS->addWidget(label1S);
-    verticalS->addWidget(label2S);
-    setLayout(verticalS);
-}
-

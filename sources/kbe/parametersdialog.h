@@ -31,24 +31,6 @@ public slots:
 
 protected:
     QSettings settings;
-    //QSettings *settings;
     QCheckBox *showStartupDialog;
 };
-
-
-class M4SCpParametersTab: public QWidget
-{
-    Q_OBJECT
-public:
-    M4SCpParametersTab(QWidget *parent = 0);
-};
-
-
-class SCgParametersTab : public QWidget
- {
-     Q_OBJECT
-
- public:
-     SCgParametersTab(QWidget *parent = 0);
- };
 #endif // PARAMETERSDIALOG_H

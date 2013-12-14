@@ -25,6 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtPlugin>
 #include <QIcon>
+#include <QWidget>
 
 class FileLoaderInterface;
 class FileWriterInterface;
@@ -172,6 +173,9 @@ public:
 
     //! Return icon, that associated with editor factory
     virtual QIcon icon() const = 0;
+
+    //! Create new tab in parameters window
+    virtual QWidget* createNewParametersTab() = 0;
 };
 
 

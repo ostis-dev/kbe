@@ -24,8 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define M4SCPWINDOW_H
 
 #include "interfaces/editorinterface.h"
+#include "m4scpfinder.h"
 
 #include <QWidget>
+#include <QShortcut>
 
 class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
@@ -75,17 +77,22 @@ public:
       */
     QIcon icon() const;
 
+    QShortcut *findShortcutF;
+    QShortcut *findShortcutH;
+
     static QIcon findIcon(const QString &iconName);
 
 private:
 
     M4SCpCodeEditor *mEditor;
     M4SCpSyntaxHighlighter *mHighlighter;
+    M4SCpFinder *mFindDialog;
     bool mIsSaved;
 
 private slots:
     //! Slot that recieve content changing
     void textChanged();
+    void viewFindWindow();
 
 };
 
@@ -107,6 +114,8 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+    QWidget* createNewParametersTab();
 };
 
 #endif // M4SCPWINDOW_H
