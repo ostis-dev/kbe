@@ -29,10 +29,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QListWidget>
 #include <QKeyEvent>
 #include <QPushButton>
+#include <QPair>
 
 NewFileDialog::NewFileDialog(QWidget *parent) :
     QDialog(parent)
 {
+    setWindowTitle(tr("Select new File"));
     QVBoxLayout *lay = new QVBoxLayout;
     QLabel *lab = new QLabel(tr("List of available formats:"));
 
@@ -43,11 +45,19 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactoriesByType().values();
     QList<EditorFactoryInterface*>::iterator it, itEnd = factories.end();
 
+    QPair<QListWidgetItem *, QString> pairToolTip;
+
     for (it = factories.begin(); it != itEnd; ++it)
     {
         /// @todo add custom icon and tooltip support.
         QListWidgetItem *itemToAdd = new QListWidgetItem((*it)->icon(), (*it)->name());
         itemToAdd->setData(EditorTypeRole, (*it)->name());
+        itemToAdd->setToolTip((*it)->getDescription());
+/*
+        pairToolTip.first = itemToAdd;
+        pairToolTip.second = "Plug-in for creating and editing " + (*it)->name() + " texts";
+        itemToAdd->setToolTip(pairToolTip.second);
+*/
         mAvailableTypesList->addItem(itemToAdd);
     }
 
