@@ -36,6 +36,7 @@ class SCgUndoView;
 class QToolBar;
 class QLineEdit;
 class QSlider;
+class QLabel;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -147,6 +148,9 @@ private:
     //! Slider
     QSlider *mZoomSlider;
 
+    //! Label
+    QLabel *mZoomLabel;
+
     //! Undo stack
     QUndoStack *mUndoStack;
 
@@ -210,7 +214,9 @@ private slots:
     void onSelectSubgraph();
     //! Slot to hanlde an export image action
     void onExportImage();
-    //! Slot to handle a zoom in action
+    //! Slot to handle zoom label
+    void updateZoomLabel (int newScale);
+    //! Slot to handle a zoom out action
     void onZoomIn();
     //! Slot to handle a zoom out action
     void onZoomOut();

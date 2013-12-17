@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QToolBar>
 #include <QSlider>
+#include <QLabel>
 #include <QApplication>
 #include <QClipboard>
 #include <QAction>
@@ -298,6 +299,11 @@ void SCgWindow::createToolBar()
     //
     mToolBar->addSeparator();
     //
+
+    //Zoom label
+    mZoomLabel = new QLabel(mToolBar);
+    mToolBar->addWidget(mZoomLabel);
+
     //Zoom in
     action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
     action->setCheckable(false);
@@ -308,15 +314,15 @@ void SCgWindow::createToolBar()
     //Zoom slider
     mZoomSlider = new QSlider(Qt::Vertical);
 
-    mZoomSlider->setInvertedAppearance(false);
+    //mZoomSlider->setInvertedAppearance(false);
     mZoomSlider->setRange(25, 200);
-    mZoomSlider->setTickPosition(QSlider::TicksAbove);
+    mZoomSlider->setTickPosition(QSlider::TicksBelow);
     mZoomSlider->setTickInterval(25);
     mZoomSlider->setFixedHeight(150);
     mZoomSlider->setSliderPosition(100);
-
     mToolBar->addWidget(mZoomSlider);
     connect(mZoomSlider, SIGNAL(valueChanged(int)), mView, SLOT(setScale(int)));
+    connect(mZoomSlider, SIGNAL(valueChanged(int)), this, SLOT(updateZoomLabel(int)));
     connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
 
     //Zoom out
@@ -490,6 +496,7 @@ void SCgWindow::onExportImage()
     }
 }
 
+
 void SCgWindow::onZoomIn()
 {
     int oldScale = mZoomSlider->value();
@@ -511,11 +518,17 @@ void SCgWindow::onZoomOut()
     mZoomSlider->setSliderPosition(newScale);
 }
 
+void SCgWindow::updateZoomLabel(int newScale)
+{
+    mZoomLabel->setText(QString("%1%").arg(newScale));
+}
+
 void SCgWindow::onViewScaleChanged(qreal newScale)
 {
-    qreal oldScale = mZoomSlider->value() / 100;
+    qreal oldScale = mZoomSlider->value();
+    newScale = newScale * 100;
     if (newScale != oldScale)
-        mZoomSlider->setSliderPosition((int(newScale*100)));
+        mZoomSlider->setSliderPosition((int(newScale)));
 }
 
 void SCgWindow::cut() const
