@@ -51,7 +51,7 @@ void SCgForceCalculator::addInteractionWithPairs(const SCgNode *node,
         Force &force) const
 {
     foreach (SCgObject *object, node->connectedObjects()) {
-        if (object->type() == SCgPair::Type) {
+        if (object && object->type() == SCgPair::Type) {
             SCgPair *pair = static_cast<SCgPair *>(object);
 
             // x1, y1 - coodinates of pair end, which connected with node.
@@ -87,29 +87,33 @@ void SCgForceCalculator::addInteractionWithPairs(const SCgNode *node,
 void SCgForceCalculator::addInteractionWithFakePairNodes(const SCgNode *node,
                                                   Force &force) const
 {
-    foreach (SCgPair *pair, mPairs) {
-        // Calculate coordinates of fake node (middle of the pair):
-        qreal fakeX = (pair->scenePoints().last().x() + pair->scenePoints().first().x()) / 2;
-        qreal fakeY = (pair->scenePoints().last().y() + pair->scenePoints().first().y()) / 2;
+    foreach (SCgPair *pair, mPairs)
+        if (pair)
+        {
+            // Calculate coordinates of fake node (middle of the pair):
+            qreal fakeX = (pair->scenePoints().last().x() + pair->scenePoints().first().x()) / 2;
+            qreal fakeY = (pair->scenePoints().last().y() + pair->scenePoints().first().y()) / 2;
 
-        addInteractionWithFakeNodes(node, force, fakeX, fakeY);
-    }
+            addInteractionWithFakeNodes(node, force, fakeX, fakeY);
+        }
 }
 //------------------------------------------------------------------------------
 void SCgForceCalculator::addInteractionWithFakeBusNodes(const SCgNode *node,
                                                      Force &force) const
 {
-    foreach (SCgBus *bus, mBusses) {
-        // Calculate coordinates of fake node and add interection with this one:
-        // on the middle of the bus:
-        qreal fakeX = (bus->scenePoints().last().x() + bus->scenePoints().first().x()) / 2;
-        qreal fakeY = (bus->scenePoints().last().y() + bus->scenePoints().first().y()) / 2;
-        addInteractionWithFakeNodes(node, force, fakeX, fakeY);
-        // on the end of the bus:
-        fakeX = bus->scenePoints().last().x();
-        fakeY = bus->scenePoints().last().y();
-        addInteractionWithFakeNodes(node, force, fakeX, fakeY);
-    }
+    foreach (SCgBus *bus, mBusses)
+        if (bus)
+        {
+            // Calculate coordinates of fake node and add interection with this one:
+            // on the middle of the bus:
+            qreal fakeX = (bus->scenePoints().last().x() + bus->scenePoints().first().x()) / 2;
+            qreal fakeY = (bus->scenePoints().last().y() + bus->scenePoints().first().y()) / 2;
+            addInteractionWithFakeNodes(node, force, fakeX, fakeY);
+            // on the end of the bus:
+            fakeX = bus->scenePoints().last().x();
+            fakeY = bus->scenePoints().last().y();
+            addInteractionWithFakeNodes(node, force, fakeX, fakeY);
+        }
 }
 //------------------------------------------------------------------------------
 void SCgForceCalculator::addInteractionWithFakeNodes(const SCgNode *node,

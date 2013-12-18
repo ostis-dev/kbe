@@ -23,8 +23,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGCONTENTVIEWER_H
 #define SCGCONTENTVIEWER_H
 
-#include <QGraphicsProxyWidget>
-#include <QWidget>
+#include <QWidgets/QGraphicsProxyWidget>
+#include <QWidgets/QWidget>
 #include <QVariant>
 
 class SCgContentViewer : public QGraphicsProxyWidget

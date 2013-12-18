@@ -1,4 +1,6 @@
 QT += xml
+QT += widgets
+QT += concurrent
 
 TARGET        = $$qtLibraryTarget(scg)
 TEMPLATE      = lib

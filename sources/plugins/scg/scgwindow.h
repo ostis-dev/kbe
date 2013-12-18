@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces/editorinterface.h"
 #include "scgscene.h"
 
-#include <QToolBox>
+#include <QtWidgets/QToolBox>
 #include <QMap>
 
 class SCgMinimap;

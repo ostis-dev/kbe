@@ -8,7 +8,7 @@
 #ifndef POINTGRAPHICSITEM_H_
 #define POINTGRAPHICSITEM_H_
 
-#include <QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 #include "scgpointobject.h"
 
 class SCgPointGraphicsItem : public QGraphicsItem

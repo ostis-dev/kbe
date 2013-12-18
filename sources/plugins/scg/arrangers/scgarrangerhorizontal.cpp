@@ -4,8 +4,8 @@
 #include "scgpair.h"
 #include "scgbus.h"
 
-#include <QMessageBox>
-#include <QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QApplication>
 
 SCgHorizontalArranger::SCgHorizontalArranger(QObject *parent) :
     SCgArranger(parent)
@@ -25,7 +25,7 @@ void SCgHorizontalArranger::startOperation()
 {
     QList<SCgObject*> objects;
     foreach(QGraphicsItem* it, mView->scene()->selectedItems())
-        if(SCgObject::isSCgObjectType(it->type()) && it->type() != SCgPair::Type)
+        if((it) && (SCgObject::isSCgObjectType(it->type())) && (it->type() != SCgPair::Type))
             objects.append(static_cast<SCgObject*>(it));
 
     if(objects.isEmpty() || objects.size() == 1)
@@ -45,7 +45,7 @@ void SCgHorizontalArranger::startOperation()
     // Set objects position
     for (it = objects.begin(); it != objects.end(); ++it)
     {
-        if((*it)->type() == SCgBus::Type)
+        if(*it && (*it)->type() == SCgBus::Type)
         {
             SCgBus* b = static_cast<SCgBus*>(*it);
             QVector<QPointF> points = b->mapToParent(b->points());

@@ -4,11 +4,11 @@
 #include "scgnode.h"
 #include "scgpointobject.h"
 
-#include <QSpinBox>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QCheckBox>
-#include <QDialogButtonBox>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QDialogButtonBox>
 
 SCgGridArranger::SCgGridArranger(QObject *parent):
     SCgArranger(parent),

@@ -5,12 +5,12 @@
 #include "scgbus.h"
 #include "scgpair.h"
 
-#include <QDialogButtonBox>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QSpinBox>
-#include <QUndoCommand>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QUndoCommand>
 
 SCgTupleArranger::SCgTupleArranger(QObject *parent) :
     SCgArranger(parent),

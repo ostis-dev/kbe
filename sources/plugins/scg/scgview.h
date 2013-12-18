@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGVIEW_H
 #define SCGVIEW_H
 
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 
 class SCgWindow;
 class SCgObject;
