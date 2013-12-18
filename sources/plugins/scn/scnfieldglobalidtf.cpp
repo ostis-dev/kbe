@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scnfieldglobalidtf.h"
 
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include <QFontMetrics>
 #include <QPainter>
 

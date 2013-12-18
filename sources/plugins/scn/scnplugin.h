@@ -31,6 +31,7 @@ class SCnPlugin : public QObject,
 {
     Q_OBJECT
     Q_INTERFACES(PluginInterface)
+    Q_PLUGIN_METADATA(IID "com.OSTIS.kbe.Plugin/1.0")
 
 public:
     explicit SCnPlugin(QObject *parent = 0);

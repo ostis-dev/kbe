@@ -23,8 +23,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scnwindow.h"
 #include "scneditorscene.h"
 
-#include <QVBoxLayout>
-#include <QGraphicsView>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QGraphicsView>
 
 SCnWindow::SCnWindow(QWidget *parent) :
     QWidget(parent),
@@ -39,7 +39,6 @@ SCnWindow::SCnWindow(QWidget *parent) :
     mEditorView->setResizeAnchor(QGraphicsView::NoAnchor);
     mEditorView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     mEditorView->setScene(mEditorScene);
-
 
     mEditorView->setCacheMode(QGraphicsView::CacheNone);//CacheBackground);
     mEditorView->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
@@ -137,6 +136,21 @@ const QString& SCnWindowFactory::name() const
 {
     static QString name = "scn";
     return name;
+}
+
+QIcon SCnWindowFactory::icon() const
+{
+    return QIcon();
+}
+
+QWidget* SCnWindowFactory::createNewParametersTab()
+{
+    return new QWidget;
+}
+
+QString SCnWindowFactory::getDescription() const
+{
+    return QString();
 }
 
 EditorInterface* SCnWindowFactory::createInstance()

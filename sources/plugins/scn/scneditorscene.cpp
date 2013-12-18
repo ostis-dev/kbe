@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scnfieldglobalidtf.h"
 
 #include <QKeyEvent>
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 #include <QDebug>
 
 SCnEditorScene::SCnEditorScene(QObject *parent) :
@@ -346,12 +346,12 @@ void SCnEditorScene::swapFields(SCnFieldItem *field_1, SCnFieldItem *field_2)
     QGraphicsItem *parent = field_1->parentItem();
     if (parent == field_2->parentItem())
     {
-        QList<QGraphicsItem *> *children = &parent->childItems();
-        int index_1 = children->indexOf(field_1);
-        int index_2 = children->indexOf(field_2);
+        QList<QGraphicsItem *> children = parent->childItems();
+        int index_1 = children.indexOf(field_1);
+        int index_2 = children.indexOf(field_2);
         if (index_1 >= 0 && index_2 >= 0)
         {
-            children->swap(index_1, index_2);
+            children.swap(index_1, index_2);
             static_cast<SCnFieldItem*>(parent)->updateOnChilds();
             updateFieldsPositions();
         }

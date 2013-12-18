@@ -1,3 +1,4 @@
+QT += widgets
 
 TARGET        = $$qtLibraryTarget(scn)
 TEMPLATE      = lib
