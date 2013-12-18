@@ -1,4 +1,6 @@
 
+QT          += widgets
+
 TARGET        = $$qtLibraryTarget(m4scp)
 TEMPLATE      = lib
 INCLUDEPATH  += ../../kbe

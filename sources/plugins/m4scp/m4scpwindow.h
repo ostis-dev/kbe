@@ -24,10 +24,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define M4SCPWINDOW_H
 
 #include "interfaces/editorinterface.h"
-#include "m4scpfinder.h"
+//#include "m4scpfinder.h"  File not found in kbe main repo
 
-#include <QWidget>
-#include <QShortcut>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QShortcut>
 
 class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
@@ -86,7 +86,7 @@ private:
 
     M4SCpCodeEditor *mEditor;
     M4SCpSyntaxHighlighter *mHighlighter;
-    M4SCpFinder *mFindDialog;
+    //M4SCpFinder *mFindDialog;
     bool mIsSaved;
 
 private slots:

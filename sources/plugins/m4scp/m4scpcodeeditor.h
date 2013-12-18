@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPCODEEDITOR_H
 #define M4SCPCODEEDITOR_H
 
-#include <QPlainTextEdit>
+#include <QtWidgets/QPlainTextEdit>
 #include <QModelIndex>
 
 class M4SCpCodeCompleter;

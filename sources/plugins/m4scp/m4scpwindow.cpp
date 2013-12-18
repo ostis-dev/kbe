@@ -24,18 +24,18 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpcodeeditor.h"
 #include "m4scpsyntaxhighlighter.h"
 #include "m4scpplugin.h"
-#include "m4scpfinder.h"
+//#include "m4scpfinder.h" File not found in kbe main repo
 
 #include "config.h"
 
-#include <QHBoxLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QIcon>
-#include <QUndoStack>
+#include <QtWidgets/QUndoStack>
 #include <QDir>
 #include <QFileInfo>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QTextStream>
-#include <QShortcut>
+#include <QtWidgets/QShortcut>
 #include <QPoint>
 #include <QPalette>
 
@@ -60,12 +60,14 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     layout->addWidget(mEditor);
     setLayout(layout);
 
+    /*
     mFindDialog = new M4SCpFinder(mEditor);
 
     findShortcutF = new QShortcut(Qt::CTRL + Qt::Key_F, this);
     connect(findShortcutF, SIGNAL(activated()), this, SLOT(viewFindWindow()));
     findShortcutH = new QShortcut(Qt::CTRL + Qt::Key_H, this);
     connect(findShortcutH, SIGNAL(activated()), this, SLOT(viewFindWindow()));
+    */
 
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
@@ -74,7 +76,7 @@ M4SCpWindow::~M4SCpWindow()
 {
     delete mHighlighter;
     delete mEditor;
-    delete mFindDialog;
+    //delete mFindDialog;
 }
 
 QWidget* M4SCpWindow::widget()
@@ -226,5 +228,5 @@ QIcon M4SCpWindowFactory::icon() const
 
 void M4SCpWindow::viewFindWindow()
 {
-    mFindDialog->show();
+    //mFindDialog->show();
 }
