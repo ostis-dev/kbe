@@ -24,9 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgnode.h"
 
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QVector2D>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 
 SCgBusMode::SCgBusMode(SCgScene* parent):SCgMode(parent)
 {
