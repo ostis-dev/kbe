@@ -20,7 +20,7 @@ along with OSTIS.  If not, see .
 -----------------------------------------------------------------------------
 */
 
-#include <QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 #include "scgnodetextitem.h"
 
 

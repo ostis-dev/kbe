@@ -22,22 +22,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgwindow.h"
 
-#include <QToolBar>
-#include <QSlider>
-#include <QApplication>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QApplication>
 #include <QClipboard>
-#include <QAction>
-#include <QUndoStack>
-#include <QComboBox>
-#include <QLineEdit>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QUndoStack>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
 #include <QMimeData>
-#include <QActionGroup>
-#include <QBoxLayout>
-#include <QMainWindow>
-#include <QMenuBar>
-#include <QMenu>
-#include <QToolButton>
-#include <QFileDialog>
+#include <QtWidgets/QActionGroup>
+#include <QtWidgets/QBoxLayout>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QFileDialog>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -316,7 +316,7 @@ void SCgWindow::createToolBar()
     mZoomSlider->setSliderPosition(100);
 
     mToolBar->addWidget(mZoomSlider);
-    connect(mZoomSlider, SIGNAL(valueChanged(int)), mView, SLOT(setScale(int)));
+    connect(mZoomSlider, SIGNAL(valueChanged(int)), mView, SLOT(setScale(qreal)));
     connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
 
     //Zoom out

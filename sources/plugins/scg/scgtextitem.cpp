@@ -22,11 +22,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgtextitem.h"
 #include "scgconfig.h"
-#include <QGraphicsSceneEvent>
+#include <QtWidgets/QGraphicsSceneEvent>
+#include <QtWidgets/QGraphicsScene>
 
 SCgTextItem::SCgTextItem(const QString &str, QGraphicsItem *parent, QGraphicsScene *scene) :
-    QGraphicsTextItem(str, parent, scene)
+    QGraphicsTextItem(str, parent)
 {
+    if (scene && parent)
+        scene -> addItem(parent);
+
     setFlags(QGraphicsItem::ItemIsSelectable
              | QGraphicsItem::ItemIsFocusable);
 
@@ -34,8 +38,10 @@ SCgTextItem::SCgTextItem(const QString &str, QGraphicsItem *parent, QGraphicsSce
 }
 
 SCgTextItem::SCgTextItem(QGraphicsItem *parent, QGraphicsScene *scene) :
-    QGraphicsTextItem(parent, scene)
+    QGraphicsTextItem(parent)
 {
+    if (scene && parent)
+        scene -> addItem(parent);
     setFlags(QGraphicsItem::ItemIsSelectable
              | QGraphicsItem::ItemIsFocusable);
     setAcceptHoverEvents(true);

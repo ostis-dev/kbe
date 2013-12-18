@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 
 #include "scgdefaultobjectbuilder.h"
 #include "scgobjectsinfo.h"

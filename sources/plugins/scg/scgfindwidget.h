@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef FINDWIDGET_H_
 #define FINDWIDGET_H_
 
-#include <QWidgets/QWidget>
+#include <QtWidgets/QWidget>
 
 class QCheckBox;
 class QLabel;

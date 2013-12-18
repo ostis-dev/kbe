@@ -27,7 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QImageWriter>
 #include <QSize>
 #include <QRect>
-#include <QWidget>
+#include <QtWidgets/QWidget>
 //#include <QSvgGenerator>
 
 SCgFileWriterImage::SCgFileWriterImage()

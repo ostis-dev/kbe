@@ -30,6 +30,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets/QApplication>
 #include <QClipboard>
 
+#include <QMimeData>
+
 SCgInsertMode::SCgInsertMode(SCgScene* parent):
     SCgMode(parent),
     mInsertedObjectGroup(0)

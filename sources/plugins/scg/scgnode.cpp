@@ -31,8 +31,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPainter>
 #include <QVector2D>
-#include <QGraphicsScene>
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsView>
 
 #define DEFAULT_IDTF_POS BottomRight
 

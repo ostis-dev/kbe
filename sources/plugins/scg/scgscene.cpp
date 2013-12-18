@@ -64,14 +64,16 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QUrl>
 #include <QFile>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QKeyEvent>
 #include <QVector2D>
-#include <QUndoStack>
-#include <QGraphicsItemGroup>
-#include <QGraphicsView>
-#include <QGraphicsProxyWidget>
+#include <QtWidgets/QUndoStack>
+#include <QtWidgets/QGraphicsItemGroup>
+#include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QGraphicsProxyWidget>
 #include <QCursor>
+
+#include <QMimeData>
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     QGraphicsScene(parent),
@@ -906,7 +908,7 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
     QMap<QString, SCgContentFactory::MimeAndSCgTypes> ext2MIME = SCgContentFactory::registeredExtentions2MIME();
     QList<QString> list = ext2MIME.keys();
     if (list.contains(ext)) {
-        QGraphicsItem *item = itemAt(event->scenePos());
+        QGraphicsItem *item = itemAt(event->scenePos(),QTransform());
         SCgContour *parentContour = 0;
         SCgNode *node = 0;
         // check if we have a contour object under cursor
@@ -915,7 +917,7 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
             parentContour = dynamic_cast<SCgContour*>(item);
             createNodeCommand(event->scenePos(), parentContour);
         }
-        item = itemAt(event->scenePos());
+        item = itemAt(event->scenePos(),QTransform());
         // check item we have a proxy widget under cursor
         if (item->type() == QGraphicsProxyWidget::Type) item = item->parentItem();
         node = qgraphicsitem_cast<SCgNode*>(item);
