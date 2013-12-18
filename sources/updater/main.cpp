@@ -20,7 +20,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QDir>
 
 #include "updatewindow.h"

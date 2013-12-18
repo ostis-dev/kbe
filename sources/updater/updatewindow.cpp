@@ -25,15 +25,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "updateextractor.h"
 #include "updateinstaller.h"
 
-#include <QProgressBar>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QMessageBox>
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QMessageBox>
 #include <QTimer>
 #include <QDomDocument>
 #include <QFile>
-#include <QLabel>
+#include <QtWidgets/QLabel>
 #include <QCryptographicHash>
 #include <QTextStream>
 

@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef UPDATEWINDOW_H
 #define UPDATEWINDOW_H
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 class QTextBrowser;
 class QProgressBar;
