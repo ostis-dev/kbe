@@ -4,8 +4,6 @@
 
 DESTDIR = ../bin
 
-QT  +=  widgets
-
 CONFIG(debug, debug|release) {
     TARGET = kbe_d
     DEFINES += _DEBUG
