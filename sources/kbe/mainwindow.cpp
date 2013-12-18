@@ -223,8 +223,7 @@ bool MainWindow::checkSubWindowSavedState()
 
 EditorInterface *MainWindow::activeChild()
 {
-    Q_ASSERT(mTabWidget->currentWidget());
-    if (QWidget *activeSubWindow = mTabWidget->currentWidget())
+    QWidget *activeSubWindow = mTabWidget->currentWidget();
     {
         Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(activeSubWindow);
         if (it != mWidget2EditorInterface.end())
