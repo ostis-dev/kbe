@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGFILELOADERGWF_H
 #define SCGFILELOADERGWF_H
 
+#include <QObject>
 #include <QDomElement>
 #include <QMap>
 #include <QPair>

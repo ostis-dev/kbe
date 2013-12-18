@@ -26,10 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgbus.h"
 #include "scgcontour.h"
 
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QFile>
 #include <QTextCodec>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 
 
 GWFFileWriter::GWFFileWriter()
@@ -46,6 +46,10 @@ bool GWFFileWriter::save(QString file_name, QObject *input)
 {
     SCgScene *scene = qobject_cast<SCgScene*>(input);
 
+    Q_ASSERT(scene);
+    if (!scene)
+        return false;
+
         QFile fileOut(file_name);
         if (!fileOut.open(QFile::WriteOnly | QFile::Text)) {
                  QMessageBox::warning(0, qAppName(),
@@ -61,7 +65,7 @@ bool GWFFileWriter::save(QString file_name, QObject *input)
         QGraphicsItem * item;
         foreach (item, items)
         {
-            if(SCgObject::isSCgObjectType(item->type()) )
+            if(item && SCgObject::isSCgObjectType(item->type()) )
             {
                 SCgObject *obj = static_cast<SCgObject*>(item);
                 stream.writeObject(obj);
