@@ -69,6 +69,10 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     connect(findShortcutH, SIGNAL(activated()), this, SLOT(viewFindWindow()));
     */
 
+    mEditor->setFocus();
+    mEditor->grabKeyboard();
+    mEditor->repaint();
+
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 
