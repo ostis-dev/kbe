@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces/editorinterface.h"
 #include "scscodeeditor.h"
 #include "scssyntaxhighlighter.h"
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 class SCsFindWidget;
 class SCsErrorTableWidget;

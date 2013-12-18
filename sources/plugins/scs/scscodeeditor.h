@@ -23,10 +23,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCSCODEEDITOR_H
 #define SCSCODEEDITOR_H
 
-#include <QPlainTextEdit>
+#include <QtWidgets/QPlainTextEdit>
 #include <QModelIndex>
-#include <QGridLayout>
-#include <QLabel>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QLabel>
 
 class SCsCodeAnalyzer;
 class SCsCodeAnalyzer;

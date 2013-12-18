@@ -30,7 +30,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scsparserexception.h"
 
-
 #include <antlr3defs.h>
 
 class SCsParser : public QObject

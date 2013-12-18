@@ -27,7 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 #include <QTextBlock>
 #include <QAbstractItemView>
-#include <QScrollBar>
+#include <QtWidgets/QScrollBar>
 #include <QStandardItemModel>
 #include <QDebug>
 #include "scscodeanalyzer.h"

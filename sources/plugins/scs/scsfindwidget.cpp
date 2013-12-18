@@ -1,6 +1,6 @@
-#include <QLineEdit>
-#include <QCheckBox>
-#include <QHBoxLayout>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QHBoxLayout>
 #include <QTextDocument>
 
 #include <QDebug>

@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCSERRORTABLEWIDGET_H
 #define SCSERRORTABLEWIDGET_H
 
-#include <QTableWidget>
+#include <QtWidgets/QTableWidget>
 
 #define ERROR_TABLE_WIDGET_ITEM_COLUMN 0
 

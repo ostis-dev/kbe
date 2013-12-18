@@ -23,11 +23,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCSCODEEDITORFINDWIDGET_H
 #define SCSCODEEDITORFINDWIDGET_H
 
-#include <QWidget>
-#include <QLineEdit>
-#include <QCheckBox>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QCheckBox>
 #include <QTextDocument>
-#include <QToolButton>
+#include <QtWidgets/QToolButton>
 
 class SCsFindWidget : public QWidget
 {

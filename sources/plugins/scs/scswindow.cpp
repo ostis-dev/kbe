@@ -48,7 +48,6 @@ SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
 
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
     mErrorTable = new SCsErrorTableWidget(this);
 
