@@ -4,15 +4,15 @@
 #include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
 
-#include <QDialog>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QTabWidget>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QTabWidget>
 #include <QSettings>
-#include <QCheckBox>
-#include <QPushButton>
-#include <QListWidget>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QListWidget>
 
 ParametersDialog::ParametersDialog(QWidget *parent):
     QDialog(parent)
@@ -36,8 +36,8 @@ ParametersDialog::ParametersDialog(QWidget *parent):
     for (it = factories.begin(); it != itEnd; ++it)
     {
         /// @todo add custom icon and tooltip support.
-
-        tabWidget->addTab((*it)->createNewParametersTab() , (*it)->name());
+        if (*it)
+            tabWidget->addTab((*it)->createNewParametersTab() , (*it)->name());
     }
 
     QVBoxLayout *vertical = new QVBoxLayout();

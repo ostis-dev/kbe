@@ -1,10 +1,10 @@
 #ifndef PARAMETERSDIALOG_H
 #define PARAMETERSDIALOG_H
 
-#include <QDialog>
-#include <QWidget>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QWidget>
 #include <QSettings>
-#include <QCheckBox>
+#include <QtWidgets/QCheckBox>
 
 class ParametersDialog: public QDialog
 {

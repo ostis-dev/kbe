@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtPlugin>
 #include <QIcon>
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 class FileLoaderInterface;
 class FileWriterInterface;

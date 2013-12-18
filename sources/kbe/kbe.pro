@@ -4,6 +4,8 @@
 
 DESTDIR = ../bin
 
+QT  +=  widgets
+
 CONFIG(debug, debug|release) {
     TARGET = kbe_d
     DEFINES += _DEBUG
@@ -20,7 +22,8 @@ SOURCES += \
     config.cpp \
     pluginmanager.cpp \
     guidedialog.cpp \
-    newfiledialog.cpp
+    newfiledialog.cpp \
+    parametersdialog.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -31,7 +34,8 @@ HEADERS += version.h \
     pluginmanager.h \
     interfaces/editorinterface.h \
     guidedialog.h \
-    newfiledialog.h
+    newfiledialog.h \
+    parametersdialog.h
 
 FORMS += mainwindow.ui
 

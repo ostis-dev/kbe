@@ -33,23 +33,25 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "version.h"
 
-#include <QMdiSubWindow>
-#include <QToolBar>
-#include <QStyleFactory>
+#include <QtWidgets/QMdiSubWindow>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QStyleFactory>
 #include <QSignalMapper>
-#include <QFileDialog>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QListWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QUndoGroup>
-#include <QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QUndoGroup>
+#include <QtWidgets/QMessageBox>
 #include <QUrl>
-#include <QGraphicsBlurEffect>
+#include <QtWidgets/QGraphicsBlurEffect>
 #include <QCloseEvent>
 #include <QSettings>
-#include <QDockWidget>
+#include <QtWidgets/QDockWidget>
+
+#include <QMimeData>
 
 MainWindow* MainWindow::mInstance = 0;
 
@@ -214,13 +216,14 @@ bool MainWindow::checkSubWindowSavedState()
     QList<QWidget*> list = mTabWidget->subWindowList();
     QList<QWidget*>::iterator it = list.begin();
     for(; it != list.end(); it++)
-        if (!qobject_cast<EditorInterface*>(*it)->isSaved())
+        if (*it && !qobject_cast<EditorInterface*>(*it)->isSaved())
             return false;
     return true;
 }
 
 EditorInterface *MainWindow::activeChild()
 {
+    Q_ASSERT(mTabWidget->currentWidget());
     if (QWidget *activeSubWindow = mTabWidget->currentWidget())
     {
         Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(activeSubWindow);

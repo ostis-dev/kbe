@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define EXTENDEDMDIAREA_H_
 
 #include <QObject>
-#include <QTabWidget>
+#include <QtWidgets/QTabWidget>
 class QMenu;
 
 class QMdiSubWindow;

@@ -24,9 +24,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QMenu>
-#include <QTabBar>
-#include <QMdiSubWindow>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QTabBar>
+#include <QtWidgets/QMdiSubWindow>
 
 
 ExtendedTabWidget::ExtendedTabWidget(QWidget *parent) :
@@ -52,6 +52,7 @@ ExtendedTabWidget::~ExtendedTabWidget()
 bool ExtendedTabWidget::eventFilter(QObject* watched, QEvent* event)
 {
     QWidget* subWindow = qobject_cast<QWidget*>(watched);
+    Q_ASSERT(subWindow);
     if(!subWindow)
         return QTabWidget::eventFilter(watched, event);
 
@@ -73,6 +74,7 @@ bool ExtendedTabWidget::eventFilter(QObject* watched, QEvent* event)
 
 QString ExtendedTabWidget::tabTextFor(QWidget* subWindow)
 {
+    Q_ASSERT(subWindow);
     if (!subWindow)
         return QString();
 
@@ -94,6 +96,9 @@ bool ExtendedTabWidget::closeWindow(QWidget* wnd)
     Q_ASSERT_X(wnd,
                "bool ExtendedTabWidget::close(int index)",
                "Can't get window");
+
+    if (!wnd)
+        return false;
 
     if(emit tabBeforeClose(wnd))
     {
@@ -120,11 +125,16 @@ QList<QWidget*> ExtendedTabWidget::subWindowList() const
 void ExtendedTabWidget::closeOtherDocuments()
 {
     QWidget* currentWindow = currentWidget();
+
+    Q_ASSERT(currentWindow);
+    if (currentWindow)
+        return;
+
     QList<QWidget*> list = subWindowList();
     QList<QWidget*>::const_iterator it = list.begin();
 
     for(; it != list.end(); it++)
-        if (*it != currentWindow)
+        if (*it && *it != currentWindow)
             if (!(*it)->close())
                 return;
 }
@@ -153,6 +163,9 @@ int ExtendedTabWidget::addSubWindow(EditorInterface* window)
 {
     QWidget *widget = window->widget();
     Q_ASSERT(widget != 0);
+
+    if (!widget)
+        return 0;
 
     int curr = currentIndex();
     int index = QTabWidget::insertTab(curr + 1, widget, window->icon(), tabTextFor(widget));
