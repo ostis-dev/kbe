@@ -33,6 +33,7 @@ SCgCommandCreateContour::SCgCommandCreateContour(SCgScene *scene,
     , mChildObjects(childs)
     , mParentContour(parentContour)
 {
+    Q_ASSERT(mScene);
     mObject = mScene->createSCgContour(mPoints);
     connect(mObject, SIGNAL(destroyed()), this, SLOT(contourDestroyed()));
     setText(QObject::tr("Create contour"));

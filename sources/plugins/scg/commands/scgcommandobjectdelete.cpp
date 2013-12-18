@@ -47,11 +47,15 @@ void SCgCommandObjectDelete::redo()
     for (it = mDelList.begin(); it != mDelList.end(); ++it)
     {
         SCgObject *object = *it;
-        QGraphicsItem *parent = object->parentItem();
 
-        mParents[object] = parent;
+        QGraphicsItem *parent;
+        if (object)
+            parent = object->parentItem();
 
-        if(object->scene() == mScene)
+        if (parent)
+            mParents[object] = parent;
+
+        if(object && object->scene() == mScene)
         {
             object->setParentItem(0);
             mScene->removeItem(object);

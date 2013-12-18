@@ -86,6 +86,7 @@ void SCgCommandAllContentVisibility::redo()
     for(int i = 0; i < items.size(); ++i)
     {
         node = qgraphicsitem_cast<SCgNode*>(items.at(i));
+        Q_ASSERT(node);
         if (!node || !node->isContentData())
             continue;
         bool isVisible = node->isContentVisible();

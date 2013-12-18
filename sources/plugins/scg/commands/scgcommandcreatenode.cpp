@@ -32,6 +32,7 @@ SCgCommandCreateNode::SCgCommandCreateNode(SCgScene *scene,
     , mPoint(point)
     , mParentContour(parentContour)
 {
+    Q_ASSERT(mScene);
     mObject = mScene->createSCgNode(mPoint);
     connect(mObject, SIGNAL(destroyed()), this, SLOT(nodeDestroyed()));
 
