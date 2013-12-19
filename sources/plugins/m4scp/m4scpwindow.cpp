@@ -35,9 +35,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
-#include <QShortcut>
-#include <QPoint>
-#include <QPalette>
+
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
@@ -47,7 +45,6 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     findShortcutF(0),
     findShortcutH(0)
 {
-
     mEditor = new M4SCpCodeEditor();
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
@@ -201,16 +198,6 @@ EditorInterface* M4SCpWindowFactory::createInstance()
     return new M4SCpWindow("");
 }
 
-QWidget* M4SCpWindowFactory::createNewParametersTab()
-{
-    return new QWidget();
-}
-
-QString M4SCpWindowFactory::getDescription() const
-{
-    return "File format designed to store m4scp description scp-programs, which is based on macro definitions language m4";
-}
-
 QStringList M4SCpWindowFactory::supportedFormatsExt()
 {
     QStringList list;
@@ -223,8 +210,8 @@ QIcon M4SCpWindowFactory::icon() const
 {
     return M4SCpWindow::findIcon("mime_type.png");
 }
-
 void M4SCpWindow::viewFindWindow()
 {
     mFindDialog->show();
 }
+

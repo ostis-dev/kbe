@@ -76,18 +76,17 @@ public:
     /*! Get icon specified for window type
       */
     QIcon icon() const;
+    static QIcon findIcon(const QString &iconName);
 
     QShortcut *findShortcutF;
     QShortcut *findShortcutH;
-
-    static QIcon findIcon(const QString &iconName);
 
 private:
 
     M4SCpCodeEditor *mEditor;
     M4SCpSyntaxHighlighter *mHighlighter;
-    M4SCpFinder *mFindDialog;
     bool mIsSaved;
+    M4SCpFinder *mFindDialog;
 
 private slots:
     //! Slot that recieve content changing
@@ -114,10 +113,6 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
-
-    QWidget* createNewParametersTab();
-
-    QString getDescription() const;
 };
 
 #endif // M4SCPWINDOW_H
