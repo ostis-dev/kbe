@@ -42,7 +42,11 @@ M4SCpFinder::M4SCpFinder(M4SCpCodeEditor *doc) : QDialog(), mEditor(doc)
     connect(lineEditFind, SIGNAL(textChanged(const QString &)), this, SLOT(enableFindButton(const QString&)));
     connect(closeButton, SIGNAL(clicked()), this, SLOT(closeFindWindow()));
     connect(findNextButton, SIGNAL(clicked()), this, SLOT(findNext()));
+<<<<<<< HEAD
     connect(replaceAllButton, SIGNAL(clicked()), this, SLOT(replaceText()));    
+=======
+    connect(replaceAllButton, SIGNAL(clicked()), this, SLOT(replaceText()));
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922
     connect(replaceButton, SIGNAL(clicked()), this, SLOT(oneReplace()) );
 
 
@@ -71,7 +75,11 @@ M4SCpFinder::M4SCpFinder(M4SCpCodeEditor *doc) : QDialog(), mEditor(doc)
 }
 
 void M4SCpFinder::enableFindButton(const QString &text)
+<<<<<<< HEAD
 {    
+=======
+{
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922
 //    findPrevButton->setEnabled(!text.isEmpty());
     findNextButton->setEnabled(!text.isEmpty());
     replaceButton->setEnabled(!text.isEmpty());
@@ -129,7 +137,11 @@ void M4SCpFinder::findText()
         i++;
 
         if ( !newCursor.isNull() )
+<<<<<<< HEAD
         {           
+=======
+        {
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922
             QTextCharFormat charFormat;
             if (i == 1) charFormat.setBackground(QColor("orange"));
             else charFormat.setBackground(QColor("yellow"));
@@ -203,3 +215,7 @@ M4SCpFinder::~M4SCpFinder()
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922

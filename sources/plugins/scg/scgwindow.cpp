@@ -230,7 +230,11 @@ void SCgWindow::createToolBar()
     QToolButton *alignButton = new QToolButton(mToolBar);
     alignButton->setIcon(findIcon("tool-align.png"));
     alignButton->setPopupMode(QToolButton::InstantPopup);
+<<<<<<< HEAD
     alignButton->setToolTip("Alignment");
+=======
+    alignButton->setToolTip("Alligment");
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922
     mToolBar->addWidget(alignButton);
 
     //Grid alignment
@@ -273,7 +277,11 @@ void SCgWindow::createToolBar()
     QToolButton *selectButton = new QToolButton(mToolBar);
     selectButton->setIcon(findIcon("tool-select-group.png"));
     selectButton->setPopupMode(QToolButton::InstantPopup);
+<<<<<<< HEAD
     selectButton->setToolTip("Allocation");
+=======
+    selectButton->setToolTip("Selection");
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922
     mToolBar->addWidget(selectButton);
 
     // input/output selection

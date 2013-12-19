@@ -37,7 +37,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QTextStream>
 #include <QShortcut>
 #include <QPoint>
+<<<<<<< HEAD
 #include <QPalette>
+=======
+#include <QFontDialog>
+>>>>>>> e88fcdb55e9885d18b492fb72a88dd4ba7d9c922
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
