@@ -186,6 +186,38 @@ private:
 signals:
 
 private slots:
+    //! Slot to handle a template action
+
+    void onGenElTempalteMode();
+    void onGenElStr3TempalteMode();
+    void onGenElStr5TempalteMode();
+    void onSearchElStr3TempalteMode();
+    void onSearchElStr5TempalteMode();
+    void onSearchSetStr3TempalteMode();
+    void onSearchSetStr5TempalteMode();
+    void onSCPProgramTemplateMode();
+    void onPrintElTemplateMode();
+    void onPrintNlTemplateMode();
+    void onPrintTemplateMode();
+    void onIfTypeTemplateMode();
+    void onIfEqTemplateMode();
+    void onIfCoinTemplateMode();
+    void onIfGrTemplateMode();
+    void onAddTemplateMode();
+    void onSubTemplateMode();
+    void onMultTemplateMode();
+    void onDivTemplateMode();
+    void onPowTemplateMode();
+    void onCallReturnTemplateMode();
+    void onReturnTemplateMode();
+    void onSinTemplateMode();
+    void onASinTemplateMode();
+    void onCosTemplateMode();
+    void onACosTemplateMode();
+    void onToStrTemplateMode();
+    void onEraseElTempalteMode();
+    void onEraseElStr3TempalteMode();
+    void onEraseElStr5TempalteMode();
     //! Slot to handle a selection action
     void onSelectMode();
     //! Slot to handle a pair creation action

@@ -38,6 +38,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "modes/scgselectmode.h"
 #include "modes/scginsertmode.h"
 #include "modes/scgclonemode.h"
+#include "modes/scgtemplatemode.h"
 
 #include "commands/scgbasecommand.h"
 #include "commands/scgcommandchangeincedentobject.h"
@@ -61,6 +62,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "commands/scgcommandswappairorient.h"
 #include "commands/scgcommandremovebreakpoints.h"
 #include "commands/scgcommandminimizecontour.h"
+#include "commands/scgcommandtemplate.h"
 
 #include <QUrl>
 #include <QFile>
@@ -89,8 +91,11 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
+    mSceneModes[Mode_Template] = new SCgTemplateMode(this);
 
     setEditMode(Mode_Select);
+
+    mSCgTemplate = new SCgTemplate(this);
     // grid foreground
     //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
     //    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
@@ -120,6 +125,11 @@ void SCgScene::setEditMode(EditMode mode)
     mMode->activate();
 
     editModeChanged(mode);
+}
+
+void SCgScene::setTemplate(Template templ)
+{
+    mTemplate = templ;
 }
 
 SCgScene::EditMode SCgScene::editMode() const
@@ -246,6 +256,70 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
 
     addItem(node);
     return node;
+}
+
+QVector<SCgObject*> SCgScene::createSCgTemplate(const QPointF &pos)
+{
+    if(mTemplate == GenEl_Template)
+        return mSCgTemplate->createGenElTemplate(pos);
+    if(mTemplate == GenElStr3_Template)
+        return mSCgTemplate->createGenElStr3Template(pos);
+    if(mTemplate == GenElStr5_Template)
+        return mSCgTemplate->createGenElStr5Template(pos);
+    if(mTemplate == SearchElStr3_Template)
+        return mSCgTemplate->createSearchElStr3Template(pos);
+    if(mTemplate == SearchElStr5_Template)
+        return mSCgTemplate->createSearchElStr5Template(pos);
+    if(mTemplate == SearchSetStr3_Template)
+        return mSCgTemplate->createSearchSetStr3Template(pos);
+    if(mTemplate == SearchSetStr5_Template)
+        return mSCgTemplate->createSearchSetStr5Template(pos);
+    if(mTemplate == eraseEl_Template)
+        return mSCgTemplate->createEraseElTemplate(pos);
+    if(mTemplate == eraseElStr3_Template)
+        return mSCgTemplate->createEraseElStr3Template(pos);
+    if(mTemplate == eraseElStr5_Template)
+        return mSCgTemplate->createEraseElStr5Template(pos);
+    if(mTemplate == SCPprogram_Template)
+        return mSCgTemplate->createProgramSCPTempale(pos);
+    if(mTemplate == PrintEl_Template)
+        return mSCgTemplate->createPrintElTemplate(pos);
+    if(mTemplate == PrintNl_Template)
+        return mSCgTemplate->createPrintNlTemplate(pos);
+    if(mTemplate == Print_Template)
+        return mSCgTemplate->createPrintTemplate(pos);
+    if(mTemplate == IfType_Template)
+        return mSCgTemplate->createifTypeTemplate(pos);
+    if(mTemplate == IfEqType_Template)
+        return mSCgTemplate->createifEqTemplate(pos);
+    if(mTemplate == IfCoinType_Template)
+        return mSCgTemplate->createifCoinTemplate(pos);
+    if(mTemplate == IfGrType_Template)
+        return mSCgTemplate->createifCoinTemplate(pos);
+    if(mTemplate == Add_Template)
+        return mSCgTemplate->createAddTemplate(pos);
+    if(mTemplate == Sub_Template)
+        return mSCgTemplate->createSubTemplate(pos);
+    if(mTemplate == Mult_Template)
+        return mSCgTemplate->createMultTemplate(pos);
+    if(mTemplate == Div_Template)
+        return mSCgTemplate->createDivTemplate(pos);
+    if(mTemplate == Pow_Template)
+        return mSCgTemplate->createPowTemplate(pos);
+    if(mTemplate == CallReturn_Template)
+        return mSCgTemplate->createCallReturnTemplate(pos);
+    if(mTemplate == Return_Template)
+        return mSCgTemplate->createReturnTemplate(pos);
+    if(mTemplate == Sin_Template)
+        return mSCgTemplate->createSinTemplate(pos);
+    if(mTemplate == ASin_Template)
+        return mSCgTemplate->createASinTemplate(pos);
+    if(mTemplate == Cos_Template)
+        return mSCgTemplate->createCosTemplate(pos);
+    if(mTemplate == ACos_Template)
+        return mSCgTemplate->createACosTemplate(pos);
+    if(mTemplate == ToStr_Template)
+        return mSCgTemplate->createToStrTemplate(pos);
 }
 
 SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVector<QPointF> &points)
@@ -634,6 +708,19 @@ SCgBaseCommand* SCgScene::addPointCommand(SCgPointObject* obj, const QPointF& po
 
     return cmd;
 
+}
+
+//for tempate command
+SCgBaseCommand* SCgScene::createTemplateCommand(const QPointF& pos,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandTemplate(this, pos, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
 }
 
 SCgBaseCommand* SCgScene::createNodeCommand(const QPointF& pos,

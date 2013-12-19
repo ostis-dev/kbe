@@ -30,10 +30,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgobject.h"
 #include "scgcontent.h"
+#include "scgtemplate.h"
 #include "commands/scgbasecommand.h"
 
 class SCgMode;
 class SCgNode;
+class SCgTemplate;
 class SCgPair;
 class SCgBus;
 class SCgContour;
@@ -61,11 +63,48 @@ public:
         Mode_Bus,
         Mode_Contour,
         Mode_InsertTemplate,
+        Mode_Template,
         Mode_Clone,
 
         // Don't use it. (Used to know count of all edit modes)
         Mode_Count
     } EditMode;
+
+    typedef enum
+        {
+            GenEl_Template,
+            GenElStr3_Template,
+            GenElStr5_Template,
+            SearchElStr3_Template,
+            SearchElStr5_Template,
+            SearchSetStr3_Template,
+            SearchSetStr5_Template,
+            eraseEl_Template,
+            eraseElStr3_Template,
+            eraseElStr5_Template,
+            SCPprogram_Template,
+            PrintEl_Template,
+            PrintNl_Template,
+            Print_Template,
+            IfType_Template,
+            IfEqType_Template,
+            IfCoinType_Template,
+            IfGrType_Template,
+            Add_Template,
+            Sub_Template,
+            Mult_Template,
+            Div_Template,
+            Pow_Template,
+            CallReturn_Template,
+            Return_Template,
+
+            Sin_Template,
+            ASin_Template,
+            Cos_Template,
+            ACos_Template,
+            ToStr_Template
+
+        } Template;
 
     enum FindFlag
     {
@@ -86,6 +125,13 @@ public:
         @see editMode
       */
     void setEditMode(EditMode mode);
+
+    /*! Set new template
+            \param templ New template
+
+            @see template
+          */
+        void setTemplate(Template templ);
 
     /*! Get current edit mode
       \return Current edit mode
@@ -377,6 +423,8 @@ public:
      */
     void cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
 
+    QVector<SCgObject *> createSCgTemplate(const QPointF &pos);
+    SCgBaseCommand *createTemplateCommand(const QPointF &pos, SCgBaseCommand *parentCmd = 0, bool addToStack = true);
 private:
     QVector<SCgMode*> mSceneModes;
     //! Current edit mode
@@ -404,6 +452,10 @@ private:
 private:
     //! previous edit mode
     EditMode mPreviousEditMode;
+
+    Template mTemplate;
+
+    SCgTemplate *mSCgTemplate;
 
 protected:
     /* mouse events */
