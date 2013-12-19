@@ -1,0 +1,15 @@
+INPUT(
+./obj\mainwindow.o
+./obj\main.o
+./obj\extendedtabwidget.o
+./obj\config.o
+./obj\pluginmanager.o
+./obj\guidedialog.o
+./obj\newfiledialog.o
+./obj\moc_mainwindow.o
+./obj\moc_extendedtabwidget.o
+./obj\moc_pluginmanager.o
+./obj\moc_guidedialog.o
+./obj\moc_newfiledialog.o
+./obj\qrc_kbe.o
+);

@@ -35,6 +35,7 @@ class SCgUndoView;
 
 class QToolBar;
 class QLineEdit;
+class QSlider;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -129,10 +130,7 @@ private:
 
     typedef QMap<SCgScene::EditMode, QAction*> Mode2ActionMap;
     //! Map for storing mode-action relation
-    Mode2ActionMap mMode2Action;
-
-    //! Contents current zoom factor.
-    QLineEdit* mZoomFactorLine;
+    Mode2ActionMap mMode2Action; 
 
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
@@ -145,6 +143,9 @@ private:
 
     //! Tool bar
     QToolBar *mToolBar;
+
+    //! Slider
+    QSlider *mZoomSlider;
 
     //! Undo stack
     QUndoStack *mUndoStack;
@@ -185,6 +186,38 @@ private:
 signals:
 
 private slots:
+    //! Slot to handle a template action
+
+    void onGenElTempalteMode();
+    void onGenElStr3TempalteMode();
+    void onGenElStr5TempalteMode();
+    void onSearchElStr3TempalteMode();
+    void onSearchElStr5TempalteMode();
+    void onSearchSetStr3TempalteMode();
+    void onSearchSetStr5TempalteMode();
+    void onSCPProgramTemplateMode();
+    void onPrintElTemplateMode();
+    void onPrintNlTemplateMode();
+    void onPrintTemplateMode();
+    void onIfTypeTemplateMode();
+    void onIfEqTemplateMode();
+    void onIfCoinTemplateMode();
+    void onIfGrTemplateMode();
+    void onAddTemplateMode();
+    void onSubTemplateMode();
+    void onMultTemplateMode();
+    void onDivTemplateMode();
+    void onPowTemplateMode();
+    void onCallReturnTemplateMode();
+    void onReturnTemplateMode();
+    void onSinTemplateMode();
+    void onASinTemplateMode();
+    void onCosTemplateMode();
+    void onACosTemplateMode();
+    void onToStrTemplateMode();
+    void onEraseElTempalteMode();
+    void onEraseElStr3TempalteMode();
+    void onEraseElStr5TempalteMode();
     //! Slot to handle a selection action
     void onSelectMode();
     //! Slot to handle a pair creation action
@@ -266,6 +299,10 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+    QWidget* createNewParametersTab();
+
+    QString getDescription() const;
 
 };
 

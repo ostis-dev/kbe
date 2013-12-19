@@ -57,6 +57,10 @@ public:
 
 	QRectF boundingRect() const;
 
+    bool isGhost() { return ghost; }
+
+        void setGhost(bool ghost) { this->ghost = ghost; }
+
     virtual ~SCgNode();
 
 private:
@@ -161,6 +165,8 @@ private:
     /*! Pointer to bus
       */
     SCgBus* mBus;
+
+    bool ghost;
 
 signals:
 

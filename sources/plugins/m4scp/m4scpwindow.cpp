@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpcodeeditor.h"
 #include "m4scpsyntaxhighlighter.h"
 #include "m4scpplugin.h"
+#include "m4scpfinder.h"
 
 #include "config.h"
 
@@ -34,14 +35,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
-
+#include <QShortcut>
+#include <QPoint>
+#include <QPalette>
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     QWidget(parent),
     mEditor(0),
     mHighlighter(0),
-    mIsSaved(false)
+    mIsSaved(false),
+    findShortcutF(0),
+    findShortcutH(0)
 {
+
     mEditor = new M4SCpCodeEditor();
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
@@ -54,6 +60,13 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     layout->addWidget(mEditor);
     setLayout(layout);
 
+    mFindDialog = new M4SCpFinder(mEditor);
+
+    findShortcutF = new QShortcut(Qt::CTRL + Qt::Key_F, this);
+    connect(findShortcutF, SIGNAL(activated()), this, SLOT(viewFindWindow()));
+    findShortcutH = new QShortcut(Qt::CTRL + Qt::Key_H, this);
+    connect(findShortcutH, SIGNAL(activated()), this, SLOT(viewFindWindow()));
+
     connect(mEditor, SIGNAL(textChanged()), this, SLOT(textChanged()));
 }
 
@@ -61,6 +74,7 @@ M4SCpWindow::~M4SCpWindow()
 {
     delete mHighlighter;
     delete mEditor;
+    delete mFindDialog;
 }
 
 QWidget* M4SCpWindow::widget()
@@ -187,6 +201,16 @@ EditorInterface* M4SCpWindowFactory::createInstance()
     return new M4SCpWindow("");
 }
 
+QWidget* M4SCpWindowFactory::createNewParametersTab()
+{
+    return new QWidget();
+}
+
+QString M4SCpWindowFactory::getDescription() const
+{
+    return "File format designed to store m4scp description scp-programs, which is based on macro definitions language m4";
+}
+
 QStringList M4SCpWindowFactory::supportedFormatsExt()
 {
     QStringList list;
@@ -198,4 +222,9 @@ QStringList M4SCpWindowFactory::supportedFormatsExt()
 QIcon M4SCpWindowFactory::icon() const
 {
     return M4SCpWindow::findIcon("mime_type.png");
+}
+
+void M4SCpWindow::viewFindWindow()
+{
+    mFindDialog->show();
 }

@@ -1,0 +1,15 @@
+INPUT(
+./obj\m4scpwindow.o
+./obj\m4scpsyntaxhighlighter.o
+./obj\m4scpsyntax.o
+./obj\m4scpcodeeditor.o
+./obj\m4scpcodecompleter.o
+./obj\m4scpplugin.o
+./obj\m4scpcodeanalyzer.o
+./obj\moc_m4scpwindow.o
+./obj\moc_m4scpcodeeditor.o
+./obj\moc_m4scpcodecompleter.o
+./obj\moc_m4scpplugin.o
+./obj\moc_m4scpcodeanalyzer.o
+./obj\qrc_m4scp.o
+);
