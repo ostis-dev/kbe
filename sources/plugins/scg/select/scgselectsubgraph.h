@@ -34,6 +34,7 @@ public:
     
     //! @copydoc SCgSelect::doSelection
     void doSelection(SCgScene *scene);
+    void undoSelection(SCgScene *scene);
 
 private:
     /*! Select specified \p obj and call that function for all connected
@@ -41,7 +42,7 @@ private:
       * @param obj Pointer to object, that need to be selected
       */
     void select(SCgObject *obj);
-
+    void unselect(SCgObject *obj);
 signals:
     
 public slots:

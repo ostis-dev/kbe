@@ -26,12 +26,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "m4scpplugin.h"
 
 #include "config.h"
-
+//#include <QtWidgets/QHBoxLayout>
 #include <QHBoxLayout>
 #include <QIcon>
+//#include <QtWidgets/QUndoStack>
 #include <QUndoStack>
 #include <QDir>
 #include <QFileInfo>
+//#include <QtWidgets/QMessageBox>
 #include <QMessageBox>
 #include <QTextStream>
 

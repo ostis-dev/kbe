@@ -115,3 +115,83 @@ void SCgSelectSubGraph::select(SCgObject *obj)
         select(c_obj);
     }
 }
+
+void SCgSelectSubGraph::undoSelection(SCgScene *scene)
+{
+    Q_ASSERT(scene != 0);
+
+    QList<QGraphicsItem*> items = scene->selectedItems();
+    QGraphicsItem *item = 0;
+    foreach(item, items)
+    {
+        if (SCgObject::isSCgObjectType(item->type()))
+            unselect(static_cast<SCgObject*>(item));
+    }
+
+
+
+
+}
+
+void SCgSelectSubGraph::unselect(SCgObject *obj)
+{obj->setSelected(false);
+
+
+    switch(obj->type())
+    {
+    case SCgBus::Type:
+        {
+            SCgBus *bus = static_cast<SCgBus*>(obj);
+            if (bus->owner() != 0 && bus->owner()->isSelected())
+                unselect(bus->owner());
+        }
+        break;
+
+    case SCgNode::Type:
+        {
+            SCgNode *node = static_cast<SCgNode*>(obj);
+            if (node->bus() != 0 && node->bus()->isSelected())
+                unselect(node->bus());
+        }
+        break;
+
+    case SCgPair::Type:
+        {
+            SCgPair *pair = static_cast<SCgPair*>(obj);
+            if (pair->beginObject() != 0 && pair->beginObject()->isSelected())
+                unselect(pair->beginObject());
+
+            if (pair->endObject() != 0 && pair->endObject()->isSelected())
+                unselect(pair->endObject());
+        }
+        break;
+
+    case SCgContour::Type:
+        {
+            SCgContour *contour = static_cast<SCgContour*>(obj);
+            QList<QGraphicsItem*> items = contour->childItems();
+            QGraphicsItem *item = 0;
+            foreach(item, items)
+            {
+                // skip not sc.g-objects and selected objects
+                if (!SCgObject::isSCgObjectType(item->type()) || item->isSelected())
+                    continue;
+
+                unselect(static_cast<SCgObject*>(item));
+            }
+        }
+        break;
+    }
+
+    SCgObject::SCgObjectList connected = obj->connectedObjects();
+    SCgObject *c_obj = 0;
+    foreach(c_obj, connected)
+    {
+        // skip unselected objects
+        if (!c_obj->isSelected())
+            continue;
+
+        unselect(c_obj);
+    }
+
+}

@@ -22,7 +22,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef M4SCPCODEEDITOR_H
 #define M4SCPCODEEDITOR_H
-
+//#include <QtWidgets/qplaintextedit.h>
 #include <QPlainTextEdit>
 #include <QModelIndex>
 

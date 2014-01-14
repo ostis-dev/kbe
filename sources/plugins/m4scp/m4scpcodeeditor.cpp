@@ -27,7 +27,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPainter>
 #include <QTextBlock>
+//#include <QtWidgets/QAbstractItemView>
 #include <QAbstractItemView>
+//#include <QtWidgets/QScrollBar>
 #include <QScrollBar>
 #include <QTextDocumentFragment>
 

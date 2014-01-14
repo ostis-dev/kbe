@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/editorinterface.h"
 
-#include <QWidget>
+#include <qwidget.h>
 
 class M4SCpCodeEditor;
 class M4SCpSyntaxHighlighter;
