@@ -37,7 +37,7 @@ public:
     
     //! @copydoc SCgSelect::doSelection
     void doSelection(SCgScene *scene);
-
+    void undoSelection(SCgScene *scene);
 signals:
     
 public slots:

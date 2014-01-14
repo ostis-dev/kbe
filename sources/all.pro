@@ -1,5 +1,6 @@
 
 QT       += core
+QT += widgets
 
 TEMPLATE = subdirs
 

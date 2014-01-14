@@ -135,7 +135,7 @@ void MainWindow::createToolBars()
     mToolBarFile->addAction(ui->actionSave);
     mToolBarFile->addAction(ui->actionSave_as);
     //mToolBarFile->addAction(ui->actionSave_all);
-    mToolBarFile->addSeparator();
+
     mToolBarFile->addAction(ui->actionClose);
     //mToolBarFile->addAction(ui->actionClose_All);
     //mToolBarFile->addAction(ui->actionClose_Others);

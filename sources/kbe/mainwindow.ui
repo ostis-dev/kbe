@@ -42,6 +42,8 @@
     <addaction name="actionSave_as"/>
     <addaction name="actionSave_all"/>
     <addaction name="separator"/>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
     <addaction name="menuExport"/>
     <addaction name="actionImport"/>
     <addaction name="separator"/>
@@ -182,6 +184,11 @@
    </property>
    <property name="text">
     <string>Guide</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>Print</string>
    </property>
   </action>
  </widget>

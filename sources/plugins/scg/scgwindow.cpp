@@ -37,6 +37,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPrintPreviewDialog>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -60,6 +63,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
+
+#include "scgscene.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -226,6 +231,35 @@ void SCgWindow::createToolBar()
     //
     mToolBar->addSeparator();
     //
+    action = new QAction(findIcon("tool-contour.png"), tr("Print"), mToolBar);
+    action->setCheckable(true);
+    action->setShortcut(QKeySequence(tr("4", "Contour creation mode")));
+    group->addAction(action);
+    mToolBar->addAction(action);
+    mMode2Action[SCgScene::Mode_Contour] = action;
+    connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
+    //
+    mToolBar->addSeparator();
+    //
+
+    //print scene
+    action = new QAction(findIcon("printer.png"), tr("Print Image"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("0", "Export image")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(printScene()));
+
+    //preview
+    action = new QAction(findIcon("tool-document-preview.png"), tr("Preview image"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("0", "Export image")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(preview()));
+
+
+    //
+    mToolBar->addSeparator();
+    //
 
     // align group button
     QToolButton *alignButton = new QToolButton(mToolBar);
@@ -281,11 +315,23 @@ void SCgWindow::createToolBar()
     selectButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onSelectInputOutput()));
 
+    // input/output unselection
+    action = new QAction(findIcon("tool-unselect-inout.png"), tr("Unselect input/output"), mToolBar);
+    action->setCheckable(false);
+    selectButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onUnselectInputOutput()));
+
     // sbgraph selection
     action = new QAction(findIcon("tool-select-subgraph.png"), tr("Select subgraph"), mToolBar);
     action->setCheckable(false);
     selectButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onSelectSubgraph()));
+
+    // sbgraph unselection
+    action = new QAction(findIcon("tool-select-subgraph.png"), tr("Unselect subgraph"), mToolBar);
+    action->setCheckable(false);
+    selectButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onUnSelectSubgraph()));
 
     mToolBar->addSeparator();
 
@@ -438,10 +484,21 @@ void SCgWindow::onSelectInputOutput()
     select.doSelection(mScene);
 }
 
+void SCgWindow::onUnselectInputOutput()
+{
+    SCgSelectInputOutput select;
+    select.undoSelection(mScene);
+}
+
 void SCgWindow::onSelectSubgraph()
 {
     SCgSelectSubGraph select;
     select.doSelection(mScene);
+}
+void SCgWindow::onUnSelectSubgraph()
+{
+    SCgSelectSubGraph select;
+    select.undoSelection(mScene);
 }
 
 void SCgWindow::onExportImage()
@@ -486,6 +543,51 @@ void SCgWindow::onExportImage()
         }
         exportImage.doExport(mScene, fileName);
     }
+}
+
+void SCgWindow::printScene()
+{
+   QPrinter printer;
+
+
+
+
+    QPrintDialog printDialog(&printer, this);
+      if (printDialog.exec()) {
+          QPainter painter(&printer);
+          QRect rect = painter.viewport();
+          QSize size = mView->size();
+          printer.setPaperSize(QPrinter::A4);
+          size.scale(rect.size(), Qt::KeepAspectRatio);
+          painter.setViewport(rect.x(), rect.y(),
+                              size.width(), size.height());
+          painter.setWindow(mView->rect());
+       //   painter.drawImage(0, 0, mView->);
+          mScene->render(&painter,rect,printer.paperRect(),Qt::KeepAspectRatio);
+
+      }
+
+}
+
+void SCgWindow::preview()
+{
+
+      QPrinter printer;
+    QPrintPreviewDialog ppd(&printer,this,Qt::Window);
+
+   connect(&ppd, SIGNAL(paintRequested(QPrinter *)), SLOT(printPreview(QPrinter *)));
+   ppd.exec();
+
+}
+
+void SCgWindow::printPreview( QPrinter* printer)
+{
+
+QPainter painter( printer );
+QRect rect = painter.viewport();
+  mScene->render(&painter,rect,printer->paperRect(),Qt::KeepAspectRatio);
+
+
 }
 
 void SCgWindow::onZoomIn()

@@ -38,6 +38,8 @@ public:
       * @param scene Pointer to sc.g-scene for objects selection
       */
     virtual void doSelection(SCgScene *scene) = 0;
+    virtual void undoSelection(SCgScene *scene) =0;
+
 };
 
 #endif // SCGSELECT_H

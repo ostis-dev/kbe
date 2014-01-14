@@ -34,6 +34,7 @@ M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QStandardItemModel *_mItemModel = new QStandardItemModel(parent);
     setModel(_mItemModel);
     popup()->setIconSize(QSize(16, 16));
+
 }
 
 M4SCpCodeCompleter::~M4SCpCodeCompleter()

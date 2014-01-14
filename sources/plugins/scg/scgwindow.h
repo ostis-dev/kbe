@@ -205,6 +205,10 @@ private slots:
     void onEnergyBasedLayout();
     //! Slot to handle select input/output action
     void onSelectInputOutput();
+    //! Slot to handle unselect input/output action
+    void onUnselectInputOutput();
+    //! Slot to handle unselect subgraph action
+    void onUnSelectSubgraph();
     //! Slot to handle select subgraph action
     void onSelectSubgraph();
     //! Slot to hanlde an export image action
@@ -215,7 +219,12 @@ private slots:
     void onZoomOut();
     //! Slot to set zoom factor value.
     void onViewScaleChanged(qreal newScaleValue);
-
+    //! Slot to hadle print image
+    void printScene();
+    //! Slot to hadle a preview image
+    void preview();
+    //! Slot to handle previewdialog
+    void printPreview(QPrinter*);
     //! Handle find next button pressed event
     void findNext();
 

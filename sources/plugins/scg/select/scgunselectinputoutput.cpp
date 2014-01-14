@@ -1,4 +1,4 @@
-/*
+
 -----------------------------------------------------------------------------
 This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
 For the latest info, see http://www.ostis.net
@@ -57,28 +57,3 @@ void SCgSelectInputOutput::doSelection(SCgScene *scene)
     }
 }
 
-void SCgSelectInputOutput::undoSelection(SCgScene *scene)
-{
-    {
-        Q_ASSERT(scene != 0);
-
-        // get all selected objects
-        QList<QGraphicsItem*> items = scene->selectedItems();
-        QGraphicsItem *item = 0;
-        foreach(item, items)
-        {
-            // skip non scg-objects
-            if (!SCgObject::isSCgObjectType(item->type()))
-                continue;
-
-            SCgObject *obj = static_cast<SCgObject*>(item);
-
-            // set unselection for all input and output pairs
-            SCgObject::SCgObjectList connected = obj->connectedObjects();
-            SCgObject *c_obj = 0;
-            foreach(c_obj, connected)
-                c_obj->setSelected(false);
-        }
-    }
-
-}
