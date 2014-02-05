@@ -44,7 +44,7 @@ void SCgSelectInputOutput::doSelection(SCgScene *scene)
     foreach(item, items)
     {
         // skip non scg-objects
-        if (!SCgObject::isSCgObjectType(item->type()))
+        if (!item || !SCgObject::isSCgObjectType(item->type()))
             continue;
 
         SCgObject *obj = static_cast<SCgObject*>(item);

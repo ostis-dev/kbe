@@ -45,7 +45,7 @@ void SCgSelectSubGraph::doSelection(SCgScene *scene)
     QGraphicsItem *item = 0;
     foreach(item, items)
     {
-        if (SCgObject::isSCgObjectType(item->type()))
+        if (item && SCgObject::isSCgObjectType(item->type()))
             select(static_cast<SCgObject*>(item));
     }
 }
@@ -57,6 +57,10 @@ void SCgSelectSubGraph::select(SCgObject *obj)
     // select parent
     //if (obj->parentItem() != 0 && SCgObject::isSCgObjectType(obj->parentItem()->type()))
         //select(static_cast<SCgObject*>(obj->parentItem()));
+
+    Q_ASSERT(obj);
+    if (!obj)
+        return;
 
     switch(obj->type())
     {

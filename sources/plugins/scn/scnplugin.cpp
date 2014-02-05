@@ -23,8 +23,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scnplugin.h"
 #include "scnwindow.h"
 
-Q_EXPORT_PLUGIN2(scn, SCnPlugin)
-
 SCnPlugin::SCnPlugin(QObject *parent) :
     QObject(parent)
 {

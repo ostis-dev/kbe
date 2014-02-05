@@ -48,11 +48,10 @@ SCsWindow::SCsWindow(const QString& _windowTitle, QWidget *parent):
 
 
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
     mErrorTable = new SCsErrorTableWidget(this);
 
-    mEditor = new SCsCodeEditor(this, mErrorTable);
+    mEditor = new SCsCodeEditor(this,mErrorTable);
     QFont font("Arial", 11);
     font.setStyleHint(QFont::Serif);
     mEditor->setFont(font);
@@ -92,6 +91,16 @@ SCsWindow::~SCsWindow()
 {
     delete mHighlighter;
     delete mEditor;
+}
+
+QWidget* SCsWindowFactory::createNewParametersTab()
+{
+    return new QWidget();
+}
+
+QString SCsWindowFactory::getDescription() const
+{
+    return "SCs plugin designed for creating and editing SCs constructions. These constructs are used as fragments of the knowledge base";
 }
 
 QWidget* SCsWindow::widget()
@@ -231,12 +240,6 @@ void SCsWindow::onEscapePressed()
     mEditor->setFocus();
 }
 
-
-void SCsWindow::activate(QMainWindow *window)
-{
-    EditorInterface::activate(window);
-    mEditor->setFocus();
-}
 
 // ---------------------
 SCsWindowFactory::SCsWindowFactory(QObject *parent) :

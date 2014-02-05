@@ -58,6 +58,9 @@ void SCgCommandInsert::redo()
     {
         SCgObject *object = *it;
 
+        Q_ASSERT(object);
+        if (!object)
+            continue;
         object->setDead(false);
         if(object->scene() != mScene)
             mScene->addItem(object);

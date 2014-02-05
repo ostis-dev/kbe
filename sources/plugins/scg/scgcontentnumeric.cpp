@@ -25,10 +25,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgnode.h"
 
-#include <QVBoxLayout>
-#include <QLineEdit>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QLineEdit>
 #include <QDoubleValidator>
-#include <QLabel>
+#include <QtWidgets/QLabel>
 
 // ------------------------------
 SCgContentNumericDialog::SCgContentNumericDialog(SCgNode *node, QWidget *parent)

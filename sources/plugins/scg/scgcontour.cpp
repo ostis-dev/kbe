@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 
 #include <QColor>
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include <QVector2D>
 #include <QSet>
 
@@ -62,7 +62,7 @@ bool SCgContour::contains(const QPointF &point) const
     SCgPointGraphicsItem *pointItem;
     foreach (pointItem, mPointItems)
     {
-        if (pointItem->contains(point))
+        if (pointItem && pointItem->contains(point))
             return true;
     }
 

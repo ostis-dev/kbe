@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef M4SCPCODECOMPLETER_H
 #define M4SCPCODECOMPLETER_H
 
-#include <QCompleter>
+#include <QtWidgets/QCompleter>
 //#include <QMap>
 
 class M4SCpCodeCompleter : public QCompleter

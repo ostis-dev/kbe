@@ -27,7 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtemplateobjectbuilder.h"
 
 #include <QDomDocument>
-#include <QGraphicsView>
+#include <QtWidgets/QGraphicsView>
 
 SCgCloneMode::SCgCloneMode(SCgScene *scene) :
     SCgInsertMode(scene)

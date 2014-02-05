@@ -44,7 +44,7 @@ void TemplateSCgObjectsBuilder::buildObjects(const TypeToObjectsMap& objects)
     QList<SCgObject*> l = mDecoratedBuilder->objects();
 
     foreach(SCgObject* obj, l)
-        if(! obj->parentItem())
+        if(obj && ! obj->parentItem())
             obj->setDead(true);
 
     QRectF bounds;

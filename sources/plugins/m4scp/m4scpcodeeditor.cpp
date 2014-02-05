@@ -27,8 +27,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPainter>
 #include <QTextBlock>
-#include <QAbstractItemView>
-#include <QScrollBar>
+#include <QtWidgets/QAbstractItemView>
+#include <QtWidgets/QScrollBar>
 #include <QTextDocumentFragment>
 
 M4SCpCodeEditor::M4SCpCodeEditor(QWidget *parent) :

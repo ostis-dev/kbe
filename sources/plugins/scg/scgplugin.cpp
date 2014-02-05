@@ -36,10 +36,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangerenergybased.h"
 
 #include <QTranslator>
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QLocale>
-
-Q_EXPORT_PLUGIN2(scg, SCgPlugin)
 
 SCgPlugin::SCgPlugin(QObject *parent) :
     QObject(parent),

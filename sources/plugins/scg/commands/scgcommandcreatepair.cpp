@@ -36,6 +36,7 @@ SCgCommandCreatePair::SCgCommandCreatePair(SCgScene *scene,
     , mEndObject(endObject)
     , mParentContour(parentContour)
 {
+    Q_ASSERT(mScene);
     mObject = mScene->createSCgPair(mBeginObject, mEndObject, mPoints);
 
     connect(mObject, SIGNAL(destroyed()), this, SLOT(pairDestroyed()));

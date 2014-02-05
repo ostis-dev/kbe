@@ -4,15 +4,15 @@
 #include "scgview.h"
 #include "scgcontour.h"
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QTimer>
 
-#include <QFormLayout>
-#include <QLabel>
-#include <QDoubleSpinBox>
-#include <QDialogButtonBox>
+#include <QtWidgets/QFormLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QDialogButtonBox>
 
-#include <QtConcurrentMap>
+#include <QtConcurrent/QtConcurrentMap>
 //------------------------------------------------------------------------------
 SCgEnergyBasedArranger::SCgEnergyBasedArranger(QObject *parent)
         : SCgArranger(parent)

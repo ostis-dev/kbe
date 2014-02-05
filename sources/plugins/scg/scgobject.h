@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCGOBJECT_H
 
 #include <QObject>
-#include <QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 
 #include "scgalphabet.h"
 

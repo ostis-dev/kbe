@@ -34,17 +34,20 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QCursor>
 #include <QVector2D>
-#include <QGraphicsScene>
-#include <QApplication>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QApplication>
 
 SCgObject::SCgObject(QGraphicsItem *parent, QGraphicsScene *scene) :
-        QGraphicsItem(parent, scene),
+        QGraphicsItem(parent),
         mConstType(SCgAlphabet::ConstUnknown),
         mIsBoundingBoxVisible(false),
         mTextItem(0),
         mIsDead(false),
         mParentChanging(false)
 {
+    if (scene && this->scene() != scene)
+        scene->addItem(this);
+
     mColor = scg_cfg_get_value_color(scg_key_element_color_normal);
 
     setFlags(QGraphicsItem::ItemIsSelectable

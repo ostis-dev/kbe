@@ -56,6 +56,9 @@ public:
     void setCleanIcon(const QIcon &icon);
     QIcon cleanIcon() const;
 
+protected:
+    void reset(); // Obsolete method
+
 public slots:
     void setStack(QUndoStack *stack);
 

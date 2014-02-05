@@ -35,6 +35,7 @@ SCgCommandCreateBus::SCgCommandCreateBus(SCgScene *scene,
     , mPoints(points)
     , mParentContour(parentContour)
 {
+    Q_ASSERT(mScene);
     mObject = mScene->createSCgBus(mPoints, mOwner);
     connect(mObject, SIGNAL(destroyed()), this, SLOT(busDestroyed()));
     setText(QObject::tr("Create bus"));

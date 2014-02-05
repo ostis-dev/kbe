@@ -52,7 +52,8 @@ void SCgCommandDeleteContour::redo()
     for (it = childs.begin(); it != childs.end(); ++it)
     {
         QGraphicsItem *item = *it;
-        if (!SCgObject::isSCgObjectType(item->type()))
+        Q_ASSERT(item);
+        if (!item || !SCgObject::isSCgObjectType(item->type()))
             continue;
 
         mChilds.push_back(item);
@@ -73,6 +74,9 @@ void SCgCommandDeleteContour::undo()
     for (it = mChilds.begin(); it != mChilds.end(); ++it)
     {
         QGraphicsItem *item = *it;
-        item->setParentItem(mContour);
+
+        Q_ASSERT(item);
+        if (item)
+            item->setParentItem(mContour);
     }
 }

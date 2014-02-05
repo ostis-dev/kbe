@@ -1,7 +1,7 @@
 #ifndef NEWFILEDIALOG_H
 #define NEWFILEDIALOG_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
 class QListWidget;
 

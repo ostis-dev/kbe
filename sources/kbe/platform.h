@@ -23,6 +23,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
+#include <qsystemdetection.h>
+
 #define KBE_PLATFORM_WIN32 1
 #define KBE_PLATFORM_LINUX 2
 #define KBE_PLATFORM_APPLE 3
@@ -31,9 +33,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define KBE_ARCHITECTURE_64 2
 
 // Get OS
-#if defined( __WIN32__ ) || defined( _WIN32 )
+#if defined( Q_OS_WIN )
 #   define KBE_PLATFORM KBE_PLATFORM_WIN32
-#elif defined( __APPLE_CC__)
+#elif defined( Q_OS_MAC )
 #   define KBE_PLATFORM KBE_PLATFORM_APPLE
 #else
 #   define KBE_PLATFORM KBE_PLATFORM_LINUX

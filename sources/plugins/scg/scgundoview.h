@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef EXTENDEDUNDOVIEW_H_
 #define EXTENDEDUNDOVIEW_H_
 
-#include <QListView>
+#include <QtWidgets/QListView>
 class QUndoStack;
 
 /* We don't use QUndoView directly, because this approach is more flexible.

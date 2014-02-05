@@ -23,9 +23,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QMap>
 #include <QDir>
+#include "parametersdialog.h"
 #include "extendedtabwidget.h"
 #include "interfaces/editorinterface.h"
 
@@ -186,6 +187,8 @@ public slots:
     void fileSaveAll();
     void fileExportToImage();
     void fileExit();
+
+    void viewParameters();
 
     void helpAbout();
     void helpAboutQt();

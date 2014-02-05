@@ -25,7 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QMap>
-#include <QDialog>
+#include <QtWidgets/QDialog>
 #include <QSet>
 #include "../scgscene.h"
 

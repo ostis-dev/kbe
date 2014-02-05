@@ -32,7 +32,7 @@ class QPluginLoader;
 class PluginInterface;
 class EditorInterface;
 class EditorFactoryInterface;
-
+Q_OS_WIN
 class PluginManager : public QObject
 {
     Q_OBJECT

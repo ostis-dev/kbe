@@ -23,9 +23,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCGSCENE_H
 #define SCGSCENE_H
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsPathItem>
+#include <QtWidgets/QGraphicsScene>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
+#include <QtWidgets/QGraphicsPathItem>
 #include <QStringList>
 
 #include "scgobject.h"

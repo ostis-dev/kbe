@@ -26,10 +26,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgplugin.h"
 #include "scgwindow.h"
 
-#include <QLabel>
-#include <QVBoxLayout>
-#include <QToolButton>
-#include <QFileDialog>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QFileDialog>
 #include "config.h"
 
 static const QSize resultSize(200, 200);

@@ -29,13 +29,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgbus.h"
 
-#include <QDialogButtonBox>
-#include <QApplication>
-#include <QMessageBox>
-#include <QSpinBox>
-#include <QLayout>
-#include <QLabel>
-#include <QCheckBox>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QSpinBox>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QCheckBox>
 
 SCgArranger::SCgArranger(QObject *parent) :
     QObject(parent),
@@ -50,6 +50,7 @@ SCgArranger::~SCgArranger()
 
 void SCgArranger::arrange(SCgView* view)
 {
+    Q_ASSERT(view);
     if(!view)
         return;
 

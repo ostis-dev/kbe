@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QStringListModel>
 #include <QStandardItemModel>
+#include <QtWidgets/QAbstractItemView>
 
 M4SCpCodeCompleter::M4SCpCodeCompleter(QObject *parent) :
     QCompleter(parent)

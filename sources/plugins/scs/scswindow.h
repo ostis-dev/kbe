@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces/editorinterface.h"
 #include "scscodeeditor.h"
 #include "scssyntaxhighlighter.h"
-#include <QWidget>
+#include <QtWidgets/QWidget>
 
 class SCsFindWidget;
 class SCsErrorTableWidget;
@@ -70,8 +70,6 @@ public:
     /*! Update window imideately
     */
     void _update();
-
-    void activate(QMainWindow *window);
 
     /*! Get icon specified for window type
     */
@@ -119,6 +117,10 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+    QWidget* createNewParametersTab();
+
+    QString getDescription() const;
 
 };
 #endif // SCSWINDOW_H

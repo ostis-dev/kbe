@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scnfielditem.h"
 #include "scninputdialog.h"
 
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 #include <QList>
 
 class SCnEditorScene : public QGraphicsScene

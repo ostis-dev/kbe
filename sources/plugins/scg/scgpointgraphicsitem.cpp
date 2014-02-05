@@ -9,7 +9,7 @@
 #include "scgpair.h"
 #include "scgcontour.h"
 #include "scgbus.h"
-#include <QGraphicsScene>
+#include <QtWidgets/QGraphicsScene>
 
 #define POINT_ITEM_COLOR_SELECTED QColor(255, 128, 64)
 #define POINT_ITEM_COLOR_NORMAL QColor(170, 170, 170)

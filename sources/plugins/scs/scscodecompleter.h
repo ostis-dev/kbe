@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCSCODECOMPLETER_H
 
 #include <QObject>
-#include <QCompleter>
+#include <QtWidgets/QCompleter>
 
 class SCsCodeCompleter : public QCompleter
 {

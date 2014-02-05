@@ -1,4 +1,4 @@
-QT       += core gui network xml
+QT       += core gui widgets network xml
 
 DESTDIR = ../bin
 

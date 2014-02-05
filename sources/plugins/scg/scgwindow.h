@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces/editorinterface.h"
 #include "scgscene.h"
 
-#include <QToolBox>
+#include <QtWidgets/QToolBox>
 #include <QMap>
 
 class SCgMinimap;
@@ -35,6 +35,7 @@ class SCgUndoView;
 
 class QToolBar;
 class QLineEdit;
+class QSlider;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -129,10 +130,7 @@ private:
 
     typedef QMap<SCgScene::EditMode, QAction*> Mode2ActionMap;
     //! Map for storing mode-action relation
-    Mode2ActionMap mMode2Action;
-
-    //! Contents current zoom factor.
-    QLineEdit* mZoomFactorLine;
+    Mode2ActionMap mMode2Action; 
 
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
@@ -145,6 +143,9 @@ private:
 
     //! Tool bar
     QToolBar *mToolBar;
+
+    //! Slider
+    QSlider *mZoomSlider;
 
     //! Undo stack
     QUndoStack *mUndoStack;
@@ -266,6 +267,10 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+    QWidget* createNewParametersTab();
+
+    QString getDescription() const;
 
 };
 

@@ -27,8 +27,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgobject.h"
 #include "scgscene.h"
 
-#include <QMessageBox>
-#include <QApplication>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QApplication>
 #include <QDomDocument>
 #include <QFile>
 
@@ -55,6 +55,10 @@ void GWFFileLoader::showGeneralError()
 bool GWFFileLoader::load(QString file_name, QObject *output)
 {
     SCgScene *scene = qobject_cast<SCgScene*>(output);
+
+    Q_ASSERT(scene);
+    if (!scene)
+        return false;
 
     // read data from file
     QString errorStr;

@@ -24,7 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCNFIELDITEM_H
 
 #include <QObject>
-#include <QGraphicsItem>
+#include <QtWidgets/QGraphicsItem>
 
 class SCnEditorScene;
 

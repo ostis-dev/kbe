@@ -1,10 +1,10 @@
 #ifndef SCNINPUTDIALOG_H
 #define SCNINPUTDIALOG_H
 
-#include <QDialog>
-#include <QLineEdit>
-#include <QGridLayout>
-#include <QPushButton>
+#include <QtWidgets/QDialog>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QPushButton>
 
 class SCnInputDialog : public QDialog
 {

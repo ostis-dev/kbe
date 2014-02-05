@@ -23,11 +23,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef SCNWINDOW_H
 #define SCNWINDOW_H
 
-#include <QWidget>
+#include <QtWidgets/QWidget>
 #include "interfaces/editorinterface.h"
 
 class SCnEditorScene;
 class QGraphicsView;
+class SCnWindowFactory;
 
 class SCnWindow : public QWidget,
                   public EditorInterface
@@ -91,10 +92,21 @@ public:
 
     //! @copydoc SCnWindowFactory::name
     const QString& name() const;
+
     //! @copydoc SCnWindowFactory::createInstance
     EditorInterface* createInstance();
+
     //! @copydoc SCnWindowFactory::supportedFormatsExt
     QStringList supportedFormatsExt();
+
+    //! Return icon, that associated with editor factory
+    QIcon icon() const;
+
+    //! Create new tab in parameters window
+    QWidget* createNewParametersTab();
+
+    //! Set ToolTip on plugin in NewFile dialog
+    QString getDescription() const;
 };
 
 #endif // SCNWINDOW_H

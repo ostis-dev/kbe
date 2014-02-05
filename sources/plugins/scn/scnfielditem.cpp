@@ -29,8 +29,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
-#include <QGraphicsProxyWidget>
-#include <QTextEdit>
+#include <QtWidgets/QGraphicsProxyWidget>
+#include <QtWidgets/QTextEdit>
 #include <QKeyEvent>
 
 SCnFieldItem::SCnFieldItem(QObject *parent) :

@@ -29,26 +29,29 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "pluginmanager.h"
 #include "guidedialog.h"
 #include "newfiledialog.h"
+#include "parametersdialog.h"
 
 #include "version.h"
 
-#include <QMdiSubWindow>
-#include <QToolBar>
-#include <QStyleFactory>
+#include <QtWidgets/QMdiSubWindow>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QStyleFactory>
 #include <QSignalMapper>
-#include <QFileDialog>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QListWidget>
-#include <QLabel>
-#include <QPushButton>
-#include <QUndoGroup>
-#include <QMessageBox>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QUndoGroup>
+#include <QtWidgets/QMessageBox>
 #include <QUrl>
-#include <QGraphicsBlurEffect>
+#include <QtWidgets/QGraphicsBlurEffect>
 #include <QCloseEvent>
 #include <QSettings>
-#include <QDockWidget>
+#include <QtWidgets/QDockWidget>
+
+#include <QMimeData>
 
 MainWindow* MainWindow::mInstance = 0;
 
@@ -166,7 +169,7 @@ void MainWindow::createActions()
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
     connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(fileSaveAll()));
     connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(fileExportToImage()));
-
+    connect(ui->actionEdit, SIGNAL(triggered()), this, SLOT(viewParameters()));
     connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()) );
     connect(ui->actionClose, SIGNAL(triggered()), mTabWidget, SLOT(close()));
     connect(ui->actionClose_Others, SIGNAL(triggered()), mTabWidget, SLOT(closeOtherDocuments()));
@@ -213,14 +216,14 @@ bool MainWindow::checkSubWindowSavedState()
     QList<QWidget*> list = mTabWidget->subWindowList();
     QList<QWidget*>::iterator it = list.begin();
     for(; it != list.end(); it++)
-        if (!qobject_cast<EditorInterface*>(*it)->isSaved())
+        if (*it && !qobject_cast<EditorInterface*>(*it)->isSaved())
             return false;
     return true;
 }
 
 EditorInterface *MainWindow::activeChild()
 {
-    if (QWidget *activeSubWindow = mTabWidget->currentWidget())
+    QWidget *activeSubWindow = mTabWidget->currentWidget();
     {
         Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(activeSubWindow);
         if (it != mWidget2EditorInterface.end())
@@ -499,6 +502,13 @@ void MainWindow::fileSaveAs(QWidget* window)
 
     mBlurEffect->setEnabled(false);
 
+}
+
+void MainWindow::viewParameters()
+{
+    ParametersDialog paramDialog(this); //= new ParametersDialog(this);
+
+    paramDialog.exec();
 }
 
 void MainWindow::fileSaveAll()
