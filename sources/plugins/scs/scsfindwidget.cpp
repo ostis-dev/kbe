@@ -148,12 +148,14 @@ void SCsFindWidget::updateButtons()
 
 void SCsFindWidget::caseSensitivityChanged(int val)
 {
+    Q_UNUSED(val)
 	emit find(mSearchEdit->text());
 }
 
 
 void SCsFindWidget::wholeWordChanged(int val)
 {
+    Q_UNUSED(val)
 	emit find(mSearchEdit->text());
 }
 
