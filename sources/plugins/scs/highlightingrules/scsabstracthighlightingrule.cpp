@@ -38,7 +38,8 @@ SCsAbstractHighlightingRule::~SCsAbstractHighlightingRule()
 
 void SCsAbstractHighlightingRule::assignFormat(SCsSyntaxHighlighter *highlighter, const QString &text)
 {
-
+    Q_UNUSED(highlighter);
+    Q_UNUSED(text);
 }
 
 void SCsAbstractHighlightingRule::setFormat(QTextCharFormat format)

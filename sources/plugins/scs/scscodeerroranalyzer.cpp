@@ -7,9 +7,9 @@
 
 SCsCodeErrorAnalyzer::SCsCodeErrorAnalyzer(SCsCodeEditor* editor, SCsErrorTableWidget *errorTable)
 	:  QObject(editor)
-	, mEditor(editor)
-	, mErrorTable(errorTable)
     , mAsynchParser(0)
+    , mErrorTable(errorTable)
+	, mEditor(editor)
 {
 	Q_CHECK_PTR(mEditor);
 
@@ -18,7 +18,7 @@ SCsCodeErrorAnalyzer::SCsCodeErrorAnalyzer(SCsCodeEditor* editor, SCsErrorTableW
     connect(mAsynchParser,SIGNAL(parseExceptionsFinished()),SLOT(parseExceptionFinished()));
 }
 
-void SCsCodeErrorAnalyzer::parse(QString &text)
+void SCsCodeErrorAnalyzer::parse(const QString &text)
 {
     if (mAsynchParser->doWork() || text.isEmpty())
         return;

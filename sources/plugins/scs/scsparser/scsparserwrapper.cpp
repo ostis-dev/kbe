@@ -244,7 +244,7 @@ QSharedPointer<SCsParserTokenArray> SCsParser::getTokens(const QString &text) co
 
 	pANTLR3_COMMON_TOKEN tok;
 	pANTLR3_STRING tokText;
-	for(int i=0; i<tokens->count; i++)
+    for(uint i=0; i<tokens->count; i++)
 	{
 		tok = (pANTLR3_COMMON_TOKEN) tokens->elements[i].element; 
 		tokText = tok->getText(tok);
