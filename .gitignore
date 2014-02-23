@@ -1,0 +1,10 @@
+*.Release
+*.Debug
+*.qm
+Makefile*
+*.user
+bin/
+moc/
+obj/
+debug/
+release/

@@ -20,7 +20,8 @@ SOURCES += \
     config.cpp \
     pluginmanager.cpp \
     guidedialog.cpp \
-    newfiledialog.cpp
+    newfiledialog.cpp \
+    splashscreen.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -31,7 +32,8 @@ HEADERS += version.h \
     pluginmanager.h \
     interfaces/editorinterface.h \
     guidedialog.h \
-    newfiledialog.h
+    newfiledialog.h \
+    splashscreen.h
 
 FORMS += mainwindow.ui
 
