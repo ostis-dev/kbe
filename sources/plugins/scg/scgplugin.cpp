@@ -39,6 +39,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QApplication>
 #include <QLocale>
 
+#include <unistd.h>
+
 Q_EXPORT_PLUGIN2(scg, SCgPlugin)
 
 SCgPlugin::SCgPlugin(QObject *parent) :
@@ -73,20 +75,32 @@ const QList<QObject*>& SCgPlugin::interfaces() const
 
 void SCgPlugin::initialize()
 {
+    Q_ASSERT_X(mEventListener != 0, "SCgPlugin::initialize", "mEventListener has null pointer");
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(0));
     mInterfaces.push_back(new SCgWindowFactory(this));
 
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(10));
     SCgContentFactory::registerFactory("string", new SCgContentStringFactory);
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(20));
     SCgContentFactory::registerFactory("image", new SCgContentImageFactory);
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(30));
     SCgContentFactory::registerFactory("numeric", new SCgContentNumericFactory);
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(40));
     //SCgContentFactory::registerFactory("video", new SCgContentVideoFactory);
 
     SCgLayoutManager::instance().addArranger(new SCgGridArranger(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(50));
     SCgLayoutManager::instance().addArranger(new SCgVerticalArranger(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(60));
     SCgLayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(70));
     SCgLayoutManager::instance().addArranger(new SCgTupleArranger(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(80));
     SCgLayoutManager::instance().addArranger(new SCgEnergyBasedArranger(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(90));
 
     qApp->installTranslator(mTranslator);
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(100));
 }
 
 void SCgPlugin::shutdown()

@@ -63,11 +63,14 @@ const QList<QObject*>& M4SCpPlugin::interfaces() const
 
 void M4SCpPlugin::initialize()
 {
+    Q_ASSERT_X(mEventListener != 0, "M4SCpPlugin::initialize", "mEventListener has null pointer");
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(0));
     M4SCpSyntax::initialize();
-
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(33));
     mInterfaces.push_back(new M4SCpWindowFactory(this));
-
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(66));
     qApp->installTranslator(mTranslator);
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(100));
 }
 
 void M4SCpPlugin::shutdown()

@@ -93,7 +93,6 @@ MainWindow::MainWindow(QWidget *parent) :
     updateRecentFileActions();
     updateWindowTitle();
 
-    new PluginManager();
     PluginManager::instance()->initialize(Config::pathPlugins.absolutePath());
 
     //QApplication::setStyle(QStyleFactory::create("Plastique"));

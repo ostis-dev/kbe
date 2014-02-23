@@ -53,7 +53,10 @@ const QList<QObject*>& SCnPlugin::interfaces() const
 
 void SCnPlugin::initialize()
 {
+    Q_ASSERT_X(mEventListener != 0, "SCnPlugin::initialize", "mEventListener has null pointer");
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(0));
     mInterfaces.push_back(new SCnWindowFactory(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(100));
 }
 
 void SCnPlugin::shutdown()

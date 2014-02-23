@@ -27,13 +27,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 #include <QSet>
 #include <QStringList>
+#include "interfaces/plugininterface.h"
 
 class QPluginLoader;
-class PluginInterface;
 class EditorInterface;
 class EditorFactoryInterface;
 
-class PluginManager : public QObject
+class PluginManager : public QObject, public PluginEventListener
 {
     Q_OBJECT
 public:
@@ -90,6 +90,7 @@ public:
      */
     EditorInterface* createWindowByExt(const QString &ext);
 
+    void processEvent(PluginEvents event, const QVariant userData);
 protected:
     /*! Load plugin with specified \p path
       * @param path Path to plugin
@@ -110,11 +111,18 @@ protected:
     tExtensionsSet mSupportedExtensions;
     //! Registered factories by types
     tEditorFactoryInterfacesMap mEditorFactoriesByType;
-    //! REgistered factories by extinsions
+    //! Registered factories by extinsions
     tEditorFactoryInterfacesMap mEditorFactoriesByExt;
 
 signals:
-
+    //! Emit when new plugin loading started
+    void pluginLoadingStarted();
+    //! Emit when plugin loading percentage changed
+    void pluginLoadingProgressChanged(const quint8 percentage);
+    //! Emit when plugin loading finshed
+    void pluginLoadingFinished();
+    //! Emit when total progress changed
+    void loadingProgressChanged(const quint8 percentage);
 public slots:
 
 };

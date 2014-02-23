@@ -24,6 +24,24 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define PLUGININTERFACE_H
 
 #include <QtPlugin>
+#include <QVariant>
+
+class PluginEventListener
+{
+public:
+    enum PluginEvents
+    {
+        PluginLoadingStarted,
+        PluginLoadingProgress,
+        PluginLoadingFinished
+    };
+
+    /*! Process specific event
+    * @param event Event type
+    * @param userData Data which received with event
+    */
+    virtual void processEvent(PluginEvents event, const QVariant userData = QVariant()) = 0;
+};
 
 class PluginInterface
 {
@@ -47,6 +65,14 @@ public:
 
     //! Shutdown plugin
     virtual void shutdown() = 0;
+
+    //! Set event listener to @p listener
+    void setListener(PluginEventListener *listener) { mEventListener = listener; }
+
+    //! Get pointer to event listener
+    PluginEventListener* listener() const { return mEventListener; }
+protected:
+    PluginEventListener *mEventListener;
 };
 
 Q_DECLARE_INTERFACE(PluginInterface,

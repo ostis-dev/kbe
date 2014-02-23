@@ -58,6 +58,8 @@ void PluginManager::initialize(const QString &_dirPath)
 
     QDir pluginsDir(_dirPath);
 
+    int pluginCount = pluginsDir.entryList(QDir::Files).count();
+    int loadedPlugin = 0;
     QDirIterator dirIt(_dirPath, QDirIterator::Subdirectories);
 
     while (dirIt.hasNext())
@@ -75,6 +77,8 @@ void PluginManager::initialize(const QString &_dirPath)
         {
             qDebug() << "Can't load plugin from " << pluginsDir.absoluteFilePath(fileName);
         }
+        ++loadedPlugin;
+        emit loadingProgressChanged(loadedPlugin * 100 / pluginCount);
     }
 }
 
@@ -101,6 +105,7 @@ void PluginManager::loadPlugin(const QString &path)
     PluginInterface *plugInterface = qobject_cast<PluginInterface*>(loader->instance());
     if (plugInterface != 0)
     {
+        plugInterface->setListener(this);
         mPluginLoaders[path] = loader;
         processLoadPlugin(plugInterface);
     }else
@@ -210,4 +215,26 @@ EditorInterface* PluginManager::createWindowByExt(const QString &ext)
     Q_ASSERT(it != mEditorFactoriesByExt.end());
 
     return (*it)->createInstance();
+}
+
+void PluginManager::processEvent(PluginEventListener::PluginEvents event, const QVariant userData)
+{
+    switch(event)
+    {
+    case PluginEventListener::PluginLoadingStarted :
+    {
+        emit pluginLoadingStarted();
+        break;
+    }
+    case PluginEventListener::PluginLoadingProgress :
+    {
+        emit pluginLoadingProgressChanged(userData.toUInt());
+        break;
+    }
+    case PluginEventListener::PluginLoadingFinished :
+    {
+        emit pluginLoadingFinished();
+        break;
+    }
+    }
 }

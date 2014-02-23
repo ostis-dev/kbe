@@ -55,7 +55,10 @@ const QList<QObject*>& SCsPlugin::interfaces() const
 
 void SCsPlugin::initialize()
 {
+    Q_ASSERT_X(mEventListener != 0, "SCsPlugin::initialize", "mEventListener has null pointer");
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(0));
     mInterfaces.push_back(new SCsWindowFactory(this));
+    mEventListener->processEvent(PluginEventListener::PluginLoadingProgress, QVariant(100));
 }
 
 void SCsPlugin::shutdown()

@@ -25,6 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "platform.h"
 #include "mainwindow.h"
 #include "guidedialog.h"
+#include "splashscreen.h"
 
 #include <QtGui/QApplication>
 #include <QTranslator>
@@ -33,7 +34,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QFileInfo>
 #include <QDir>
 #include <QFile>
-#include <QSplashScreen>
 #include <QMessageBox>
 #include <QDebug>
 #include <QSettings>
@@ -55,21 +55,22 @@ int main(int argc, char *argv[])
     //#endif
     Config::pathPlugins = root_dir;
     Config::pathPlugins.cd("plugins");
-
+    new PluginManager();
 
     // Create splash screen
-    //QSplashScreen splash(QPixmap(QFileInfo(QDir(Config::pathMedia), "splash.png").absoluteFilePath()));
-    //splash.show();
-    //a.processEvents();
+    SplashScreen splash(QPixmap(QFileInfo(QDir(root_dir), "splash.png").absoluteFilePath()));
+    QObject::connect(PluginManager::instance(), SIGNAL(loadingProgressChanged(quint8)), &splash, SLOT(setProgressAll(quint8)));
+    QObject::connect(PluginManager::instance(), SIGNAL(pluginLoadingProgressChanged(quint8)), &splash, SLOT(setPluginProgress(quint8)));
+    splash.show();
+    a.processEvents();
 
-    //splash.showMessage("Load Translation", Qt::AlignBottom | Qt::AlignHCenter);
+    splash.showMessage("Load Translation", Qt::AlignBottom | Qt::AlignHCenter);
 
     QTranslator myappTranslator;
     myappTranslator.load(":/media/translations/lang_" + QLocale::system().name() + ".qm");
     a.installTranslator(&myappTranslator);
 
-    //splash.showMessage(a.tr("Create interface"), Qt::AlignBottom | Qt::AlignHCenter);
-    MainWindow::getInstance()->show();
+    splash.showMessage(a.tr("Create interface"), Qt::AlignBottom | Qt::AlignHCenter);
 
     a.processEvents();
 
@@ -93,6 +94,7 @@ int main(int argc, char *argv[])
 //        startDialog.exec();
 //    }
 
-    //splash.finish(&w);
+    MainWindow::getInstance()->show();
+    splash.finish(MainWindow::getInstance());
     return a.exec();
 }
