@@ -35,6 +35,9 @@ void SCsErrorTableWidget::doubleClickAtCell(int row, int col)
 {
     if(item(row,0)->type() != ERROR_TABLE_WIDGET_ITEM_TYPE)
         return;
+
+    Q_UNUSED(col);
+
     SCsErrorTableWidgetItem *item = (SCsErrorTableWidgetItem*) this->item(row,ERROR_TABLE_WIDGET_ITEM_COLUMN);
 
     Q_CHECK_PTR(item);

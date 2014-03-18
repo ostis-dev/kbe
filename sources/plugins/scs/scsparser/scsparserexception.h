@@ -70,7 +70,7 @@ public:
 	};
 	SCsParserToken();
 	SCsParserToken(int tokenType);
-	SCsParserToken(int tokenType, QString tokenText, int line, int positionInLine);
+    SCsParserToken(int tokenType, const QString &tokenText, int line, int positionInLine);
 	SCsParserToken(const SCsParserToken& copy);
 	SCsParserToken& operator=(const SCsParserToken& copy);
 	virtual ~SCsParserToken();

@@ -40,11 +40,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SPACE_FOR_ERROR_LABEL 20
 
-SCsCodeEditor::SCsCodeEditor(QWidget *parent, SCsErrorTableWidget *errorTable) :
-	 QPlainTextEdit(parent)
-    ,mLastCursorPosition(0)
-	,mIsTextInsert(false)
-	,mErrorTable(errorTable)
+SCsCodeEditor::SCsCodeEditor(QWidget *parent, SCsErrorTableWidget *errorTable)
+    : QPlainTextEdit(parent)
+    , mErrorTable(errorTable)
+    , mLastCursorPosition(0)
+    , mIsTextInsert(false)
 {
     mLineNumberArea = new SCsLineNumberArea(this);
 	mAnalyzer = new SCsCodeAnalyzer(this);
@@ -77,6 +77,7 @@ SCsCodeEditor::SCsCodeEditor(QWidget *parent, SCsErrorTableWidget *errorTable) :
 
 void SCsCodeEditor::setDocumentPath(const QString &path)
 {
+    Q_UNUSED(path);
 	mAnalyzer->parse(toPlainText(), (QStandardItemModel*)mCompleter->model());
 }
 
