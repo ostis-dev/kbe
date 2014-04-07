@@ -55,7 +55,7 @@ bool GWFFileWriter::save(QString file_name, QObject *input)
                  return false;
              }
         stream.setDevice(&fileOut);
-        stream.startWriting("windows-1251");
+        stream.startWriting("UTF-8");
 
         QList<QGraphicsItem *>	items = scene->items ();
         QGraphicsItem * item;
