@@ -38,12 +38,12 @@ friend class SCgBus;
 public:
     enum { Type = UserType + 2 };
     typedef enum
-	{
-		BottomRight = 0,
-		BottomLeft,
-		TopLeft,
-		TopRight
-    }IdentifierPosition;
+    {
+        BottomRight = 0,
+        BottomLeft,
+        TopLeft,
+        TopRight
+    } eIdentifierPosition;
     /*! Type for qgraphicsitem_cast
       */
     int type() const { return Type; }
@@ -52,8 +52,8 @@ public:
 
 	void setIdtfValue(const QString &idtf);
 
-	void setIdtfPos(IdentifierPosition pos);
-	IdentifierPosition idtfPos() const;
+        void setIdtfPos(eIdentifierPosition pos);
+        eIdentifierPosition idtfPos() const;
 
 	QRectF boundingRect() const;
 

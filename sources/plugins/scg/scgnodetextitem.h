@@ -32,13 +32,14 @@ class QGraphicsSceneMouseEvent;
 class SCgNodeTextItem : public SCgTextItem
 {
     Q_OBJECT
+    friend class SCgNode;
 
 public:
     //! Object type
     enum { Type = UserType + 9 };
 
-    explicit SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
-    explicit SCgNodeTextItem(SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
+    explicit SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::eIdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
+    explicit SCgNodeTextItem(SCgNode* parent, SCgNode::eIdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
     virtual ~SCgNodeTextItem();
 
     //! Return a type of graphics item as integer
@@ -46,15 +47,14 @@ public:
 protected:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
-    void setTextPos(SCgNode::IdentifierPosition pos);
-    SCgNode::IdentifierPosition textPos() const { return mTextPos; }
-    void updateTextPos(SCgNode::IdentifierPosition pos);
-    SCgNode::IdentifierPosition posToIdtfPos(const QPointF &point) const;
+    void setTextPos(SCgNode::eIdentifierPosition pos);
+    SCgNode::eIdentifierPosition textPos() const;
 
-    SCgNode::IdentifierPosition mTextPos;
+    void updateTextPos(SCgNode::eIdentifierPosition pos);
+    SCgNode::eIdentifierPosition posToIdtfPos(const QPointF &point) const;
+
+    SCgNode::eIdentifierPosition mTextPos;
     SCgNode *mParentItem;
-
-	friend class SCgNode;
 };
 
 #endif // SCGNODETEXTITEM_H
