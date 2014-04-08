@@ -33,8 +33,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "version.h"
 
-#include <QHBoxLayout>
-
 #include <QMdiSubWindow>
 #include <QToolBar>
 #include <QStyleFactory>
