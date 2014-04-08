@@ -22,11 +22,8 @@ public:
 
     ProjectManagerView* getTreeView() { return treeView; }
 private:
-
     static ProjectManagerDockWidget* mInstance;
-
     ProjectManagerView *treeView;
-
 };
 
 class ProjectManagerView : public QTreeView
@@ -43,7 +40,7 @@ private slots:
     void onProjectClose();
     void onAllProjectsSave();
     void onAllProjectsClose();
-    void onRemoveFile();
+    void onRemove();
     void onRemovePermanently();
     QString onRename();
     void onFileRename();
@@ -52,20 +49,20 @@ private slots:
     void onAddFile();
     void onOpenFile();
     void onShowInExplorer();
-
+    void onPropertiesShow();
 
 signals:
-    void openFile(QString); // filename
+    void openFile(QString);
 
 private:
     void renameItem(ProjectManagerModelItem* item, QString newName);
+    void permanentRemoveTree(ProjectManagerModelItem* item);
     void createContextMenu(ProjectManagerModelItem* item);
     void mousePressEvent(QMouseEvent*);
     void mouseDoubleClickEvent(QMouseEvent *event);
 
 private:
     ProjectManagerModel* model;
-
 };
 
 #endif // PROJECTMANAGER_H

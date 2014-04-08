@@ -161,9 +161,10 @@ void MainWindow::createActions()
     ui->actionNew->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
     ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
+    ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
-    ui->actionSave_all_Projects->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
+    ui->actionSave_all_Projects->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 

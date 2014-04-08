@@ -7,12 +7,10 @@
 
 #include <QAbstractItemModel>
 
+#define SEPARATOR       "/"
+
 class QXmlStreamWriter;
 class QModelIndex;
-
-
-
-
 
 class ProjectManagerModelItem: public QObject
 {
@@ -26,9 +24,9 @@ public:
         File
     };
 
-    Q_ENUMS(ItemType);
+    Q_ENUMS(ItemType)
 
-    ProjectManagerModelItem(const QList<QVariant> &data, ProjectManagerModelItem *parent = 0);
+    ProjectManagerModelItem(QObject* parent=0);
     ProjectManagerModelItem(QString shownName, QString filePath, ItemType type, ProjectManagerModelItem *parent = 0);
     ~ProjectManagerModelItem();
 
@@ -38,27 +36,30 @@ public:
     ProjectManagerModelItem* child(int row);
     int childCount() const;
     int columnCount() const;
-
     QVariant data(int column) const;
     int row() const;
-    ProjectManagerModelItem *parent();
-
+    ProjectManagerModelItem* parent();
     ProjectManagerModelItem* getProjectItem();
+
+    QString getAbsoluteFilePath();
+    QString getAbsoluteFileDir();
 
     ItemType getItemType() const { return type; }
     QString getFilePath() const { return filePath; }
     void setFilePath(QString filePath);
-    QString getAbsoluteFilePath();
-    QString getAbsoluteFileDir();
     QString getName() const { return shownName.toString(); }
     void setName(QString name) { shownName = name; }
+    bool isModified() const { return m_isModified; }
+    void setModified(bool val) { m_isModified = val; }
 
 private:
-    bool isModified;
+    bool m_isModified;
+
+    ProjectManagerModelItem *parentItem;
     QList<ProjectManagerModelItem*> childItems;
+
     QVariant shownName;
     QString filePath;
-    ProjectManagerModelItem *parentItem;
     ItemType type;
 };
 
@@ -73,8 +74,10 @@ public:
     ~ProjectManagerModel();
 
     ProjectManagerModelItem* addChild(const QString shownName, const QString filePath, ProjectManagerModelItem::ItemType type, ProjectManagerModelItem* rootItem);
+
     void removeItem(ProjectManagerModelItem* item);
     void removeItem(QString itemObjectName);
+
     void insertItem(const QString shownName, const QString filePath, ProjectManagerModelItem::ItemType type);
     void insertProject(ProjectManagerModelItem* item);
 
@@ -89,6 +92,7 @@ public:
     bool dropMimeData(const QMimeData *data,
         Qt::DropAction action, int row, int column, const QModelIndex &parent);
     Qt::DropActions supportedDropActions() const;
+
     QVariant data(const QModelIndex &index, int role) const;
     ProjectManagerModelItem* getItem(const QModelIndex &index) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -100,11 +104,11 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-
-
 private:
     void saveChilds(ProjectManagerModelItem* item, QXmlStreamWriter& wStream);
     ProjectManagerModelItem* getPath(QStringList path, ProjectManagerModelItem *parent);
+
+private:
     ProjectManagerModelItem *rootItem;
 
 };
