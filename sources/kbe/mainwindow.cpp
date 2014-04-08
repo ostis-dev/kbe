@@ -264,7 +264,7 @@ void MainWindow::updateMenu()
 
 void MainWindow::updateSpecificViewMenu()
 {
-    ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
+//    ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
     ui->menuView->clear();
     ui->menuView->addAction(ProjectManagerDockWidget::instance()->toggleViewAction());
     if(mLastActiveWindow)
@@ -277,7 +277,7 @@ void MainWindow::updateSpecificViewMenu()
                 ui->menuView->addAction(mDockWidgets[w->objectName()]->toggleViewAction());
         }
     }
-    ui->menuView->menuAction()->setVisible(true);
+//    ui->menuView->menuAction()->setVisible(true);
 }
 void MainWindow::updateRecentFileActions()
 {
