@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /*creating project manager widget */
     ProjectManagerDockWidget::instance() -> setWindowTitle(tr("Project Manager"));
+    ProjectManagerDockWidget::instance()->setObjectName("Project Name");
     addDockWidget(Qt::LeftDockWidgetArea,ProjectManagerDockWidget::instance());
 
     connect(ProjectManagerDockWidget::instance()->getTreeView(), SIGNAL(openFile(QString)),
