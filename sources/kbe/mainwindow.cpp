@@ -27,10 +27,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
+#include "projectmanager.h"
 #include "guidedialog.h"
 #include "newfiledialog.h"
 
 #include "version.h"
+
+#include <QHBoxLayout>
 
 #include <QMdiSubWindow>
 #include <QToolBar>
@@ -76,6 +79,13 @@ MainWindow::MainWindow(QWidget *parent) :
     mTabWidget = new ExtendedTabWidget();
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
     connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateMenu()));
+
+    /*creating project manager widget */
+    ProjectManagerDockWidget::instance() -> setWindowTitle(tr("Project Manager"));
+    addDockWidget(Qt::LeftDockWidgetArea,ProjectManagerDockWidget::instance());
+
+    connect(ProjectManagerDockWidget::instance()->getTreeView(), SIGNAL(openFile(QString)),
+            this, SLOT(fileOpen(QString)));
 
     setCentralWidget(mTabWidget);
 
@@ -150,10 +160,11 @@ void MainWindow::createToolBars()
 void MainWindow::createActions()
 {
     ui->actionNew->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
+    ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
-
+    ui->actionSave_all_Projects->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
@@ -173,6 +184,14 @@ void MainWindow::createActions()
     connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(updateMenu()));
     connect(ui->actionClose_Others, SIGNAL(triggered()), this, SLOT(updateMenu()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(fileExit()));
+
+    if (ProjectManagerView* pmTreeView = ProjectManagerDockWidget::instance()->getTreeView())
+    {
+        connect(ui->actionNew_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectNew()));
+        connect(ui->actionOpen_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectOpen()));
+        connect(ui->actionSave_all_Projects, SIGNAL(triggered()), pmTreeView, SLOT(onAllProjectsSave()));
+        connect(ui->actionClose_All_Projects,SIGNAL(triggered()), pmTreeView, SLOT(onAllProjectsClose()));
+    }
 
     for (int i = 0; i < MaxRecentFiles; ++i)
     {
@@ -247,16 +266,18 @@ void MainWindow::updateSpecificViewMenu()
 {
     ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
     ui->menuView->clear();
+    ui->menuView->addAction(ProjectManagerDockWidget::instance()->toggleViewAction());
     if(mLastActiveWindow)
     {
         QList<QWidget*> ws = mLastActiveWindow->widgetsForDocks();
         if(!ws.empty())
         {
+
             foreach(QWidget* w, ws)
                 ui->menuView->addAction(mDockWidgets[w->objectName()]->toggleViewAction());
-            ui->menuView->menuAction()->setVisible(true);
         }
     }
+    ui->menuView->menuAction()->setVisible(true);
 }
 void MainWindow::updateRecentFileActions()
 {
@@ -338,7 +359,6 @@ EditorInterface* MainWindow::createSubWindowByExt(const QString& ext)
         childWindow = PluginManager::instance()->createWindowByExt(ext);
     else
         return 0;
-
     mWidget2EditorInterface[childWindow->widget()] = childWindow;
     mTabWidget->addSubWindow(childWindow);
     childWindow->_setObserver(this);
@@ -363,25 +383,34 @@ void MainWindow::fileNew()
     }
 }
 
-void MainWindow::fileOpen()
+void MainWindow::fileOpen(QString fileName)
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
-    QString selectedFilter;
-    QFileDialog dlg;
+    if (fileName.isNull())
+    {
+        QFileDialog::Options options;
+        options |= QFileDialog::DontUseNativeDialog;
+        QString selectedFilter;
+        QFileDialog dlg;
 
-    mBlurEffect->setEnabled(true);
-    dlg.setDirectory(mLastDir);
-    QString fileName = dlg.getOpenFileName(this,
-                                           tr("Open file"),
-                                           "",
-                                           PluginManager::instance()->openFilters(),
-                                           &selectedFilter,
-                                           options);
-    if (!fileName.isEmpty())
-        load(fileName);
-    mLastDir = QDir(fileName);
-    mBlurEffect->setEnabled(false);
+        mBlurEffect->setEnabled(true);
+        dlg.setDirectory(mLastDir);
+        fileName = dlg.getOpenFileName(this,
+                                               tr("Open file"),
+                                               "",
+                                               PluginManager::instance()->openFilters(),
+                                               &selectedFilter,
+                                               options);
+        if (!fileName.isEmpty())
+            load(fileName);
+        mLastDir = QDir(fileName);
+        mBlurEffect->setEnabled(false);
+        return;
+    }
+
+    QFileInfo fileInfo(fileName);
+    EditorInterface* childWindow = createSubWindowByExt(fileInfo.suffix());
+    saveWindow(childWindow, fileName, fileInfo.suffix());
+
 }
 
 void MainWindow::load(QString fileName)
