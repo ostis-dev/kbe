@@ -25,12 +25,15 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandObjectIdtfChange::SCgCommandObjectIdtfChange(SCgScene *scene,
                                                        SCgObject *object,
                                                        const QString &newIdtf,
+                                                       int newSize,
                                                        QUndoCommand *parent)
         : SCgBaseCommand(scene, object, parent)
         , mNewIdtf(newIdtf)
+        , mNewSize(newSize)
 {
     setText(QObject::tr("Change object's identifier"));
     mOldIdtf = mObject->idtfValue();
+    mOldSize = mObject->idtfSize();
 }
 
 SCgCommandObjectIdtfChange::~SCgCommandObjectIdtfChange()
@@ -41,6 +44,7 @@ SCgCommandObjectIdtfChange::~SCgCommandObjectIdtfChange()
 void SCgCommandObjectIdtfChange::redo()
 {
     mObject->setIdtfValue(mNewIdtf);
+    mObject->setIdtfSize(mNewSize);
 
     SCgBaseCommand::redo();
 }
@@ -48,6 +52,7 @@ void SCgCommandObjectIdtfChange::redo()
 void SCgCommandObjectIdtfChange::undo()
 {
     mObject->setIdtfValue(mOldIdtf);
+    mObject->setIdtfSize(mOldSize);
 
     SCgBaseCommand::undo();
 }

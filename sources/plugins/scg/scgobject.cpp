@@ -37,6 +37,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsScene>
 #include <QApplication>
 
+#define DEFAULT_IDTF_SIZE 10
+
 SCgObject::SCgObject(QGraphicsItem *parent, QGraphicsScene *scene) :
         QGraphicsItem(parent, scene),
         mConstType(SCgAlphabet::ConstUnknown),
@@ -243,6 +245,36 @@ void SCgObject::setIdtfValue(const QString &idtf)
 QString SCgObject::idtfValue() const
 {
     return mIdtfValue;
+}
+
+void SCgObject::setIdtfSize(int size)
+{
+    if (!mTextItem)
+        return;
+
+    SCgTextItem* pItem = static_cast<SCgTextItem*>(mTextItem);
+    Q_CHECK_PTR(pItem);
+
+    if (pItem) {
+        QFont font("Times New Roman [Arial]", size, 10, false);
+        font.setBold(true);
+        font.setItalic(true);
+        pItem->setFont(font);
+    }
+}
+
+int SCgObject::idtfSize() const
+{
+    if (!mTextItem)
+        return DEFAULT_IDTF_SIZE;
+
+    SCgTextItem* pItem = static_cast<SCgTextItem*>(mTextItem);
+    Q_CHECK_PTR(pItem);
+
+    if (pItem)
+        return pItem->font().pointSize();
+    return DEFAULT_IDTF_SIZE;
+
 }
 
 void SCgObject::setTypeAlias(const QString &type_alias)
