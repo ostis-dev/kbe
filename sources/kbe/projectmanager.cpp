@@ -56,13 +56,11 @@ ProjectManagerView::ProjectManagerView(QWidget *parent) :
 
 }
 
-
 void ProjectManagerView::onContextMenuRequested(QPoint mousePoint)
 {
     ProjectManagerModelItem* item = model -> getItem(currentIndex());
     createContextMenu(item);
 }
-
 
 void ProjectManagerView::createContextMenu(ProjectManagerModelItem* item)
 {
@@ -147,8 +145,8 @@ void ProjectManagerView::mouseDoubleClickEvent(QMouseEvent *event)
             QString filter = item -> getAbsoluteFilePath().split(SEPARATOR).last();
             filter.append(" ("+filter+");;");
             filter.append(tr("Any file") + " (*." + item->getAbsoluteFilePath().split(".").last() + ")");
-            QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"),
-                                                                          item->getAbsoluteFileDir(),filter);
+            QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"), item->getAbsoluteFileDir(),
+                                                                          filter,0,QFileDialog::DontUseNativeDialog);
             if (existingFileForReplace.isNull())
                 return;
             else
@@ -204,11 +202,27 @@ void ProjectManagerView::onProjectNew()
 
 void ProjectManagerView::onProjectClose()
 {
-    //todo:
-    // check modified
     if (!currentIndex().isValid())
         return;
-    model->removeItem(model->getItem(currentIndex()));
+    if (ProjectManagerModelItem* item = model->getItem(currentIndex()))
+    {
+        if (item->isModified())
+        {
+            int ret = QMessageBox::warning(this, tr("Save project?"),
+                                 tr("Project") + " " + item->getName() + " " + tr("is modified but not saved. Do you want save project?"),
+                                 QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+            switch (ret)
+            {
+            case QMessageBox::Cancel:
+                return;
+            case QMessageBox::Yes:
+                onProjectSave();
+            case QMessageBox::No:
+                break;
+            }
+        }
+        model->removeItem(item);
+    }
 }
 
 
@@ -222,7 +236,8 @@ void ProjectManagerView::onAllProjectsSave()
             if (rootItem->child(i)->getFilePath().isEmpty() || !QFile::exists(fileName))
             {
                 fileName = QFileDialog::getSaveFileName(this, tr("Project file not found"),
-                                                        QDir::current().absolutePath(),rootItem->child(i)->getName()+"(*.kbpro)");
+                                                        QDir::current().absolutePath(),rootItem->child(i)->getName()+"(*.kbpro)",
+                                                        0,QFileDialog::DontUseNativeDialog);
                 if (fileName.isEmpty())
                     continue;
 
@@ -234,17 +249,52 @@ void ProjectManagerView::onAllProjectsSave()
 
 
 
-void ProjectManagerView::onAllProjectsClose()
+bool ProjectManagerView::onAllProjectsClose()
 {
     if (ProjectManagerModelItem* rootItem = model->getRootItem())
         while (rootItem->childCount())
-            model->removeItem(rootItem->child(0));
+        {
+            ProjectManagerModelItem* item = rootItem->child(0);
+            if (item && item->isModified())
+            {
+                int ret = QMessageBox::warning(this, tr("Save project?"),
+                                     tr("Project") + " " + item->getName() + " " + tr("is modified but not saved. Do you want save project?"),
+                                     QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel);
+                switch (ret)
+                {
+                case QMessageBox::Cancel:
+                    return false;
+                case QMessageBox::Yes:
+                {
+                    QString fileName = item->getAbsoluteFilePath();
+
+                    if (item->getFilePath().isEmpty() || !QFile::exists(fileName))
+                    {
+                        fileName = QFileDialog::getSaveFileName(this, tr("Project file not found"),
+                                                                QDir::current().absolutePath(),item->getName()+("(*.kbpro)"),
+                                                                0,QFileDialog::DontUseNativeDialog);
+                        if (fileName.isEmpty())
+                            return false;
+
+                        item->setFilePath(fileName);
+                    }
+
+                    model->saveProject(item,item->getAbsoluteFilePath());
+                }
+                case QMessageBox::No:
+                    break;
+                }
+            }
+            model->removeItem(item);
+        }
+    return true;
 }
 
 void ProjectManagerView::onProjectOpen()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Choose project file"),
-                                                    QDir::current().absolutePath(),tr("KBE project file")+("(*.kbpro)"));
+                                                    QDir::current().absolutePath(),tr("KBE project file")+("(*.kbpro)"),
+                                                    0,QFileDialog::DontUseNativeDialog);
     if (!fileName.isEmpty())
         model->loadProject(fileName);
 }
@@ -427,7 +477,8 @@ void ProjectManagerView::onAddExistingFiles()
 
     QStringList files = QFileDialog::getOpenFileNames(this,tr("Add existing files"),
                                                      filterItem->getAbsoluteFileDir(),
-                                                     PluginManager::instance()->openFilters());
+                                                     PluginManager::instance()->openFilters(),
+                                                     0,QFileDialog::DontUseNativeDialog);
     QStringList errors;
     Q_FOREACH(QString filePath, files)
     {
@@ -458,7 +509,8 @@ void ProjectManagerView::onAddFile()
 
     absoluteFilePath = QFileDialog::getSaveFileName(this,tr("Add file"),
                                                      item->getAbsoluteFileDir(),
-                                                    PluginManager::instance()->openFilters());
+                                                    PluginManager::instance()->openFilters(),
+                                                    0,QFileDialog::DontUseNativeDialog);
 
     if (absoluteFilePath.isEmpty())
         return;
@@ -487,7 +539,8 @@ void ProjectManagerView::onOpenFile()
             filter.append(" ("+filter+");;");
             filter.append(tr("Any file") + "(*." + item->getAbsoluteFilePath().split(".").last() + ")");
             QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"),
-                                                                          item->getAbsoluteFileDir(),filter);
+                                                                          item->getAbsoluteFileDir(),filter,
+                                                                          0,QFileDialog::DontUseNativeDialog);
             if (existingFileForReplace.isNull())
                 return;
             else

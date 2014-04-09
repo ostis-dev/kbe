@@ -794,6 +794,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
     }
 
+    // close all projects
+    if (ProjectManagerView* pmView = ProjectManagerDockWidget::instance()->getTreeView())
+        if (!pmView -> onAllProjectsClose())
+        {
+            event->ignore();
+            return;
+        }
+
     saveLayout();
 }
 

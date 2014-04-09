@@ -32,14 +32,14 @@ class ProjectManagerView : public QTreeView
 public:
     explicit ProjectManagerView(QWidget *parent = 0);
 
-private slots:
+public slots:
     void onContextMenuRequested(QPoint);
     void onProjectNew();
     void onProjectOpen();
     void onProjectSave();
     void onProjectClose();
     void onAllProjectsSave();
-    void onAllProjectsClose();
+    bool onAllProjectsClose();
     void onRemove();
     void onRemovePermanently();
     QString onRename();

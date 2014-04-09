@@ -193,14 +193,15 @@ void ProjectManagerModel::loadProject(QString filePath)
                 QString fileName = rStream.attributes().value(TAG_ATTR_PATH).toString();
                 QString filter = rStream.attributes().value(TAG_ATTR_FILTER).toString();
 
-                QStringList neededPath = filter.split(SEPARATOR);
+                if (!filter.isEmpty())
+                    filter.push_front(SEPARATOR);
 
-                QString newObjectName = projectItem->objectName()+ SEPARATOR +
-                        neededPath.join(SEPARATOR) + SEPARATOR + fileName.split(SEPARATOR).last();
+                QString newObjectName = projectItem->objectName()+ filter + SEPARATOR + fileName.split(SEPARATOR).last();
 
                 addChild(newObjectName, fileName, ProjectManagerModelItem::File, rootItem);
             }
         }
+        projectItem->setModified(false);
         proFile.close();
     }
 }
@@ -227,6 +228,8 @@ void ProjectManagerModel::saveProject(ProjectManagerModelItem *project, QString 
         wStream.writeEndDocument();
 
         proFile.close();
+
+        project -> setModified(false);
     }
 }
 
