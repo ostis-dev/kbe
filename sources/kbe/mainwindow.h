@@ -180,7 +180,7 @@ public slots:
 
     void openRecentFile();
     void fileNew();
-    void fileOpen();
+    void fileOpen(QString fileName=QString());
     void fileSave(QWidget* window = 0);
     void fileSaveAs(QWidget* window = 0);
     void fileSaveAll();
