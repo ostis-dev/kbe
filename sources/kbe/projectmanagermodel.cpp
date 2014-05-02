@@ -40,6 +40,11 @@ int ProjectManagerModel::columnCount(const QModelIndex &parent) const
         return rootItem->columnCount();
 }
 
+QModelIndexList ProjectManagerModel::getPersistentIndexList() const
+{
+    return persistentIndexList();
+}
+
 QVariant ProjectManagerModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -268,7 +273,7 @@ void ProjectManagerModel::insertItem(const QString shownName, const QString file
         return;
 
     beginInsertRows(createIndex(0,0,neededFilter),
-                    0,
+                    neededFilter->childCount(),
                     neededFilter->childCount()+1);
 
     addChild(shownName,filePath,type,rootItem);
@@ -279,8 +284,8 @@ void ProjectManagerModel::insertItem(const QString shownName, const QString file
 void ProjectManagerModel::insertProject(ProjectManagerModelItem *item)
 {
     beginInsertRows(QModelIndex(),
-                    rootItem->childCount(),
-                    rootItem->childCount()+1);
+                    0,
+                    1);
 
     rootItem -> appendChild(item);
 
@@ -469,7 +474,13 @@ ProjectManagerModelItem* ProjectManagerModel::getPath(QStringList path, ProjectM
                 return getPath(path, item);
         } else
         {
-            ProjectManagerModelItem* newItem = new ProjectManagerModelItem(path.first(),QString(),ProjectManagerModelItem::Filter,parent);
+            QString relativeDirPath;
+            if (parent -> getItemType() == ProjectManagerModelItem::Project)
+                relativeDirPath = path.first();
+            else
+                relativeDirPath = parent->getAbsoluteSourcesDir().relativeFilePath(QFileInfo(parent->getAbsoluteFilePath(),path.first()).absoluteFilePath());
+
+            ProjectManagerModelItem* newItem = new ProjectManagerModelItem(path.first(),relativeDirPath,ProjectManagerModelItem::Filter,parent);
             newItem -> setObjectName(neededItemObjectName);
             parent -> appendChild(newItem);
             path.pop_front();
@@ -477,6 +488,13 @@ ProjectManagerModelItem* ProjectManagerModel::getPath(QStringList path, ProjectM
         }
     }
     return parent;
+}
+
+QModelIndex ProjectManagerModel::getParentModelIndex(ProjectManagerModelItem* item)
+{
+    if (item->parent())
+        return createIndex(0,0,item->parent());
+    return QModelIndex();
 }
 
 ProjectManagerModelItem::ProjectManagerModelItem(QObject *parent):
@@ -564,19 +582,29 @@ void ProjectManagerModelItem::setFilePath(QString filePath)
 
 QString ProjectManagerModelItem::getAbsoluteFilePath()
 {
-    if (type == Project)
-        return QFileInfo(filePath).absoluteFilePath();
-    if (ProjectManagerModelItem* projectItem = getProjectItem())
+    switch(type)
     {
-        QFileInfo currentItemFileInfo(QFileInfo(projectItem->getFilePath()).absoluteDir(),filePath);
-        return currentItemFileInfo.absoluteFilePath();
+    case Project:
+        return QFileInfo(filePath).absoluteFilePath();
+    case Filter:
+    case File:
+        return QFileInfo(getAbsoluteSourcesDir().absolutePath(),filePath).absoluteFilePath();
+    default:
+        return QString();
     }
-    return QString();
 }
 
 QString ProjectManagerModelItem::getAbsoluteFileDir()
 {
-    return QFileInfo(getAbsoluteFilePath()).absoluteDir().absolutePath();
+    if (this->getItemType() != Filter)
+        return QFileInfo(getAbsoluteFilePath()).absoluteDir().absolutePath();
+    else
+        return getAbsoluteFilePath();
+}
+
+QDir ProjectManagerModelItem::getAbsoluteSourcesDir()
+{
+    return QDir(QFileInfo(this->getProjectItem()->getAbsoluteFileDir(),"sources").absoluteFilePath());
 }
 
 int ProjectManagerModelItem::row() const

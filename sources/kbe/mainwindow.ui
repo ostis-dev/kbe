@@ -42,7 +42,7 @@
     <addaction name="actionOpen_Project"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="actionSave_all_Projects"/>
+    <addaction name="actionSave_Project"/>
     <addaction name="actionSave_all"/>
     <addaction name="separator"/>
     <addaction name="menuExport"/>
@@ -50,7 +50,7 @@
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionClose_All"/>
-    <addaction name="actionClose_All_Projects"/>
+    <addaction name="actionClose_Project"/>
     <addaction name="actionClose_Others"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -204,14 +204,14 @@
     <string>Open Project</string>
    </property>
   </action>
-  <action name="actionSave_all_Projects">
+  <action name="actionSave_Project">
    <property name="text">
-    <string>Save all Projects</string>
+    <string>Save Project</string>
    </property>
   </action>
-  <action name="actionClose_All_Projects">
+  <action name="actionClose_Project">
    <property name="text">
-    <string>Close All Projects</string>
+    <string>Close Project</string>
    </property>
   </action>
  </widget>

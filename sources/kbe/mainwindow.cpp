@@ -27,7 +27,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/editorinterface.h"
 #include "pluginmanager.h"
-#include "projectmanager.h"
 #include "guidedialog.h"
 #include "newfiledialog.h"
 
@@ -83,8 +82,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ProjectManagerDockWidget::instance()->setObjectName("Project Name");
     addDockWidget(Qt::LeftDockWidgetArea,ProjectManagerDockWidget::instance());
 
-    connect(ProjectManagerDockWidget::instance()->getTreeView(), SIGNAL(openFile(QString)),
-            this, SLOT(fileOpen(QString)));
+    if (ProjectManagerView* prView = ProjectManagerDockWidget::instance()->getTreeView())
+    {
+        connect(prView, SIGNAL(openFile(QString)), this, SLOT(fileOpen(QString)));
+        connect(prView, SIGNAL(event(ProjectManagerView::ProjectManagerEvent)),
+                this, SLOT(acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent)));
+    }
+
 
     setCentralWidget(mTabWidget);
 
@@ -164,7 +168,7 @@ void MainWindow::createActions()
     ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
-    ui->actionSave_all_Projects->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
+    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
@@ -189,8 +193,10 @@ void MainWindow::createActions()
     {
         connect(ui->actionNew_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectNew()));
         connect(ui->actionOpen_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectOpen()));
-        connect(ui->actionSave_all_Projects, SIGNAL(triggered()), pmTreeView, SLOT(onAllProjectsSave()));
-        connect(ui->actionClose_All_Projects,SIGNAL(triggered()), pmTreeView, SLOT(onAllProjectsClose()));
+        ui->actionSave_Project->setEnabled(false);
+        connect(ui->actionSave_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectSave()));
+        ui->actionClose_Project->setEnabled(false);
+        connect(ui->actionClose_Project,SIGNAL(triggered()), pmTreeView, SLOT(onProjectClose()));
     }
 
     for (int i = 0; i < MaxRecentFiles; ++i)
@@ -404,6 +410,12 @@ void MainWindow::fileOpen(QString fileName)
             load(fileName);
         mLastDir = QDir(fileName);
         mBlurEffect->setEnabled(false);
+        return;
+    }
+
+    if (!fileName.isEmpty() && QFile::exists(fileName))
+    {
+        load(fileName);
         return;
     }
 
@@ -794,15 +806,43 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
     }
 
-    // close all projects
+    // close project
     if (ProjectManagerView* pmView = ProjectManagerDockWidget::instance()->getTreeView())
-        if (!pmView -> onAllProjectsClose())
+        if (!pmView -> onProjectClose())
         {
             event->ignore();
             return;
         }
 
     saveLayout();
+}
+
+void MainWindow::acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent event)
+{
+    switch (event)
+    {
+    case ProjectManagerView::ProjectCreated:
+    case ProjectManagerView::ProjectOpened:
+        ui->actionNew_Project -> setEnabled(false);
+        ui->actionOpen_Project -> setEnabled(false);
+        ui->actionSave_Project -> setEnabled(false);
+        ui->actionClose_Project -> setEnabled(true);
+        break;
+    case ProjectManagerView::ProjectSaved:
+        ui->actionSave_Project -> setEnabled(false);
+        break;
+    case ProjectManagerView::ProjectClosed:
+        ui->actionNew_Project -> setEnabled(true);
+        ui->actionOpen_Project -> setEnabled(true);
+        ui->actionSave_Project -> setEnabled(false);
+        ui->actionClose_Project -> setEnabled(false);
+        break;
+    case ProjectManagerView::ProjectChanged:
+        ui->actionSave_Project -> setEnabled(true);
+        break;
+    case ProjectManagerView::DefaultEvent:
+        break;
+    }
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

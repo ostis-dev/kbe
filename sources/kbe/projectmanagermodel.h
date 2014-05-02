@@ -11,6 +11,7 @@
 
 class QXmlStreamWriter;
 class QModelIndex;
+class QDir;
 
 class ProjectManagerModelItem: public QObject
 {
@@ -58,6 +59,9 @@ public:
 
     //! Returns absolute path to directory which contains current item
     QString getAbsoluteFileDir();
+
+    //! Returns absolute directory to directory which contains sources of project
+    QDir getAbsoluteSourcesDir();
 
     ItemType getItemType() const { return type; }
     QString getFilePath() const { return filePath; }
@@ -137,6 +141,12 @@ public:
     ProjectManagerModelItem* getItemByFilePath(QString filePath, ProjectManagerModelItem* parent);
 
 
+    /*! Returns QModelIndex of item's parent
+     * @param item which parent is needed
+     */
+    QModelIndex getParentModelIndex(ProjectManagerModelItem* item);
+
+
     /*! Loads project to model by filePath
      * @param filePath Path to project file
      */
@@ -166,6 +176,7 @@ public:
     QModelIndex parent(const QModelIndex &index) const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    QModelIndexList getPersistentIndexList() const;
 
 private:
 

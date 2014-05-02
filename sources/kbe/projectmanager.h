@@ -31,7 +31,18 @@ private:
 class ProjectManagerView : public QTreeView
 {
     Q_OBJECT
+
 public:
+    enum ProjectManagerEvent {
+        DefaultEvent,
+        ProjectCreated,
+        ProjectOpened,
+        ProjectSaved,
+        ProjectClosed,
+        ProjectChanged
+    };
+    Q_ENUMS(ProjectManagerEvent)
+
     explicit ProjectManagerView(QWidget *parent = 0);
 
 public slots:
@@ -39,9 +50,7 @@ public slots:
     void onProjectNew();
     void onProjectOpen();
     void onProjectSave();
-    void onProjectClose();
-    void onAllProjectsSave();
-    bool onAllProjectsClose();
+    bool onProjectClose();
     void onRemove();
     void onRemovePermanently();
     QString onRename();
@@ -57,8 +66,12 @@ signals:
     /*! This signal will send when ProjectManager requests opening some file.
      * @param Filename
      */
-
     void openFile(QString);
+
+    /*! This signal will send when ProjectManager modified(or managed) project.
+     * @param Filename
+     */
+    void event(ProjectManagerView::ProjectManagerEvent);
 
 private:
     /*! Changes item name
@@ -82,6 +95,8 @@ private:
 
     //! Opens file if double clicked item's type is file
     void mouseDoubleClickEvent(QMouseEvent *event);
+
+    void updateTreeView();
 
 private:
     ProjectManagerModel* model;

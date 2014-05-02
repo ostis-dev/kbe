@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun 6. Apr 23:10:43 2014
+** Created: Thu 1. May 18:57:02 2014
 **      by: Qt User Interface Compiler version 4.8.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -44,8 +44,8 @@ public:
     QAction *actionView_ProjectManager;
     QAction *actionNew_Project;
     QAction *actionOpen_Project;
-    QAction *actionSave_all_Projects;
-    QAction *actionClose_All_Projects;
+    QAction *actionSave_Project;
+    QAction *actionClose_Project;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -99,10 +99,10 @@ public:
         actionNew_Project->setObjectName(QString::fromUtf8("actionNew_Project"));
         actionOpen_Project = new QAction(MainWindow);
         actionOpen_Project->setObjectName(QString::fromUtf8("actionOpen_Project"));
-        actionSave_all_Projects = new QAction(MainWindow);
-        actionSave_all_Projects->setObjectName(QString::fromUtf8("actionSave_all_Projects"));
-        actionClose_All_Projects = new QAction(MainWindow);
-        actionClose_All_Projects->setObjectName(QString::fromUtf8("actionClose_All_Projects"));
+        actionSave_Project = new QAction(MainWindow);
+        actionSave_Project->setObjectName(QString::fromUtf8("actionSave_Project"));
+        actionClose_Project = new QAction(MainWindow);
+        actionClose_Project->setObjectName(QString::fromUtf8("actionClose_Project"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         MainWindow->setCentralWidget(centralWidget);
@@ -132,7 +132,7 @@ public:
         menuFile->addAction(actionOpen_Project);
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_as);
-        menuFile->addAction(actionSave_all_Projects);
+        menuFile->addAction(actionSave_Project);
         menuFile->addAction(actionSave_all);
         menuFile->addSeparator();
         menuFile->addAction(menuExport->menuAction());
@@ -140,7 +140,7 @@ public:
         menuFile->addSeparator();
         menuFile->addAction(actionClose);
         menuFile->addAction(actionClose_All);
-        menuFile->addAction(actionClose_All_Projects);
+        menuFile->addAction(actionClose_Project);
         menuFile->addAction(actionClose_Others);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
@@ -186,8 +186,8 @@ public:
         actionView_ProjectManager->setText(QApplication::translate("MainWindow", "Project Manager", 0, QApplication::UnicodeUTF8));
         actionNew_Project->setText(QApplication::translate("MainWindow", "New Project", 0, QApplication::UnicodeUTF8));
         actionOpen_Project->setText(QApplication::translate("MainWindow", "Open Project", 0, QApplication::UnicodeUTF8));
-        actionSave_all_Projects->setText(QApplication::translate("MainWindow", "Save all Projects", 0, QApplication::UnicodeUTF8));
-        actionClose_All_Projects->setText(QApplication::translate("MainWindow", "Close All Projects", 0, QApplication::UnicodeUTF8));
+        actionSave_Project->setText(QApplication::translate("MainWindow", "Save Project", 0, QApplication::UnicodeUTF8));
+        actionClose_Project->setText(QApplication::translate("MainWindow", "Close Project", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuExport->setTitle(QApplication::translate("MainWindow", "Export", 0, QApplication::UnicodeUTF8));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));

@@ -57,3 +57,6 @@ RC_FILE = kbe.rc
 
 OBJECTS_DIR = obj
 MOC_DIR = moc
+
+OTHER_FILES += \
+    media/stylesheets/projectmanager.qss
