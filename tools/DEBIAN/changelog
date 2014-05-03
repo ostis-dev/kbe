@@ -1,3 +1,24 @@
+kbe (0.3.1-ubuntu) unstable; urgency=low
+
+  * Added hotkeys to switch tabs
+  * Added cancel button to save file dialog on exit
+  * Improved new file dialog
+  * Fixed plugin loading on linux
+  * Fixed dock widget positions save/load
+  * Fixed main window title
+
+  * scg. Added load/save of content state
+  * scg. Added command to show/hide all contents
+  * scg. Added node type changing depending on text identifier
+  * scg. Added element type copying
+  * scg. Fixed text identifier positions
+  * scg. Fixed problem to load gwf files with 'content_visibility' attribute
+  * scg. Fixed visual style of scg-elements
+  * scg. Fixed default encoding to utf-8
+
+  * scg. Added support of scs 0.2.0 standard
+  * scg. Fixed default encoding to utf-8
+
 kbe (0.3.0-ubuntu) precise; urgency=low
   * Added plugins support
   * Refactored user guide documentation
