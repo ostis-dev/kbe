@@ -24,7 +24,7 @@ along with OSTIS.  If not, see .
 #include "scgnodetextitem.h"
 
 
-SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene* scene )
+SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene* scene )
     : SCgTextItem(str,(QGraphicsItem*)parent,scene)
     , mTextPos(idtfPos)
 {
@@ -34,7 +34,7 @@ SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::I
 }
 
 
-SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene *scene)
+SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene *scene)
     : SCgTextItem((QGraphicsItem*)parent, scene)
     , mTextPos(idtfPos)
 {
@@ -56,7 +56,7 @@ void SCgNodeTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 }
 
 
-void SCgNodeTextItem::setTextPos(SCgNode::IdentifierPosition pos)
+void SCgNodeTextItem::setTextPos(SCgNode::eIdentifierPosition pos)
 {
     if (mTextPos != pos)
     {
@@ -65,47 +65,60 @@ void SCgNodeTextItem::setTextPos(SCgNode::IdentifierPosition pos)
     }
 }
 
-SCgNode::IdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) const
+SCgNode::eIdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) const
 {
-    SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight;
+    SCgNode::eIdentifierPosition idtfPos = SCgNode::BottomRight;
 
-	qreal x = point.x();
-	qreal y = point.y();
+    qreal x = point.x();
+    qreal y = point.y();
 
-	if (qFuzzyIsNull(x))
+    if (qFuzzyIsNull(x))
         x += 1;
-	if (qFuzzyIsNull(y))
+    if (qFuzzyIsNull(y))
         y += 1;
 
     if (x > 0)
+    {
         if (y > 0)
             idtfPos = SCgNode::BottomRight;
-		else
+        else
             idtfPos = SCgNode::TopRight;
-	else
+    }
+    else
+    {
         if (y > 0)
             idtfPos = SCgNode::BottomLeft;
-		else
+        else
             idtfPos = SCgNode::TopLeft;
+    }
 
-	return idtfPos;
+    return idtfPos;
 }
 
 
-void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
+void SCgNodeTextItem::updateTextPos(SCgNode::eIdentifierPosition pos)
 {
-	QRectF rect = boundingRect();
-	QRectF parentRect =  mParentItem->boundingRect();
+    QRectF rect = boundingRect();
+    QRectF parentRect =  mParentItem->boundingRect();
 
-	QPointF newPos = parentRect.bottomRight() - QPointF(rect.x(),rect.y());
+    QPointF newPos;
 
     if (pos == SCgNode::BottomLeft || pos == SCgNode::TopLeft)
-		newPos.rx() = parentRect.left() - rect.width() - rect.x();
+        newPos.setX(parentRect.left() - rect.width() + 8);
+    else
+        newPos.setX(parentRect.right() - 8);
 
     if (pos == SCgNode::TopLeft || pos == SCgNode::TopRight)
-		newPos.ry() = parentRect.top() - rect.height() - rect.y();
+        newPos.setY(parentRect.top() - rect.height() + 8);
+    else
+        newPos.setY(parentRect.bottom() - 8);
 
-	setPos(newPos);
+    setPos(newPos);
     mParentItem->setSelected(true);
     setSelected(false);
+}
+
+SCgNode::eIdentifierPosition SCgNodeTextItem::textPos() const
+{
+    return mTextPos;
 }

@@ -186,7 +186,7 @@ QPointF SCgNode::cross(const QPointF &from, float dot) const
     if (!mIsContentVisible)
     {
         QVector2D vec(from - scenePos());
-        p = vec.normalized().toPointF() * (mSize.width() / 2.f + 5.f);
+        p = vec.normalized().toPointF() * (mSize.width() / 2.f);
     }else
     {
 
@@ -390,7 +390,7 @@ void SCgNode::setIdtfValue(const QString &idtf)
     positionChanged();
 }
 
-SCgNode::IdentifierPosition SCgNode::idtfPos() const
+SCgNode::eIdentifierPosition SCgNode::idtfPos() const
 {
     if (!mTextItem)
         return DEFAULT_IDTF_POS;
@@ -405,7 +405,7 @@ SCgNode::IdentifierPosition SCgNode::idtfPos() const
 }
 
 
-void SCgNode::setIdtfPos(IdentifierPosition pos)
+void SCgNode::setIdtfPos(eIdentifierPosition pos)
 {
     if (!mTextItem)
         return;

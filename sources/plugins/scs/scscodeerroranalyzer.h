@@ -38,7 +38,7 @@ class SCsCodeErrorAnalyzer : public QObject
     Q_OBJECT
 public:
     explicit SCsCodeErrorAnalyzer(SCsCodeEditor* editor, SCsErrorTableWidget *errorTable);
-    void parse(QString &text);
+    void parse(const QString &text);
 
 private:
 	void showError(const QVector<SCsParserException> &exceptions) const;
