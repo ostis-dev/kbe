@@ -1,7 +1,7 @@
 Source: kbe
 Section: science
 Priority: optional
-Maintainer: Nikita Grishko <grin.minsk@gmail.com>
+Maintainer: Denis Koronchik <denis.koronchik@gmail.com>, Nikita Grishko <grin.minsk@gmail.com>
 Homepage: https://github.com/deniskoronchik/kbe
 Build-Depends: debhelper (>= 8.0.0), cdbs, libqt4-dev, qt4-qmake, libantlr3c-dev
 

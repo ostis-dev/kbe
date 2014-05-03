@@ -4,12 +4,7 @@
 
 DESTDIR = ../bin
 
-CONFIG(debug, debug|release) {
-    TARGET = kbe_d
-    DEFINES += _DEBUG
-} else {
-    TARGET = kbe
-}
+TARGET = kbe
 
 TEMPLATE = app
 
