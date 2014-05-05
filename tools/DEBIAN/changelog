@@ -19,6 +19,8 @@ kbe (0.3.1-ubuntu) unstable; urgency=low
   * scg. Added support of scs 0.2.0 standard
   * scg. Fixed default encoding to utf-8
 
+ -- Denis Koronchik <denis.koronchik@gmail.com>  Tue, 5 May 2014 1:06:43 +0300
+
 kbe (0.3.0-ubuntu) precise; urgency=low
   * Added plugins support
   * Refactored user guide documentation
