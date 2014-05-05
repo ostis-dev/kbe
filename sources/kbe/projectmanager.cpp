@@ -619,19 +619,26 @@ void ProjectManagerView::onOpenFile()
         {
             QString filter = item -> getAbsoluteFilePath().split(SEPARATOR).last();
             filter.append(" ("+filter+");;");
-            filter.append(tr("Any file") + "(*." + item->getAbsoluteFilePath().split(".").last() + ")");
-            QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"),
-                                                                          item->getAbsoluteFileDir(),filter,
-                                                                          0,QFileDialog::DontUseNativeDialog);
+            filter.append(tr("Any file") + " (*." + item->getAbsoluteFilePath().split(".").last() + ")");
+            QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"), item->getAbsoluteFileDir(),
+                                                                          filter,0,QFileDialog::DontUseNativeDialog);
             if (existingFileForReplace.isNull())
                 return;
             else
             {
-                QString newFilePath = QDir(item->getProjectItem()->getAbsoluteFileDir()).relativeFilePath(existingFileForReplace);
-                int reply = QMessageBox::question(this, tr("Replace file path"), tr("Replace file path to") + " \"" + newFilePath +
-                                                  "\""  + tr("instead") + " \"" + item->getFilePath() + "\"", QMessageBox::Yes|QMessageBox::No);
+                QString newFilePath;
+                newFilePath = QDir(item->getProjectItem()->getAbsoluteSourcesDir()).relativeFilePath(existingFileForReplace);
+                int reply = QMessageBox::question(this, tr("Replace file path"), tr("Replace file path to \"")+newFilePath+
+                                                  tr("\" instead \"") + item->getFilePath() + "\"", QMessageBox::Yes|QMessageBox::No);
                 if (reply == QMessageBox::Yes)
+                {
+                    if (item -> getName() != QFileInfo(existingFileForReplace).fileName())
+                    {
+                        item->setObjectName(item->parent()->objectName() + SEPARATOR + QFileInfo(existingFileForReplace).fileName());
+                        item->setName(QFileInfo(existingFileForReplace).fileName());
+                    }
                     item->setFilePath(newFilePath);
+                }
                 else
                 {
                     emit openFile(newFilePath);
