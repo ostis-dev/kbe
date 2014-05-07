@@ -153,6 +153,7 @@ void DefaultSCgObjectBuilder::setObjectInfo(SCgObject* obj, SCgObjectInfo* info)
 {
     obj->setTypeAlias(info->typeAlias());
     obj->setIdtfValue(info->idtfValue());
+    obj->setIdtfSize(info->idtfSize());
 
     // store parent id
     mParentChild[info->id()] = info->parentId();

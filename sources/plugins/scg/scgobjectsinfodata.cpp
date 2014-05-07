@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 SCgObjectInfoData::SCgObjectInfoData(const SCgObject* obj):mTypeAlias(obj->typeAlias()),
                                     mIdtfValue(obj->idtfValue()),
+                                    mIdtfSize(obj->idtfSize()),
                                     mShapeColor(obj->color()),
                                     mId(QString::number(obj->id())),
                                     mParentId(QString::number(obj->parentId()))
@@ -34,6 +35,7 @@ SCgObjectInfoData::SCgObjectInfoData(const SCgObject* obj):mTypeAlias(obj->typeA
 SCgObjectInfoData::SCgObjectInfoData(const SCgObjectInfoData &other): QSharedData(other),
                                     mTypeAlias(other.mTypeAlias),
                                     mIdtfValue(other.mIdtfValue),
+                                    mIdtfSize(other.mIdtfSize),
                                     mShapeColor(other.mShapeColor),
                                     mId(other.mId),
                                     mParentId(other.mParentId)
