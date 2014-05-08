@@ -77,6 +77,11 @@ public:
     virtual void setIdtfValue(const QString &idtf);
     QString idtfValue() const;
 
+    /*! Method to set idtf size for object.
+      */
+    virtual void setIdtfSize(int size);
+    int idtfSize() const;
+
     /*! Get cross of this sc.g-object with line from specified point.
       @param  from Point to build line intersection from. It should have scene coordinates.
       @param  dot Relative dot position.

@@ -56,6 +56,11 @@ const QString& SCgObjectInfo::idtfValue() const
 {
     return d->mIdtfValue;
 }
+int SCgObjectInfo::idtfSize() const
+{
+    return d->mIdtfSize;
+}
+
 QColor SCgObjectInfo::shapeColor() const
 {
     return d->mShapeColor;
@@ -77,6 +82,10 @@ QString& SCgObjectInfo::typeAliasRef()
 QString& SCgObjectInfo::idtfValueRef()
 {
     return d->mIdtfValue;
+}
+int& SCgObjectInfo::idtfSizeRef()
+{
+    return d->mIdtfSize;
 }
 QColor& SCgObjectInfo::shapeColorRef()
 {

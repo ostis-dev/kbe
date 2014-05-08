@@ -176,11 +176,13 @@ public:
     /*! Create undo/redo command to change object identifier
      * @param object Pointer of sc.g-object to change identifier
      * @param idtf New identifier
+     * @param size New size
      * @param parentCmd Pointer to parend undo/redo command
      * @param addToStack Flag to add created command into stack
      */
     SCgBaseCommand* changeIdtfCommand(SCgObject *object,
                                       const QString &idtf,
+                                      int size,
                                       SCgBaseCommand* parentCmd = 0,
                                       bool addToStack = true);
 
