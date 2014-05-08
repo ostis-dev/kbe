@@ -620,6 +620,7 @@ void SCgWindow::find(const QString &ttf, bool forward, bool checkCurrent)
     SCgObject* found = scene->find(ttf, flg);
     if(!found)
     {
+        mFindWidget->setFindButtonEnable(false);
         if(forward)
             scene->setCursorPos(scene->sceneRect().topLeft());
         else
@@ -639,6 +640,7 @@ void SCgWindow::find(const QString &ttf, bool forward, bool checkCurrent)
 
     if(found)
     {
+        mFindWidget->setFindButtonEnable(true);
         mView->ensureVisible(found, 300, 300);
         mView->scene()->clearSelection();
         found->setSelected(true);

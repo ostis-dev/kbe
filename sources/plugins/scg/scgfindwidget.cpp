@@ -55,7 +55,6 @@ SCgFindWidget::SCgFindWidget(QWidget *parent):
     mFindLine->setFixedWidth(200);
     connect(mFindLine, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
     connect(mFindLine, SIGNAL(returnPressed()), this, SIGNAL(findNext()));
-    connect(mFindLine, SIGNAL(textChanged(QString)), this, SLOT(updateButtons()));
     layout->addWidget(mFindLine);
 
     mFindPreviousButton = setupToolButton(tr("Previous"), "find-previous.png");
@@ -184,4 +183,9 @@ QToolButton* SCgFindWidget::setupToolButton(const QString &text, const QString &
     toolButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
     return toolButton;
+}
+void SCgFindWidget::setFindButtonEnable(bool value)
+{
+        mFindNextButton->setEnabled(value);
+        mFindPreviousButton->setEnabled(value);////////////
 }
