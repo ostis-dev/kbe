@@ -667,6 +667,11 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
+        <location filename="../../scgwindow.cpp" line="240"/>
+        <source>Construction for 5 elements creation mode</source>
+        <translation>Создание 5-ти элементной конструкции</translation>
+    </message>
+    <message>
         <location filename="../../scgwindow.cpp" line="244"/>
         <source>Tuple alignment</source>
         <translation>Выравнивание связки с sc.g-шиной</translation>

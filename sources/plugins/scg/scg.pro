@@ -92,7 +92,8 @@ HEADERS += \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
     arrangers/scgforcecalculator.h \
-    scgnodetextitem.h
+    scgnodetextitem.h \
+    modes/scgfivemode.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -172,7 +173,8 @@ SOURCES += \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
     arrangers/scgforcecalculator.cpp \
-    scgnodetextitem.cpp
+    scgnodetextitem.cpp \
+    modes/scgfivemode.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
@@ -182,3 +184,5 @@ lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
+
+

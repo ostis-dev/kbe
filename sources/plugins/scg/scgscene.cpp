@@ -38,6 +38,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "modes/scgselectmode.h"
 #include "modes/scginsertmode.h"
 #include "modes/scgclonemode.h"
+#include "modes/scgfivemode.h"
 
 #include "commands/scgbasecommand.h"
 #include "commands/scgcommandchangeincedentobject.h"
@@ -86,6 +87,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Bus] = new SCgBusMode(this);
     mSceneModes[Mode_Pair] = new SCgPairMode(this);
     mSceneModes[Mode_Contour] = new SCgContourMode(this);
+    mSceneModes[Mode_Five] = new SCgFiveMode(this);
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
