@@ -41,6 +41,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QUndoStack>
 #include <QCompleter>
 #include <QFileInfo>
+#include <QApplication>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     QGraphicsView(parent),
@@ -364,6 +365,7 @@ void SCgView::mousePressEvent (QMouseEvent * event)
         mPrevMousePos = event->pos();
     }
     else
+        if(!(QApplication::keyboardModifiers() ==  Qt::CTRL))
         QGraphicsView::mousePressEvent(event);
 }
 

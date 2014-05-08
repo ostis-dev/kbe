@@ -71,9 +71,22 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
                 return;
             }
         }
+        if(QApplication::keyboardModifiers() ==  Qt::CTRL)
+        {
+            QList<QGraphicsItem*> list =mScene->selectedItems();
+
+            SCgContour *contour = 0;
+            mScene->createNodeCommand(mousePos, contour);
+            SCgObject *endObj = mScene->objectAt(mousePos);
+            for(int i = 0; i< list.length(); i++)
+            {
+                SCgObject *begObj = dynamic_cast<SCgObject*>(list[i]);
+                mScene->createPairCommand(mLinePoints,begObj ,endObj, contour);
+            }
+        }
 
         // check if there are no any items under mouse and create scg-node
-        if (item == 0 || item->type() == SCgContour::Type)
+        else if (item == 0 || item->type() == SCgContour::Type)
         {
             SCgContour *contour = 0;
             if (item != 0 && item->type() == SCgContour::Type)

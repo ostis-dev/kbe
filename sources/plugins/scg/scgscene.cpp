@@ -189,6 +189,7 @@ void SCgScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     mMode->mouseDoubleClick(event);
     //    if(!event->isAccepted())
+     if(!(QApplication::keyboardModifiers() ==  Qt::CTRL))
     QGraphicsScene::mouseDoubleClickEvent(event);
 }
 
