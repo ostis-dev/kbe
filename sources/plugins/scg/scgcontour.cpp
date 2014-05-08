@@ -37,7 +37,7 @@ SCgContour::SCgContour() :
 {
     setFlag(QGraphicsItem::ItemIsMovable, true);
     //setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
-    setToolTip(QObject::tr("sc.g-contour"));
+    setToolTip(QObject::tr("sc.g-contour - a combined group of elements representing a separate entity"));
     mDefaultZValue = 7;
     setZValue(mDefaultZValue);
 }

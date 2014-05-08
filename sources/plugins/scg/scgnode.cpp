@@ -46,7 +46,7 @@ SCgNode::SCgNode(QGraphicsItem *parent, QGraphicsScene *scene) :
 {
     mSize = QSizeF(19.f, 19.f);
     setFlag(QGraphicsItem::ItemIsMovable, true);
-    setToolTip(QObject::tr("sc.g-node"));
+    setToolTip(QObject::tr("sc.g-node - is intended to refer to any type of entities, relationships between the entities and their attributes"));
     setZValue(2);
 }
 

@@ -37,7 +37,7 @@ SCgBus::SCgBus() :
     mTypeAlias = "bus";
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
-    setToolTip(QObject::tr("sc.g-bus"));
+    setToolTip(QObject::tr("sc.g-bus - designed for easy displaying a plurality of outgoing arcs from one vertex"));
     mDefaultZValue = 0;
 }
 

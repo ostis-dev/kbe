@@ -44,7 +44,7 @@ SCgPair::SCgPair() :
     mPoints.push_back(QPointF());
 
     setFlag(QGraphicsItem::ItemIsMovable, true);
-    setToolTip(QObject::tr("sc.g-pair"));
+    setToolTip(QObject::tr("sc.g-pair - indicates a definite relationship between any entities"));
     mDefaultZValue = 1;
     setZValue(mDefaultZValue);
 }
