@@ -61,7 +61,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
-
+#include "commands/scgcommandcreatepair.h"
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
@@ -222,6 +222,20 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Contour] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
+
+    // construction group button
+    QToolButton *constructionButton = new QToolButton(mToolBar);
+    constructionButton->setIcon(findIcon("tool-construction.png"));
+    constructionButton->setPopupMode(QToolButton::InstantPopup);
+    mToolBar->addWidget(constructionButton);
+
+    // Triple creation mode
+    action = new QAction(findIcon("tool-construction-triple.png"),tr("Triple creation mode"), mToolBar);
+    action->setCheckable(true);
+    action->setShortcut(QKeySequence(tr("10", "Triple creation mode")));
+    constructionButton->addAction(action);
+    mMode2Action[SCgScene::Mode_Triple] = action;
+    connect(action, SIGNAL(triggered()), this, SLOT(onTripleMode()));
     //
     mToolBar->addSeparator();
     //
@@ -400,6 +414,13 @@ void SCgWindow::onPairMode()
 {
     static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Pair);
     mView->viewport()->setCursor(Qt::UpArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onTripleMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Triple);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
     mView->setDragMode(QGraphicsView::NoDrag);
 }
 

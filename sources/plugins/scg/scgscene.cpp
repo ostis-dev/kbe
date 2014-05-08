@@ -86,6 +86,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Bus] = new SCgBusMode(this);
     mSceneModes[Mode_Pair] = new SCgPairMode(this);
     mSceneModes[Mode_Contour] = new SCgContourMode(this);
+    mSceneModes[Mode_Triple] = new SCgTripleMode(this);
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
