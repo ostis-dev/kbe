@@ -29,12 +29,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "config.h"
 
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QIcon>
 #include <QUndoStack>
 #include <QDir>
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QShortcut>
+#include <QPoint>
+#include <QPalette>
+#include <QLineEdit>
+#include <QString>
+#include <QLabel>
 
 
 M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
@@ -46,8 +53,7 @@ M4SCpWindow::M4SCpWindow(const QString& _windowTitle, QWidget *parent):
     findShortcutH(0)
 {
     mEditor = new M4SCpCodeEditor();
-    QFont font("Arial", 11);
-    font.setStyleHint(QFont::Serif);
+    QFont font(M4SCpConfig::mStyleText, M4SCpConfig::mSizeText);    font.setStyleHint(QFont::Serif);
     mEditor->setFont(font);
     mEditor->setPalette(QPalette(QPalette::Background, Qt::white));
     mEditor->setTabStopWidth(20);
@@ -196,6 +202,12 @@ const QString& M4SCpWindowFactory::name() const
 EditorInterface* M4SCpWindowFactory::createInstance()
 {
     return new M4SCpWindow("");
+}
+
+QWidget* M4SCpWindowFactory::createNewParametersTab()
+{
+    configTabEl = new M4SCpConfig();
+    return configTabEl;
 }
 
 QStringList M4SCpWindowFactory::supportedFormatsExt()

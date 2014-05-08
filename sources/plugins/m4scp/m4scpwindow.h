@@ -105,6 +105,8 @@ public:
     explicit M4SCpWindowFactory(QObject *parent = 0);
     virtual ~M4SCpWindowFactory();
 
+    M4SCpConfig *configTabEl;
+
     //! @copydoc EditorFactoryInterface::name
     const QString& name() const;
     //! @copydoc EditorFactoryInterface::createInstance
@@ -113,6 +115,8 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+    QWidget* createNewParametersTab();
 };
 
 #endif // M4SCPWINDOW_H

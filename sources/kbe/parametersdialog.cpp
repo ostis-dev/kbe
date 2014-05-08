@@ -13,6 +13,7 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QListWidget>
+#include <QLineEdit>
 
 ParametersDialog::ParametersDialog(QWidget *parent):
     QDialog(parent)
@@ -20,10 +21,11 @@ ParametersDialog::ParametersDialog(QWidget *parent):
     setWindowTitle(tr("Preferences"));
     setFixedSize(500,300);
 
-    QPushButton *buttonOk = new QPushButton("OK");
-    QPushButton *buttonCancel = new QPushButton("Cancel");
+    buttonOk = new QPushButton("OK");
+    buttonCancel = new QPushButton("Cancel");
 
     QHBoxLayout *horizontal = new QHBoxLayout();
+    horizontal->addSpacing(300);
     horizontal->addWidget(buttonOk);
     horizontal->addWidget(buttonCancel);
 
@@ -63,14 +65,19 @@ GeneralParametersTab::GeneralParametersTab(QWidget *parent):
 
     connect(showStartupDialog, SIGNAL(stateChanged(int)), this, SLOT(showStateChanged(int)));
 
-    QVBoxLayout *verticalG = new QVBoxLayout();
-    QLabel *label1G = new QLabel("METKAG");
-    QLabel *label2G = new QLabel("METKA2G");
-    verticalG->addWidget(showStartupDialog);
-    verticalG->addWidget(label1G);
-    verticalG->addWidget(label2G);
+    languageList = new QComboBox();
+    languageList->addItem("English");
+    languageList->addItem("Russian");
 
-    setLayout(verticalG);
+    QVBoxLayout *vertical = new QVBoxLayout();
+    //QLabel *label1G = new QLabel("METKAG");
+    //QLabel *label2G = new QLabel("METKA2G");
+    verticalG->addWidget(showStartupDialog);
+    vertical->addWidget(languageList);
+    //verticalG->addWidget(label1G);
+    //verticalG->addWidget(label2G);
+
+    setLayout(vertical);
 }
 
 void GeneralParametersTab::showStateChanged(int state)
