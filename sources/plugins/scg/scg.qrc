@@ -33,5 +33,6 @@
         <file>media/translations/scg_ru_RU.qm</file>
         <file>media/TypeClonningCursor.bmp</file>
         <file>media/icons/tool-align-energy.png</file>
+        <file>media/icons/tool-print.png</file>
     </qresource>
 </RCC>

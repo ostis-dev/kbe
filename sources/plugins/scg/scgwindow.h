@@ -29,6 +29,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QToolBox>
 #include <QMap>
 #include <QSlider>
+#include <QPrinter>
+#include <QPrintDialog>
 
 class SCgMinimap;
 class SCgView;
@@ -217,6 +219,8 @@ private slots:
     void onSelectSubgraph();
     //! Slot to hanlde an export image action
     void onExportImage();
+    //! Slot to hanlde print action
+    void onPrint();
     //! Slot to handle a zoom in action
     void onZoomIn();
     //! Slot to handle a zoom out action

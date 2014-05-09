@@ -95,7 +95,8 @@ HEADERS += \
     scgnodetextitem.h \
     gwf/parser/scsparserast.h \
     gwf/parser/scsParser.h \
-    gwf/parser/scsLexer.h
+    gwf/parser/scsLexer.h \
+    scgprint.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -178,7 +179,8 @@ SOURCES += \
     scgnodetextitem.cpp \
     gwf/parser/scsparserast.cpp \
     gwf/parser/scsParser.c \
-    gwf/parser/scsLexer.c
+    gwf/parser/scsLexer.c \
+    scgprint.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
