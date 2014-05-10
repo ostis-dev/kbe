@@ -195,7 +195,6 @@ void SCgScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void SCgScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_ASSERT(mMode);
-
     mMode->mousePress(event);
     if (!event->isAccepted())
         QGraphicsScene::mousePressEvent(event);
@@ -235,6 +234,14 @@ void SCgScene::keyReleaseEvent(QKeyEvent *event)
     mMode->keyRelease(event);
     if(!event->isAccepted())
         QGraphicsScene::keyReleaseEvent(event);
+}
+
+void SCgScene::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    Q_ASSERT(mMode);
+    mMode->wheelEvent(event);
+    if(!event->isAccepted())
+        QGraphicsScene::wheelEvent(event);
 }
 
 SCgNode* SCgScene::createSCgNode(const QPointF &pos)
@@ -554,14 +561,16 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
         }else if(item->type() == SCgPointGraphicsItem::Type)
         {
             SCgPointGraphicsItem* pointItem = static_cast<SCgPointGraphicsItem*>(item);
-            if(!cmd)
+            if(!cmd) {
                 cmd = new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
                                               pointItem->pointIndex(), it.value().first.second,
                                               it.value().second.second, parentCmd);
-            else
+            }
+            else {
                 new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
                                         pointItem->pointIndex(), it.value().first.second,
                                         it.value().second.second, cmd);
+                }
         }
 
         // If Incidence point has moved then
@@ -713,7 +722,6 @@ SCgBaseCommand * SCgScene::minimizeContourCommand(SCgContour *contour, SCgBaseCo
     Q_ASSERT_X(contour != 0,
                "SCgBaseCommand* SCgScene::minimizeContourCommand(SCgContour *contour, SCgBaseCommand *parentCmd, bool addToStack)",
                "Pointer to object is null");
-
     SCgBaseCommand *cmd = new SCgCommandMinimizeContour(this, contour, parentCmd);
 
     if (addToStack) {
@@ -748,7 +756,6 @@ SCgBaseCommand* SCgScene::changeObjectPointsCommand(SCgPointObject* obj,
     Q_ASSERT_X(obj != 0,
                "SCgBaseCommand* SCgScene::changeObjectPositionCommand(SCgObject* obj, const QPointF& newPos, SCgBaseCommand* parentCmd)",
                "Pointer to object is null");
-
     SCgBaseCommand* cmd = new SCgCommandPointsChange(this, obj, newPoints, parentCmd);
 
     if(addToStack)

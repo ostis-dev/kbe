@@ -50,6 +50,8 @@ public:
     virtual void mouseMove(QGraphicsSceneMouseEvent *event);
 
     virtual void mouseRelease(QGraphicsSceneMouseEvent *event);
+
+    virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
     /*! @}*/
 
     /*! @defgroup keyboardEvendHandling Keyboard Events

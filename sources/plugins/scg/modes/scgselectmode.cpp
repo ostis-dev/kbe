@@ -34,6 +34,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QGraphicsView>
 #include <QBitmap>
+#include <math.h>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
@@ -109,6 +110,22 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
     }
+}
+
+void SCgSelectMode::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+
+    QPointF mousePos = event->scenePos();
+    QGraphicsItem *pItem = mScene->itemAt(mousePos);
+
+    if(pItem != NULL && event->modifiers() == Qt::ShiftModifier && pItem->type() == SCgContour::Type)
+    {
+        double factor = pow(2.0, event->delta() / 280.0);
+        SCgContour *contur = static_cast<SCgContour*>(pItem);
+        contur->scalingContur(factor);
+
+    }
+
 }
 
 void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)

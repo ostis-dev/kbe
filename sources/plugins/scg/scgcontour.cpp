@@ -94,6 +94,24 @@ void SCgContour::setPoints(const PointFVector &points)
     SCgPointObject::setPoints(points);
 }
 
+void SCgContour::scalingContur(double factor)
+{
+    if(factor <= 0 ) {
+       return;
+    }
+    else {
+       for (int i = 0; i < mPoints.size(); i++)
+       {
+           double xreal = mPoints[i].x() * factor;
+           double yreal = mPoints[i].y() * factor;
+           const QPointF newPos(xreal,yreal);
+           SCgPointObject::changePointPosition(i, newPos);
+       }
+       updateShape();
+    }
+
+}
+
 void SCgContour::positionChanged()
 {
     updateShape();

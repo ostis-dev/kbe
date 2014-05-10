@@ -45,6 +45,8 @@ public:
 
     void mouseRelease(QGraphicsSceneMouseEvent *event);
 
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
+
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 

@@ -67,6 +67,9 @@ public:
     //! @see QGraphicsItem::shape()
     QPainterPath shape() const;
 
+    //! change size of contur
+    void scalingContur(double factor);
+
 protected:
     //! @see QGraphicsItem::boundingRect()
     QRectF boundingRect() const;
