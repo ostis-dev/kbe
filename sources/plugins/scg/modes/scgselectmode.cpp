@@ -90,6 +90,15 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(event->buttons()==Qt::LeftButton && !mIsItemsMoved && !mIsTypeClonning)
     {
+        // show possible scgTextItem possition
+        QPointF cur_pos = event->scenePos();
+        QGraphicsItem* item = mScene->itemAt(cur_pos);
+        // show possible scgTextItem possition
+        if (item && (item->type() == SCgNodeTextItem::Type)){
+            SCgNodeTextItem * textItem = static_cast<SCgNodeTextItem*>(item);
+            textItem->showPositions(mScene,true);
+        }
+
         //We should use there current event position (not mStartPos) because of the delay between mousePress and mouseMove events.
         //______________________________________________________//
         //Store start positions(before items moving)
@@ -110,6 +119,7 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
         //______________________________________________________//
         mIsItemsMoved = !mUndoInfo.empty();
     }
+
 }
 
 void SCgSelectMode::wheelEvent(QGraphicsSceneWheelEvent *event)
@@ -150,7 +160,6 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
         if(mCurrentPointObject)
         {
             QGraphicsItem *it = mScene->itemAt(event->scenePos());
-
             if (it == 0 || (it != mCurrentPointObject && SCgObject::isSCgObjectType(it->type())))
             {
                 mCurrentPointObject->destroyPointObjects();
@@ -203,6 +212,10 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
             case SCgIncidentPointGraphicsItem::Type:
             case SCgTextItem::Type:
             case SCgNodeTextItem::Type:
+            {
+                SCgNodeTextItem * textItem = static_cast<SCgNodeTextItem*>(item);
+                textItem->showPositions(mScene ,false);
+            }
             case SCgPair::Type:
             {
                 // exclude PointGraphicsItem's object, because it always has a parent item
