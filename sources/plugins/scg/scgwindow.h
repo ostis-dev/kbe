@@ -35,6 +35,8 @@ class SCgUndoView;
 
 class QToolBar;
 class QLineEdit;
+class QSlider;
+class QLabel;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -131,9 +133,6 @@ private:
     //! Map for storing mode-action relation
     Mode2ActionMap mMode2Action;
 
-    //! Contents current zoom factor.
-    QLineEdit* mZoomFactorLine;
-
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
 
@@ -145,6 +144,12 @@ private:
 
     //! Tool bar
     QToolBar *mToolBar;
+
+    //! Slider
+    QSlider *mZoomSlider;
+
+    //! Label
+    QLabel *mZoomLabel;
 
     //! Undo stack
     QUndoStack *mUndoStack;
@@ -209,7 +214,9 @@ private slots:
     void onSelectSubgraph();
     //! Slot to hanlde an export image action
     void onExportImage();
-    //! Slot to handle a zoom in action
+    //! Slot to handle zoom label
+    void updateZoomLabel (int newScale);
+    //! Slot to handle a zoom out action
     void onZoomIn();
     //! Slot to handle a zoom out action
     void onZoomOut();

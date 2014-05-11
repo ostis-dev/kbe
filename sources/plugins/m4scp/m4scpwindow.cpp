@@ -159,8 +159,11 @@ QIcon M4SCpWindow::findIcon(const QString &iconName)
 
 void M4SCpWindow::textChanged()
 {
-    mIsSaved = false;
-    emitEvent(EditorObserverInterface::ContentChanged);
+    if(mEditor->document()->isModified())
+                mIsSaved = false;
+           else
+                mIsSaved = true;
+       emitEvent(EditorObserverInterface::ContentChanged);
 }
 
 
