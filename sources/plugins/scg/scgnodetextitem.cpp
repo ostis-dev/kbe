@@ -133,7 +133,7 @@ void SCgNodeTextItem :: showPositions(SCgScene * scgScene, bool isShow)
 {
     if(textItemPositions.empty())
     {
-        createTextItemPostitions(scgScene);
+        createTextItemPositions(scgScene);
     } else {
         // show or hide text item position
         foreach(QGraphicsRectItem * position,textItemPositions) {
