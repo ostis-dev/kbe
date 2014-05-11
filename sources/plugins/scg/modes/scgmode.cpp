@@ -228,6 +228,7 @@ void SCgMode::keyPress(QKeyEvent *event)
     {
         event->accept();
         clean();
+        mScene->clearSelection();
     }
     if (event->modifiers() == Qt::ControlModifier)
     {
