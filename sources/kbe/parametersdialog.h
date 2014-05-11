@@ -5,8 +5,6 @@
 #include <QWidget>
 #include <QSettings>
 #include <QCheckBox>
-#include <QComboBox>
-#include <QPushButton>
 
 class ParametersDialog: public QDialog
 {
@@ -15,8 +13,7 @@ public:
     explicit ParametersDialog(QWidget *parent);
     virtual ~ParametersDialog();
 
-    QPushButton *buttonOk;
-    QPushButton *buttonCancel;
+private:
 
 public slots:
 
@@ -34,6 +31,5 @@ public slots:
 protected:
     QSettings settings;
     QCheckBox *showStartupDialog;
-    QComboBox *languageList;
 };
 #endif // PARAMETERSDIALOG_H
