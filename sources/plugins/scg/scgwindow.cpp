@@ -37,6 +37,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QDebug>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -57,9 +58,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "gwf/gwffileloader.h"
 #include "gwf/gwffilewriter.h"
 #include "gwf/gwfobjectinforeader.h"
+#include "gwf/scsfileloader.h"
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
+#include "scgprint.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -71,12 +74,15 @@ const QStringList SCgWindow::mScales = QStringList()<< "25" << "50"
 const int SCgWindow::mScaleChangeStep = 25;
 const qreal SCgWindow::minScale = 0.20;
 const qreal SCgWindow::maxScale = 9.99;
+const int SCgWindow :: mZoomSliderMinValue = 25;
+const int SCgWindow :: mZoomSliderMaxValue = 200;
 
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),
     mView(0),
     mScene(0),
     mZoomFactorLine(0),
+    mZoomSlider(0),
     mMinimap(0),
     mUndoView(0),
     mFindWidget(0),
@@ -295,18 +301,17 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onExportImage()));
 
+    action = new QAction(findIcon("tool-print.png"), tr("Print"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("0", "Print")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onPrint()));
+
     //
     mToolBar->addSeparator();
-    //
-    //Zoom in
-    action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("+", "Zoom in")));
-    mToolBar->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
-
     //Scale combobox
     QComboBox* b = new QComboBox(mToolBar);
+    b->setFixedWidth(55);
     b->setEditable(true);
     b->setInsertPolicy(QComboBox::NoInsert);
     b->addItems(SCgWindow::mScales);
@@ -316,9 +321,33 @@ void SCgWindow::createToolBar()
     mToolBar->addWidget(b);
     connect(mZoomFactorLine, SIGNAL(textChanged(const QString&)), mView, SLOT(setScale(const QString&)));
     connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
+    //
+    //Zoom in
+    //action = new QAction(findIcon("tool-zoom-in.png"), tr("Zoom in"), mToolBar);
+    action = new QAction("+",mToolBar);
+    action->setToolTip(tr("Zoom in"));
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("+", "Zoom in")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
+
+    //slider scale
+    mZoomSlider = new QSlider();
+    mZoomSlider->setFixedWidth(40);
+    mZoomSlider->setSizeIncrement(25,180/25);
+    mZoomSlider->setFixedHeight(180);
+    mZoomSlider->setToolTip(tr("Scale"));
+    mZoomSlider->setMinimum(mZoomSliderMinValue);
+    mZoomSlider->setValue(100);
+    mZoomSlider->setMaximum(mZoomSliderMaxValue);
+    mToolBar->addWidget(mZoomSlider);
+    connect(mZoomSlider,SIGNAL(valueChanged(int)),this,SLOT(onmZoomSliderMove(int)));
+
 
     //Zoom out
-    action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
+  //  action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
+    action = new QAction("-", mToolBar);
+    action->setToolTip(tr("Zoom out"));
     action->setCheckable(false);
     action->setShortcut(QKeySequence(tr("-", "Zoom out")));
     mToolBar->addAction(action);
@@ -343,15 +372,40 @@ QIcon SCgWindow::icon() const
 
 bool SCgWindow::loadFromFile(const QString &fileName)
 {
-    GWFFileLoader loader;
+    QFileInfo * fileExt = new QFileInfo(fileName);
 
-    if (loader.load(fileName, mView->scene()))
-    {
-        mFileName = fileName;
-        setWindowTitle(mFileName);
-        emitEvent(EditorObserverInterface::ContentLoaded);
-        return true;
-    }else
+        if(fileExt->suffix()=="gwf")
+        {
+            GWFFileLoader loader;
+
+            if (loader.load(fileName, mView->scene()))
+            {
+                mFileName = fileName;
+                setWindowTitle(mFileName);
+                emitEvent(EditorObserverInterface::ContentLoaded);
+
+                return true;
+            }
+            else
+                return false;
+        }
+
+        if(fileExt->suffix()=="scsi")
+        {
+            ScsFileLoader loader;
+
+            if (loader.load(fileName, mView->scene()))
+            {
+                mFileName = fileName;
+                setWindowTitle(mFileName);
+                emitEvent(EditorObserverInterface::ContentLoaded);
+
+                return true;
+            }
+            else
+                return false;
+        }
+
         return false;
 }
 
@@ -488,6 +542,21 @@ void SCgWindow::onExportImage()
     }
 }
 
+void SCgWindow::onPrint()
+{
+    SCgPrint *scgFilePrint;
+
+    QPrinter printer;
+
+    QPrintDialog *dialog = new QPrintDialog(&printer, this);
+    dialog->setWindowTitle(tr("Print SCg"));
+
+    if (dialog->exec() != QDialog::Accepted)
+     return;
+
+    scgFilePrint->print(this->mScene, printer);
+}
+
 void SCgWindow::onZoomIn()
 {
     int oldScale = mZoomFactorLine->text().remove('%').toInt();
@@ -497,6 +566,7 @@ void SCgWindow::onZoomIn()
         newScale = int(maxScale*100);
 
     mZoomFactorLine->setText(QString::number(newScale));
+    mZoomSlider->setValue(newScale);
 }
 
 void SCgWindow::onZoomOut()
@@ -508,13 +578,19 @@ void SCgWindow::onZoomOut()
         newScale = int(minScale*100);
 
     mZoomFactorLine->setText(QString::number(newScale));
+    mZoomSlider->setValue(newScale);
 }
 
+void SCgWindow ::onmZoomSliderMove(int newScale)
+{
+    mZoomFactorLine->setText(QString::number(newScale));
+}
 void SCgWindow::onViewScaleChanged(qreal newScale)
 {
     qreal oldScale = mZoomFactorLine->text().remove('%').toDouble() / 100;
     if (newScale != oldScale)
         mZoomFactorLine->setText(QString::number(int(newScale*100)));
+        mZoomSlider->setValue(int(newScale*100));
 }
 
 void SCgWindow::cut() const
@@ -675,6 +751,7 @@ QStringList SCgWindow::supportedFormatsExt() const
 {
     QStringList res;
     res << "gwf";
+    res << "scsi";
     return res;
 }
 
@@ -737,6 +814,7 @@ QStringList SCgWindowFactory::supportedFormatsExt()
 {
     QStringList res;
     res << "gwf";
+    res << "scsi";
     return res;
 }
 

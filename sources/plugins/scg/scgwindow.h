@@ -28,6 +28,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QToolBox>
 #include <QMap>
+#include <QSlider>
+#include <QPrinter>
+#include <QPrintDialog>
 
 class SCgMinimap;
 class SCgView;
@@ -103,10 +106,14 @@ public:
      */
     static const qreal minScale;
     static const qreal maxScale;
+
     /*! @}*/
 private:
     //! @see onZoomIn(), onZoomOut()
     static const int mScaleChangeStep;
+
+    static const int mZoomSliderMinValue;
+    static const int mZoomSliderMaxValue;
 
     void createWidgetsForDocks();
 
@@ -133,6 +140,9 @@ private:
 
     //! Contents current zoom factor.
     QLineEdit* mZoomFactorLine;
+
+    //! slider ro changing zoom
+    QSlider* mZoomSlider;
 
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
@@ -209,13 +219,16 @@ private slots:
     void onSelectSubgraph();
     //! Slot to hanlde an export image action
     void onExportImage();
+    //! Slot to hanlde print action
+    void onPrint();
     //! Slot to handle a zoom in action
     void onZoomIn();
     //! Slot to handle a zoom out action
     void onZoomOut();
     //! Slot to set zoom factor value.
     void onViewScaleChanged(qreal newScaleValue);
-
+    //! Slot to change zoom on mZoomSlider moved
+    void onmZoomSliderMove(int newScale);
     //! Handle find next button pressed event
     void findNext();
 

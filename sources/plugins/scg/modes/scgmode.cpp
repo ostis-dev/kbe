@@ -344,3 +344,8 @@ void SCgMode::keyRelease(QKeyEvent *event)
 {
 
 }
+
+void SCgMode::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+
+}

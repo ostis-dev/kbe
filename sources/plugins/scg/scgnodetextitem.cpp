@@ -22,6 +22,12 @@ along with OSTIS.  If not, see .
 
 #include <QGraphicsSceneMouseEvent>
 #include "scgnodetextitem.h"
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <scgscene.h>
+#include <QList>
+#include <QRectF>
+
 
 
 SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene* scene )
@@ -122,3 +128,66 @@ SCgNode::eIdentifierPosition SCgNodeTextItem::textPos() const
 {
     return mTextPos;
 }
+
+
+void SCgNodeTextItem :: showPositions(SCgScene * scgScene, bool isShow)
+{
+    if(textItemPositions.empty())
+    {
+       createTextItemPositions(scgScene);
+    }
+    foreach(QGraphicsRectItem * position,textItemPositions) {
+        if(isShow) {
+            position->show();
+        } else {
+            position->hide();
+        }
+    }
+}
+
+void SCgNodeTextItem :: createTextItemPositions(SCgScene * scgScene) {
+
+    QGraphicsScene * scene = static_cast<QGraphicsScene*>(scgScene);
+    QGraphicsRectItem * textPositionItem;
+    QRectF rect = boundingRect();
+    QRectF parentRect =  mParentItem->boundingRect();
+
+    qreal height = this->boundingRect().height();
+    qreal widht = this->boundingRect().width();
+    qreal x, y;
+
+    //bottom left
+    x = parentRect.left() - rect.width() + 8;
+    y = parentRect.bottom() - 8;
+    QRectF * textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+    //top left
+    y = parentRect.top() - rect.height() + 8;
+    textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+    //top rigth
+    x = parentRect.right() - 8;
+    textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+    //bottom rigth
+    y = parentRect.bottom() - 8;
+    textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+}
+
+
+
+
+
