@@ -25,6 +25,7 @@ along with OSTIS.  If not, see .
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <scgscene.h>
+#include <QList>
 #include <QRectF>
 
 
@@ -133,18 +134,15 @@ void SCgNodeTextItem :: showPositions(SCgScene * scgScene, bool isShow)
 {
     if(textItemPositions.empty())
     {
-        createTextItemPositions(scgScene);
-    } else {
-        // show or hide text item position
-        foreach(QGraphicsRectItem * position,textItemPositions) {
-            if(isShow) {
-                position->show();
-            } else {
-                position->hide();
-            }
+       createTextItemPositions(scgScene);
+    }
+    foreach(QGraphicsRectItem * position,textItemPositions) {
+        if(isShow) {
+            position->show();
+        } else {
+            position->hide();
         }
     }
-
 }
 
 void SCgNodeTextItem :: createTextItemPositions(SCgScene * scgScene) {

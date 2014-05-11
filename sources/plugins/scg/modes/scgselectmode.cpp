@@ -34,14 +34,17 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QGraphicsView>
 #include <QBitmap>
+#include <QList>
 #include <math.h>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
     mIsTypeClonning(false),
+    mIsNodeSelected(false),
     mObjectType(0),
     mCloningType(""),
     mCurrentPointObject(0)
+
 {
     QPixmap pix(":/scg/media/TypeClonningCursor.bmp");
     pix.setMask(pix.createMaskFromColor(QColor("white")));
@@ -82,6 +85,10 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
             mScene->createNodeCommand(mousePos, contour);
             event->accept();
         }
+        /* if node was created, it stays selected by default and it's
+         * textitem can be moved so the mIsNodeSelected should be checked
+         */
+        mIsNodeSelected = isScgObjectSelected(SCgNode::Type);
     }
     SCgMode::mouseDoubleClick(event);
 }
@@ -90,15 +97,13 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(event->buttons()==Qt::LeftButton && !mIsItemsMoved && !mIsTypeClonning)
     {
-        // show possible scgTextItem possition
+
         QPointF cur_pos = event->scenePos();
         QGraphicsItem* item = mScene->itemAt(cur_pos);
-        // show possible scgTextItem possition
-        if (item && (item->type() == SCgNodeTextItem::Type)){
-            SCgNodeTextItem * textItem = static_cast<SCgNodeTextItem*>(item);
-            textItem->showPositions(mScene,true);
+        if (mIsNodeSelected && item && (item->type() == SCgNodeTextItem::Type)){
+            mTextItem = static_cast<SCgNodeTextItem*>(item);
+            mTextItem->showPositions(mScene,true);
         }
-
         //We should use there current event position (not mStartPos) because of the delay between mousePress and mouseMove events.
         //______________________________________________________//
         //Store start positions(before items moving)
@@ -140,6 +145,7 @@ void SCgSelectMode::wheelEvent(QGraphicsSceneWheelEvent *event)
 
 void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
+    mIsNodeSelected = isScgObjectSelected(SCgNode::Type);
     if (event->modifiers() == Qt::ControlModifier && event->button() == Qt::LeftButton)
     {
         QGraphicsItem *pItem = mScene->itemAt(event->scenePos());
@@ -197,8 +203,13 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
+    if(mTextItem)
+    {
+        mTextItem->showPositions(mScene,false);
+    }
     if(mIsItemsMoved)
     {
+
         //Store finish positions (after items moving)
         SCgScene::ItemUndoInfo::iterator it = mUndoInfo.begin();
         for(; it != mUndoInfo.end(); ++it)
@@ -212,10 +223,6 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
             case SCgIncidentPointGraphicsItem::Type:
             case SCgTextItem::Type:
             case SCgNodeTextItem::Type:
-            {
-                SCgNodeTextItem * textItem = static_cast<SCgNodeTextItem*>(item);
-                textItem->showPositions(mScene ,false);
-            }
             case SCgPair::Type:
             {
                 // exclude PointGraphicsItem's object, because it always has a parent item
@@ -293,6 +300,7 @@ void SCgSelectMode::clean()
     mIsTypeClonning = false;
     mObjectType = 0;
     mCloningType = "";
+    mTextItem = 0;
 }
 
 SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)
@@ -316,4 +324,18 @@ SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)
             newParent = dynamic_cast<SCgContour*>(tmpItem);
     } while(!newParent && index != 0);
     return newParent;
+}
+
+bool SCgSelectMode:: isScgObjectSelected(const int scgObjectType) {
+
+    bool result = false;
+    QList<QGraphicsItem*> selectediItems =mScene->selectedItems();
+    foreach(QGraphicsItem * item, selectediItems)
+    {
+        if(item->type() == scgObjectType) {
+            result = true;
+            break;
+        }
+    }
+    return result;
 }
