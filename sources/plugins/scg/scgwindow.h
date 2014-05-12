@@ -25,6 +25,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interfaces/editorinterface.h"
 #include "scgscene.h"
+#include "scgconfig.h"
 
 #include <QToolBox>
 #include <QMap>
@@ -258,6 +259,8 @@ class SCgWindowFactory : public QObject,
 public:
     explicit SCgWindowFactory(QObject *parent);
     virtual ~SCgWindowFactory();
+
+    SCgConfig *configEl;
 
     //! @copydoc EditorFactoryInterface::name
     const QString& name() const;

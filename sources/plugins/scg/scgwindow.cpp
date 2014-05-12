@@ -62,6 +62,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "config.h"
 #include "scgundoview.h"
 
+#include "scgnode.h"
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
@@ -735,7 +736,8 @@ EditorInterface* SCgWindowFactory::createInstance()
 }
 QWidget* SCgWindowFactory::createNewParametersTab()
 {
-    return new QWidget();
+    configEl = new SCgConfig();
+    return configEl->configTabEl;
 }
 
 QString SCgWindowFactory::getDescription() const

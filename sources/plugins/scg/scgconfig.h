@@ -5,6 +5,11 @@
 #include <QMap>
 #include <QVariant>
 #include <QColor>
+#include <QComboBox>
+#include <QString>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QLabel>
 
 // Defines to make work with values more simple
 #define scg_config  SCgConfig::getInstance()
@@ -40,6 +45,10 @@ class SCgConfig : public QObject
 public:
     explicit SCgConfig(QObject *parent = 0);
     virtual ~SCgConfig();
+
+    QWidget *configTabEl;
+    static QString mNodeDefaultType;
+    static QString mPairDefaultType;
 
     static SCgConfig* getInstance();
     static void Destroy();
@@ -101,10 +110,18 @@ public:
 private:
     static SCgConfig *mInstance;
 
+    QComboBox *defaultTypeNodeList;
+    QComboBox *defaultTypePairList;
+    static bool isWritting;
+
     //! Options value map
     QMap<QString, QVariant> mValues;
     //! Default values
     QMap<QString, QVariant> mDefaultValues;
+
+private slots:
+    void setNodeDefaultType();
+    void setPairDefaultType();
 
 protected:
     //! Initialize configuration

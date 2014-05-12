@@ -31,6 +31,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpointgraphicsitem.h"
 #include "scgcontentfactory.h"
 #include "scgnodetextitem.h"
+#include "scgconfig.h"
 
 #include "modes/scgbusmode.h"
 #include "modes/scgpairmode.h"
@@ -242,7 +243,7 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     SCgNode *node = new SCgNode;
 
     node->setPos(pos);
-    node->setTypeAlias("node/const/general");
+    node->setTypeAlias(SCgConfig::mNodeDefaultType);
 
     addItem(node);
     return node;
@@ -255,7 +256,7 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
                "Begin or end object is null");
     SCgPair *pair = new SCgPair;
 
-    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setTypeAlias(SCgConfig::mPairDefaultType);
 
     pair->setBeginObject(begObj);
     pair->setEndObject(endObj);

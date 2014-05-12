@@ -1,6 +1,10 @@
 #include "scgconfig.h"
+#include "scgalphabet.h"
 
 SCgConfig* SCgConfig::mInstance = 0;
+QString SCgConfig::mNodeDefaultType = "node/const/general_node";
+QString SCgConfig::mPairDefaultType = "pair/const/pos/perm/orient/accessory";
+bool SCgConfig::isWritting = false;
 
 SCgConfig* SCgConfig::getInstance()
 {
@@ -26,6 +30,57 @@ void SCgConfig::Destroy()
 SCgConfig::SCgConfig(QObject *parent) :
     QObject(parent)
 {
+    configTabEl = new QWidget();
+    defaultTypeNodeList = new QComboBox();
+
+    SCgAlphabet::SCgObjectTypesMap types;
+    SCgAlphabet::SCgObjectTypesMap::const_iterator iter;
+
+    SCgAlphabet::getInstance().getObjectTypes("node", SCgAlphabet::Const, types);
+    for (iter = types.begin(); iter != types.end(); ++iter)
+        defaultTypeNodeList->addItem(iter.value(), iter.key());
+    SCgAlphabet::getInstance().getObjectTypes("node", SCgAlphabet::Var, types);
+    for (iter = types.begin(); iter != types.end(); ++iter)
+        defaultTypeNodeList->addItem(iter.value(), iter.key());
+
+    defaultTypePairList = new QComboBox();
+
+    SCgAlphabet::getInstance().getObjectTypes("pair", SCgAlphabet::Const, types);
+    for (iter = types.begin(); iter != types.end(); ++iter)
+    {
+        if (isWritting) break;
+        QString first4symbols = iter.key();
+        first4symbols.resize(4);
+        if (first4symbols == "pair")
+            defaultTypePairList->addItem(iter.value(), iter.key());
+    }
+
+    isWritting = true;
+    SCgAlphabet::getInstance().getObjectTypes("pair", SCgAlphabet::Var, types);
+    for (iter = types.begin(); iter != types.end(); ++iter)
+    {
+        QString first4symbols = iter.key();
+        first4symbols.resize(4);
+        if (first4symbols == "pair")
+            defaultTypePairList->addItem(iter.value(), iter.key());
+    }
+
+    QVBoxLayout *vertical = new QVBoxLayout();
+    QLabel *labelNodeList = new QLabel(tr("Default type of nodes: "));
+    QLabel *labelPairList = new QLabel(tr("Default type of pairs: "));
+    vertical->addWidget(labelNodeList);
+    defaultTypeNodeList->setFixedWidth(250);
+    vertical->addWidget(defaultTypeNodeList);
+    vertical->addSpacing(20);
+    vertical->addWidget(labelPairList);
+    defaultTypePairList->setFixedWidth(250);
+    vertical->addWidget(defaultTypePairList);
+    vertical->addSpacing(150);
+
+    configTabEl->setLayout(vertical);
+
+    connect(defaultTypeNodeList, SIGNAL(activated(int)), this, SLOT(setNodeDefaultType()));
+    connect(defaultTypePairList, SIGNAL(activated(int)), this, SLOT(setPairDefaultType()));
 }
 
 SCgConfig::~SCgConfig()
@@ -116,3 +171,14 @@ QColor SCgConfig::string2color(const QString &str) const
                "Invalid string that represents color");
     return QColor(strs[0].toInt(), strs[1].toInt(), strs[2].toInt(), strs[3].toInt());
 }
+
+void SCgConfig::setNodeDefaultType()
+{
+    mNodeDefaultType = defaultTypeNodeList->currentText();
+}
+
+void SCgConfig::setPairDefaultType()
+{
+    mPairDefaultType = defaultTypePairList->currentText();
+}
+
