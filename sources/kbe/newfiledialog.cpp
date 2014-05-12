@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "newfiledialog.h"
 #include "pluginmanager.h"
 #include "interfaces/editorinterface.h"
+#include "newscgactionsdialog.h"
 
 #include <QLabel>
 #include <QVBoxLayout>
@@ -58,16 +59,12 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     }
 
     QHBoxLayout *buttonLay = new QHBoxLayout;
-    QPushButton *butOk = new QPushButton(tr("OK"));
 
     if (mAvailableTypesList->count() > 0)
         mAvailableTypesList->item(0)->setSelected(true);
-    else
-        butOk->setEnabled(false);
 
     QPushButton *butCancel = new QPushButton(tr("Cancel"));
 
-    buttonLay->addWidget(butOk, 1, Qt::AlignRight);
     buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
 
     lay->addWidget(lab);
@@ -75,8 +72,7 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     lay->addLayout(buttonLay);
     setLayout(lay);
 
-    connect(butOk, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(mAvailableTypesList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+    connect(mAvailableTypesList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openNewProgram(QModelIndex)));
     connect(butCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
@@ -87,4 +83,17 @@ NewFileDialog::~NewFileDialog()
 QString NewFileDialog::selectedEditor() const
 {
     return mAvailableTypesList->selectedItems().at(0)->data(EditorTypeRole).toString();
+}
+
+void NewFileDialog::openNewProgram(QModelIndex index)
+{
+    if(index.data().toString() == "scg")
+    {
+        newscgactionsdialog* scgDialog = new newscgactionsdialog(this);
+        scgDialog->exec();
+    }
+    if(index.data().toString() == "m4scp")
+    {
+        accept();
+    }
 }

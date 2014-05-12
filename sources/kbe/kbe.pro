@@ -1,6 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2010-03-10T23:38:40
 # -------------------------------------------------
+DEFINES += PROJECT_PATH=\"\\\"$$PWD\\\"\"
 
 DESTDIR = ../bin
 
@@ -20,7 +21,9 @@ SOURCES += \
     config.cpp \
     pluginmanager.cpp \
     guidedialog.cpp \
-    newfiledialog.cpp
+    newfiledialog.cpp \
+    newscgactionsdialog.cpp \
+    newscgconstractionsdialog.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -31,7 +34,9 @@ HEADERS += version.h \
     pluginmanager.h \
     interfaces/editorinterface.h \
     guidedialog.h \
-    newfiledialog.h
+    newfiledialog.h \
+    newscgactionsdialog.h \
+    newscgconstractionsdialog.h
 
 FORMS += mainwindow.ui
 
@@ -51,3 +56,9 @@ RC_FILE = kbe.rc
 
 OBJECTS_DIR = obj
 MOC_DIR = moc
+
+
+
+
+
+

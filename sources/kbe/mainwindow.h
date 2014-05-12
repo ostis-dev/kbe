@@ -77,6 +77,13 @@ public:
     void dragMoveEvent(QDragMoveEvent *event);
     void dragLeaveEvent(QDragLeaveEvent *event);
     void dropEvent(QDropEvent *event);
+    /*!
+     * Create window by specified type
+     * @param type String that represents window type
+     * @return If window created, then return pointer to it. Otherwise it returns null.
+     */
+    EditorInterface* createSubWindowByType(const QString& type);
+
 
 protected:
     void changeEvent(QEvent *event);
@@ -106,12 +113,7 @@ private:
      */
     bool checkSubWindowSavedState();
 
-    /*!
-     * Create window by specified type
-     * @param type String that represents window type
-     * @return If window created, then return pointer to it. Otherwise it returns null.
-     */
-    EditorInterface* createSubWindowByType(const QString& type);
+
 
     /*!
      * Create window for specified fiel extension support
