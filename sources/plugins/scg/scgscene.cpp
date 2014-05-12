@@ -38,6 +38,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "modes/scgselectmode.h"
 #include "modes/scginsertmode.h"
 #include "modes/scgclonemode.h"
+#include "modes/scgfivemode.h"
 
 #include "commands/scgbasecommand.h"
 #include "commands/scgcommandchangeincedentobject.h"
@@ -72,6 +73,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsView>
 #include <QGraphicsProxyWidget>
 #include <QCursor>
+#include <signal.h>
+#include <windows.h>
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     QGraphicsScene(parent),
@@ -86,6 +89,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Bus] = new SCgBusMode(this);
     mSceneModes[Mode_Pair] = new SCgPairMode(this);
     mSceneModes[Mode_Contour] = new SCgContourMode(this);
+    mSceneModes[Mode_Five] = new SCgFiveMode(this);
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
@@ -816,8 +820,18 @@ bool topToBottomleftToRightSortingPredicate(SCgObject* it1, SCgObject* it2)
 
     return isAbove || (isLeft && haveSameY);
 }
+
+void handler_sigsegv(int signum)
+{
+    MessageBoxA(NULL,"no access to memory. Close","POSIX Signal",MB_ICONSTOP);
+    signal(signum, SIG_DFL);
+    exit(3);
+}
+
+
 SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
 {
+    signal(SIGSEGV, handler_sigsegv);
     if(ttf.isEmpty())
         return 0;
 

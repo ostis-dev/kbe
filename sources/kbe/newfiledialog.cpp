@@ -23,16 +23,19 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "newfiledialog.h"
 #include "pluginmanager.h"
 #include "interfaces/editorinterface.h"
+#include "newscgactionsdialog.h"
 
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QListWidget>
 #include <QKeyEvent>
 #include <QPushButton>
+#include <QPair>
 
 NewFileDialog::NewFileDialog(QWidget *parent) :
     QDialog(parent)
 {
+     setWindowTitle(tr("Select new File"));
     QVBoxLayout *lay = new QVBoxLayout;
     QLabel *lab = new QLabel(tr("List of available formats:"));
 
@@ -43,25 +46,25 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     QList<EditorFactoryInterface*> factories = PluginManager::instance()->editorFactoriesByType().values();
     QList<EditorFactoryInterface*>::iterator it, itEnd = factories.end();
 
+    QPair<QListWidgetItem *, QString> pairToolTip;
     for (it = factories.begin(); it != itEnd; ++it)
     {
         /// @todo add custom icon and tooltip support.
         QListWidgetItem *itemToAdd = new QListWidgetItem((*it)->icon(), (*it)->name());
         itemToAdd->setData(EditorTypeRole, (*it)->name());
+        pairToolTip.first = itemToAdd;
+        pairToolTip.second = "Plug-in for creating and editing " + (*it)->name() + " texts";
+        itemToAdd->setToolTip(pairToolTip.second);
         mAvailableTypesList->addItem(itemToAdd);
     }
 
     QHBoxLayout *buttonLay = new QHBoxLayout;
-    QPushButton *butOk = new QPushButton(tr("OK"));
 
     if (mAvailableTypesList->count() > 0)
         mAvailableTypesList->item(0)->setSelected(true);
-    else
-        butOk->setEnabled(false);
 
     QPushButton *butCancel = new QPushButton(tr("Cancel"));
 
-    buttonLay->addWidget(butOk, 1, Qt::AlignRight);
     buttonLay->addWidget(butCancel, 1, Qt::AlignRight);
 
     lay->addWidget(lab);
@@ -69,8 +72,7 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     lay->addLayout(buttonLay);
     setLayout(lay);
 
-    connect(butOk, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(mAvailableTypesList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(accept()));
+    connect(mAvailableTypesList, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(openNewProgram(QModelIndex)));
     connect(butCancel, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
@@ -81,4 +83,17 @@ NewFileDialog::~NewFileDialog()
 QString NewFileDialog::selectedEditor() const
 {
     return mAvailableTypesList->selectedItems().at(0)->data(EditorTypeRole).toString();
+}
+
+void NewFileDialog::openNewProgram(QModelIndex index)
+{
+    if(index.data().toString() == "scg")
+    {
+        newscgactionsdialog* scgDialog = new newscgactionsdialog(this);
+        scgDialog->exec();
+    }
+    if(index.data().toString() == "m4scp")
+    {
+        accept();
+    }
 }

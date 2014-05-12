@@ -60,7 +60,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
-
+#include "commands/scgcommandcreatepair.h"
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
@@ -223,7 +223,21 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Contour] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
-    //
+
+    // construction group button
+    QToolButton *constructionButton = new QToolButton(mToolBar);
+    constructionButton->setIcon(findIcon("tool-construction.png"));
+    constructionButton->setPopupMode(QToolButton::InstantPopup);
+    mToolBar->addWidget(constructionButton);
+
+    // Five creation mode
+    action = new QAction(findIcon("tool-construction-five.png"),tr("Construction for 5 elements creation mode"), mToolBar);
+    action->setCheckable(true);
+    action->setShortcut(QKeySequence(tr("10", "Construction for 5 elements creation mode")));
+    constructionButton->addAction(action);
+    mMode2Action[SCgScene::Mode_Five] = action;
+    connect(action, SIGNAL(triggered()), this, SLOT(onFiveMode()));
+
     mToolBar->addSeparator();
     //
 
@@ -404,6 +418,13 @@ void SCgWindow::onContourMode()
 {
     static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Contour);
     mView->viewport()->setCursor(Qt::CrossCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onFiveMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Five);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
     mView->setDragMode(QGraphicsView::NoDrag);
 }
 
@@ -599,6 +620,7 @@ void SCgWindow::find(const QString &ttf, bool forward, bool checkCurrent)
     SCgObject* found = scene->find(ttf, flg);
     if(!found)
     {
+        mFindWidget->setFindButtonEnable(false);
         if(forward)
             scene->setCursorPos(scene->sceneRect().topLeft());
         else
@@ -618,6 +640,7 @@ void SCgWindow::find(const QString &ttf, bool forward, bool checkCurrent)
 
     if(found)
     {
+        mFindWidget->setFindButtonEnable(true);
         mView->ensureVisible(found, 300, 300);
         mView->scene()->clearSelection();
         found->setSelected(true);

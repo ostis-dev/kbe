@@ -1,9 +1,7 @@
-#ifndef NEWFILEDIALOG_H
-#define NEWFILEDIALOG_H
+#ifndef NEWSCGACTIONSDIALOG_H
+#define NEWSCGACTIONSDIALOG_H
 
 #include <QDialog>
-
-#include <QLabel>
 #include <QListWidget>
 
 class QListWidget;
@@ -11,7 +9,7 @@ class QListWidget;
 /*!
  * New File dialog window.
  */
-class NewFileDialog : public QDialog
+class newscgactionsdialog : public QDialog
 {
     Q_OBJECT
 
@@ -21,21 +19,22 @@ class NewFileDialog : public QDialog
         EditorTypeRole = 0
     };
 public:
-    explicit NewFileDialog(QWidget *parent = 0);
-    virtual ~NewFileDialog();
+    explicit newscgactionsdialog(QWidget *parent = 0);
+    virtual ~newscgactionsdialog();
 
     /*!
      * \return Format currently selected by the user
      */
     QString selectedEditor() const;
 signals:
-    
+
 public slots:
     void openNewProgram(QModelIndex index);
 
 private:
     //! Holds items avaliable for user to select.
     QListWidget *mAvailableTypesList;
+
 };
 
-#endif // NEWFILEDIALOG_H
+#endif // NEWSCGACTIONSDIALOG_H

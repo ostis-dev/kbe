@@ -52,7 +52,7 @@ public:
     void setPalette(bool found);
 
     void setTextWrappedVisible(bool visible);
-
+    void setFindButtonEnable(bool value);
 signals:
     void escapePressed();
 

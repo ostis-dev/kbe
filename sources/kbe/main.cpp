@@ -81,17 +81,17 @@ int main(int argc, char *argv[])
 
     QSettings settings;
     // check if startup dialog property exist
-    if (!settings.contains(Config::settingsShowStartupDialog))
-        settings.setValue(Config::settingsShowStartupDialog, QVariant(true));
+ //   if (!settings.contains(Config::settingsShowStartupDialog))
+   //     settings.setValue(Config::settingsShowStartupDialog, QVariant(true));
 
     MainWindow::getInstance()->updateWindowTitle();
 
     // show startup dialog
-//    if (settings.value(SETTINGS_STARTUP_DIALOG_SHOW).toBool())
-//    {
-//        GuideDialog startDialog(MainWindow::getInstance());
-//        startDialog.exec();
-//    }
+    if (settings.value(Config::settingsShowStartupDialog).toBool())
+    {
+        GuideDialog startDialog(MainWindow::getInstance());
+        startDialog.exec();
+    }
 
     //splash.finish(&w);
     return a.exec();
