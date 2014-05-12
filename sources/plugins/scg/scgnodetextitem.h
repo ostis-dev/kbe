@@ -46,6 +46,8 @@ public:
 protected:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
+	virtual void keyPressEvent(QKeyEvent *event);
+
     void setTextPos(SCgNode::IdentifierPosition pos);
     SCgNode::IdentifierPosition textPos() const { return mTextPos; }
     void updateTextPos(SCgNode::IdentifierPosition pos);

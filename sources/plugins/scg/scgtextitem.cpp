@@ -106,3 +106,9 @@ void SCgTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsTextItem::mouseReleaseEvent(event);
 }
 
+void SCgTextItem::keyPressEvent(QKeyEvent *event)
+{
+    setFlag(QGraphicsItem::ItemIsMovable, false);
+    QGraphicsTextItem::keyPressEvent(event);
+}
+

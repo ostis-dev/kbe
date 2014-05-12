@@ -21,6 +21,7 @@ along with OSTIS.  If not, see .
 */
 
 #include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
 #include "scgnodetextitem.h"
 
 
@@ -53,6 +54,41 @@ void SCgNodeTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
     if ((flags() & QGraphicsItem::ItemIsMovable) != 0)
         setTextPos(posToIdtfPos(mapToParent(event->pos())));
+}
+
+void SCgNodeTextItem::keyPressEvent(QKeyEvent *event)
+{
+    if (flags() != 0)
+        switch(event->key())
+        {
+            case Qt::Key_Left:
+                if (mTextPos == SCgNode::BottomRight)
+                    setTextPos(SCgNode::BottomLeft);
+                else if (mTextPos == SCgNode::TopRight)
+                    setTextPos((SCgNode::TopLeft));
+                break;
+
+            case Qt::Key_Right:
+                if (mTextPos == SCgNode::BottomLeft)
+                    setTextPos(SCgNode::BottomRight);
+                else if (mTextPos == SCgNode::TopLeft)
+                    setTextPos((SCgNode::TopRight));
+                break;
+
+            case Qt::Key_Up:
+                if (mTextPos == SCgNode::BottomRight)
+                    setTextPos(SCgNode::TopRight);
+                else if (mTextPos == SCgNode::BottomLeft)
+                    setTextPos((SCgNode::TopLeft));
+                break;
+
+            case Qt::Key_Down:
+                if (mTextPos == SCgNode::TopRight)
+                    setTextPos(SCgNode::BottomRight);
+                else if (mTextPos == SCgNode::TopLeft)
+                    setTextPos((SCgNode::BottomLeft));
+                break;
+        }
 }
 
 
@@ -97,13 +133,17 @@ void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
 	QRectF rect = boundingRect();
 	QRectF parentRect =  mParentItem->boundingRect();
 
-	QPointF newPos = parentRect.bottomRight() - QPointF(rect.x(),rect.y());
+	QPointF newPos;
 
     if (pos == SCgNode::BottomLeft || pos == SCgNode::TopLeft)
-		newPos.rx() = parentRect.left() - rect.width() - rect.x();
+        newPos.setX(parentRect.left() - rect.width() + 4);
+    else
+        newPos.setX(parentRect.right() - 4);
 
     if (pos == SCgNode::TopLeft || pos == SCgNode::TopRight)
-		newPos.ry() = parentRect.top() - rect.height() - rect.y();
+        newPos.setY(parentRect.top() - rect.height() + 4);
+    else
+        newPos.setY(parentRect.bottom() - 4);
 
 	setPos(newPos);
     mParentItem->setSelected(true);
