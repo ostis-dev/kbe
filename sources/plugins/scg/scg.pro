@@ -46,8 +46,10 @@ HEADERS += \
     scgtextitem.h \
     gwf/gwfstreamwriter.h \
     gwf/gwfobjectinforeader.h \
+    gwf/scsobjectinforeader.h \
     gwf/gwffilewriter.h \
     gwf/gwffileloader.h \
+    gwf/scsfileloader.h \
     scgplugin.h \
     scgfindwidget.h \
     scgundoviewmodel.h \
@@ -132,6 +134,8 @@ SOURCES += \
     gwf/gwfobjectinforeader.cpp \
     gwf/gwffilewriter.cpp \
     gwf/gwffileloader.cpp \
+    gwf/scsfileloader.cpp \
+    gwf/scsobjectinforeader.cpp \
     scgplugin.cpp \
     scgfindwidget.cpp \
     scgundoviewmodel.cpp \
