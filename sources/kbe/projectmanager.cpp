@@ -240,8 +240,10 @@ void ProjectManagerView::onProjectNew()
     //creating project's directory
     if (parentDir.mkdir(name))
     {
+        parentDir = QDir(absPath);
         parentDir.mkdir("sources");
-        ProjectManagerModelItem* project = new ProjectManagerModelItem(name,"",
+
+        ProjectManagerModelItem* project = new ProjectManagerModelItem(name,QFileInfo(absPath,name+".kbpro").absoluteFilePath(),
                                                                        ProjectManagerModelItem::Project,
                                                                        model->getRootItem());
         model->insertProject(project);
@@ -483,6 +485,7 @@ void ProjectManagerView::onAddFilter()
         }
 
         QDir sourcesDir = item->getAbsoluteSourcesDir();
+        qDebug() << sourcesDir.absolutePath();
         if (!sourcesDir.exists())
             if (! QDir(item->getProjectItem()->getAbsoluteFileDir()).mkdir("sources"))
             {
@@ -517,7 +520,11 @@ void ProjectManagerView::onAddExistingFiles()
         return;
 
     ProjectManagerModelItem* filterItem = model->getItem(currentIndex());
-    QString filterDirectory = filterItem->getAbsoluteFileDir();
+    QString filterDirectory;
+    if (filterItem->getItemType()==ProjectManagerModelItem::Project)
+        filterDirectory = filterItem->getAbsoluteSourcesDir().absolutePath();
+    else
+        filterDirectory = filterItem->getAbsoluteFileDir();
 
     QStringList files = QFileDialog::getOpenFileNames(this,tr("Add existing files"),
                                                      filterDirectory,

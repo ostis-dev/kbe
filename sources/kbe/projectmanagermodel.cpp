@@ -147,10 +147,16 @@ bool ProjectManagerModel::dropMimeData(const QMimeData *data,
             if (shownName.split(SEPARATOR).first()!=lastName.split(SEPARATOR).first())
                 return false;
 
-            if (action == Qt::MoveAction)
-                removeItem(lastName);
+            QString newAbsoluteFilePath = QFileInfo(item->getAbsoluteFileDir(), newItem->getName()).absoluteFilePath();
 
-            insertItem(shownName,filePath,newItem->getItemType());
+            if (QFile::copy(newItem->getFilePath(),newAbsoluteFilePath))
+            {
+                qDebug() << newItem->getFilePath();
+                QFile::remove(newItem->getFilePath());
+                removeItem(lastName);
+                insertItem(shownName,filePath,newItem->getItemType());
+
+            }
         }
         return true;
     }
@@ -596,6 +602,8 @@ QString ProjectManagerModelItem::getAbsoluteFilePath()
 
 QString ProjectManagerModelItem::getAbsoluteFileDir()
 {
+    if (this->getItemType() == Project)
+        return QFileInfo(getAbsoluteFilePath()).absoluteDir().absolutePath();
     if (this->getItemType() != Filter)
         return QFileInfo(getAbsoluteFilePath()).absoluteDir().absolutePath();
     else
