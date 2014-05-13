@@ -51,6 +51,8 @@ public:
     QVector<SCgObject *> createEraseElStr3Template(const QPointF &pos);
     QVector<SCgObject *> createEraseElStr5Template(const QPointF &pos);
     QVector<SCgObject *> createEraseElTemplate(const QPointF &pos);
+void expandTemplate(QString nodeValue, QGraphicsSceneMouseEvent *event);
+    void generateSCPCode(QString nodeValue, QMap<int, QList<QString> > atrMap, QList<QString> endObject);
 private:
     SCgNode *createNodeForGhostAtribute(const QString &idtf,
                                         const QPointF &pos,
@@ -62,8 +64,9 @@ private:
                                         QVector<SCgObject *> &graphicItem);
 private:
     SCgScene *mScene;
-
+    QVector<SCgObject*> graphicItem;
     float pairPos;
+    QString returnComma(int index, int size);
 };
 
 #endif // SCGTEMPLATE_H

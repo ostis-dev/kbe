@@ -17,7 +17,6 @@ SCgTemplate::SCgTemplate(SCgScene *mScene)
 
 QVector<SCgObject*> SCgTemplate::createGenElTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("genEl", pos, graphicItem);
 
@@ -53,7 +52,6 @@ QVector<SCgObject*> SCgTemplate::createGenElTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createGenElStr3Template(const QPointF &pos)
 {
-     QVector<SCgObject*> graphicItem;
 
      SCgBus *bus = createGroupConstruct("genElStr3", pos, graphicItem);
      bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
@@ -133,7 +131,7 @@ QVector<SCgObject *> SCgTemplate::createGenElStr3Template(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createGenElStr5Template(const QPointF &pos)
 {
-     QVector<SCgObject*> graphicItem = createGenElStr3Template(pos);
+     graphicItem = createGenElStr3Template(pos);
 
      graphicItem.at(0)->setIdtfValue("genElStr5");
      static_cast<SCgPair *>(graphicItem.at(6))->setBeginDot(.16f);
@@ -185,7 +183,6 @@ QVector<SCgObject *> SCgTemplate::createGenElStr5Template(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createSearchElStr3Template(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("searchElStr3", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
@@ -269,7 +266,7 @@ QVector<SCgObject *> SCgTemplate::createSearchElStr3Template(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createSearchElStr5Template(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem = createSearchElStr3Template(pos);
+    graphicItem = createSearchElStr3Template(pos);
 
     graphicItem.at(0)->setIdtfValue("searchElStr5");
     static_cast<SCgPair *>(graphicItem.at(6))->setBeginDot(.16f);
@@ -332,7 +329,6 @@ QVector<SCgObject *> SCgTemplate::createSearchElStr5Template(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createEraseElTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
     SCgBus *bus = createGroupConstruct("eraseEl", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
 
@@ -351,8 +347,6 @@ QVector<SCgObject *> SCgTemplate::createEraseElTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createEraseElStr3Template(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
-
     SCgBus *bus = createGroupConstruct("eraseElStr3", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
 
@@ -426,7 +420,7 @@ QVector<SCgObject *> SCgTemplate::createEraseElStr3Template(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createEraseElStr5Template(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem = createEraseElStr3Template(pos);
+    graphicItem = createEraseElStr3Template(pos);
 
     graphicItem.at(0)->setIdtfValue("eraseElStr5");
     static_cast<SCgPair *>(graphicItem.at(6))->setBeginDot(.16f);
@@ -489,7 +483,6 @@ QVector<SCgObject *> SCgTemplate::createEraseElStr5Template(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createSearchSetStr3Template(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("searchSetStr3", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
@@ -501,7 +494,6 @@ QVector<SCgObject *> SCgTemplate::createSearchSetStr3Template(const QPointF &pos
 
 QVector<SCgObject *> SCgTemplate::createSearchSetStr5Template(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("searchSetStr5", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
@@ -514,7 +506,6 @@ QVector<SCgObject *> SCgTemplate::createSearchSetStr5Template(const QPointF &pos
 
 QVector<SCgObject*> SCgTemplate::createProgramSCPTempale(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
     SCgNode *groupNode = new SCgNode();
     groupNode->setIdtfValue("scp-procedure");
     groupNode->setIdtfPos(SCgNode::TopRight);
@@ -617,7 +608,6 @@ QVector<SCgObject*> SCgTemplate::createProgramSCPTempale(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createPrintElTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("printEl", pos, graphicItem);
 
@@ -643,7 +633,6 @@ QVector<SCgObject *> SCgTemplate::createPrintElTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createPrintNlTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("printNl", pos, graphicItem);
 
@@ -669,7 +658,6 @@ QVector<SCgObject *> SCgTemplate::createPrintNlTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createPrintTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("print", pos, graphicItem);
 
@@ -683,7 +671,6 @@ QVector<SCgObject *> SCgTemplate::createPrintTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createifTypeTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("ifType", pos, graphicItem);
 
@@ -717,7 +704,6 @@ QVector<SCgObject *> SCgTemplate::createifTypeTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createifEqTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
     SCgBus *bus = createGroupConstruct("ifEq", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
 
@@ -736,7 +722,6 @@ QVector<SCgObject *> SCgTemplate::createifEqTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createifCoinTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
     SCgBus *bus = createGroupConstruct("ifCoin", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
 
@@ -755,7 +740,6 @@ QVector<SCgObject *> SCgTemplate::createifCoinTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createifGrTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
     SCgBus *bus = createGroupConstruct("ifGr", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
 
@@ -775,7 +759,6 @@ QVector<SCgObject *> SCgTemplate::createifGrTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createAddTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Add", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 100));
@@ -806,7 +789,6 @@ QVector<SCgObject *> SCgTemplate::createAddTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createSubTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Sub", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 100));
@@ -836,7 +818,6 @@ QVector<SCgObject *> SCgTemplate::createSubTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createMultTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Mult", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 100));
@@ -866,7 +847,6 @@ QVector<SCgObject *> SCgTemplate::createMultTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createDivTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Div", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 100));
@@ -896,7 +876,6 @@ QVector<SCgObject *> SCgTemplate::createDivTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createPowTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Pow", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 100));
@@ -926,7 +905,6 @@ QVector<SCgObject *> SCgTemplate::createPowTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createCallReturnTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("callReturn", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 200));
@@ -938,7 +916,6 @@ QVector<SCgObject *> SCgTemplate::createCallReturnTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createReturnTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Return", pos, graphicItem);
     createPairWithVariableNode(QPointF(pos.x()+150, pos.y() + 92), bus, .05f, graphicItem);
@@ -951,7 +928,6 @@ QVector<SCgObject *> SCgTemplate::createReturnTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createSinTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Sin", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 50));
@@ -979,7 +955,6 @@ QVector<SCgObject *> SCgTemplate::createSinTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createASinTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("ASin", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 50));
@@ -1007,7 +982,6 @@ QVector<SCgObject *> SCgTemplate::createASinTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createCosTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("Cos", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 50));
@@ -1035,7 +1009,6 @@ QVector<SCgObject *> SCgTemplate::createCosTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createACosTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("ACon", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 50));
@@ -1063,7 +1036,6 @@ QVector<SCgObject *> SCgTemplate::createACosTemplate(const QPointF &pos)
 
 QVector<SCgObject *> SCgTemplate::createToStrTemplate(const QPointF &pos)
 {
-    QVector<SCgObject*> graphicItem;
 
     SCgBus *bus = createGroupConstruct("toStr", pos, graphicItem);
     bus->changePointPosition(1, QPointF(bus->pointAt(1).x(), bus->pointAt(1).y() + 50));
@@ -1096,8 +1068,7 @@ SCgNode *SCgTemplate::createNodeForGhostAtribute(const QString &idtf, const QPoi
     node->setIdtfValue(idtf);
     node->setIdtfPos(SCgNode::BottomLeft);
     node->setTypeAlias("node/const/role");
-    node->setOpacity(.25f);
-    node->setVisible(false);
+    node->setOpacity(.0f);
     node->setGhost(true);
     graphicItem.push_back(node);
 
@@ -1109,8 +1080,8 @@ SCgPair *SCgTemplate::createPairForGhostAtribute(SCgObject *begObj, SCgObject *e
     SCgPair *pair = mScene->createSCgPair(begObj, endObj, points);
 
     pair->setEndDot(pairPos += .13f);
-    pair->setOpacity(.25f);
-    pair->setVisible(false);
+    pair->setOpacity(.0f);
+
     graphicItem.push_back(pair);
 
     return pair;
@@ -1164,7 +1135,9 @@ SCgPair *SCgTemplate::createPairWithVariableNode(const QPointF &pos,SCgObject *b
     graphicItem.push_back(busVariablePair);
 
     return busVariablePair;
-}SCgPair *SCgTemplate::createPairWithVariableNode(const QPointF &pos,
+}
+
+SCgPair *SCgTemplate::createPairWithVariableNode(const QPointF &pos,
                                                   SCgObject *begObj,
                                                   float pairBeginDot,
                                                   QVector<SCgObject *> &graphicItem)
@@ -1197,4 +1170,101 @@ SCgPair *SCgTemplate::createPairForGhostAtribute(SCgObject *begObj, SCgObject *e
     graphicItem.push_back(pair);
 
     return pair;
+}
+
+void SCgTemplate::expandTemplate(QString nodeValue, QGraphicsSceneMouseEvent *event)
+{
+    if(nodeValue == "genEl")
+        createGenElTemplate(event->scenePos());
+    if(nodeValue == "eraseEl")
+        createEraseElTemplate(event->scenePos());
+    if(nodeValue == "genElStr3")
+        createGenElStr3Template(event->scenePos());
+    if(nodeValue == "genElStr5")
+        createGenElStr5Template(event->scenePos());
+    if(nodeValue == "searchElStr3")
+        createSearchElStr3Template(event->scenePos());
+    if(nodeValue == "searchElStr5")
+        createSearchElStr5Template(event->scenePos());
+    if(nodeValue == "eraseElStr3")
+        createEraseElStr3Template(event->scenePos());
+    if(nodeValue == "eraseElStr5")
+        createEraseElStr5Template(event->scenePos());
+    if(nodeValue == "searchSetStr3")
+        createSearchElStr3Template(event->scenePos());
+    if(nodeValue == "searchSetStr5")
+        createSearchElStr5Template(event->scenePos());
+    if(nodeValue == "scp-procedure")
+        createProgramSCPTempale(event->scenePos());
+    if(nodeValue == "printEl")
+        createPrintElTemplate(event->scenePos());
+    if(nodeValue == "printNl")
+        createPrintNlTemplate(event->scenePos());
+    if(nodeValue == "print")
+        createPrintTemplate(event->scenePos());
+    if(nodeValue == "ifType")
+        createifTypeTemplate(event->scenePos());
+    if(nodeValue == "ifEq")
+        createifEqTemplate(event->scenePos());
+    if(nodeValue == "ifCoin")
+        createifCoinTemplate(event->scenePos());
+    if(nodeValue == "ifGr")
+        createifGrTemplate(event->scenePos());
+    if(nodeValue == "Add")
+        createAddTemplate(event->scenePos());
+    if(nodeValue == "Sub")
+        createSubTemplate(event->scenePos());
+    if(nodeValue == "Mult")
+        createMultTemplate(event->scenePos());
+    if(nodeValue == "Div")
+        createDivTemplate(event->scenePos());
+    if(nodeValue == "Pow")
+        createPowTemplate(event->scenePos());
+    if(nodeValue == "callReturn")
+        createCallReturnTemplate(event->scenePos());
+    if(nodeValue == "Return")
+        createReturnTemplate(event->scenePos());
+    if(nodeValue == "Sin")
+        createSinTemplate(event->scenePos());
+    if(nodeValue == "ASin")
+        createASinTemplate(event->scenePos());
+    if(nodeValue == "Cos")
+        createCosTemplate(event->scenePos());
+    if(nodeValue == "ACos")
+        createACosTemplate(event->scenePos());
+    if(nodeValue == "toStr")
+        createToStrTemplate(event->scenePos());
+}
+
+void SCgTemplate::generateSCPCode(QString nodeValue, QMap<int, QList<QString> > atrMap, QList<QString> endObject)
+{
+    QFile file("SCPProgram.m4scp");
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+             return;
+    QTextStream out(&file);
+    out << nodeValue <<"([\n" ;
+    int keyValue = 1;
+
+    for(int index = 0; index < atrMap.size(); index++)
+    {
+        out << keyValue << "_: ";
+
+        foreach (QString s, atrMap[index])
+                out << s << ": ";
+
+        out << endObject.at(index) << returnComma(index, atrMap.size()) << "\n";
+
+        keyValue++;
+    }
+    out << "])";
+
+    file.close();
+}
+
+QString SCgTemplate::returnComma(int index, int size)
+{
+    if(index + 1 < size)
+        return ",";
+    else
+        return "";
 }

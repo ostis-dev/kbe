@@ -167,6 +167,108 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
             event->accept();
         }
     }
+if(event->modifiers() == Qt::AltModifier && event->button() == Qt::LeftButton)
+    {
+        QGraphicsItem *pItem = mScene->itemAt(event->scenePos());
+        SCgTemplate *scgTemplate = new SCgTemplate(mScene);
+
+        if(mScene->itemAt(event->scenePos()) == 0)
+            return;
+
+        if(pItem->type() == SCgNode::Type)
+        {
+                SCgPair *childrenPair;
+                SCgPair *busChildrenPair;
+                QList<QGraphicsItem*> items = mScene->selectedItems();
+                QGraphicsItem *item = 0;
+                foreach(item, items)
+                {
+                    if (SCgObject::isSCgObjectType(item->type()))
+                        node = static_cast<SCgNode*>(item);
+                }
+
+                if(node->typeAlias() == "node/const/general")
+                {
+                    delete node;
+                    scgTemplate->expandTemplate(node->idtfValue(), event);
+                }
+
+                if(node->typeAlias() == "node/const/group")
+                {
+                    SCgObject::SCgObjectList connected = node->connectedObjects();
+                    SCgObject *c_obj = 0;
+                    foreach(c_obj, connected)
+                    {
+                        if(c_obj->type() == SCgPair::Type)
+                        {
+                            childrenPair = static_cast<SCgPair*>(c_obj);
+                            break;
+                        }
+                    }
+                    SCgNode *endPairNode = static_cast<SCgNode*>(childrenPair->endObject());
+                    SCgBus *bus = endPairNode->bus();
+                    SCgObject::SCgObjectList busConnected = bus->connectedObjects();
+
+                        for (int index = 0; index < busConnected.size(); index++) {
+                            busChildrenPair = static_cast<SCgPair*>(busConnected.at(index));
+                            SCgObject::SCgObjectList connectedGhosts = busChildrenPair->connectedObjects();
+                            foreach(SCgObject *c_obj, connectedGhosts){
+                                delete c_obj;
+                            }
+                            delete busChildrenPair->endObject();
+                            delete busChildrenPair;
+                        }
+                        delete bus;
+                        delete endPairNode;
+                        delete childrenPair;
+                        node->setTypeAlias("node/const/general");
+                }
+        }
+
+    }
+    if(event->modifiers() == Qt::AltModifier && event->button() == Qt::RightButton)
+    {
+        SCgPair *childrenPair;
+        SCgPair *busChildrenPair;
+        SCgTemplate *scgTemplate = new SCgTemplate(mScene);
+        QPointF mousePos = event->scenePos();
+        QGraphicsItem *pItem = mScene->itemAt(mousePos);
+        SCgNode *node = static_cast<SCgNode*>(pItem);
+        QString nodeValue = node->idtfValue();
+
+        SCgObject::SCgObjectList connected = node->connectedObjects();
+        SCgObject *c_obj = 0;
+        foreach(c_obj, connected)
+        {
+            if(c_obj->type() == SCgPair::Type)
+            {
+                childrenPair = static_cast<SCgPair*>(c_obj);
+                break;
+            }
+        }
+        SCgNode *endPairNode = static_cast<SCgNode*>(childrenPair->endObject());
+        SCgBus *bus = endPairNode->bus();
+        SCgObject::SCgObjectList busConnected = bus->connectedObjects();
+        QList<QString> listBeginObject;
+        QList<QString> listEndObject;
+        QMap<int, QList<QString> > atrMap;
+
+            for (int index = 0; index < busConnected.size(); index++) {
+                busChildrenPair = static_cast<SCgPair*>(busConnected.at(index));
+                SCgObject::SCgObjectList connectedGhosts = busChildrenPair->connectedObjects();
+                if(!listBeginObject.isEmpty())
+                    listBeginObject.clear();
+                foreach(SCgObject *c_obj, connectedGhosts){
+                    if(c_obj->opacity() >= 1.0f)
+                    {
+                        listBeginObject.append(static_cast<SCgPair*>(c_obj)->beginObject()->idtfValue());
+                        atrMap.insert(index, listBeginObject);
+                    }
+                }
+                listEndObject.append(busChildrenPair->endObject()->idtfValue());
+            }
+            scgTemplate->generateSCPCode(nodeValue, atrMap, listEndObject);
+    }
 }
 
 void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
