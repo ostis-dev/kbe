@@ -77,6 +77,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
     connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateMenu()));
 
+    /*creating project manager widget */
+    ProjectManagerDockWidget::instance() -> setWindowTitle(tr("Project Manager"));
+    ProjectManagerDockWidget::instance()->setObjectName("Project Name");
+    addDockWidget(Qt::LeftDockWidgetArea,ProjectManagerDockWidget::instance());
+
+    if (ProjectManagerView* prView = ProjectManagerDockWidget::instance()->getTreeView())
+    {
+        connect(prView, SIGNAL(openFile(QString)), this, SLOT(fileOpen(QString)));
+        connect(prView, SIGNAL(event(ProjectManagerView::ProjectManagerEvent)),
+                this, SLOT(acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent)));
+    }
+
+
     setCentralWidget(mTabWidget);
 
     connect(mTabWidget, SIGNAL(currentChanged(int)),
@@ -150,10 +163,12 @@ void MainWindow::createToolBars()
 void MainWindow::createActions()
 {
     ui->actionNew->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
+    ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
+    ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
-
+    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
@@ -173,6 +188,16 @@ void MainWindow::createActions()
     connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(updateMenu()));
     connect(ui->actionClose_Others, SIGNAL(triggered()), this, SLOT(updateMenu()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(fileExit()));
+
+    if (ProjectManagerView* pmTreeView = ProjectManagerDockWidget::instance()->getTreeView())
+    {
+        connect(ui->actionNew_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectNew()));
+        connect(ui->actionOpen_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectOpen()));
+        ui->actionSave_Project->setEnabled(false);
+        connect(ui->actionSave_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectSave()));
+        ui->actionClose_Project->setEnabled(false);
+        connect(ui->actionClose_Project,SIGNAL(triggered()), pmTreeView, SLOT(onProjectClose()));
+    }
 
     for (int i = 0; i < MaxRecentFiles; ++i)
     {
@@ -245,18 +270,20 @@ void MainWindow::updateMenu()
 
 void MainWindow::updateSpecificViewMenu()
 {
-    ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
+//    ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
     ui->menuView->clear();
+    ui->menuView->addAction(ProjectManagerDockWidget::instance()->toggleViewAction());
     if(mLastActiveWindow)
     {
         QList<QWidget*> ws = mLastActiveWindow->widgetsForDocks();
         if(!ws.empty())
         {
+
             foreach(QWidget* w, ws)
                 ui->menuView->addAction(mDockWidgets[w->objectName()]->toggleViewAction());
-            ui->menuView->menuAction()->setVisible(true);
         }
     }
+//    ui->menuView->menuAction()->setVisible(true);
 }
 void MainWindow::updateRecentFileActions()
 {
@@ -338,7 +365,6 @@ EditorInterface* MainWindow::createSubWindowByExt(const QString& ext)
         childWindow = PluginManager::instance()->createWindowByExt(ext);
     else
         return 0;
-
     mWidget2EditorInterface[childWindow->widget()] = childWindow;
     mTabWidget->addSubWindow(childWindow);
     childWindow->_setObserver(this);
@@ -363,25 +389,40 @@ void MainWindow::fileNew()
     }
 }
 
-void MainWindow::fileOpen()
+void MainWindow::fileOpen(QString fileName)
 {
-    QFileDialog::Options options;
-    options |= QFileDialog::DontUseNativeDialog;
-    QString selectedFilter;
-    QFileDialog dlg;
+    if (fileName.isNull())
+    {
+        QFileDialog::Options options;
+        options |= QFileDialog::DontUseNativeDialog;
+        QString selectedFilter;
+        QFileDialog dlg;
 
-    mBlurEffect->setEnabled(true);
-    dlg.setDirectory(mLastDir);
-    QString fileName = dlg.getOpenFileName(this,
-                                           tr("Open file"),
-                                           "",
-                                           PluginManager::instance()->openFilters(),
-                                           &selectedFilter,
-                                           options);
-    if (!fileName.isEmpty())
+        mBlurEffect->setEnabled(true);
+        dlg.setDirectory(mLastDir);
+        fileName = dlg.getOpenFileName(this,
+                                               tr("Open file"),
+                                               "",
+                                               PluginManager::instance()->openFilters(),
+                                               &selectedFilter,
+                                               options);
+        if (!fileName.isEmpty())
+            load(fileName);
+        mLastDir = QDir(fileName);
+        mBlurEffect->setEnabled(false);
+        return;
+    }
+
+    if (!fileName.isEmpty() && QFile::exists(fileName))
+    {
         load(fileName);
-    mLastDir = QDir(fileName);
-    mBlurEffect->setEnabled(false);
+        return;
+    }
+
+    QFileInfo fileInfo(fileName);
+    EditorInterface* childWindow = createSubWindowByExt(fileInfo.suffix());
+    saveWindow(childWindow, fileName, fileInfo.suffix());
+
 }
 
 void MainWindow::load(QString fileName)
@@ -765,7 +806,43 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
     }
 
+    // close project
+    if (ProjectManagerView* pmView = ProjectManagerDockWidget::instance()->getTreeView())
+        if (!pmView -> onProjectClose())
+        {
+            event->ignore();
+            return;
+        }
+
     saveLayout();
+}
+
+void MainWindow::acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent event)
+{
+    switch (event)
+    {
+    case ProjectManagerView::ProjectCreated:
+    case ProjectManagerView::ProjectOpened:
+        ui->actionNew_Project -> setEnabled(false);
+        ui->actionOpen_Project -> setEnabled(false);
+        ui->actionSave_Project -> setEnabled(false);
+        ui->actionClose_Project -> setEnabled(true);
+        break;
+    case ProjectManagerView::ProjectSaved:
+        ui->actionSave_Project -> setEnabled(false);
+        break;
+    case ProjectManagerView::ProjectClosed:
+        ui->actionNew_Project -> setEnabled(true);
+        ui->actionOpen_Project -> setEnabled(true);
+        ui->actionSave_Project -> setEnabled(false);
+        ui->actionClose_Project -> setEnabled(false);
+        break;
+    case ProjectManagerView::ProjectChanged:
+        ui->actionSave_Project -> setEnabled(true);
+        break;
+    case ProjectManagerView::DefaultEvent:
+        break;
+    }
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)

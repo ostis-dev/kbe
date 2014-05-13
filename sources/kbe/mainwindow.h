@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMap>
 #include <QDir>
 #include "extendedtabwidget.h"
+#include "projectmanager.h"
 #include "interfaces/editorinterface.h"
 
 namespace Ui {
@@ -180,7 +181,7 @@ public slots:
 
     void openRecentFile();
     void fileNew();
-    void fileOpen();
+    void fileOpen(QString fileName=QString());
     void fileSave(QWidget* window = 0);
     void fileSaveAs(QWidget* window = 0);
     void fileSaveAll();
@@ -210,6 +211,9 @@ public slots:
     void updateDockWidgets(bool hide);
 
     void closeEvent(QCloseEvent *event);
+
+    //! Accepts Project Managers events.
+    void acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent);
 };
 
 #endif // MAINWINDOW_H
