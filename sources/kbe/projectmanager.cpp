@@ -14,8 +14,6 @@
 #include <QInputDialog>
 #include <QFileDialog>
 
-#include <QDebug>
-
 ProjectManagerDockWidget* ProjectManagerDockWidget::mInstance = 0;
 
 ProjectManagerDockWidget::ProjectManagerDockWidget(QWidget *parent) :
@@ -485,7 +483,6 @@ void ProjectManagerView::onAddFilter()
         }
 
         QDir sourcesDir = item->getAbsoluteSourcesDir();
-        qDebug() << sourcesDir.absolutePath();
         if (!sourcesDir.exists())
             if (! QDir(item->getProjectItem()->getAbsoluteFileDir()).mkdir("sources"))
             {
