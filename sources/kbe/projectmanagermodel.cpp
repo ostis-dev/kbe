@@ -11,8 +11,6 @@
 #include <QUrl>
 #include <QMimeData>
 
-#include <QDebug>
-
 #define MIME_FORMAT     "application/kbe.project.item.list"
 
 #define TAG_PROJECT     "KBEProject"
@@ -151,11 +149,9 @@ bool ProjectManagerModel::dropMimeData(const QMimeData *data,
 
             if (QFile::copy(newItem->getFilePath(),newAbsoluteFilePath))
             {
-                qDebug() << newItem->getFilePath();
                 QFile::remove(newItem->getFilePath());
                 removeItem(lastName);
                 insertItem(shownName,filePath,newItem->getItemType());
-
             }
         }
         return true;
