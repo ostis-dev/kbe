@@ -3,7 +3,7 @@
 This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
 For the latest info, see http://www.ostis.net
 
-Copyright (c) 2010 OSTIS
+Copyright (c) 2010-2014 OSTIS
 
 OSTIS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -78,15 +78,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateMenu()));
 
     /*creating project manager widget */
-    ProjectManagerDockWidget::instance() -> setWindowTitle(tr("Project Manager"));
+    ProjectManagerDockWidget::instance()->setWindowTitle(tr("Project Manager"));
     ProjectManagerDockWidget::instance()->setObjectName("Project Name");
     addDockWidget(Qt::LeftDockWidgetArea,ProjectManagerDockWidget::instance());
 
     if (ProjectManagerView* prView = ProjectManagerDockWidget::instance()->getTreeView())
     {
         connect(prView, SIGNAL(openFile(QString)), this, SLOT(fileOpen(QString)));
-        connect(prView, SIGNAL(event(ProjectManagerView::ProjectManagerEvent)),
-                this, SLOT(acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent)));
+        connect(prView, SIGNAL(event(ProjectManagerView::eProjectManagerEvent)),
+                this, SLOT(acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEvent)));
     }
 
 
@@ -808,7 +808,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
     // close project
     if (ProjectManagerView* pmView = ProjectManagerDockWidget::instance()->getTreeView())
-        if (!pmView -> onProjectClose())
+        if (!pmView->onProjectClose())
         {
             event->ignore();
             return;
@@ -817,28 +817,28 @@ void MainWindow::closeEvent(QCloseEvent *event)
     saveLayout();
 }
 
-void MainWindow::acceptProjectManagerEvent(ProjectManagerView::ProjectManagerEvent event)
+void MainWindow::acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEvent event)
 {
     switch (event)
     {
     case ProjectManagerView::ProjectCreated:
     case ProjectManagerView::ProjectOpened:
-        ui->actionNew_Project -> setEnabled(false);
-        ui->actionOpen_Project -> setEnabled(false);
-        ui->actionSave_Project -> setEnabled(false);
-        ui->actionClose_Project -> setEnabled(true);
+        ui->actionNew_Project->setEnabled(false);
+        ui->actionOpen_Project->setEnabled(false);
+        ui->actionSave_Project->setEnabled(false);
+        ui->actionClose_Project->setEnabled(true);
         break;
     case ProjectManagerView::ProjectSaved:
-        ui->actionSave_Project -> setEnabled(false);
+        ui->actionSave_Project->setEnabled(false);
         break;
     case ProjectManagerView::ProjectClosed:
-        ui->actionNew_Project -> setEnabled(true);
-        ui->actionOpen_Project -> setEnabled(true);
-        ui->actionSave_Project -> setEnabled(false);
-        ui->actionClose_Project -> setEnabled(false);
+        ui->actionNew_Project->setEnabled(true);
+        ui->actionOpen_Project->setEnabled(true);
+        ui->actionSave_Project->setEnabled(false);
+        ui->actionClose_Project->setEnabled(false);
         break;
     case ProjectManagerView::ProjectChanged:
-        ui->actionSave_Project -> setEnabled(true);
+        ui->actionSave_Project->setEnabled(true);
         break;
     case ProjectManagerView::DefaultEvent:
         break;

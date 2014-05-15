@@ -1,3 +1,25 @@
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2010-2014 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+
 #include "projectmanagermodel.h"
 
 #include <QXmlStreamReader>
@@ -22,12 +44,12 @@
 ProjectManagerModel::ProjectManagerModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
-    rootItem = new ProjectManagerModelItem();
+    mRootItem = new ProjectManagerModelItem();
 }
 
 ProjectManagerModel::~ProjectManagerModel()
 {
-    delete rootItem;
+    delete mRootItem;
 }
 
 int ProjectManagerModel::columnCount(const QModelIndex &parent) const
@@ -35,7 +57,7 @@ int ProjectManagerModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid())
         return static_cast<ProjectManagerModelItem*>(parent.internalPointer())->columnCount();
     else
-        return rootItem->columnCount();
+        return mRootItem->columnCount();
 }
 
 QModelIndexList ProjectManagerModel::getPersistentIndexList() const
@@ -85,7 +107,7 @@ QMimeData *ProjectManagerModel::mimeData(const QModelIndexList &indexes) const
                 QString objectName = item->objectName();
                 QString shownName = item->getName();
                 QString filePath = item->getAbsoluteFilePath();
-                ProjectManagerModelItem::ItemType type = item->getItemType();
+                ProjectManagerModelItem::eItemType type = item->getItemType();
 
                 stream << objectName << shownName << filePath << type;
                 urlList.append(QUrl::fromLocalFile(filePath));
@@ -111,7 +133,7 @@ bool ProjectManagerModel::dropMimeData(const QMimeData *data,
     {
         QByteArray encodedData = data->data(MIME_FORMAT);
         QDataStream stream(&encodedData, QIODevice::ReadOnly);
-        QList< QPair<ProjectManagerModelItem*,QString> > newItems;
+        QList< QPair<ProjectManagerModelItem*, QString> > newItems;
 
         while (!stream.atEnd())
         {
@@ -119,19 +141,19 @@ bool ProjectManagerModel::dropMimeData(const QMimeData *data,
             QString shownName;
             QString absoluteFilePath;
             int n_itemType;
-            ProjectManagerModelItem::ItemType itemType;
+            ProjectManagerModelItem::eItemType itemType;
 
             stream >> lastObjectName;
             stream >> shownName;
             stream >> absoluteFilePath;
             stream >> n_itemType;
 
-            itemType = static_cast<ProjectManagerModelItem::ItemType>(n_itemType);
+            itemType = static_cast<ProjectManagerModelItem::eItemType>(n_itemType);
 
-            ProjectManagerModelItem* newItem = new ProjectManagerModelItem(shownName,absoluteFilePath,itemType);
+            ProjectManagerModelItem* newItem = new ProjectManagerModelItem(shownName, absoluteFilePath, itemType);
             QString lastPath(lastObjectName);
 
-            newItems << QPair<ProjectManagerModelItem*,QString>(newItem,lastPath);
+            newItems << QPair<ProjectManagerModelItem*, QString>(newItem,lastPath);
         }
 
         for (int i=0; i<newItems.count(); i++)
@@ -147,11 +169,11 @@ bool ProjectManagerModel::dropMimeData(const QMimeData *data,
 
             QString newAbsoluteFilePath = QFileInfo(item->getAbsoluteFileDir(), newItem->getName()).absoluteFilePath();
 
-            if (QFile::copy(newItem->getFilePath(),newAbsoluteFilePath))
+            if (QFile::copy(newItem->getFilePath(), newAbsoluteFilePath))
             {
                 QFile::remove(newItem->getFilePath());
                 removeItem(lastName);
-                insertItem(shownName,filePath,newItem->getItemType());
+                insertItem(shownName, filePath, newItem->getItemType());
             }
         }
         return true;
@@ -175,7 +197,7 @@ void ProjectManagerModel::loadProject(QString filePath)
         while (!rStream.atEnd() && !rStream.hasError())
         {
             rStream.readNextStartElement();
-            if (rStream.name()==TAG_PROJECT && rStream.isStartElement())
+            if (rStream.name() == TAG_PROJECT && rStream.isStartElement())
             {
                 if (projectItem)
                 {
@@ -185,17 +207,16 @@ void ProjectManagerModel::loadProject(QString filePath)
                 QString shownName = rStream.attributes().value(TAG_ATTR_NAME).toString();
                 QString fileName = proFile.fileName();
 
-                if (rootItem->findChild<ProjectManagerModelItem*>(shownName))
+                if (mRootItem->findChild<ProjectManagerModelItem*>(shownName))
                     return;
 
-                projectItem = new ProjectManagerModelItem(shownName, fileName,
-                                                              ProjectManagerModelItem::Project, rootItem);
+                projectItem = new ProjectManagerModelItem(shownName, fileName, ProjectManagerModelItem::Project, mRootItem);
                 projectItem->setObjectName(shownName);
 
                 insertProject(projectItem);
             }
 
-            if (rStream.name()==TAG_FILE && rStream.isStartElement())
+            if (rStream.name() == TAG_FILE && rStream.isStartElement())
             {
                 QString fileName = rStream.attributes().value(TAG_ATTR_PATH).toString();
                 QString filter = rStream.attributes().value(TAG_ATTR_FILTER).toString();
@@ -205,7 +226,7 @@ void ProjectManagerModel::loadProject(QString filePath)
 
                 QString newObjectName = projectItem->objectName()+ filter + SEPARATOR + fileName.split(SEPARATOR).last();
 
-                addChild(newObjectName, fileName, ProjectManagerModelItem::File, rootItem);
+                addChild(newObjectName, fileName, ProjectManagerModelItem::File, mRootItem);
             }
         }
         projectItem->setModified(false);
@@ -229,14 +250,14 @@ void ProjectManagerModel::saveProject(ProjectManagerModelItem *project, QString 
 
         wStream.writeStartElement(TAG_PROJECT);
             wStream.writeAttribute(TAG_ATTR_NAME, project->getName());
-            saveChilds(project,wStream);
+            saveChilds(project, wStream);
         wStream.writeEndElement();
 
         wStream.writeEndDocument();
 
         proFile.close();
 
-        project -> setModified(false);
+        project->setModified(false);
     }
 }
 
@@ -245,63 +266,63 @@ void ProjectManagerModel::saveChilds(ProjectManagerModelItem *item, QXmlStreamWr
     if (!item)
         return;
 
-    for (int i=0; i<item->childCount(); i++)
+    for (int i = 0; i < item->childCount(); i++)
         saveChilds(item->child(i),wStream);
 
     if (item->getItemType() == ProjectManagerModelItem::Project ||
-            item->getItemType() == ProjectManagerModelItem::Filter)
+        item->getItemType() == ProjectManagerModelItem::Filter)
+    {
         return;
+    }
 
     wStream.writeStartElement(TAG_FILE);
         QStringList filterPath = item->objectName().split(SEPARATOR);
         filterPath.pop_back();
         filterPath.pop_front();
+
         if (filterPath.count())
-            wStream.writeAttribute(TAG_ATTR_FILTER,filterPath.join(SEPARATOR));
-        wStream.writeAttribute(TAG_ATTR_PATH,item->getFilePath());
+            wStream.writeAttribute(TAG_ATTR_FILTER, filterPath.join(SEPARATOR));
+
+        wStream.writeAttribute(TAG_ATTR_PATH, item->getFilePath());
 
     wStream.writeEndElement();
 }
 
-void ProjectManagerModel::insertItem(const QString shownName, const QString filePath, ProjectManagerModelItem::ItemType type)
+void ProjectManagerModel::insertItem(const QString shownName, const QString filePath, ProjectManagerModelItem::eItemType type)
 {
     QStringList path = shownName.split(SEPARATOR);
 
     path.pop_back();
 
-    ProjectManagerModelItem* neededFilter = getPath(path,rootItem);
+    ProjectManagerModelItem* neededFilter = getPath(path, mRootItem);
 
     if (!neededFilter)
         return;
 
-    beginInsertRows(createIndex(0,0,neededFilter),
-                    neededFilter->childCount(),
-                    neededFilter->childCount()+1);
-
-    addChild(shownName,filePath,type,rootItem);
+    beginInsertRows(createIndex(0, 0, neededFilter), neededFilter->childCount(), neededFilter->childCount() + 1);
+    addChild(shownName,filePath,type,mRootItem);
 
     endInsertRows();
 }
 
 void ProjectManagerModel::insertProject(ProjectManagerModelItem *item)
 {
-    beginInsertRows(QModelIndex(),
-                    0,
-                    1);
+    beginInsertRows(QModelIndex(), 0, 1);
 
-    rootItem -> appendChild(item);
+    mRootItem->appendChild(item);
 
     endInsertRows();
 }
 
 void ProjectManagerModel::removeItem(ProjectManagerModelItem *item)
 {
-    if (item==NULL)
+    if (item == NULL)
         return;
-    QModelIndex index = createIndex(0,0,item);
+
+    QModelIndex index = createIndex(0, 0, item);
     if (index.isValid())
     {
-        beginRemoveRows(index,0,item->childCount());
+        beginRemoveRows(index, 0, item->childCount());
 
         item->parent()->removeChild(item);
 
@@ -316,10 +337,10 @@ void ProjectManagerModel::removeItem(QString itemObjectName)
 
     if (ProjectManagerModelItem* item = getRootItem()->findChild<ProjectManagerModelItem*>(itemObjectName))
     {
-        QModelIndex index = createIndex(0,0,item);
+        QModelIndex index = createIndex(0, 0, item);
         if (index.isValid())
         {
-            beginRemoveRows(index,0,item->childCount());
+            beginRemoveRows(index, 0, item->childCount());
 
             item->parent()->removeChild(item);
 
@@ -349,11 +370,10 @@ Qt::ItemFlags ProjectManagerModel::flags(const QModelIndex &index) const
     return 0;
 }
 
-QVariant ProjectManagerModel::headerData(int section, Qt::Orientation orientation,
-                               int role) const
+QVariant ProjectManagerModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-        return rootItem->data(section);
+        return mRootItem->data(section);
 
     return QVariant();
 }
@@ -367,7 +387,7 @@ QModelIndex ProjectManagerModel::index(int row, int column, const QModelIndex &p
     ProjectManagerModelItem *parentItem;
 
     if (!parent.isValid())
-        parentItem = rootItem;
+        parentItem = mRootItem;
     else
         parentItem = getItem(parent);
 
@@ -384,8 +404,9 @@ QModelIndex ProjectManagerModel::parent(const QModelIndex &index) const
 
     if (ProjectManagerModelItem *parentItem = getItem(index)->parent())
     {
-        if (parentItem == rootItem)
+        if (parentItem == mRootItem)
             return QModelIndex();
+
         return createIndex(parentItem->row(), 0, parentItem);
     }
 
@@ -400,7 +421,7 @@ int ProjectManagerModel::rowCount(const QModelIndex &parent) const
         return 0;
 
     if (!parent.isValid())
-        parentItem = rootItem;
+        parentItem = mRootItem;
     else
         parentItem = getItem(parent);
 
@@ -410,15 +431,17 @@ int ProjectManagerModel::rowCount(const QModelIndex &parent) const
 ProjectManagerModelItem* ProjectManagerModel::getItem(const QModelIndex &index) const
 {
     if (index.isValid())
+    {
         if (ProjectManagerModelItem* item = static_cast<ProjectManagerModelItem*>(index.internalPointer()))
             return item;
+    }
 
-    return NULL;
+    return 0;
 }
 
 ProjectManagerModelItem* ProjectManagerModel::getRootItem()
 {
-    return rootItem;
+    return mRootItem;
 }
 
 ProjectManagerModelItem* ProjectManagerModel::getItemByFilePath(QString filePath, ProjectManagerModelItem *parent)
@@ -437,23 +460,22 @@ ProjectManagerModelItem* ProjectManagerModel::getItemByFilePath(QString filePath
     return NULL;
 }
 
-ProjectManagerModelItem* ProjectManagerModel::addChild(const QString shownName, const QString filePath,
-                                                               ProjectManagerModelItem::ItemType type, ProjectManagerModelItem* rootItem)
+ProjectManagerModelItem* ProjectManagerModel::addChild(const QString shownName, const QString filePath, ProjectManagerModelItem::eItemType type, ProjectManagerModelItem* rootItem)
 {
     ProjectManagerModelItem* item  = NULL;
     QStringList path = shownName.split(SEPARATOR);
     QString name = path.last();
 
-    if (ProjectManagerModelItem* existingChild = getPath(QStringList(shownName.split(SEPARATOR).first()),rootItem) -> findChild<ProjectManagerModelItem*>(shownName))
+    if (ProjectManagerModelItem* existingChild = getPath(QStringList(shownName.split(SEPARATOR).first()),rootItem)->findChild<ProjectManagerModelItem*>(shownName))
         return existingChild;
 
     path.pop_back();
 
     if (ProjectManagerModelItem* neededFilter = getPath(path,rootItem))
     {
-        item = new ProjectManagerModelItem(name,filePath,type,neededFilter);
-        item -> setObjectName(shownName);
-        neededFilter -> appendChild(item);
+        item = new ProjectManagerModelItem(name, filePath, type, neededFilter);
+        item->setObjectName(shownName);
+        neededFilter->appendChild(item);
     }
 
     return item;
@@ -470,21 +492,21 @@ ProjectManagerModelItem* ProjectManagerModel::getPath(QStringList path, ProjectM
     {
         if (!parent->objectName().isEmpty())
             neededItemObjectName.push_front(parent->objectName()+SEPARATOR);
-        if (ProjectManagerModelItem* item = parent -> findChild<ProjectManagerModelItem*>(neededItemObjectName))
+        if (ProjectManagerModelItem* item = parent->findChild<ProjectManagerModelItem*>(neededItemObjectName))
         {
                 path.pop_front();
                 return getPath(path, item);
         } else
         {
             QString relativeDirPath;
-            if (parent -> getItemType() == ProjectManagerModelItem::Project)
+            if (parent->getItemType() == ProjectManagerModelItem::Project)
                 relativeDirPath = path.first();
             else
                 relativeDirPath = parent->getAbsoluteSourcesDir().relativeFilePath(QFileInfo(parent->getAbsoluteFilePath(),path.first()).absoluteFilePath());
 
-            ProjectManagerModelItem* newItem = new ProjectManagerModelItem(path.first(),relativeDirPath,ProjectManagerModelItem::Filter,parent);
-            newItem -> setObjectName(neededItemObjectName);
-            parent -> appendChild(newItem);
+            ProjectManagerModelItem* newItem = new ProjectManagerModelItem(path.first(), relativeDirPath, ProjectManagerModelItem::Filter, parent);
+            newItem->setObjectName(neededItemObjectName);
+            parent->appendChild(newItem);
             path.pop_front();
             return getPath(path,newItem);
         }
@@ -495,26 +517,30 @@ ProjectManagerModelItem* ProjectManagerModel::getPath(QStringList path, ProjectM
 QModelIndex ProjectManagerModel::getParentModelIndex(ProjectManagerModelItem* item)
 {
     if (item->parent())
-        return createIndex(0,0,item->parent());
+        return createIndex(0, 0, item->parent());
+
     return QModelIndex();
 }
 
-ProjectManagerModelItem::ProjectManagerModelItem(QObject *parent):
-    QObject(parent), m_isModified(false)
+
+// -----------------------------------------
+ProjectManagerModelItem::ProjectManagerModelItem(QObject *parent)
+    : QObject(parent)
+    , mIsModified(false)
 {
     parentItem = NULL;
 }
 
-ProjectManagerModelItem::ProjectManagerModelItem(QString shownName, QString filePath, ItemType type, ProjectManagerModelItem *parent):
-    QObject(parent), m_isModified(false)
+ProjectManagerModelItem::ProjectManagerModelItem(QString shownName, QString filePath, eItemType type, ProjectManagerModelItem *parent):
+    QObject(parent), mIsModified(false)
 {
     parentItem = parent;
 
     setObjectName(shownName);
 
-    this -> shownName = shownName;
-    this -> filePath = filePath;
-    this -> type = type;
+    this->mShownName = shownName;
+    this->mFilePath = filePath;
+    this->mItemType = type;
 }
 
 ProjectManagerModelItem::~ProjectManagerModelItem()
@@ -535,7 +561,7 @@ void ProjectManagerModelItem::removeChild(ProjectManagerModelItem *child)
         return;
 
     childItems.removeOne(child);
-    for (int i=0; i< child -> childCount(); i++)
+    for (int i = 0; i < child->childCount(); i++)
         child->removeChild(child->child(i));
     child->setObjectName("");
 
@@ -560,7 +586,7 @@ int ProjectManagerModelItem::columnCount() const
 
 QVariant ProjectManagerModelItem::data(int column) const
 {
-    return shownName;
+    return mShownName;
 }
 
 ProjectManagerModelItem *ProjectManagerModelItem::parent()
@@ -571,7 +597,7 @@ ProjectManagerModelItem *ProjectManagerModelItem::parent()
 ProjectManagerModelItem* ProjectManagerModelItem::getProjectItem()
 {
     ProjectManagerModelItem* projectItem = this;
-    while (projectItem && projectItem -> type != ProjectManagerModelItem::Project)
+    while (projectItem && projectItem->mItemType != ProjectManagerModelItem::Project)
         projectItem = projectItem->parent();
 
     return projectItem;
@@ -579,18 +605,18 @@ ProjectManagerModelItem* ProjectManagerModelItem::getProjectItem()
 
 void ProjectManagerModelItem::setFilePath(QString filePath)
 {
-    this->filePath = filePath;
+    this->mFilePath = filePath;
 }
 
 QString ProjectManagerModelItem::getAbsoluteFilePath()
 {
-    switch(type)
+    switch(mItemType)
     {
     case Project:
-        return QFileInfo(filePath).absoluteFilePath();
+        return QFileInfo(mFilePath).absoluteFilePath();
     case Filter:
     case File:
-        return QFileInfo(getAbsoluteSourcesDir().absolutePath(),filePath).absoluteFilePath();
+        return QFileInfo(getAbsoluteSourcesDir().absolutePath(),mFilePath).absoluteFilePath();
     default:
         return QString();
     }
@@ -608,7 +634,7 @@ QString ProjectManagerModelItem::getAbsoluteFileDir()
 
 QDir ProjectManagerModelItem::getAbsoluteSourcesDir()
 {
-    return QDir(QFileInfo(this->getProjectItem()->getAbsoluteFileDir(),"sources").absoluteFilePath());
+    return QDir(QFileInfo(this->getProjectItem()->getAbsoluteFileDir(), "sources").absoluteFilePath());
 }
 
 int ProjectManagerModelItem::row() const

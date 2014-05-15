@@ -16,8 +16,9 @@ SOURCES += \
     pluginmanager.cpp \
     guidedialog.cpp \
     newfiledialog.cpp \
-    projectmanager.cpp \
-    projectmanagermodel.cpp
+    projectmanagerview.cpp \
+    projectmanagermodel.cpp \
+    projectmanagerdockwidget.cpp
 
 HEADERS += version.h \
     platform.h \
@@ -29,8 +30,9 @@ HEADERS += version.h \
     interfaces/editorinterface.h \
     guidedialog.h \
     newfiledialog.h \
-    projectmanager.h \
-    projectmanagermodel.h
+    projectmanagerview.h \
+    projectmanagermodel.h \
+    projectmanagerdockwidget.h
 
 FORMS += mainwindow.ui
 
