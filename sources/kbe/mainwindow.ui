@@ -37,9 +37,12 @@
      <addaction name="actionTo_image"/>
     </widget>
     <addaction name="actionNew"/>
+    <addaction name="actionNew_Project"/>
     <addaction name="actionOpen"/>
+    <addaction name="actionOpen_Project"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
+    <addaction name="actionSave_Project"/>
     <addaction name="actionSave_all"/>
     <addaction name="separator"/>
     <addaction name="menuExport"/>
@@ -47,6 +50,7 @@
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionClose_All"/>
+    <addaction name="actionClose_Project"/>
     <addaction name="actionClose_Others"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -64,6 +68,7 @@
     <property name="title">
      <string>View</string>
     </property>
+    <addaction name="actionView_ProjectManager"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -182,6 +187,31 @@
    </property>
    <property name="text">
     <string>Guide</string>
+   </property>
+  </action>
+  <action name="actionView_ProjectManager">
+   <property name="text">
+    <string>Project Manager</string>
+   </property>
+  </action>
+  <action name="actionNew_Project">
+   <property name="text">
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionOpen_Project">
+   <property name="text">
+    <string>Open Project</string>
+   </property>
+  </action>
+  <action name="actionSave_Project">
+   <property name="text">
+    <string>Save Project</string>
+   </property>
+  </action>
+  <action name="actionClose_Project">
+   <property name="text">
+    <string>Close Project</string>
    </property>
   </action>
  </widget>
