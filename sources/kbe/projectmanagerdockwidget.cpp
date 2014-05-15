@@ -20,35 +20,43 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#include "scgcommandpointmove.h"
-#include "scgpointobject.h"
+#include "projectmanagerdockwidget.h"
+#include "projectmanagerview.h"
 
-SCgCommandPointMove::SCgCommandPointMove(SCgScene* scene,
-                                        SCgPointObject* obj,
-                                        int pointIndex,
-                                        const QPointF& oldPos,
-                                        const QPointF& newPos,
-                                        QUndoCommand* parent)
-    : SCgBaseCommand(scene, obj, parent)
-    , mPointIndex(pointIndex)
-    , mOldPos(oldPos)
-    , mNewPos(newPos)
+#include <QFile>
+
+ProjectManagerDockWidget* ProjectManagerDockWidget::mInstance = 0;
+
+ProjectManagerDockWidget::ProjectManagerDockWidget(QWidget *parent)
+    : QDockWidget(parent)
 {
-    setText(QObject::tr("Move object's point"));
+    mTreeView = new ProjectManagerView(this);
+
+    this->setFeatures(QDockWidget::DockWidgetVerticalTitleBar);
+
+    QFile file(":/media/stylesheets/projectmanager.qss");
+    file.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(file.readAll());
+    mTreeView->setStyleSheet(styleSheet);
+
+    setWidget(mTreeView);
 }
 
-SCgCommandPointMove::~SCgCommandPointMove()
+ProjectManagerDockWidget::~ProjectManagerDockWidget()
 {
-
+    Q_ASSERT(mInstance != 0);
+    mInstance = 0;
 }
 
-void SCgCommandPointMove::redo()
+ProjectManagerDockWidget* ProjectManagerDockWidget::instance()
 {
-    SCgBaseCommand::redo();
-    static_cast<SCgPointObject*>(mObject)->changePointPosition(mPointIndex, mNewPos);
+    if (!mInstance)
+        mInstance = new ProjectManagerDockWidget();
+
+    return mInstance;
 }
-void SCgCommandPointMove::undo()
+
+ProjectManagerView* ProjectManagerDockWidget::getTreeView()
 {
-    static_cast<SCgPointObject*>(mObject)->changePointPosition(mPointIndex, mOldPos);
-    SCgBaseCommand::undo();
+    return mTreeView;
 }

@@ -1,5 +1,27 @@
-#ifndef PROJECTMANAGERTREEVIEW_H
-#define PROJECTMANAGERTREEVIEW_H
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2010-2014 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+
+#ifndef PROJECTMANAGERMODEL_H
+#define PROJECTMANAGERMODEL_H
 
 #include <QStringList>
 #include <QList>
@@ -19,17 +41,18 @@ class ProjectManagerModelItem: public QObject
 
 public:
     /* Types of item */
-    enum ItemType {
+    enum eItemType
+    {
         Unknown,
         Project,
         Filter,
         File
     };
 
-    Q_ENUMS(ItemType)
+    Q_ENUMS(eItemType)
 
     ProjectManagerModelItem(QObject* parent=0);
-    ProjectManagerModelItem(QString shownName, QString filePath, ItemType type, ProjectManagerModelItem *parent = 0);
+    ProjectManagerModelItem(QString shownName, QString filePath, eItemType type, ProjectManagerModelItem *parent = 0);
     ~ProjectManagerModelItem();
 
     /*! Appends child in childItems list
@@ -63,17 +86,17 @@ public:
     //! Returns absolute directory to directory which contains sources of project
     QDir getAbsoluteSourcesDir();
 
-    ItemType getItemType() const { return type; }
-    QString getFilePath() const { return filePath; }
+    eItemType getItemType() const { return mItemType; }
+    QString getFilePath() const { return mFilePath; }
     void setFilePath(QString filePath);
-    QString getName() const { return shownName.toString(); }
-    void setName(QString name) { shownName = name; }
-    bool isModified() const { return m_isModified; }
-    void setModified(bool val) { m_isModified = val; }
+    QString getName() const { return mShownName.toString(); }
+    void setName(QString name) { mShownName = name; }
+    bool isModified() const { return mIsModified; }
+    void setModified(bool val) { mIsModified = val; }
 
 private:
     //! Flag which indicates that item is modified
-    bool m_isModified;
+    bool mIsModified;
 
     //! Pointer to parent
     ProjectManagerModelItem *parentItem;
@@ -83,11 +106,11 @@ private:
     //Object name contains full path to item and shown name
 
     //! Name which will be shown in view
-    QVariant shownName;
+    QVariant mShownName;
     //! Relative(for files) or Absolute(for projects) path
-    QString filePath;
+    QString mFilePath;
     //! Type of item
-    ItemType type;
+    eItemType mItemType;
 };
 
 
@@ -106,7 +129,7 @@ public:
      * @param type Item's type
      * @param rootItem Model's root item
      */
-    ProjectManagerModelItem* addChild(const QString shownName, const QString filePath, ProjectManagerModelItem::ItemType type, ProjectManagerModelItem* rootItem);
+    ProjectManagerModelItem* addChild(const QString shownName, const QString filePath, ProjectManagerModelItem::eItemType type, ProjectManagerModelItem* rootItem);
 
     /*! Removes item from model
      * @param item which will be removed from model
@@ -123,7 +146,7 @@ public:
      * @param filePath Relative(for files) or Absolute(for projects) path to real file
      * @param type Item's type
      */
-    void insertItem(const QString shownName, const QString filePath, ProjectManagerModelItem::ItemType type);
+    void insertItem(const QString shownName, const QString filePath, ProjectManagerModelItem::eItemType type);
 
     /*! Inserts project item to model
      * @param item Project item which will be inserted in model
@@ -196,7 +219,7 @@ private:
 
 private:
     //! Model's root item
-    ProjectManagerModelItem *rootItem;
+    ProjectManagerModelItem *mRootItem;
 
 };
 

@@ -1,4 +1,27 @@
-#include "projectmanager.h"
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
+
+Copyright (c) 2010-2014 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+
+#include "projectmanagerview.h"
+#include "projectmanagermodel.h"
 
 #include "pluginmanager.h"
 #include "newfiledialog.h"
@@ -14,44 +37,15 @@
 #include <QInputDialog>
 #include <QFileDialog>
 
-ProjectManagerDockWidget* ProjectManagerDockWidget::mInstance = 0;
 
-ProjectManagerDockWidget::ProjectManagerDockWidget(QWidget *parent) :
-    QDockWidget(parent)
-{   
-    treeView = new ProjectManagerView(this);
 
-    this->setFeatures(QDockWidget::DockWidgetVerticalTitleBar);
-
-    QFile file(":/media/stylesheets/projectmanager.qss");
-    file.open(QFile::ReadOnly);
-    QString styleSheet = QLatin1String(file.readAll());
-    treeView->setStyleSheet(styleSheet);
-
-    setWidget(treeView);
-}
-
-ProjectManagerDockWidget::~ProjectManagerDockWidget()
+ProjectManagerView::ProjectManagerView(QWidget *parent)
+    : QTreeView(parent)
 {
-    Q_ASSERT(mInstance != 0);
-    mInstance = 0;
-}
+    mModel = new ProjectManagerModel(this);
+    setModel(mModel);
 
-ProjectManagerDockWidget* ProjectManagerDockWidget::instance()
-{
-    if (!mInstance)
-        mInstance = new ProjectManagerDockWidget();
-
-    return mInstance;
-}
-
-ProjectManagerView::ProjectManagerView(QWidget *parent) :
-    QTreeView(parent)
-{
-    model = new ProjectManagerModel(this);
-    setModel(model);
-
-    header() -> close();
+    header()->close();
 
     setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -60,14 +54,13 @@ ProjectManagerView::ProjectManagerView(QWidget *parent) :
     setDragDropMode(QAbstractItemView::InternalMove);
     setDropIndicatorShown(true);
 
-    this->connect(this,SIGNAL(customContextMenuRequested(QPoint)),
-            SLOT(onContextMenuRequested(QPoint)));
+    connect(this,SIGNAL(customContextMenuRequested(QPoint)), SLOT(onContextMenuRequested(QPoint)));
 
 }
 
 void ProjectManagerView::onContextMenuRequested(QPoint mousePoint)
 {
-    ProjectManagerModelItem* item = model -> getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
     createContextMenu(item);
 }
 
@@ -83,60 +76,60 @@ void ProjectManagerView::createContextMenu(ProjectManagerModelItem* item)
         case ProjectManagerModelItem::Project:
             {
 #ifndef Q_OS_LINUX
-                menu -> addAction(QIcon(), tr("Show in explorer"), this, SLOT(onShowInExplorer()));
-                menu -> addSeparator();
+                menu->addAction(QIcon(), tr("Show in explorer"), this, SLOT(onShowInExplorer()));
+                menu->addSeparator();
 #endif
-                menu -> addAction(QIcon(":/media/icons/document-save.png"), tr("Save project"), this, SLOT(onProjectSave()));
-                menu -> addAction(QIcon(":/media/icons/window-close.png"), tr("Close Project"),this,SLOT(onProjectClose()));
+                menu->addAction(QIcon(":/media/icons/document-save.png"), tr("Save project"), this, SLOT(onProjectSave()));
+                menu->addAction(QIcon(":/media/icons/window-close.png"), tr("Close Project"),this,SLOT(onProjectClose()));
 
-                menu -> addSeparator();
+                menu->addSeparator();
             }
         case ProjectManagerModelItem::Filter:
             {
-                menu -> addAction(QIcon(":/media/icons/pm-add.png"), tr("Add File"),this,SLOT(onAddFile()));
-                menu -> addAction(QIcon(":/media/icons/pm-add.png"), tr("Add Existing Files"), this, SLOT(onAddExistingFiles()));
-                menu -> addAction(QIcon(":/media/icons/pm-add.png"), tr("Add Filter"), this, SLOT(onAddFilter()));
+                menu->addAction(QIcon(":/media/icons/pm-add.png"), tr("Add File"),this,SLOT(onAddFile()));
+                menu->addAction(QIcon(":/media/icons/pm-add.png"), tr("Add Existing Files"), this, SLOT(onAddExistingFiles()));
+                menu->addAction(QIcon(":/media/icons/pm-add.png"), tr("Add Filter"), this, SLOT(onAddFilter()));
 
-                menu -> addSeparator();
+                menu->addSeparator();
 
-                menu -> addAction(QIcon(), tr("Rename"), this, SLOT(onRename()));
-                QMenu* delMenu = menu -> addMenu(QIcon(), tr("Delete"));
-                    delMenu -> addAction(QIcon(), tr("Delete From Project"),this,SLOT(onRemove()));
-                    delMenu -> addAction(QIcon(), tr("Delete Permanently"),this,SLOT(onRemovePermanently()));
+                menu->addAction(QIcon(), tr("Rename"), this, SLOT(onRename()));
+                QMenu* delMenu = menu->addMenu(QIcon(), tr("Delete"));
+                    delMenu->addAction(QIcon(), tr("Delete From Project"),this,SLOT(onRemove()));
+                    delMenu->addAction(QIcon(), tr("Delete Permanently"),this,SLOT(onRemovePermanently()));
 
-                menu -> addSeparator();
+                menu->addSeparator();
 
-                menu -> addAction(QIcon(":/media/icons/pm-expand.png"),tr("Expand All"),this,SLOT(expandAll()));
-                menu -> addAction(QIcon(":/media/icons/pm-collapse.png"),tr("Collapse All"),this,SLOT(collapseAll()));
+                menu->addAction(QIcon(":/media/icons/pm-expand.png"),tr("Expand All"),this,SLOT(expandAll()));
+                menu->addAction(QIcon(":/media/icons/pm-collapse.png"),tr("Collapse All"),this,SLOT(collapseAll()));
                 break;
             }
         case ProjectManagerModelItem::File:
             {
-                menu -> setDefaultAction(menu -> addAction(QIcon(), tr("Open file"),this,SLOT(onOpenFile())));
+                menu->setDefaultAction(menu->addAction(QIcon(), tr("Open file"),this,SLOT(onOpenFile())));
 
 #ifdef Q_OS_WIN
-                menu -> addAction(QIcon(), tr("Show in explorer"), this, SLOT(onShowInExplorer()));
+                menu->addAction(QIcon(), tr("Show in explorer"), this, SLOT(onShowInExplorer()));
 #endif
 
-                menu -> addSeparator();
+                menu->addSeparator();
 
-                menu -> addAction(QIcon(), tr("Rename"), this, SLOT(onFileRename()));
-                QMenu* delMenu = menu -> addMenu(QIcon(), tr("Delete"));
-                delMenu -> addAction(QIcon(), tr("Delete From Project"),this,SLOT(onRemove()));
-                delMenu -> addAction(QIcon(), tr("Delete Permanently"),this,SLOT(onRemovePermanently()));
+                menu->addAction(QIcon(), tr("Rename"), this, SLOT(onFileRename()));
+                QMenu* delMenu = menu->addMenu(QIcon(), tr("Delete"));
+                delMenu->addAction(QIcon(), tr("Delete From Project"),this,SLOT(onRemove()));
+                delMenu->addAction(QIcon(), tr("Delete Permanently"),this,SLOT(onRemovePermanently()));
 
-                menu -> addSeparator();
-                menu -> addAction(QIcon(), tr("Properties"), this, SLOT(onPropertiesShow()));
+                menu->addSeparator();
+                menu->addAction(QIcon(), tr("Properties"), this, SLOT(onPropertiesShow()));
             }
         }
     else
     {
-        menu -> addAction(QIcon(":/media/icons/pm-expand.png"),tr("Expand All"),this,SLOT(expandAll()));
-        menu -> addAction(QIcon(":/media/icons/pm-collapse.png"),tr("Collapse All"),this,SLOT(collapseAll()));
+        menu->addAction(QIcon(":/media/icons/pm-expand.png"),tr("Expand All"),this,SLOT(expandAll()));
+        menu->addAction(QIcon(":/media/icons/pm-collapse.png"),tr("Collapse All"),this,SLOT(collapseAll()));
 
-        menu -> addSeparator();
+        menu->addSeparator();
 
-        menu -> addAction(QIcon(":/media/icons/window-close.png"),tr("Close Project"),this,SLOT(onProjectClose()));
+        menu->addAction(QIcon(":/media/icons/window-close.png"),tr("Close Project"),this,SLOT(onProjectClose()));
     }
     menu->exec(QCursor::pos());
 }
@@ -144,18 +137,18 @@ void ProjectManagerView::createContextMenu(ProjectManagerModelItem* item)
 
 void ProjectManagerView::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    ProjectManagerModelItem* item = model->getItem(indexAt(event->pos()));
+    ProjectManagerModelItem* item = mModel->getItem(indexAt(event->pos()));
     QTreeView::mouseDoubleClickEvent(event);
 
     if (item && item->getItemType() == ProjectManagerModelItem::File)
     {
         if (!QFile::exists(item->getAbsoluteFilePath()))
         {
-            QString filter = item -> getAbsoluteFilePath().split(SEPARATOR).last();
+            QString filter = item->getAbsoluteFilePath().split(SEPARATOR).last();
             filter.append(" ("+filter+");;");
             filter.append(tr("Any file") + " (*." + item->getAbsoluteFilePath().split(".").last() + ")");
             QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"), item->getAbsoluteFileDir(),
-                                                                          filter,0,QFileDialog::DontUseNativeDialog);
+                                                                          filter, 0, QFileDialog::DontUseNativeDialog);
             if (existingFileForReplace.isNull())
                 return;
             else
@@ -166,7 +159,7 @@ void ProjectManagerView::mouseDoubleClickEvent(QMouseEvent *event)
                                                   tr("\" instead \"") + item->getFilePath() + "\"", QMessageBox::Yes|QMessageBox::No);
                 if (reply == QMessageBox::Yes)
                 {
-                    if (item -> getName() != QFileInfo(existingFileForReplace).fileName())
+                    if (item->getName() != QFileInfo(existingFileForReplace).fileName())
                     {
                         item->setObjectName(item->parent()->objectName() + SEPARATOR + QFileInfo(existingFileForReplace).fileName());
                         item->setName(QFileInfo(existingFileForReplace).fileName());
@@ -189,13 +182,15 @@ void ProjectManagerView::updateTreeView()
 {
     QModelIndexList list;
 
-    Q_FOREACH (QModelIndex index, model->getPersistentIndexList())
+    foreach (QModelIndex index, mModel->getPersistentIndexList())
+    {
         if (isExpanded(index))
             list << index;
+    }
 
     reset();
 
-    Q_FOREACH (QModelIndex index, list)
+    foreach (QModelIndex index, list)
         if (index.isValid())
             expand(index);
 }
@@ -229,7 +224,7 @@ void ProjectManagerView::onProjectNew()
     QString absPath = projectFileInfo.absoluteFilePath();
     QDir parentDir = projectFileInfo.absoluteDir();
 
-    if (model->getRootItem()->findChild<ProjectManagerModelItem*>(name))
+    if (mModel->getRootItem()->findChild<ProjectManagerModelItem*>(name))
     {
         QMessageBox::warning(this,tr("Adding project error"),name+" "+tr("already exists"));
         return onProjectNew();
@@ -241,11 +236,11 @@ void ProjectManagerView::onProjectNew()
         parentDir = QDir(absPath);
         parentDir.mkdir("sources");
 
-        ProjectManagerModelItem* project = new ProjectManagerModelItem(name,QFileInfo(absPath,name+".kbpro").absoluteFilePath(),
+        ProjectManagerModelItem* project = new ProjectManagerModelItem(name, QFileInfo(absPath, name + ".kbpro").absoluteFilePath(),
                                                                        ProjectManagerModelItem::Project,
-                                                                       model->getRootItem());
-        model->insertProject(project);
-        model->saveProject(project, QFileInfo(absPath,name+".kbpro").absoluteFilePath());
+                                                                       mModel->getRootItem());
+        mModel->insertProject(project);
+        mModel->saveProject(project, QFileInfo(absPath, name + ".kbpro").absoluteFilePath());
         emit event(ProjectCreated);
     }
     else
@@ -257,7 +252,7 @@ void ProjectManagerView::onProjectNew()
 
 void ProjectManagerView::onProjectSave()
 {
-    if (ProjectManagerModelItem* rootItem = model->getRootItem())
+    if (ProjectManagerModelItem* rootItem = mModel->getRootItem())
         for (int i=0; i< rootItem->childCount(); i++)
         {
             QString fileName = rootItem->child(0)->getAbsoluteFilePath();
@@ -265,14 +260,14 @@ void ProjectManagerView::onProjectSave()
             if (rootItem->child(i)->getFilePath().isEmpty() || !QFile::exists(fileName))
             {
                 fileName = QFileDialog::getSaveFileName(this, tr("Project file not found"),
-                                                        QDir::current().absolutePath(),rootItem->child(i)->getName()+"(*.kbpro)",
+                                                        QDir::current().absolutePath(), rootItem->child(i)->getName() + "(*.kbpro)",
                                                         0,QFileDialog::DontUseNativeDialog);
                 if (fileName.isEmpty())
                     continue;
 
                 rootItem->child(i)->setFilePath(fileName);
             }
-            model->saveProject(rootItem->child(i),fileName);
+            mModel->saveProject(rootItem->child(i), fileName);
             emit event(ProjectSaved);
         }
 }
@@ -281,7 +276,7 @@ void ProjectManagerView::onProjectSave()
 
 bool ProjectManagerView::onProjectClose()
 {
-    if (ProjectManagerModelItem* rootItem = model->getRootItem())
+    if (ProjectManagerModelItem* rootItem = mModel->getRootItem())
         while (rootItem->childCount())
         {
             ProjectManagerModelItem* item = rootItem->child(0);
@@ -301,21 +296,21 @@ bool ProjectManagerView::onProjectClose()
                     if (item->getFilePath().isEmpty() || !QFile::exists(fileName))
                     {
                         fileName = QFileDialog::getSaveFileName(this, tr("Project file not found"),
-                                                                QDir::current().absolutePath(),item->getName()+("(*.kbpro)"),
-                                                                0,QFileDialog::DontUseNativeDialog);
+                                                                QDir::current().absolutePath(), item->getName()+("(*.kbpro)"),
+                                                                0, QFileDialog::DontUseNativeDialog);
                         if (fileName.isEmpty())
                             return false;
 
                         item->setFilePath(fileName);
                     }
 
-                    model->saveProject(item,item->getAbsoluteFilePath());
+                    mModel->saveProject(item, item->getAbsoluteFilePath());
                 }
                 case QMessageBox::No:
                     break;
                 }
             }
-            model->removeItem(item);
+            mModel->removeItem(item);
         }
     emit event(ProjectClosed);
     return true;
@@ -324,11 +319,11 @@ bool ProjectManagerView::onProjectClose()
 void ProjectManagerView::onProjectOpen()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Choose project file"),
-                                                    QDir::current().absolutePath(),tr("KBE project file")+("(*.kbpro)"),
+                                                    QDir::current().absolutePath(), tr("KBE project file") + ("(*.kbpro)"),
                                                     0,QFileDialog::DontUseNativeDialog);
     if (!fileName.isEmpty())
     {
-        model->loadProject(fileName);
+        mModel->loadProject(fileName);
         emit event(ProjectOpened);
     }
 }
@@ -338,11 +333,11 @@ void ProjectManagerView::onRemove()
 {
     if (!currentIndex().isValid())
         return;
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
 
     if (item && item->getItemType() != ProjectManagerModelItem::Project)
     {
-        model->removeItem(item);
+        mModel->removeItem(item);
         emit event(ProjectChanged);
     }
 }
@@ -353,7 +348,7 @@ void ProjectManagerView::onRemovePermanently()
     if (!currentIndex().isValid())
         return;
 
-    if (ProjectManagerModelItem* item = model->getItem(currentIndex()))
+    if (ProjectManagerModelItem* item = mModel->getItem(currentIndex()))
         switch (item->getItemType())
         {
         case ProjectManagerModelItem::File:
@@ -381,7 +376,7 @@ void ProjectManagerView::permanentRemoveTree(ProjectManagerModelItem *item)
             QFile::remove(item->getAbsoluteFilePath());
 
         case ProjectManagerModelItem::Filter:
-            model->removeItem(item);
+            mModel->removeItem(item);
     }
 
 }
@@ -391,10 +386,10 @@ void ProjectManagerView::renameItem(ProjectManagerModelItem *item, QString newNa
 {
     if (item && item->parent())
     {
-        QString objName = item -> objectName();
-        QString itemName = item -> getName();
-        objName.replace(objName.length()-itemName.length(),itemName.length(), newName);
-        item -> setName(newName);
+        QString objName = item->objectName();
+        QString itemName = item->getName();
+        objName.replace(objName.length() - itemName.length(), itemName.length(), newName);
+        item->setName(newName);
     }
 }
 
@@ -403,23 +398,26 @@ QString ProjectManagerView::onRename()
 {
     if (!currentIndex().isValid())
         return QString();
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
     QString itemName(item->getName());
 
     bool isAccepted = true;
-    QString newName = QInputDialog::getText(this,tr("Rename"),tr("Please type new name for ")+itemName,
-                          QLineEdit::Normal,itemName,&isAccepted,Qt::Dialog);
+    QString newName = QInputDialog::getText(this, tr("Rename"), tr("Please type new name for ") + itemName,
+                          QLineEdit::Normal, itemName, &isAccepted, Qt::Dialog);
 
     if (isAccepted && !newName.isEmpty() && newName != itemName)
     {
-        if (item->parent() && item->parent()->findChild<ProjectManagerModelItem*>(item->parent()->objectName()+"/"+newName))
+        if (item->parent() && item->parent()->findChild<ProjectManagerModelItem*>(item->parent()->objectName() + "/"+newName))
         {
-            QMessageBox::warning(this,tr("Rename error"),item->parent()->getName()+ " " + tr("already has") + " " + newName);
+            QMessageBox::warning(this, tr("Rename error"), item->parent()->getName() + " " + tr("already has") + " " + newName);
             return onRename();
         }
+
         emit event(ProjectChanged);
-        if (item -> getItemType() <= ProjectManagerModelItem::Filter)
-            renameItem(item,newName);
+
+        if (item->getItemType() <= ProjectManagerModelItem::Filter)
+            renameItem(item, newName);
         return newName;
     }
     else
@@ -432,7 +430,7 @@ void ProjectManagerView::onFileRename()
     if (!currentIndex().isValid())
         return;
 
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
 
     QString newName = onRename();
 
@@ -440,7 +438,7 @@ void ProjectManagerView::onFileRename()
 
     if (!currentFileInfo.exists())
     {
-        QMessageBox::critical(this,tr("Rename critical error"),tr("File not found on storage: ") + currentFileInfo.absoluteFilePath());
+        QMessageBox::critical(this, tr("Rename critical error"), tr("File not found on storage: ") + currentFileInfo.absoluteFilePath());
         return;
     }
 
@@ -448,16 +446,16 @@ void ProjectManagerView::onFileRename()
 
     if (newFile.exists())
     {
-        QMessageBox::warning(this,tr("Rename error"),newName + tr(" already exists in ") + currentFileInfo.absolutePath());
+        QMessageBox::warning(this, tr("Rename error"), newName + tr(" already exists in ") + currentFileInfo.absolutePath());
         onFileRename();
         return;
     }
 
-    if (!QFile::rename(currentFileInfo.absoluteFilePath(),newFile.absoluteFilePath()))
-        QMessageBox::critical(this,tr("Rename critical error"),tr("Unknown error"));
+    if (!QFile::rename(currentFileInfo.absoluteFilePath(), newFile.absoluteFilePath()))
+        QMessageBox::critical(this, tr("Rename critical error"), tr("Unknown error"));
     else
     {
-        renameItem(item,newName);
+        renameItem(item, newName);
         emit event(ProjectChanged);
     }
 }
@@ -468,17 +466,17 @@ void ProjectManagerView::onAddFilter()
     if (!currentIndex().isValid())
         return;
 
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
 
     bool isAccepted = true;
-    QString name = QInputDialog::getText(this,tr("Add new filter"),tr("Please type name of new filter in") + " " + item->getName(),
-                                         QLineEdit::Normal, QString(),&isAccepted,Qt::Dialog);
+    QString name = QInputDialog::getText(this, tr("Add new filter"), tr("Please type name of new filter in") + " " + item->getName(),
+                                         QLineEdit::Normal, QString(), &isAccepted,Qt::Dialog);
     if (isAccepted && !name.isEmpty())
     {
         QString fullName = item->objectName() + SEPARATOR + name;
         if (item->parent() && item->parent()->findChild<ProjectManagerModelItem*>(fullName))
         {
-            QMessageBox::warning(this,tr("Adding filter error"),item->parent()->getName() + " " + tr("already has") + " " + name);
+            QMessageBox::warning(this, tr("Adding filter error"), item->parent()->getName() + " " + tr("already has") + " " + name);
             return onAddFilter();
         }
 
@@ -494,10 +492,10 @@ void ProjectManagerView::onAddFilter()
         localStorageDirsList.removeFirst();
 
         QString localStorageDirPath = localStorageDirsList.join(SEPARATOR);
-        if (sourcesDir.mkpath(localStorageDirPath) || QDir(QFileInfo(sourcesDir.absolutePath(),localStorageDirPath).absolutePath()).exists())
+        if (sourcesDir.mkpath(localStorageDirPath) || QDir(QFileInfo(sourcesDir.absolutePath(), localStorageDirPath).absolutePath()).exists())
         {
 
-            model->insertItem(fullName,localStorageDirPath,ProjectManagerModelItem::Filter);
+            mModel->insertItem(fullName, localStorageDirPath, ProjectManagerModelItem::Filter);
             emit event(ProjectChanged);
 
             if (!isExpanded(currentIndex()))
@@ -516,17 +514,17 @@ void ProjectManagerView::onAddExistingFiles()
     if (!currentIndex().isValid())
         return;
 
-    ProjectManagerModelItem* filterItem = model->getItem(currentIndex());
+    ProjectManagerModelItem* filterItem = mModel->getItem(currentIndex());
     QString filterDirectory;
     if (filterItem->getItemType()==ProjectManagerModelItem::Project)
         filterDirectory = filterItem->getAbsoluteSourcesDir().absolutePath();
     else
         filterDirectory = filterItem->getAbsoluteFileDir();
 
-    QStringList files = QFileDialog::getOpenFileNames(this,tr("Add existing files"),
+    QStringList files = QFileDialog::getOpenFileNames(this, tr("Add existing files"),
                                                      filterDirectory,
                                                      PluginManager::instance()->openFilters(),
-                                                     0,QFileDialog::DontUseNativeDialog);
+                                                     0, QFileDialog::DontUseNativeDialog);
     QStringList errors;
     Q_FOREACH(QString filePath, files)
     {
@@ -547,11 +545,11 @@ void ProjectManagerView::onAddExistingFiles()
         QString relativeFilePath = filterItem->getAbsoluteSourcesDir().relativeFilePath(absoluteFilePath);
         QString shownName = filterItem->getProjectItem()->objectName() + SEPARATOR + relativeFilePath;
 
-        if (ProjectManagerModelItem* findedItem = model->getItemByFilePath( relativeFilePath, filterItem->getProjectItem()))
-            errors.append( relativeFilePath + " " + tr("already exists in project as") + " " + findedItem->objectName());
+        if (ProjectManagerModelItem* findedItem = mModel->getItemByFilePath( relativeFilePath, filterItem->getProjectItem()))
+            errors.append(relativeFilePath + " " + tr("already exists in project as") + " " + findedItem->objectName());
         else
         {
-            model->insertItem(shownName,relativeFilePath,ProjectManagerModelItem::File);
+            mModel->insertItem(shownName, relativeFilePath, ProjectManagerModelItem::File);
             emit event(ProjectChanged);
         }
 
@@ -562,7 +560,7 @@ void ProjectManagerView::onAddExistingFiles()
     updateTreeView();
 
     if (!errors.isEmpty())
-        QMessageBox::warning(this,tr("Add existing files error"),tr("Adding has some errors:") + "\n" + errors.join("\n"));
+        QMessageBox::warning(this, tr("Add existing files error"), tr("Adding has some errors:") + "\n" + errors.join("\n"));
 }
 
 
@@ -570,10 +568,10 @@ void ProjectManagerView::onAddFile()
 {
     if (!currentIndex().isValid())
         return;
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
 
     QString selectedFilter;
-    QString absoluteFilePath = QFileDialog::getSaveFileName(this,tr("Add file"),
+    QString absoluteFilePath = QFileDialog::getSaveFileName(this, tr("Add file"),
                                                             item->getAbsoluteFileDir(),
                                                             PluginManager::instance()->openFilters(),
                                                             &selectedFilter,
@@ -599,13 +597,14 @@ void ProjectManagerView::onAddFile()
     QString shownName = item->getProjectItem()->objectName() + SEPARATOR + relativeFilePath;
 
 
-    if (ProjectManagerModelItem* findedItem = model->getItemByFilePath( relativeFilePath, item->getProjectItem()))
-        model->removeItem(findedItem);
+    if (ProjectManagerModelItem* findedItem = mModel->getItemByFilePath( relativeFilePath, item->getProjectItem()))
+        mModel->removeItem(findedItem);
 
-    model->insertItem(shownName,relativeFilePath,ProjectManagerModelItem::File);
+    mModel->insertItem(shownName, relativeFilePath, ProjectManagerModelItem::File);
 
     if (!isExpanded(currentIndex()))
         setExpanded(currentIndex(), true);
+
     updateTreeView();
 
     emit event(ProjectChanged);
@@ -615,17 +614,17 @@ void ProjectManagerView::onAddFile()
 
 void ProjectManagerView::onOpenFile()
 {
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
 
     if (item && item->getItemType() == ProjectManagerModelItem::File)
     {
         if (!QFile::exists(item->getAbsoluteFilePath()))
         {
-            QString filter = item -> getAbsoluteFilePath().split(SEPARATOR).last();
+            QString filter = item->getAbsoluteFilePath().split(SEPARATOR).last();
             filter.append(" ("+filter+");;");
             filter.append(tr("Any file") + " (*." + item->getAbsoluteFilePath().split(".").last() + ")");
             QString existingFileForReplace = QFileDialog::getOpenFileName(this, tr("File not found"), item->getAbsoluteFileDir(),
-                                                                          filter,0,QFileDialog::DontUseNativeDialog);
+                                                                          filter, 0, QFileDialog::DontUseNativeDialog);
             if (existingFileForReplace.isNull())
                 return;
             else
@@ -636,7 +635,7 @@ void ProjectManagerView::onOpenFile()
                                                   tr("\" instead \"") + item->getFilePath() + "\"", QMessageBox::Yes|QMessageBox::No);
                 if (reply == QMessageBox::Yes)
                 {
-                    if (item -> getName() != QFileInfo(existingFileForReplace).fileName())
+                    if (item->getName() != QFileInfo(existingFileForReplace).fileName())
                     {
                         item->setObjectName(item->parent()->objectName() + SEPARATOR + QFileInfo(existingFileForReplace).fileName());
                         item->setName(QFileInfo(existingFileForReplace).fileName());
@@ -661,7 +660,7 @@ void ProjectManagerView::onShowInExplorer()
     QString pathIn;
     if (!currentIndex().isValid())
         return;
-    ProjectManagerModelItem* item = model->getItem(currentIndex());
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
     if (item && !item->getFilePath().isEmpty())
         pathIn = item->getAbsoluteFilePath();
     else
@@ -710,12 +709,12 @@ void ProjectManagerView::onPropertiesShow()
 {
     if (!currentIndex().isValid())
         return;
-    if (ProjectManagerModelItem* item = model->getItem(currentIndex()))
+    if (ProjectManagerModelItem* item = mModel->getItem(currentIndex()))
     {
         QStringList properties;
         properties << tr("Item:") + "\t\t" + item->objectName();
         properties << tr("File:") + "\t\t" + item->getAbsoluteFilePath();
         properties << tr("Size:") + "\t\t" + QString::number(QFileInfo(item->getAbsoluteFilePath()).size()) << "bytes";
-        QMessageBox::information(this,tr("Properties"),properties.join("\n"));
+        QMessageBox::information(this, tr("Properties"), properties.join("\n"));
     }
 }

@@ -1,39 +1,42 @@
-#ifndef PROJECTMANAGER_H
-#define PROJECTMANAGER_H
+/*
+-----------------------------------------------------------------------------
+This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
+For the latest info, see http://www.ostis.net
 
-#include <QDockWidget>
+Copyright (c) 2010-2014 OSTIS
+
+OSTIS is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+OSTIS is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
+*/
+
+#ifndef PROJECTMANAGERVIEW_H
+#define PROJECTMANAGERVIEW_H
+
 #include <QTreeView>
 
-#include "projectmanagermodel.h"
-
 class QMouseEvent;
-class ProjectManagerView;
 class ProjectManagerModel;
 class ProjectManagerModelItem;
 
-class ProjectManagerDockWidget : public QDockWidget
-{
-    Q_OBJECT
-public:
-    explicit ProjectManagerDockWidget(QWidget *parent = 0);
-    virtual ~ProjectManagerDockWidget();
-
-    static ProjectManagerDockWidget* instance();
-
-    ProjectManagerView* getTreeView() { return treeView; }
-private:
-    static ProjectManagerDockWidget* mInstance;
-
-    //! Content of this widget
-    ProjectManagerView *treeView;
-};
 
 class ProjectManagerView : public QTreeView
 {
     Q_OBJECT
 
 public:
-    enum ProjectManagerEvent {
+    enum eProjectManagerEvent
+    {
         DefaultEvent,
         ProjectCreated,
         ProjectOpened,
@@ -41,7 +44,8 @@ public:
         ProjectClosed,
         ProjectChanged
     };
-    Q_ENUMS(ProjectManagerEvent)
+
+    Q_ENUMS(eProjectManagerEvent)
 
     explicit ProjectManagerView(QWidget *parent = 0);
 
@@ -71,7 +75,7 @@ signals:
     /*! This signal will send when ProjectManager modified(or managed) project.
      * @param Filename
      */
-    void event(ProjectManagerView::ProjectManagerEvent);
+    void event(ProjectManagerView::eProjectManagerEvent);
 
 private:
     /*! Changes item name
@@ -91,7 +95,7 @@ private:
     void createContextMenu(ProjectManagerModelItem* item);
 
     //! QTreeView::mousePressEvent with feature that item's focus will be removed if click occured on empty area
-    void mousePressEvent(QMouseEvent*);
+    void mousePressEvent(QMouseEvent *event);
 
     //! Opens file if double clicked item's type is file
     void mouseDoubleClickEvent(QMouseEvent *event);
@@ -99,7 +103,7 @@ private:
     void updateTreeView();
 
 private:
-    ProjectManagerModel* model;
+    ProjectManagerModel* mModel;
 };
 
 #endif // PROJECTMANAGER_H

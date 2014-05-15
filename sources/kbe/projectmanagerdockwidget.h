@@ -20,32 +20,29 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
 
-#ifndef UPDATEEXTRACTOR_H
-#define UPDATEEXTRACTOR_H
+#ifndef PROJECTMANAGERDOCKWIDGET_H
+#define PROJECTMANAGERDOCKWIDGET_H
 
-#include <QObject>
+#include <QDockWidget>
 
-/*! Class that extracs update from zip archive
-  */
-class UpdateExtractor : public QObject
+class ProjectManagerView;
+
+class ProjectManagerDockWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit UpdateExtractor(QObject *parent = 0);
-    virtual ~UpdateExtractor();
+    explicit ProjectManagerDockWidget(QWidget *parent = 0);
+    virtual ~ProjectManagerDockWidget();
 
-    /*! Extract files from \p archive into \p directory
-      * @param archive Path to archive to exctract data
-      * @param directory Path to output directory
-      *
-      * @return Return true, if archive extracted wihtout any errors; otherwise return false
-      */
-    bool extract(const QString &archive, const QString &directory);
+    static ProjectManagerDockWidget* instance();
 
-signals:
-    
-public slots:
-    
+    ProjectManagerView* getTreeView();
+private:
+    static ProjectManagerDockWidget* mInstance;
+
+    //! Content of this widget
+    ProjectManagerView *mTreeView;
 };
 
-#endif // UPDATEEXTRACTOR_H
+
+#endif
