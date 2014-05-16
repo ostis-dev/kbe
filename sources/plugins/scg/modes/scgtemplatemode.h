@@ -19,6 +19,9 @@ public:
 
     void keyPress(QKeyEvent *event);
 
+    void activate();
+
+
 
     virtual SCgScene::EditMode mode()
     {
@@ -29,8 +32,21 @@ public:
     QPointF calc(QPointF beginPoint, QPointF endPoint);
     SCgNode *createThenNodeAtribute(const QPointF &pos);
     SCgNode *createElseNodeAtribute(const QPointF &pos);
+
+private slots:
+    void onTemplateChanged(SCgScene::Template templ);
 private:
     int ghostsetVisibleClickCount;
+
+    QVector<SCgObject*> switchTemplate(SCgScene::Template templ);
+
+
+
+protected:
+    //! Inserted objects
+    QGraphicsItemGroup* mInsertedObjectGroup;
+
+
 };
 
 #endif // SCGTEMPLATEMODE_H

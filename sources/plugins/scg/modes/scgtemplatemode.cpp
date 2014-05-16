@@ -1,33 +1,159 @@
 #include "scgtemplatemode.h"
+#include "scgtemplate.h"
 #include "scgpair.h"
 #include "scgbus.h"
 #include "scgnode.h"
+#include <QCursor>
 #include <math.h>
 #include <QtDebug>
+#include <qcoreevent.h>
+#include <QGraphicsView>
+#include <QObject>
 
 SCgTemplateMode::SCgTemplateMode(SCgScene *parent)
     :SCgMode(parent),
       ghostsetVisibleClickCount(0)
 
 {
+     mInsertedObjectGroup=0;
+    connect(mScene, SIGNAL(templateChanged(SCgScene::Template)), this, SLOT(onTemplateChanged(SCgScene::Template)));
+}
+
+
+void SCgTemplateMode::onTemplateChanged(SCgScene::Template templ )
+{
+    QPointF pos = QPointF(0,0);
+
+    if (mInsertedObjectGroup)
+    {
+        delete mInsertedObjectGroup;
+        mInsertedObjectGroup = 0;
+    }
+    QVector<SCgObject*> objVector = switchTemplate(templ);
+    QList<QGraphicsItem*> withoutChilds;
+
+    foreach(SCgObject* obj, objVector)
+          if (!obj->parentItem())
+               withoutChilds.append(obj);
+
+    if(!withoutChilds.empty())
+    {
+        mInsertedObjectGroup = mScene->createItemGroup(withoutChilds);
+        QGraphicsView* v = mScene->views().at(0);
+        QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
+        mInsertedObjectGroup->setPos(p);
+        mInsertedObjectGroup->setOpacity(0.5);
+    }
+    else mScene->setEditMode(mScene->previousMode());
+}
+
+
+
+QVector<SCgObject*> SCgTemplateMode::switchTemplate(SCgScene::Template templ)
+{
+     QPointF pos = QPointF(0,0);
+     QVector<SCgObject*> result =  QVector<SCgObject*>();
+     SCgTemplate templates = SCgTemplate(mScene);
+
+     switch(templ){
+     case SCgScene::GenEl_Template:
+         result = templates.createGenElTemplate(pos);
+         break;
+     case SCgScene::GenElStr3_Template:
+         result = templates.createGenElStr3Template(pos);
+         break;
+     case SCgScene::GenElStr5_Template:
+         result = templates.createGenElStr5Template(pos);
+         break;
+     case SCgScene::SearchElStr3_Template:
+         result = templates.createSearchElStr3Template(pos);
+         break;
+     case SCgScene::SearchElStr5_Template:
+         result = templates.createSearchElStr5Template(pos);
+         break;
+     case SCgScene::SearchSetStr3_Template:
+         result = templates.createSearchSetStr3Template(pos);
+         break;
+     case SCgScene::SearchSetStr5_Template:
+         result = templates.createSearchSetStr5Template(pos);
+         break;
+     case SCgScene::eraseEl_Template:
+         result = templates.createEraseElTemplate(pos);
+         break;
+     case SCgScene::eraseElStr3_Template:
+         result = templates.createEraseElStr3Template(pos);
+         break;
+     case SCgScene::eraseElStr5_Template:
+         result = templates.createEraseElStr5Template(pos);
+         break;
+     case SCgScene::PrintEl_Template:
+         result = templates.createPrintElTemplate(pos);
+         break;
+     case SCgScene::PrintNl_Template:
+         result = templates.createPrintNlTemplate(pos);
+         break;
+     case SCgScene::Print_Template:
+         result = templates.createPrintTemplate(pos);
+         break;
+     case SCgScene::IfType_Template:
+         result = templates.createifTypeTemplate(pos);
+         break;
+     case SCgScene::IfEqType_Template:
+         result = templates.createifEqTemplate(pos);
+         break;
+     case SCgScene::IfCoinType_Template:
+         result = templates.createifCoinTemplate(pos);
+         break;
+     case SCgScene::IfGrType_Template:
+         result = templates.createifGrTemplate(pos);
+         break;
+     case SCgScene::Add_Template:
+         result = templates.createAddTemplate(pos);
+         break;
+     case SCgScene::Sub_Template:
+         result = templates.createSubTemplate(pos);
+         break;
+     case SCgScene::Mult_Template:
+         result = templates.createMultTemplate(pos);
+         break;
+     case SCgScene::Div_Template:
+         result = templates.createDivTemplate(pos);
+         break;
+     case SCgScene::Pow_Template:
+         result = templates.createPowTemplate(pos);
+         break;
+     case SCgScene::CallReturn_Template:
+         result = templates.createCallReturnTemplate(pos);
+         break;
+     case SCgScene::Return_Template:
+         result = templates.createReturnTemplate(pos);
+         break;
+     default : break;
+     }
+     return result;
+}
+void SCgTemplateMode::activate(){
 
 }
 
 void SCgTemplateMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
 {
-    QPointF mousePos = event->scenePos();
-
+        QPointF mousePos = event->scenePos();
         QGraphicsItem *pItem = mScene->itemAt(mousePos);
-
-        if(!pItem)
+        if(pItem!=0)
+        if(mInsertedObjectGroup)
         {
             if (event->button() == Qt::LeftButton)
             {
-                 mScene->createTemplateCommand(mousePos);
-                 event->accept();
+                delete mInsertedObjectGroup;
+                mInsertedObjectGroup = 0;
+
+                mScene->createTemplateCommand(mousePos);
+                event->accept();
+                mScene->setEditMode(mScene->previousMode());
             }
         }
-        else if ( pItem->type() == SCgNode::Type)
+        else if (event->button() == Qt::RightButton && pItem->type() == SCgNode::Type )
         {
             SCgNode *node = static_cast<SCgNode*>(pItem);
             SCgPair *pair = 0;
@@ -65,10 +191,14 @@ void SCgTemplateMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
                     }
             }
         }
+
 }
 
 void SCgTemplateMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
+    SCgMode::mouseMove(event);
+    if (mInsertedObjectGroup)
+        mInsertedObjectGroup->setPos(event->scenePos());
 
 }
 
@@ -91,8 +221,6 @@ void SCgTemplateMode::mousePress(QGraphicsSceneMouseEvent *event)
                 foreach(SCgObject *c_obj, connected)
                     c_obj->setOpacity(1.0f);
                  node->setGhost(false);
-
-
             }
             else if(!node->isGhost())
             {
@@ -149,92 +277,46 @@ void SCgTemplateMode::keyPress(QKeyEvent *event)
         QList<QGraphicsItem*> items = mScene->selectedItems();
         if(items.size() > 2)
             return;
-        SCgObject* beginObject = static_cast<SCgObject*>(items.at(1));
-        SCgObject* endObject = static_cast<SCgObject*>(items.at(0));
-        QVector<QPointF> points;
-        points.push_back(beginObject->pos());
-        points.push_back(endObject->pos());
-        SCgPair* doPair = mScene->createSCgPair(beginObject,endObject,points);
+        QVector<QGraphicsItem*> nodes;
+        nodes.append(items.at(1));
+        nodes.append(items.at(0));
 
-        SCgNode* roleNode = createGoToNodeAtribute(calc(beginObject->pos(),endObject->pos()));
-
-        SCgPair* roleNodeGoToPair = mScene->createSCgPair(roleNode,doPair,points);
-        roleNodeGoToPair->setEndDot(.5f);
+        mScene->createGotoTemplateCommand(nodes);
     }
 
+    //else done
     if(event->modifiers()  == Qt::ControlModifier && event->key() == Qt::Key_E)
     {
         QList<QGraphicsItem*> items = mScene->selectedItems();
         if(items.size() > 2)
             return;
-        SCgObject* beginObject = static_cast<SCgObject*>(items.at(1));
-        SCgObject* endObject = static_cast<SCgObject*>(items.at(0));
-        QVector<QPointF> points;
-        points.push_back(beginObject->pos());
-        points.push_back(endObject->pos());
-        SCgPair* doPair = mScene->createSCgPair(beginObject,endObject,points);
 
-        SCgNode* roleNode = createElseNodeAtribute(calc(beginObject->pos(),endObject->pos()));
+        QVector<QGraphicsItem*> nodes;
+        nodes.append(items.at(1));
+        nodes.append(items.at(0));
 
-        SCgPair* roleNodeGoToPair = mScene->createSCgPair(roleNode,doPair,points);
-        roleNodeGoToPair->setEndDot(.5f);
+        mScene->createElseTemplateCommand(nodes);
+
     }
     if(event->modifiers()  == Qt::ControlModifier && event->key() == Qt::Key_T)
     {
         QList<QGraphicsItem*> items = mScene->selectedItems();
         if(items.size() > 2 && items.size() == 0)
             return;
-        SCgObject* beginObject = static_cast<SCgObject*>(items.at(1));
-        SCgObject* endObject = static_cast<SCgObject*>(items.at(0));
-        QVector<QPointF> points;
-        points.push_back(beginObject->pos());
-        points.push_back(endObject->pos());
-        SCgPair* doPair = mScene->createSCgPair(beginObject,endObject,points);
+        QVector<QGraphicsItem*> nodes;
+        nodes.append(items.at(1));
+        nodes.append(items.at(0));
 
-        SCgNode* roleNode = createThenNodeAtribute(calc(beginObject->pos(),endObject->pos()));
-
-        SCgPair* roleNodeGoToPair = mScene->createSCgPair(roleNode,doPair,points);
-        roleNodeGoToPair->setEndDot(.5f);
+        mScene->createThenTemplateCommand(nodes);
     }
 
+
+     if(event->key() == Qt::Key_Escape && mInsertedObjectGroup)
+     {
+             delete mInsertedObjectGroup;
+             mInsertedObjectGroup = 0;
+             mScene->setEditMode(mScene->previousMode());
+     }
 }
 
-SCgNode *SCgTemplateMode::createGoToNodeAtribute(const QPointF &pos)
-{
-    SCgNode *node = mScene->createSCgNode(pos);
 
-    node->setIdtfValue("goto_");
-    node->setIdtfPos(SCgNode::BottomLeft);
-    node->setTypeAlias("node/const/role");
-
-    return node;
-}
-
-SCgNode *SCgTemplateMode::createThenNodeAtribute(const QPointF &pos)
-{
-    SCgNode *node = mScene->createSCgNode(pos);
-
-    node->setIdtfValue("then_");
-    node->setIdtfPos(SCgNode::BottomLeft);
-    node->setTypeAlias("node/const/role");
-
-    return node;
-}
-
-SCgNode *SCgTemplateMode::createElseNodeAtribute(const QPointF &pos)
-{
-    SCgNode *node = mScene->createSCgNode(pos);
-
-    node->setIdtfValue("else_");
-    node->setIdtfPos(SCgNode::BottomLeft);
-    node->setTypeAlias("node/const/role");
-
-    return node;
-}
-
-QPointF SCgTemplateMode::calc(QPointF beginPoint, QPointF endPoint)
-{
-    int lenght = std::max(fabs(endPoint.x() - beginPoint.x()), fabs(endPoint.y() - beginPoint.y()));
-    QPointF points((lenght / 2), endPoint.y() + 20);
-    return points;
-}

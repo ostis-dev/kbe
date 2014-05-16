@@ -21,7 +21,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgscene.h"
+#include <QDebug>
 
+#include "math.h"
 #include "scgobject.h"
 #include "scgnode.h"
 #include "scgpair.h"
@@ -31,6 +33,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgpointgraphicsitem.h"
 #include "scgcontentfactory.h"
 #include "scgnodetextitem.h"
+
 
 #include "modes/scgbusmode.h"
 #include "modes/scgpairmode.h"
@@ -63,6 +66,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "commands/scgcommandremovebreakpoints.h"
 #include "commands/scgcommandminimizecontour.h"
 #include "commands/scgcommandtemplate.h"
+#include "commands/scgcommandelsetemplate.h"
+#include "commands/scgcommandgototemplate.h"
+#include "commands/scgcommandthentemplate.h"
+
 
 #include <QUrl>
 #include <QFile>
@@ -130,7 +137,14 @@ void SCgScene::setEditMode(EditMode mode)
 void SCgScene::setTemplate(Template templ)
 {
     mTemplate = templ;
+
+    templateChanged(templ);
 }
+
+//SCgScene::Template SCgScene::getTemplate()
+//{
+//    return mTemplate;
+//}
 
 SCgScene::EditMode SCgScene::editMode() const
 {
@@ -258,6 +272,121 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     return node;
 }
 
+QVector<SCgObject*> SCgScene::createElseTemplate(const QVector<QGraphicsItem*> &nodes)
+{
+    QVector<SCgObject*> objects;
+    SCgObject* beginObject = static_cast<SCgObject*>(nodes.at(1));
+    SCgObject* endObject = static_cast<SCgObject*>(nodes.at(0));
+
+    //creating atribute node
+    SCgNode *node = new SCgNode;
+    node->setPos(calc(beginObject->pos(),endObject->pos()));
+    node->setIdtfValue("else_");
+    node->setIdtfPos(SCgNode::BottomLeft);
+    node->setTypeAlias("node/const/role");
+    objects.append(node);
+
+    //creating dopair
+    QVector<QPointF> points;
+    points.push_back(beginObject->pos());
+    points.push_back(endObject->pos());
+
+    SCgPair *pair = new SCgPair;
+    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setBeginObject(beginObject);
+    pair->setEndObject(endObject);
+    pair->setPoints(points);
+    objects.append(pair);
+
+    //creating role pair
+    SCgPair* roleNodeGoToPair = new SCgPair;
+    roleNodeGoToPair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    roleNodeGoToPair->setBeginObject(node);
+    roleNodeGoToPair->setEndObject(pair);
+    roleNodeGoToPair->setPoints(points);
+    roleNodeGoToPair->setEndDot(.5f);
+    objects.append(roleNodeGoToPair);
+
+    return objects;
+}
+
+QVector<SCgObject*> SCgScene::createGotoTemplate(const QVector<QGraphicsItem*> &nodes)
+{
+    QVector<SCgObject*> objects;
+    SCgObject* beginObject = static_cast<SCgObject*>(nodes.at(1));
+    SCgObject* endObject = static_cast<SCgObject*>(nodes.at(0));
+
+    //creating atribute node
+    SCgNode *node = new SCgNode;
+    node->setPos(calc(beginObject->pos(),endObject->pos()));
+    node->setIdtfValue("goto_");
+    node->setIdtfPos(SCgNode::BottomLeft);
+    node->setTypeAlias("node/const/role");
+    objects.append(node);
+
+    //creating dopair
+    QVector<QPointF> points;
+    points.push_back(beginObject->pos());
+    points.push_back(endObject->pos());
+
+    SCgPair *pair = new SCgPair;
+    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setBeginObject(beginObject);
+    pair->setEndObject(endObject);
+    pair->setPoints(points);
+    objects.append(pair);
+
+    //creating role pair
+    SCgPair* roleNodeGoToPair = new SCgPair;
+    roleNodeGoToPair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    roleNodeGoToPair->setBeginObject(node);
+    roleNodeGoToPair->setEndObject(pair);
+    roleNodeGoToPair->setPoints(points);
+    roleNodeGoToPair->setEndDot(.5f);
+    objects.append(roleNodeGoToPair);
+
+    return objects;
+}
+
+QVector<SCgObject*> SCgScene::createThenTemplate(const QVector<QGraphicsItem*> &nodes)
+{
+    QVector<SCgObject*> objects;
+    SCgObject* beginObject = static_cast<SCgObject*>(nodes.at(1));
+    SCgObject* endObject = static_cast<SCgObject*>(nodes.at(0));
+
+    //creating atribute node
+    SCgNode *node = new SCgNode;
+    node->setPos(calc(beginObject->pos(),endObject->pos()));
+    node->setIdtfValue("then_");
+    node->setIdtfPos(SCgNode::BottomLeft);
+    node->setTypeAlias("node/const/role");
+    objects.append(node);
+
+    //creating dopair
+    QVector<QPointF> points;
+    points.push_back(beginObject->pos());
+    points.push_back(endObject->pos());
+
+    SCgPair *pair = new SCgPair;
+    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setBeginObject(beginObject);
+    pair->setEndObject(endObject);
+    pair->setPoints(points);
+    objects.append(pair);
+
+    //creating role pair
+    SCgPair* roleNodeGoToPair = new SCgPair;
+    roleNodeGoToPair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    roleNodeGoToPair->setBeginObject(node);
+    roleNodeGoToPair->setEndObject(pair);
+    roleNodeGoToPair->setPoints(points);
+    roleNodeGoToPair->setEndDot(.5f);
+    objects.append(roleNodeGoToPair);
+
+    return objects;
+}
+
+
 QVector<SCgObject*> SCgScene::createSCgTemplate(const QPointF &pos)
 {
     if(mTemplate == GenEl_Template)
@@ -321,6 +450,7 @@ QVector<SCgObject*> SCgScene::createSCgTemplate(const QPointF &pos)
     if(mTemplate == ToStr_Template)
         return mSCgTemplate->createToStrTemplate(pos);
 }
+
 
 SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVector<QPointF> &points)
 {
@@ -710,7 +840,7 @@ SCgBaseCommand* SCgScene::addPointCommand(SCgPointObject* obj, const QPointF& po
 
 }
 
-//for tempate command
+//for tempate comm and
 SCgBaseCommand* SCgScene::createTemplateCommand(const QPointF& pos,
                                             SCgBaseCommand *parentCmd,
                                             bool addToStack)
@@ -722,6 +852,45 @@ SCgBaseCommand* SCgScene::createTemplateCommand(const QPointF& pos,
 
     return cmd;
 }
+
+
+SCgBaseCommand* SCgScene::createElseTemplateCommand(const QVector<QGraphicsItem*> &nodes,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandElseTemplate(this, nodes, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::createThenTemplateCommand(const QVector<QGraphicsItem*> &nodes,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandThenTemplate(this, nodes, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::createGotoTemplateCommand(const QVector<QGraphicsItem*> &nodes,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandGotoTemplate(this, nodes, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+
 
 SCgBaseCommand* SCgScene::createNodeCommand(const QPointF& pos,
                                             SCgContour* parent,
@@ -1028,4 +1197,12 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 void SCgScene::ensureSelectedItemVisible() {
     if (!selectedItems().isEmpty())
         views().at(0)->ensureVisible(selectedItems().at(0));
+}
+
+// for goto then else
+QPointF SCgScene::calc(QPointF beginPoint, QPointF endPoint)
+{
+    int lenght = max(fabs(endPoint.x() - beginPoint.x()), fabs(endPoint.y() - beginPoint.y()));
+    QPointF points((lenght / 2), endPoint.y() + 20);
+    return points;
 }

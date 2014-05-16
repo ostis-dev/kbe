@@ -26,18 +26,22 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsPathItem>
+#include <QGraphicsItem>
 #include <QStringList>
 
 #include "scgobject.h"
+#include "vector"
 #include "scgcontent.h"
-#include "scgtemplate.h"
 #include "commands/scgbasecommand.h"
+#include "scgtemplate.h"
+
+using namespace std;
 
 class SCgMode;
 class SCgNode;
-class SCgTemplate;
 class SCgPair;
 class SCgBus;
+class SCgTemplate;
 class SCgContour;
 class QGraphicsItemGroup;
 class SCgBaseCommand;
@@ -63,48 +67,49 @@ public:
         Mode_Bus,
         Mode_Contour,
         Mode_InsertTemplate,
-        Mode_Template,
         Mode_Clone,
+        //Template Mode
+        Mode_Template,
 
         // Don't use it. (Used to know count of all edit modes)
         Mode_Count
     } EditMode;
 
     typedef enum
-        {
-            GenEl_Template,
-            GenElStr3_Template,
-            GenElStr5_Template,
-            SearchElStr3_Template,
-            SearchElStr5_Template,
-            SearchSetStr3_Template,
-            SearchSetStr5_Template,
-            eraseEl_Template,
-            eraseElStr3_Template,
-            eraseElStr5_Template,
-            SCPprogram_Template,
-            PrintEl_Template,
-            PrintNl_Template,
-            Print_Template,
-            IfType_Template,
-            IfEqType_Template,
-            IfCoinType_Template,
-            IfGrType_Template,
-            Add_Template,
-            Sub_Template,
-            Mult_Template,
-            Div_Template,
-            Pow_Template,
-            CallReturn_Template,
-            Return_Template,
+    {
+        GenEl_Template,
+        GenElStr3_Template,
+        GenElStr5_Template,
+        SearchElStr3_Template,
+        SearchElStr5_Template,
+        SearchSetStr3_Template,
+        SearchSetStr5_Template,
+        eraseEl_Template,
+        eraseElStr3_Template,
+        eraseElStr5_Template,
+        SCPprogram_Template,
+        PrintEl_Template,
+        PrintNl_Template,
+        Print_Template,
+        IfType_Template,
+        IfEqType_Template,
+        IfCoinType_Template,
+        IfGrType_Template,
+        Add_Template,
+        Sub_Template,
+        Mult_Template,
+        Div_Template,
+        Pow_Template,
+        CallReturn_Template,
+        Return_Template,
 
-            Sin_Template,
-            ASin_Template,
-            Cos_Template,
-            ACos_Template,
-            ToStr_Template
+        Sin_Template,
+        ASin_Template,
+        Cos_Template,
+        ACos_Template,
+        ToStr_Template
 
-        } Template;
+    } Template;
 
     enum FindFlag
     {
@@ -127,11 +132,12 @@ public:
     void setEditMode(EditMode mode);
 
     /*! Set new template
-            \param templ New template
+        \param templ New template
 
-            @see template
-          */
-        void setTemplate(Template templ);
+        @see editMode
+      */
+    void setTemplate(Template templ);
+    Template getTemplate();
 
     /*! Get current edit mode
       \return Current edit mode
@@ -189,6 +195,15 @@ public:
      * @return Created sc.g-node
      */
     SCgNode* createSCgNode(const QPointF &pos);
+
+
+    //for template create
+    QVector<SCgObject *> createSCgTemplate(const QPointF &pos);
+    // for then else goto
+    QVector<SCgObject *> createElseTemplate(const QVector<QGraphicsItem*> &nodes);
+    QVector<SCgObject *> createGotoTemplate(const QVector<QGraphicsItem*> &nodes);
+    QVector<SCgObject *> createThenTemplate(const QVector<QGraphicsItem*> &nodes);
+
 
     /*! Create sc.g-pair.
      * @param begObj   Begin object.
@@ -423,9 +438,17 @@ public:
      */
     void cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
 
-    QVector<SCgObject *> createSCgTemplate(const QPointF &pos);
+    // for template
     SCgBaseCommand *createTemplateCommand(const QPointF &pos, SCgBaseCommand *parentCmd = 0, bool addToStack = true);
+    // for goto then else
+    SCgBaseCommand *createElseTemplateCommand(const QVector<QGraphicsItem*> &nodes, SCgBaseCommand *parentCmd = 0, bool addToStack = true);
+    SCgBaseCommand *createGotoTemplateCommand(const QVector<QGraphicsItem*> &nodes, SCgBaseCommand *parentCmd = 0, bool addToStack = true);
+    SCgBaseCommand *createThenTemplateCommand(const QVector<QGraphicsItem*> &nodes, SCgBaseCommand *parentCmd = 0, bool addToStack = true);
+
 private:
+    //for else goto then templates
+    QPointF calc(QPointF beginPoint, QPointF endPoint);
+
     QVector<SCgMode*> mSceneModes;
     //! Current edit mode
     SCgMode* mMode;
@@ -473,11 +496,14 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect);
 
     void dropEvent(QGraphicsSceneDragDropEvent *event);
-signals:
+ signals:
     /*! Signal that emits on edit mode change
       * @param mode New edit mode
       */
+
     void editModeChanged(int mode);
+    //
+    void templateChanged(SCgScene::Template templ);
 
 public slots:
     void setIdtfDirtyFlag();

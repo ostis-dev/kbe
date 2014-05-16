@@ -32,10 +32,10 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgMinimap;
 class SCgView;
 class SCgUndoView;
+class QToolButton;
 
 class QToolBar;
 class QLineEdit;
-class QSlider;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
@@ -105,6 +105,8 @@ public:
     static const qreal minScale;
     static const qreal maxScale;
     /*! @}*/
+
+
 private:
     //! @see onZoomIn(), onZoomOut()
     static const int mScaleChangeStep;
@@ -130,7 +132,10 @@ private:
 
     typedef QMap<SCgScene::EditMode, QAction*> Mode2ActionMap;
     //! Map for storing mode-action relation
-    Mode2ActionMap mMode2Action; 
+    Mode2ActionMap mMode2Action;
+
+    //! Contents current zoom factor.
+    QLineEdit* mZoomFactorLine;
 
     //! Pointer to minimap object
     SCgMinimap *mMinimap;
@@ -144,14 +149,13 @@ private:
     //! Tool bar
     QToolBar *mToolBar;
 
-    //! Slider
-    QSlider *mZoomSlider;
-
     //! Undo stack
     QUndoStack *mUndoStack;
 
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;
+
+    QToolButton *templateGenElButton;
 
     /**
      * \defgroup menu Menu
@@ -187,7 +191,8 @@ signals:
 
 private slots:
     //! Slot to handle a template action
-
+    void onTemplateMode();
+    void setVisibleTemplateButtons();
     void onGenElTempalteMode();
     void onGenElStr3TempalteMode();
     void onGenElStr5TempalteMode();
@@ -218,6 +223,7 @@ private slots:
     void onEraseElTempalteMode();
     void onEraseElStr3TempalteMode();
     void onEraseElStr5TempalteMode();
+
     //! Slot to handle a selection action
     void onSelectMode();
     //! Slot to handle a pair creation action
@@ -299,10 +305,6 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
-
-    QWidget* createNewParametersTab();
-
-    QString getDescription() const;
 
 };
 
