@@ -26,6 +26,7 @@ along with OSTIS.  If not, see .
 
 #include "scgtextitem.h"
 #include "scgnode.h"
+#include <QVector>
 
 class QGraphicsSceneMouseEvent;
 
@@ -44,10 +45,20 @@ public:
 
     //! Return a type of graphics item as integer
     virtual int type() const { return Type; }
+
+    /**
+    * @brief function show or hide 4 possible of SCgNodeTextItem
+    * @param isShow show or hide textItemPositions, show - true, hide - false
+    * @param scene  Pointer to the graphics scene that contains current item
+    */
+    void showPositions(SCgScene * scgScene, bool isShow);
 protected:
 	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
     void setTextPos(SCgNode::eIdentifierPosition pos);
+
+    void createTextItemPositions(SCgScene * scgScene);
+
     SCgNode::eIdentifierPosition textPos() const;
 
     void updateTextPos(SCgNode::eIdentifierPosition pos);
@@ -55,6 +66,9 @@ protected:
 
     SCgNode::eIdentifierPosition mTextPos;
     SCgNode *mParentItem;
+
+    //! 4 possible postion of ScgNodeTextItem (see ScgNode::eIdentifierPosition)
+    QVector<QGraphicsRectItem*> textItemPositions;
 };
 
 #endif // SCGNODETEXTITEM_H

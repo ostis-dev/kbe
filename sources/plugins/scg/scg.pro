@@ -46,8 +46,10 @@ HEADERS += \
     scgtextitem.h \
     gwf/gwfstreamwriter.h \
     gwf/gwfobjectinforeader.h \
+    gwf/scsobjectinforeader.h \
     gwf/gwffilewriter.h \
     gwf/gwffileloader.h \
+    gwf/scsfileloader.h \
     scgplugin.h \
     scgfindwidget.h \
     scgundoviewmodel.h \
@@ -92,7 +94,11 @@ HEADERS += \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
     arrangers/scgforcecalculator.h \
-    scgnodetextitem.h
+    scgnodetextitem.h \
+    gwf/parser/scsparserast.h \
+    gwf/parser/scsParser.h \
+    gwf/parser/scsLexer.h \
+    scgprint.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -128,6 +134,8 @@ SOURCES += \
     gwf/gwfobjectinforeader.cpp \
     gwf/gwffilewriter.cpp \
     gwf/gwffileloader.cpp \
+    gwf/scsfileloader.cpp \
+    gwf/scsobjectinforeader.cpp \
     scgplugin.cpp \
     scgfindwidget.cpp \
     scgundoviewmodel.cpp \
@@ -172,7 +180,11 @@ SOURCES += \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
     arrangers/scgforcecalculator.cpp \
-    scgnodetextitem.cpp
+    scgnodetextitem.cpp \
+    gwf/parser/scsparserast.cpp \
+    gwf/parser/scsParser.c \
+    gwf/parser/scsLexer.c \
+    scgprint.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
@@ -182,3 +194,6 @@ lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
+
+OTHER_FILES += \
+    gwf/parser/scs.tokens

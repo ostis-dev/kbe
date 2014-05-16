@@ -25,6 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgmode.h"
 #include <QMap>
 #include <QCursor>
+#include <QPointF>
+#include <scgnodetextitem.h>
 
 class SCgPointObject;
 
@@ -45,6 +47,8 @@ public:
 
     void mouseRelease(QGraphicsSceneMouseEvent *event);
 
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
+
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 
@@ -64,6 +68,8 @@ private:
     bool mIsItemsMoved;
     //! Showed if type cloning proccess is started
     bool mIsTypeClonning;
+    //! True if node was selecting before idf moving
+    bool mIsNodeSelected;
     //! Type of object that taken part in type clonning
     int mObjectType;
     //! Cloning type alias
@@ -74,6 +80,15 @@ private:
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item
     SCgContour *findNearestParentContour(QGraphicsItem* item);
+
+    /*! Check if in selected objecst is some SCgObject with current type
+     * @param SCgObjectType object type @see( SCgObject::Type)
+       @return true if object with param type was found
+     */
+    bool isScgObjectSelected(const int SCgObjectType);
+
+    //! for defening the scg node identifier whitch is moving
+    SCgNodeTextItem * mTextItem;
 
 };
 
