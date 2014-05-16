@@ -71,8 +71,6 @@ public:
     */
     void _update();
 
-    void activate(QMainWindow *window);
-
     /*! Get icon specified for window type
     */
     QIcon icon() const;
@@ -119,6 +117,10 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+    QWidget* createNewParametersTab();
+
+    QString getDescription() const;
 
 };
 #endif // SCSWINDOW_H

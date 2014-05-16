@@ -21,7 +21,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "scgscene.h"
+#include <QDebug>
 
+#include "math.h"
 #include "scgobject.h"
 #include "scgnode.h"
 #include "scgpair.h"
@@ -32,12 +34,14 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontentfactory.h"
 #include "scgnodetextitem.h"
 
+
 #include "modes/scgbusmode.h"
 #include "modes/scgpairmode.h"
 #include "modes/scgcontourmode.h"
 #include "modes/scgselectmode.h"
 #include "modes/scginsertmode.h"
 #include "modes/scgclonemode.h"
+#include "modes/scgtemplatemode.h"
 
 #include "commands/scgbasecommand.h"
 #include "commands/scgcommandchangeincedentobject.h"
@@ -61,6 +65,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "commands/scgcommandswappairorient.h"
 #include "commands/scgcommandremovebreakpoints.h"
 #include "commands/scgcommandminimizecontour.h"
+#include "commands/scgcommandtemplate.h"
+#include "commands/scgcommandelsetemplate.h"
+#include "commands/scgcommandgototemplate.h"
+#include "commands/scgcommandthentemplate.h"
+
 
 #include <QUrl>
 #include <QFile>
@@ -89,8 +98,11 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
+    mSceneModes[Mode_Template] = new SCgTemplateMode(this);
 
     setEditMode(Mode_Select);
+
+    mSCgTemplate = new SCgTemplate(this);
     // grid foreground
     //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
     //    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
@@ -121,6 +133,18 @@ void SCgScene::setEditMode(EditMode mode)
 
     editModeChanged(mode);
 }
+
+void SCgScene::setTemplate(Template templ)
+{
+    mTemplate = templ;
+
+    templateChanged(templ);
+}
+
+//SCgScene::Template SCgScene::getTemplate()
+//{
+//    return mTemplate;
+//}
 
 SCgScene::EditMode SCgScene::editMode() const
 {
@@ -247,6 +271,186 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     addItem(node);
     return node;
 }
+
+QVector<SCgObject*> SCgScene::createElseTemplate(const QVector<QGraphicsItem*> &nodes)
+{
+    QVector<SCgObject*> objects;
+    SCgObject* beginObject = static_cast<SCgObject*>(nodes.at(1));
+    SCgObject* endObject = static_cast<SCgObject*>(nodes.at(0));
+
+    //creating atribute node
+    SCgNode *node = new SCgNode;
+    node->setPos(calc(beginObject->pos(),endObject->pos()));
+    node->setIdtfValue("else_");
+    node->setIdtfPos(SCgNode::BottomLeft);
+    node->setTypeAlias("node/const/role");
+    objects.append(node);
+
+    //creating dopair
+    QVector<QPointF> points;
+    points.push_back(beginObject->pos());
+    points.push_back(endObject->pos());
+
+    SCgPair *pair = new SCgPair;
+    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setBeginObject(beginObject);
+    pair->setEndObject(endObject);
+    pair->setPoints(points);
+    objects.append(pair);
+
+    //creating role pair
+    SCgPair* roleNodeGoToPair = new SCgPair;
+    roleNodeGoToPair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    roleNodeGoToPair->setBeginObject(node);
+    roleNodeGoToPair->setEndObject(pair);
+    roleNodeGoToPair->setPoints(points);
+    roleNodeGoToPair->setEndDot(.5f);
+    objects.append(roleNodeGoToPair);
+
+    return objects;
+}
+
+QVector<SCgObject*> SCgScene::createGotoTemplate(const QVector<QGraphicsItem*> &nodes)
+{
+    QVector<SCgObject*> objects;
+    SCgObject* beginObject = static_cast<SCgObject*>(nodes.at(1));
+    SCgObject* endObject = static_cast<SCgObject*>(nodes.at(0));
+
+    //creating atribute node
+    SCgNode *node = new SCgNode;
+    node->setPos(calc(beginObject->pos(),endObject->pos()));
+    node->setIdtfValue("goto_");
+    node->setIdtfPos(SCgNode::BottomLeft);
+    node->setTypeAlias("node/const/role");
+    objects.append(node);
+
+    //creating dopair
+    QVector<QPointF> points;
+    points.push_back(beginObject->pos());
+    points.push_back(endObject->pos());
+
+    SCgPair *pair = new SCgPair;
+    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setBeginObject(beginObject);
+    pair->setEndObject(endObject);
+    pair->setPoints(points);
+    objects.append(pair);
+
+    //creating role pair
+    SCgPair* roleNodeGoToPair = new SCgPair;
+    roleNodeGoToPair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    roleNodeGoToPair->setBeginObject(node);
+    roleNodeGoToPair->setEndObject(pair);
+    roleNodeGoToPair->setPoints(points);
+    roleNodeGoToPair->setEndDot(.5f);
+    objects.append(roleNodeGoToPair);
+
+    return objects;
+}
+
+QVector<SCgObject*> SCgScene::createThenTemplate(const QVector<QGraphicsItem*> &nodes)
+{
+    QVector<SCgObject*> objects;
+    SCgObject* beginObject = static_cast<SCgObject*>(nodes.at(1));
+    SCgObject* endObject = static_cast<SCgObject*>(nodes.at(0));
+
+    //creating atribute node
+    SCgNode *node = new SCgNode;
+    node->setPos(calc(beginObject->pos(),endObject->pos()));
+    node->setIdtfValue("then_");
+    node->setIdtfPos(SCgNode::BottomLeft);
+    node->setTypeAlias("node/const/role");
+    objects.append(node);
+
+    //creating dopair
+    QVector<QPointF> points;
+    points.push_back(beginObject->pos());
+    points.push_back(endObject->pos());
+
+    SCgPair *pair = new SCgPair;
+    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setBeginObject(beginObject);
+    pair->setEndObject(endObject);
+    pair->setPoints(points);
+    objects.append(pair);
+
+    //creating role pair
+    SCgPair* roleNodeGoToPair = new SCgPair;
+    roleNodeGoToPair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    roleNodeGoToPair->setBeginObject(node);
+    roleNodeGoToPair->setEndObject(pair);
+    roleNodeGoToPair->setPoints(points);
+    roleNodeGoToPair->setEndDot(.5f);
+    objects.append(roleNodeGoToPair);
+
+    return objects;
+}
+
+
+QVector<SCgObject*> SCgScene::createSCgTemplate(const QPointF &pos)
+{
+    if(mTemplate == GenEl_Template)
+        return mSCgTemplate->createGenElTemplate(pos);
+    if(mTemplate == GenElStr3_Template)
+        return mSCgTemplate->createGenElStr3Template(pos);
+    if(mTemplate == GenElStr5_Template)
+        return mSCgTemplate->createGenElStr5Template(pos);
+    if(mTemplate == SearchElStr3_Template)
+        return mSCgTemplate->createSearchElStr3Template(pos);
+    if(mTemplate == SearchElStr5_Template)
+        return mSCgTemplate->createSearchElStr5Template(pos);
+    if(mTemplate == SearchSetStr3_Template)
+        return mSCgTemplate->createSearchSetStr3Template(pos);
+    if(mTemplate == SearchSetStr5_Template)
+        return mSCgTemplate->createSearchSetStr5Template(pos);
+    if(mTemplate == eraseEl_Template)
+        return mSCgTemplate->createEraseElTemplate(pos);
+    if(mTemplate == eraseElStr3_Template)
+        return mSCgTemplate->createEraseElStr3Template(pos);
+    if(mTemplate == eraseElStr5_Template)
+        return mSCgTemplate->createEraseElStr5Template(pos);
+    if(mTemplate == SCPprogram_Template)
+        return mSCgTemplate->createProgramSCPTempale(pos);
+    if(mTemplate == PrintEl_Template)
+        return mSCgTemplate->createPrintElTemplate(pos);
+    if(mTemplate == PrintNl_Template)
+        return mSCgTemplate->createPrintNlTemplate(pos);
+    if(mTemplate == Print_Template)
+        return mSCgTemplate->createPrintTemplate(pos);
+    if(mTemplate == IfType_Template)
+        return mSCgTemplate->createifTypeTemplate(pos);
+    if(mTemplate == IfEqType_Template)
+        return mSCgTemplate->createifEqTemplate(pos);
+    if(mTemplate == IfCoinType_Template)
+        return mSCgTemplate->createifCoinTemplate(pos);
+    if(mTemplate == IfGrType_Template)
+        return mSCgTemplate->createifCoinTemplate(pos);
+    if(mTemplate == Add_Template)
+        return mSCgTemplate->createAddTemplate(pos);
+    if(mTemplate == Sub_Template)
+        return mSCgTemplate->createSubTemplate(pos);
+    if(mTemplate == Mult_Template)
+        return mSCgTemplate->createMultTemplate(pos);
+    if(mTemplate == Div_Template)
+        return mSCgTemplate->createDivTemplate(pos);
+    if(mTemplate == Pow_Template)
+        return mSCgTemplate->createPowTemplate(pos);
+    if(mTemplate == CallReturn_Template)
+        return mSCgTemplate->createCallReturnTemplate(pos);
+    if(mTemplate == Return_Template)
+        return mSCgTemplate->createReturnTemplate(pos);
+    if(mTemplate == Sin_Template)
+        return mSCgTemplate->createSinTemplate(pos);
+    if(mTemplate == ASin_Template)
+        return mSCgTemplate->createASinTemplate(pos);
+    if(mTemplate == Cos_Template)
+        return mSCgTemplate->createCosTemplate(pos);
+    if(mTemplate == ACos_Template)
+        return mSCgTemplate->createACosTemplate(pos);
+    if(mTemplate == ToStr_Template)
+        return mSCgTemplate->createToStrTemplate(pos);
+}
+
 
 SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVector<QPointF> &points)
 {
@@ -636,6 +840,58 @@ SCgBaseCommand* SCgScene::addPointCommand(SCgPointObject* obj, const QPointF& po
 
 }
 
+//for tempate comm and
+SCgBaseCommand* SCgScene::createTemplateCommand(const QPointF& pos,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandTemplate(this, pos, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+
+SCgBaseCommand* SCgScene::createElseTemplateCommand(const QVector<QGraphicsItem*> &nodes,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandElseTemplate(this, nodes, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::createThenTemplateCommand(const QVector<QGraphicsItem*> &nodes,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandThenTemplate(this, nodes, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::createGotoTemplateCommand(const QVector<QGraphicsItem*> &nodes,
+                                            SCgBaseCommand *parentCmd,
+                                            bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgCommandGotoTemplate(this, nodes, parentCmd);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+
+
 SCgBaseCommand* SCgScene::createNodeCommand(const QPointF& pos,
                                             SCgContour* parent,
                                             SCgBaseCommand* parentCmd,
@@ -941,4 +1197,12 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 void SCgScene::ensureSelectedItemVisible() {
     if (!selectedItems().isEmpty())
         views().at(0)->ensureVisible(selectedItems().at(0));
+}
+
+// for goto then else
+QPointF SCgScene::calc(QPointF beginPoint, QPointF endPoint)
+{
+    int lenght = max(fabs(endPoint.x() - beginPoint.x()), fabs(endPoint.y() - beginPoint.y()));
+    QPointF points((lenght / 2), endPoint.y() + 20);
+    return points;
 }

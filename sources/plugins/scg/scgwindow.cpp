@@ -114,11 +114,14 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     /////////////////////////////////////////////////
 
     // Create widgets, which will be added into dock area of main window.
+
     createWidgetsForDocks();
 
     createActions();
 
     createToolBar();
+
+
 }
 
 SCgWindow::~SCgWindow()
@@ -161,6 +164,7 @@ void SCgWindow::createActions()
 //    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
 }
 
+
 void SCgWindow::createWidgetsForDocks()
 {
     //Creating widgets for docks
@@ -191,7 +195,7 @@ void SCgWindow::createToolBar()
     QAction *action = new QAction(findIcon("tool-select.png"), tr("Selection mode"), mToolBar);
     action->setCheckable(true);
     action->setChecked(true);
-    action->setShortcut(QKeySequence(tr("1", "Selection mode")));
+    action->setShortcut(QKeySequence(tr("2", "Selection mode")));
     group->addAction(action);
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Select] = action;
@@ -200,7 +204,7 @@ void SCgWindow::createToolBar()
     //Pair creation mode
     action = new QAction(findIcon("tool-pair.png"), tr("Pair creation mode"), mToolBar);
     action->setCheckable(true);
-    action->setShortcut(QKeySequence(tr("2", "Pair creation mode")));
+    action->setShortcut(QKeySequence(tr("1", "Pair creation mode")));
     group->addAction(action);
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Pair] = action;
@@ -225,7 +229,217 @@ void SCgWindow::createToolBar()
     connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
     //
     mToolBar->addSeparator();
-    //
+    //--------------------------------------------------------------------------------------------------------------------
+
+    //template mode
+    action = new QAction(findIcon("template-mode.png"), tr("Template creation mode"), mToolBar);
+    action->setCheckable(true);
+    action->setShortcut(QKeySequence(tr("4", "Template creation mode")));
+    group->addAction(action);
+    mToolBar->addAction(action);
+    mMode2Action[SCgScene::Mode_Contour] = action;
+    connect(action, SIGNAL(triggered()), this, SLOT(onTemplateMode()));
+
+    //template button group
+    templateGenElButton = new QToolButton(mToolBar);
+    templateGenElButton->setPopupMode(QToolButton::InstantPopup);
+
+    mToolBar->addWidget(templateGenElButton);
+
+    //GenEl Template
+        action = new QAction(tr("GenEl Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onGenElTempalteMode()));
+
+        //GenElStr3 Template
+        action = new QAction(tr("GenElStr3 Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onGenElStr3TempalteMode()));
+
+        //GenElStr5 Template
+        action = new QAction(tr("GenElStr5 Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onGenElStr5TempalteMode()));
+
+        action = new QAction(tr("SearchElStr3 Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onSearchElStr3TempalteMode()));
+
+        action = new QAction(tr("SearchElStr5 Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onSearchElStr5TempalteMode()));
+
+        action = new QAction(tr("EraseEl Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onEraseElTempalteMode()));
+
+        action = new QAction(tr("EraseElStr3 Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onEraseElStr3TempalteMode()));
+
+        action = new QAction(tr("EraseElStr5 Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onEraseElStr5TempalteMode()));
+
+    //SCPProgram Template
+    action = new QAction(tr("SCPProgram Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onSCPProgramTemplateMode()));
+
+    //PrintEl Template
+    action = new QAction(tr("PrintEl Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onPrintElTemplateMode()));
+
+    //PrintNl Template
+    action = new QAction(tr("PrintNl Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onPrintNlTemplateMode()));
+
+    //Print Template
+    action = new QAction(tr("Print Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onPrintTemplateMode()));
+
+    //ifType Template
+    action = new QAction(tr("ifType Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onIfTypeTemplateMode()));
+
+    //ifEq Template
+    action = new QAction(tr("ifEq Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onIfEqTemplateMode()));
+
+    //ifCoin Template
+    action = new QAction(tr("ifCoin Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onIfCoinTemplateMode()));
+
+    //ifGr Template
+    action = new QAction(tr("ifGr Template"), mToolBar);
+    action->setCheckable(true);
+    group->addAction(action);
+    templateGenElButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onIfCoinTemplateMode()));
+
+    //Add template
+        action = new QAction(tr("Add Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onAddTemplateMode()));
+
+        //Sub template
+        action = new QAction(tr("Sub Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onSubTemplateMode()));
+
+        //Mult template
+        action = new QAction(tr("Mult Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onMultTemplateMode()));
+
+        //Div template
+        action = new QAction(tr("Div Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onDivTemplateMode()));
+
+        //Pow template
+        action = new QAction(tr("Pow Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onPowTemplateMode()));
+
+        //CallReturn template
+        action = new QAction(tr("CallReturn Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onCallReturnTemplateMode()));
+
+        //Return template
+        action = new QAction(tr("Return Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onReturnTemplateMode()));
+
+        //Sin template
+        action = new QAction(tr("Sin Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onSinTemplateMode()));
+
+        //ASin template
+        action = new QAction(tr("ASin Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onASinTemplateMode()));
+
+
+        //Cos template
+        action = new QAction(tr("Cos Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onCosTemplateMode()));
+
+        //ACos template
+        action = new QAction(tr("ACos Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onACosTemplateMode()));
+
+        //toStr template
+        action = new QAction(tr("toStr Template"), mToolBar);
+        action->setCheckable(true);
+        group->addAction(action);
+        templateGenElButton->addAction(action);
+        connect(action, SIGNAL(triggered()), this, SLOT(onToStrTemplateMode()));
+
+    //separetor
+    mToolBar->addSeparator();
 
     // align group button
     QToolButton *alignButton = new QToolButton(mToolBar);
@@ -267,7 +481,6 @@ void SCgWindow::createToolBar()
     action->setShortcut(QKeySequence(tr("9", "Energy-based layout")));
     alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onEnergyBasedLayout()));
-
 
     // selection group button
     QToolButton *selectButton = new QToolButton(mToolBar);
@@ -386,6 +599,253 @@ void SCgWindow::onSelectMode()
     mView->setDragMode(QGraphicsView::RubberBandDrag);
 }
 
+//for template mode
+
+void SCgWindow::onTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+}
+
+void SCgWindow::onGenElTempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::GenEl_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onGenElStr3TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::GenElStr3_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onGenElStr5TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::GenElStr5_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSearchElStr3TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::SearchElStr3_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSearchElStr5TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::SearchElStr5_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSearchSetStr3TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::SearchSetStr3_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSearchSetStr5TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::SearchSetStr5_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onEraseElTempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::eraseEl_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onEraseElStr3TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::eraseElStr3_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onEraseElStr5TempalteMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::eraseElStr5_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSCPProgramTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::SCPprogram_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onPrintElTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::PrintEl_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onPrintNlTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::PrintNl_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onPrintTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Print_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onIfTypeTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::IfType_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onIfEqTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::IfEqType_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onIfCoinTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::IfCoinType_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onIfGrTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::IfGrType_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onAddTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Add_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSubTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Sub_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onMultTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Mult_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onDivTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Div_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onPowTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Pow_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onCallReturnTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::CallReturn_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onReturnTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Return_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSinTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Sin_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onASinTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::ASin_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onCosTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::Cos_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onACosTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::ACos_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onToStrTemplateMode()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Template);
+    static_cast<SCgScene*>(mView->scene())->setTemplate(SCgScene::ToStr_Template);
+    mView->viewport()->setCursor(Qt::ArrowCursor);
+    mView->setDragMode(QGraphicsView::NoDrag);
+}
+//---------------------------------------------------------------------------------------
 void SCgWindow::onPairMode()
 {
     static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Pair);
@@ -703,6 +1163,19 @@ void SCgWindow::deleteMenu()
 //    delete mViewMenu;
 //    mViewMenu = 0;
     mEditMenu = 0;
+}
+
+void SCgWindow::setVisibleTemplateButtons()
+{
+
+
+    if(!templateGenElButton->isVisible())
+    {
+        templateGenElButton->setVisible(true);
+    }
+    else
+        templateGenElButton->setVisible(false);
+
 }
 
 void SCgWindow::stackCleanStateChanged(bool value)

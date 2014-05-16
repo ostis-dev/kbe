@@ -74,6 +74,7 @@ private:
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item
     SCgContour *findNearestParentContour(QGraphicsItem* item);
+    SCgNode *node;
 
 };
 
