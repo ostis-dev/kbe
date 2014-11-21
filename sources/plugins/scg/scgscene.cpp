@@ -593,12 +593,12 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
         else if (item->type() == SCgTextItem::Type || item->type() == SCgNodeTextItem::Type)
         {
             if(!cmd)
-                cmd = new SCgCommandIdtfMove(static_cast<SCgTextItem*>(item),
+                cmd = new SCgCommandIdtfMove(static_cast<SCgObject*>(item->parentItem()),
                                              this,
                                              it.value().first.second,
                                              it.value().second.second);
             else
-                new SCgCommandIdtfMove(static_cast<SCgTextItem*>(item),
+                new SCgCommandIdtfMove(static_cast<SCgObject*>(item->parentItem()),
                                        this,
                                        it.value().first.second,
                                        it.value().second.second);

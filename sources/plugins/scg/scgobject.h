@@ -106,6 +106,10 @@ public:
     void setBoundingBoxVisible(bool value);
     //! Check if bounding box is visible
     bool isBoundingBoxVisible() const;
+
+    virtual void setIdtfPos(const QPointF &pos);
+    QPointF idtfPos() const;
+
 //////////////////////////
 /* Working with types */
 public:

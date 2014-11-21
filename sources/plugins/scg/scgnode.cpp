@@ -379,6 +379,7 @@ void SCgNode::setIdtfValue(const QString &idtf)
             mTextItem->setZValue(7);
             mTextItem->setDefaultTextColor(scg_cfg_get_value_color(scg_text_element_color_normal));
         }
+
         mTextItem->setPlainText(mIdtfValue);
     }
     else if (mTextItem)
@@ -390,7 +391,7 @@ void SCgNode::setIdtfValue(const QString &idtf)
     positionChanged();
 }
 
-SCgNode::eIdentifierPosition SCgNode::idtfPos() const
+SCgNode::IdentifierPosition SCgNode::idtfPos() const
 {
     if (!mTextItem)
         return DEFAULT_IDTF_POS;
@@ -399,13 +400,13 @@ SCgNode::eIdentifierPosition SCgNode::idtfPos() const
     Q_CHECK_PTR(pItem);
 
     if (pItem)
-        return pItem->textPos();
+        return pItem->nodeTextPos();
 
     return DEFAULT_IDTF_POS;
 }
 
 
-void SCgNode::setIdtfPos(eIdentifierPosition pos)
+void SCgNode::setIdtfPos(IdentifierPosition pos)
 {
     if (!mTextItem)
         return;
@@ -414,5 +415,5 @@ void SCgNode::setIdtfPos(eIdentifierPosition pos)
     Q_CHECK_PTR(pItem);
 
     if (pItem)
-        pItem->setTextPos(pos);
+        pItem->setNodeTextPos(pos);
 }
