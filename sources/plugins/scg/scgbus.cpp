@@ -120,7 +120,7 @@ void SCgBus::updateShape()
 
     // update text position
     if (mTextItem)
-        mTextItem->setPos((mPoints.at(0) + mPoints.at(1)) / 2.f);
+        mTextItem->setTextPos((mPoints.at(0) + mPoints.at(1)) / 2.f);
 }
 
 void SCgBus::objectDelete(SCgObject *object)

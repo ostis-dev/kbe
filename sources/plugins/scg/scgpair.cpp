@@ -114,7 +114,7 @@ void SCgPair::updateShape()
     {
         Q_ASSERT(mPoints.size() > 1);
         QPointF text_pos = (mPoints[0] + mPoints[1]) / 2.f;
-        mTextItem->setPos(text_pos);
+        mTextItem->setTextPos(text_pos);
     }
 }
 
