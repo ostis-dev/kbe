@@ -43,7 +43,8 @@ public:
         BottomLeft,
         TopLeft,
         TopRight
-    } eIdentifierPosition;
+    } IdentifierPosition;
+
     /*! Type for qgraphicsitem_cast
       */
     int type() const { return Type; }
@@ -52,8 +53,8 @@ public:
 
 	void setIdtfValue(const QString &idtf);
 
-        void setIdtfPos(eIdentifierPosition pos);
-        eIdentifierPosition idtfPos() const;
+    void setIdtfPos(IdentifierPosition pos);
+    IdentifierPosition idtfPos() const;
 
 	QRectF boundingRect() const;
 

@@ -231,7 +231,8 @@ void SCgObject::setIdtfValue(const QString &idtf)
             //scene()->addItem(mTextItem);
         }
         mTextItem->setPlainText(mIdtfValue);
-    } else if (mTextItem)
+    }
+    else if (mTextItem)
     {
         delete mTextItem;
         mTextItem = 0;
@@ -305,3 +306,13 @@ void SCgObject::undel(SCgScene *scene)
     scene->addItem(this);
 }
 
+
+void SCgObject::setIdtfPos(const QPointF &pos)
+{
+    mTextItem->setTextPos(pos);
+}
+
+QPointF SCgObject::idtfPos() const
+{
+    return mTextItem->textPos();
+}

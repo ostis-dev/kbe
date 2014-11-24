@@ -39,7 +39,7 @@ public:
     * @param newPosition    Position of the identifier after moving
     * @param parent         Pointer to parent's undo command
     */
-    explicit SCgCommandIdtfMove(SCgTextItem *idtf,
+    explicit SCgCommandIdtfMove(SCgObject *obj,
                                 SCgScene *scene,
                                 const QPointF& oldPosition,
                                 const QPointF& newPosition,
@@ -55,7 +55,7 @@ protected:
 
 private:
     //! Item that store object's identifier
-    SCgTextItem *mIdtfItem;
+    SCgObject *mObject;
     //! Position before moving
     QPointF mOldPosition;
     //! Position after moving

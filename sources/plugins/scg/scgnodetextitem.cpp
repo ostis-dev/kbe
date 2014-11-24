@@ -24,7 +24,7 @@ along with OSTIS.  If not, see .
 #include "scgnodetextitem.h"
 
 
-SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene* scene )
+SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene* scene )
     : SCgTextItem(str,(QGraphicsItem*)parent,scene)
     , mTextPos(idtfPos)
 {
@@ -34,7 +34,7 @@ SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::e
 }
 
 
-SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene *scene)
+SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene *scene)
     : SCgTextItem((QGraphicsItem*)parent, scene)
     , mTextPos(idtfPos)
 {
@@ -52,11 +52,11 @@ void SCgNodeTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 
     if ((flags() & QGraphicsItem::ItemIsMovable) != 0)
-        setTextPos(posToIdtfPos(mapToParent(event->pos())));
+        setNodeTextPos(posToIdtfPos(mapToParent(event->pos())));
 }
 
 
-void SCgNodeTextItem::setTextPos(SCgNode::eIdentifierPosition pos)
+void SCgNodeTextItem::setNodeTextPos(SCgNode::IdentifierPosition pos)
 {
     if (mTextPos != pos)
     {
@@ -65,9 +65,9 @@ void SCgNodeTextItem::setTextPos(SCgNode::eIdentifierPosition pos)
     }
 }
 
-SCgNode::eIdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) const
+SCgNode::IdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) const
 {
-    SCgNode::eIdentifierPosition idtfPos = SCgNode::BottomRight;
+    SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight;
 
     qreal x = point.x();
     qreal y = point.y();
@@ -96,7 +96,7 @@ SCgNode::eIdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point)
 }
 
 
-void SCgNodeTextItem::updateTextPos(SCgNode::eIdentifierPosition pos)
+void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
 {
     QRectF rect = boundingRect();
     QRectF parentRect =  mParentItem->boundingRect();
@@ -118,7 +118,18 @@ void SCgNodeTextItem::updateTextPos(SCgNode::eIdentifierPosition pos)
     setSelected(false);
 }
 
-SCgNode::eIdentifierPosition SCgNodeTextItem::textPos() const
+SCgNode::IdentifierPosition SCgNodeTextItem::nodeTextPos() const
 {
     return mTextPos;
+}
+
+void SCgNodeTextItem::setTextPos(const QPointF &pos)
+{
+    setNodeTextPos(posToIdtfPos(pos));
+}
+
+void SCgNodeTextItem::setPlainText(const QString &text)
+{
+    SCgTextItem::setPlainText(text);
+    updateTextPos(mTextPos);
 }
