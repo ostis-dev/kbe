@@ -271,7 +271,7 @@ QStringList SCsWindowFactory::supportedFormatsExt()
 {
     QStringList list;
     list << "scs";
-
+    list << "scsi";
     return list;
 }
 
