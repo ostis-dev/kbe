@@ -163,6 +163,8 @@ bool SCsWindow::saveToFile(const QString &fileName)
     out.setCodec("UTF-8");
 
     out << mEditor->document()->toPlainText();
+    if(mEditor->document()->toPlainText().right(1).compare("\n")!=0)
+            out<<"\n";
     fileOut.close();
 
     mFileName = fileName;
