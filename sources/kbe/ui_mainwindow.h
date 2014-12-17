@@ -44,6 +44,7 @@ public:
     QAction *actionView_ProjectManager;
     QAction *actionNew_Project;
     QAction *actionOpen_Project;
+    QAction *actionImport_Project;
     QAction *actionSave_Project;
     QAction *actionClose_Project;
     QWidget *centralWidget;
@@ -99,6 +100,8 @@ public:
         actionNew_Project->setObjectName(QString::fromUtf8("actionNew_Project"));
         actionOpen_Project = new QAction(MainWindow);
         actionOpen_Project->setObjectName(QString::fromUtf8("actionOpen_Project"));
+        actionImport_Project = new QAction(MainWindow);
+        actionImport_Project->setObjectName(QString::fromUtf8("actionImport_Project"));
         actionSave_Project = new QAction(MainWindow);
         actionSave_Project->setObjectName(QString::fromUtf8("actionSave_Project"));
         actionClose_Project = new QAction(MainWindow);
@@ -130,6 +133,8 @@ public:
         menuFile->addAction(actionNew_Project);
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionOpen_Project);
+        menuFile->addAction(actionImport);
+        menuFile->addAction(actionImport_Project);
         menuFile->addAction(actionSave);
         menuFile->addAction(actionSave_as);
         menuFile->addAction(actionSave_Project);
@@ -188,6 +193,8 @@ public:
         actionNew_Project->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+N", 0, QApplication::UnicodeUTF8));
         actionOpen_Project->setText(QApplication::translate("MainWindow", "Open Project", 0, QApplication::UnicodeUTF8));
         actionOpen_Project->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+O", 0, QApplication::UnicodeUTF8));
+        actionImport_Project->setText(QApplication::translate("MainWindow", "Import Project", 0, QApplication::UnicodeUTF8));
+        actionImport_Project->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+I", 0, QApplication::UnicodeUTF8));
         actionSave_Project->setText(QApplication::translate("MainWindow", "Save Project", 0, QApplication::UnicodeUTF8));
         actionSave_Project->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0, QApplication::UnicodeUTF8));
         actionClose_Project->setText(QApplication::translate("MainWindow", "Close Project", 0, QApplication::UnicodeUTF8));

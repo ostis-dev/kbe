@@ -234,6 +234,29 @@ void ProjectManagerModel::loadProject(QString filePath)
     }
 }
 
+void ProjectManagerModel::importChilds(ProjectManagerModelItem *item, QString directoryPath)
+{
+    if (!item)
+        return;
+    QStringList nameFilter;
+    nameFilter<<"*.gwf"<<"*.scs"<<"*.m4scp"<<"*.scsi";
+    QDir directory(directoryPath);
+    QStringList rootFiles = directory.entryList(nameFilter);
+    for (int i = 0; i < rootFiles.size(); ++i)
+    {
+        QString newObjectName = item->objectName()
+                + SEPARATOR
+                + item->getAbsoluteSourcesDir().relativeFilePath(directoryPath)
+                + SEPARATOR
+                + rootFiles.at(i).split(SEPARATOR).last();
+        addChild(newObjectName, directoryPath + SEPARATOR + rootFiles.at(i), ProjectManagerModelItem::File, mRootItem);
+    }
+    directory.setFilter(QDir::Dirs | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    QStringList subdirectories = directory.entryList();
+    for (int i = 0; i < subdirectories.size(); ++i)
+        importChilds(item,directoryPath + SEPARATOR + subdirectories.at(i));
+}
+
 void ProjectManagerModel::saveProject(ProjectManagerModelItem *project, QString filePath)
 {
     if (!project || filePath.isEmpty())

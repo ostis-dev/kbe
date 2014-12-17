@@ -175,6 +175,12 @@ public:
      */
     void loadProject(QString filePath);
 
+    /*! Recoursivly imports item with childs to project
+    * @param item Item to import
+    * @param directoryPath current directory path
+     */
+    void importChilds(ProjectManagerModelItem *item, QString directoryPath);
+
     /*! Saves project from model
     * @param project Project which will be saved
     * @param filePath Path to file in which will be saved project

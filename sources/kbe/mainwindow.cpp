@@ -166,6 +166,7 @@ void MainWindow::createActions()
     ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
+    ui->actionImport_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
@@ -193,6 +194,7 @@ void MainWindow::createActions()
     {
         connect(ui->actionNew_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectNew()));
         connect(ui->actionOpen_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectOpen()));
+        connect(ui->actionImport_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectImport()));
         ui->actionSave_Project->setEnabled(false);
         connect(ui->actionSave_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectSave()));
         ui->actionClose_Project->setEnabled(false);
@@ -823,8 +825,10 @@ void MainWindow::acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEv
     {
     case ProjectManagerView::ProjectCreated:
     case ProjectManagerView::ProjectOpened:
+    case ProjectManagerView::ProjectImported:
         ui->actionNew_Project->setEnabled(false);
         ui->actionOpen_Project->setEnabled(false);
+        ui->actionImport_Project->setEnabled(false);
         ui->actionSave_Project->setEnabled(false);
         ui->actionClose_Project->setEnabled(true);
         break;
@@ -834,6 +838,7 @@ void MainWindow::acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEv
     case ProjectManagerView::ProjectClosed:
         ui->actionNew_Project->setEnabled(true);
         ui->actionOpen_Project->setEnabled(true);
+        ui->actionImport_Project->setEnabled(true);
         ui->actionSave_Project->setEnabled(false);
         ui->actionClose_Project->setEnabled(false);
         break;
