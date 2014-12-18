@@ -33,7 +33,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSet>
 
 SCgContour::SCgContour() :
-        mColorBack(QColor(250, 250, 250, 224))
+        mColorBack(QColor(250, 250, 250, 164))
 {
     setFlag(QGraphicsItem::ItemIsMovable, true);
     //setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
