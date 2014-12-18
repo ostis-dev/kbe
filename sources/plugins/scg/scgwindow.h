@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgscene.h"
 
 #include <QToolBox>
+#include <QSlider>
 #include <QMap>
 
 class SCgMinimap;
@@ -97,6 +98,7 @@ protected:
 private:
     //! List of scales.
     static const QStringList mScales;
+    static const int ZOOM_SLIDER_WIDTH;
 public:
     /*! @defgroup scaleConstraints Scale Constraints
      *  @{
@@ -166,6 +168,7 @@ private:
     QAction* mActionRedo;
     //! Find by identifier action;
     QAction* mActionFind;
+    QSlider* zoomSlider;
 
 //    //! Show/hide minmap;
 //    QAction* mActionMinMap;
@@ -214,7 +217,7 @@ private slots:
     //! Slot to handle a zoom out action
     void onZoomOut();
     //! Slot to set zoom factor value.
-    void onViewScaleChanged(qreal newScaleValue);
+    void onZoomSliderChanged(int newScale);
 
     //! Handle find next button pressed event
     void findNext();
