@@ -1,14 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>media/icons/application-exit.png</file>
-        <file>media/icons/document-new.png</file>
-        <file>media/icons/document-open.png</file>
-        <file>media/icons/document-save.png</file>
-        <file>media/icons/document-save-as.png</file>
         <file>media/icons/help-about-logo.png</file>
-        <file>media/icons/help-browser.png</file>
-        <file>media/icons/mail.png</file>
-        <file>media/icons/window-close.png</file>
         <file>media/startup/index.html</file>
         <file>media/startup/css/ie.css</file>
         <file>media/startup/css/style.css</file>
@@ -22,8 +14,22 @@
         <file>media/icons/pm-branch-open.png</file>
         <file>media/icons/pm-vline.png</file>
         <file>media/stylesheets/projectmanager.qss</file>
+        <file>media/icons/application-exit.png</file>
+        <file>media/icons/close-project.png</file>
+        <file>media/icons/close-project-as.png</file>
+        <file>media/icons/document-new.png</file>
+        <file>media/icons/document-open.png</file>
+        <file>media/icons/document-save.png</file>
+        <file>media/icons/document-save-as.png</file>
+        <file>media/icons/help-browser.png</file>
+        <file>media/icons/mail.png</file>
+        <file>media/icons/new project.png</file>
+        <file>media/icons/open-project.png</file>
+        <file>media/icons/pm-add.png</file>
         <file>media/icons/pm-collapse.png</file>
         <file>media/icons/pm-expand.png</file>
-        <file>media/icons/pm-add.png</file>
+        <file>media/icons/save-project.png</file>
+        <file>media/icons/save-project-as.png</file>
+        <file>media/icons/window-close.png</file>
     </qresource>
 </RCC>

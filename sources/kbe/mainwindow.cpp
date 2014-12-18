@@ -163,14 +163,16 @@ void MainWindow::createToolBars()
 void MainWindow::createActions()
 {
     ui->actionNew->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
-    ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
+    ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("new project.png")));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
-    ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
-    ui->actionImport_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
+    ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("open-project.png")));
+    ui->actionImport_Project->setIcon(QIcon::fromTheme("document-open", getIcon("open-project.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
-    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
+    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("save-project.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
+    ui->actionClose_Project->setIcon(QIcon::fromTheme("window-close", getIcon("close-project.png")));
+    ui->actionClose_All->setIcon(QIcon::fromTheme("window-close", getIcon("close-project-as.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
     ui->actionAbout->setIcon(QIcon::fromTheme("help-browser", getIcon("help-browser.png")));
