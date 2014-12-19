@@ -419,6 +419,16 @@ void MainWindow::fileOpen(QString fileName)
 
     if (!fileName.isEmpty() && QFile::exists(fileName))
     {
+        QList<QWidget*> list = mTabWidget->subWindowList();
+        QList<QWidget*>::iterator it = list.begin();
+        for(; it != list.end(); it++)
+        {
+            if(qobject_cast<EditorInterface*>(*it)->currentFileName()==fileName)
+            {
+                mTabWidget->setCurrentWidget(*it);//>activate(this);
+                return;
+            }
+        }
         load(fileName);
         return;
     }
