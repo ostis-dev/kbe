@@ -171,17 +171,16 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
+    QPointF mousePos = event->scenePos();
+    QGraphicsItem *pItem = mScene->itemAt(mousePos);
 
- QPointF mousePos = event->scenePos();
- QGraphicsItem *pItem = mScene->itemAt(mousePos);
+    if(pItem != NULL && event->modifiers() == Qt::ShiftModifier && pItem->type() == SCgContour::Type)
+    {
+        double factor = pow(2.0, event->delta() / 280.0);
+        SCgContour *contur = static_cast<SCgContour*>(pItem);
+        contur->scalingContur(factor);
 
- if(pItem != NULL && event->modifiers() == Qt::ShiftModifier && pItem->type() == SCgContour::Type)
- {
- double factor = pow(2.0, event->delta() / 280.0);
- SCgContour *contur = static_cast<SCgContour*>(pItem);
- contur->scalingContur(factor);
-
- }
+    }
 
 }
 
