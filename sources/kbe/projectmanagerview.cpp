@@ -328,6 +328,31 @@ void ProjectManagerView::onProjectOpen()
     }
 }
 
+void ProjectManagerView::onProjectImport()
+{
+    QString directoryName = QFileDialog::getExistingDirectory(this, tr("Choose project folder"),
+                                                              QDir::current().absolutePath(),QFileDialog::ShowDirsOnly);
+    if (directoryName.isEmpty())
+        return;
+
+    QFileInfo projectFileInfo(directoryName);
+    QString name = projectFileInfo.fileName();
+
+    if (mModel->getRootItem()->findChild<ProjectManagerModelItem*>(name))
+    {
+        QMessageBox::warning(this,tr("Importing project error"),name+" "+tr("already exists"));
+        return onProjectImport();
+    }
+
+    ProjectManagerModelItem* project = new ProjectManagerModelItem(name, QFileInfo(directoryName, name + ".kbpro").absoluteFilePath(),
+                                                                   ProjectManagerModelItem::Project,
+                                                                   mModel->getRootItem());
+    mModel->insertProject(project);
+    mModel->importChilds(project,directoryName);
+    mModel->saveProject(project, QFileInfo(directoryName, name + ".kbpro").absoluteFilePath());
+    emit event(ProjectImported);
+}
+
 
 void ProjectManagerView::onRemove()
 {

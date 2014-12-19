@@ -183,6 +183,12 @@ void SCsCodeEditor::keyPressEvent(QKeyEvent *e)
         e->ignore();
         return;
     }
+    if (e->key() == Qt::Key_Tab)
+    {
+        this->insertPlainText ("    ");
+        e->accept();
+        return;
+    }
 
 //     if (e->modifiers() == Qt::ControlModifier && e->key() == Qt::Key_F)
 //     {

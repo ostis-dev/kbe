@@ -163,13 +163,16 @@ void MainWindow::createToolBars()
 void MainWindow::createActions()
 {
     ui->actionNew->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
-    ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("document-new.png")));
+    ui->actionNew_Project->setIcon(QIcon::fromTheme("document-new", getIcon("new project.png")));
     ui->actionOpen->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
-    ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("document-open.png")));
+    ui->actionOpen_Project->setIcon(QIcon::fromTheme("document-open", getIcon("open-project.png")));
+    ui->actionImport_Project->setIcon(QIcon::fromTheme("document-open", getIcon("open-project.png")));
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
-    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
+    ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("save-project.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
+    ui->actionClose_Project->setIcon(QIcon::fromTheme("window-close", getIcon("close-project.png")));
+    ui->actionClose_All->setIcon(QIcon::fromTheme("window-close", getIcon("close-project-as.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
     ui->actionAbout->setIcon(QIcon::fromTheme("help-browser", getIcon("help-browser.png")));
@@ -193,6 +196,7 @@ void MainWindow::createActions()
     {
         connect(ui->actionNew_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectNew()));
         connect(ui->actionOpen_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectOpen()));
+        connect(ui->actionImport_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectImport()));
         ui->actionSave_Project->setEnabled(false);
         connect(ui->actionSave_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectSave()));
         ui->actionClose_Project->setEnabled(false);
@@ -415,6 +419,16 @@ void MainWindow::fileOpen(QString fileName)
 
     if (!fileName.isEmpty() && QFile::exists(fileName))
     {
+        QList<QWidget*> list = mTabWidget->subWindowList();
+        QList<QWidget*>::iterator it = list.begin();
+        for(; it != list.end(); it++)
+        {
+            if(qobject_cast<EditorInterface*>(*it)->currentFileName()==fileName)
+            {
+                mTabWidget->setCurrentWidget(*it);//>activate(this);
+                return;
+            }
+        }
         load(fileName);
         return;
     }
@@ -823,8 +837,10 @@ void MainWindow::acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEv
     {
     case ProjectManagerView::ProjectCreated:
     case ProjectManagerView::ProjectOpened:
+    case ProjectManagerView::ProjectImported:
         ui->actionNew_Project->setEnabled(false);
         ui->actionOpen_Project->setEnabled(false);
+        ui->actionImport_Project->setEnabled(false);
         ui->actionSave_Project->setEnabled(false);
         ui->actionClose_Project->setEnabled(true);
         break;
@@ -834,6 +850,7 @@ void MainWindow::acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEv
     case ProjectManagerView::ProjectClosed:
         ui->actionNew_Project->setEnabled(true);
         ui->actionOpen_Project->setEnabled(true);
+        ui->actionImport_Project->setEnabled(true);
         ui->actionSave_Project->setEnabled(false);
         ui->actionClose_Project->setEnabled(false);
         break;

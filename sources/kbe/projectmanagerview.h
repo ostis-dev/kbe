@@ -40,6 +40,7 @@ public:
         DefaultEvent,
         ProjectCreated,
         ProjectOpened,
+        ProjectImported,
         ProjectSaved,
         ProjectClosed,
         ProjectChanged
@@ -53,6 +54,7 @@ public slots:
     void onContextMenuRequested(QPoint);
     void onProjectNew();
     void onProjectOpen();
+    void onProjectImport();
     void onProjectSave();
     bool onProjectClose();
     void onRemove();
