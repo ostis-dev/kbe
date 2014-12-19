@@ -25,5 +25,9 @@
         <file>media/icons/pm-collapse.png</file>
         <file>media/icons/pm-expand.png</file>
         <file>media/icons/pm-add.png</file>
+        <file>media/icons/close-project.png</file>
+        <file>media/icons/close-project-as.png</file>
+        <file>media/icons/new project.png</file>
+        <file>media/icons/open-project.png</file>
     </qresource>
 </RCC>
