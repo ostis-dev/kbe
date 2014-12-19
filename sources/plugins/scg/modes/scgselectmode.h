@@ -39,6 +39,8 @@ public:
     /*! @defgroup mouseEvendHandling Mouse Events
      *  @{
      */
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
+
     void mousePress(QGraphicsSceneMouseEvent *event);
 
     void mouseMove(QGraphicsSceneMouseEvent *event);

@@ -43,6 +43,8 @@ public:
     /*! @defgroup mouseEvendHandling Mouse Events
      *  @{
      */
+    virtual void wheelEvent(QGraphicsSceneWheelEvent *event);
+
     virtual void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
 
     virtual void mousePress(QGraphicsSceneMouseEvent *event);

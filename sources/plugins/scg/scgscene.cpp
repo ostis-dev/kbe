@@ -266,6 +266,14 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
 
     return pair;
 }
+void SCgScene::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+ Q_ASSERT(mMode);
+ mMode->wheelEvent(event);
+ if(!event->isAccepted())
+     QGraphicsScene::wheelEvent(event);
+}
+
 
 SCgBus* SCgScene::createSCgBus(const QVector<QPointF>& points, SCgNode *owner)
 {
@@ -554,14 +562,17 @@ SCgBaseCommand* SCgScene::moveSelectedCommand(const ItemUndoInfo& undoInfo, SCgB
         }else if(item->type() == SCgPointGraphicsItem::Type)
         {
             SCgPointGraphicsItem* pointItem = static_cast<SCgPointGraphicsItem*>(item);
-            if(!cmd)
+            if(!cmd) {
                 cmd = new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
                                               pointItem->pointIndex(), it.value().first.second,
                                               it.value().second.second, parentCmd);
-            else
+                        }
+                else
+            {
                 new SCgCommandPointMove(this, pointItem->parentSCgPointObject(),
                                         pointItem->pointIndex(), it.value().first.second,
                                         it.value().second.second, cmd);
+            }
         }
 
         // If Incidence point has moved then
