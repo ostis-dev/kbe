@@ -50,6 +50,9 @@ public:
       */
     void positionChanged();
 
+    //! change size of contour
+    void scalingContur(double factor);
+
     //! Minimizes size and leaves only 4 points:
     void minimize();
 
