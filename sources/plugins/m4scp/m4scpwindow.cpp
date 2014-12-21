@@ -125,7 +125,15 @@ bool M4SCpWindow::saveToFile(const QString &fileName)
          return false;
     }
     QTextStream out(&fileOut);
-    out << mEditor->document()->toPlainText();
+    QString text = mEditor->document()->toPlainText();
+    QString last_symbol = text.right(1);
+    qDebug() << last_symbol;
+    if(last_symbol.compare("\n") != 0 && last_symbol.compare("") != 0)
+    {
+        text += "\n";
+        mEditor->document()->setPlainText(text);
+    }
+    out << text;
     fileOut.close();
 
     mFileName = fileName;
