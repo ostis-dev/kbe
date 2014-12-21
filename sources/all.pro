@@ -7,8 +7,7 @@ CONFIG += ordered
 
 DESTDIR = ./bin
 
-SUBDIRS = plugins/m4scp \
-          plugins/scg \
+SUBDIRS = plugins/scg \
           #plugins/scn \
           plugins/scs \
           kbe
