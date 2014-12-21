@@ -131,8 +131,15 @@ void SCgPair::positionChanged()
     // if pair goes from line object (pair, bus), then start update from front point
     if (begType == SCgPair::Type || begType == SCgBus::Type)
     {
-        mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
         mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
+        if (begType == SCgBus::Type)
+        {
+            mPoints.front() = mapFromScene(mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot)).x(), mEndObject->scenePos().y());
+        }
+        else
+        {
+            mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
+        }
     }else
         {
             mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
