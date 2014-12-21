@@ -37,6 +37,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMenu>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QDebug>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -50,7 +51,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgplugin.h"
 #include "scgexportimage.h"
-
+#include "scgprint.h"
 #include "scgfindwidget.h"
 #include "scgview.h"
 #include "scgminimap.h"
@@ -307,6 +308,12 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
 
+    action = new QAction(findIcon("tool-print.png"), tr("Print"), mToolBar);
+    action->setCheckable(false);
+    action->setShortcut(QKeySequence(tr("0", "Print")));
+    mToolBar->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onPrint()));
+
     //Scale combobox
     QComboBox* b = new QComboBox(mToolBar);
     b->setEditable(true);
@@ -488,6 +495,21 @@ void SCgWindow::onExportImage()
         }
         exportImage.doExport(mScene, fileName);
     }
+}
+
+void SCgWindow::onPrint()
+{
+    scgprint *scgFilePrint;
+
+    QPrinter printer;
+
+    QPrintDialog *dialog = new QPrintDialog(&printer, this);
+    dialog->setWindowTitle(tr("Print SCg"));
+
+    if (dialog->exec() != QDialog::Accepted)
+        return;
+
+    scgFilePrint->print(this->mScene, printer);
 }
 
 void SCgWindow::onZoomIn()
