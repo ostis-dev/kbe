@@ -121,30 +121,48 @@ void SCgPair::updateShape()
 void SCgPair::positionChanged()
 {
     // this notifies the scene of the imminent change, so that it can update its item geometry index.
-    if (!mBeginObject || !mEndObject)   return;
+    if (!mBeginObject || !mEndObject) return;
 
-    mPoints.front() = mapFromScene(mBeginObject->scenePos());
-    mPoints.last() = mapFromScene(mEndObject->scenePos());
-
-    int begType = mBeginObject->type();
-
-    // if pair goes from line object (pair, bus), then start update from front point
-    if (begType == SCgPair::Type || begType == SCgBus::Type)
+    if (isSelected())
     {
-        mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
-        mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
-    }else
+        if (!mBeginObject->isSelected())
+        {
+            mBeginObject->setPos(mapToScene(mPoints.first()));
+        }
+        if (!mEndObject->isSelected())
+        {
+            mEndObject->setPos(mapToScene(mPoints.last()));
+        }
+    }
+    else
+    {
+        mPoints.front() = mapFromScene(mBeginObject->scenePos());
+        mPoints.last() = mapFromScene(mEndObject->scenePos());
+
+        int begType = mBeginObject->type();
+
+        // if pair goes from line object (pair, bus), then start update from front point
+        if (begType == SCgPair::Type || begType == SCgBus::Type)
+        {
+            mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
+            mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
+        }
+        else
         {
             mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
             mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
         }
 
-    // change parent item for the pair if parent's item for begin or end objects was changed
-    if (mBeginObject->isSelected() && mBeginObject->parentItem() != parentItem())
-        setParentItem(mBeginObject->parentItem());
-    else if (mEndObject->isSelected() && mEndObject->parentItem() != parentItem())
-        setParentItem(mEndObject->parentItem());
-
+        // change parent item for the pair if parent's item for begin or end objects was changed
+        if (mBeginObject->isSelected() && mBeginObject->parentItem() != parentItem())
+        {
+            setParentItem(mBeginObject->parentItem());
+        }
+        else if (mEndObject->isSelected() && mEndObject->parentItem() != parentItem())
+        {
+            setParentItem(mEndObject->parentItem());
+        }
+    }
     // update shape with new points.
     updateShape();
 }
