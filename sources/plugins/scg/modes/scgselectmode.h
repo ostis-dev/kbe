@@ -25,6 +25,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgmode.h"
 #include <QMap>
 #include <QCursor>
+#include <QPointF>
+#include <scgnodetextitem.h>
 
 class SCgPointObject;
 
@@ -74,7 +76,7 @@ private:
     SCgPointObject* mCurrentPointObject;
     //! find nearest countour according to stack order for @p item
     SCgContour *findNearestParentContour(QGraphicsItem* item);
-
+    SCgNodeTextItem *mTextItem;
 };
 
 #endif /* SCGSCENEEVENTHANDLERS_H_ */
