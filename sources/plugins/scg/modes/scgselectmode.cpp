@@ -34,6 +34,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDomDocument>
 #include <QGraphicsView>
 #include <QBitmap>
+#include <QList>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
@@ -89,6 +90,13 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
     if(event->buttons()==Qt::LeftButton && !mIsItemsMoved && !mIsTypeClonning)
     {
+        QPointF cur_pos = event->scenePos();
+        QGraphicsItem* item = mScene->itemAt(cur_pos);
+        if(item && (item->type() == SCgNodeTextItem::Type))
+        {
+            mTextItem = static_cast<SCgNodeTextItem*>(item);
+            mTextItem->showPossibleNodeTextPos(mScene,true);
+        }
         //We should use there current event position (not mStartPos) because of the delay between mousePress and mouseMove events.
         //______________________________________________________//
         //Store start positions(before items moving)
@@ -171,6 +179,9 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
+    if(mTextItem){
+        mTextItem->showPossibleNodeTextPos(mScene,false);
+    }
     if(mIsItemsMoved)
     {
         //Store finish positions (after items moving)
@@ -263,6 +274,7 @@ void SCgSelectMode::clean()
     mIsTypeClonning = false;
     mObjectType = 0;
     mCloningType = "";
+    mTextItem = 0;
 }
 
 SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)

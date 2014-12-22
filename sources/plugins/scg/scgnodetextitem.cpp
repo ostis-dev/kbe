@@ -22,7 +22,11 @@ along with OSTIS.  If not, see .
 
 #include <QGraphicsSceneMouseEvent>
 #include "scgnodetextitem.h"
-
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <scgscene.h>
+#include <QRectF>
+#include <QList>
 
 SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene* scene )
     : SCgTextItem(str,(QGraphicsItem*)parent,scene)
@@ -123,6 +127,23 @@ SCgNode::IdentifierPosition SCgNodeTextItem::nodeTextPos() const
     return mTextPos;
 }
 
+void SCgNodeTextItem :: showPossibleNodeTextPos(SCgScene * scgScene, bool isShow)
+{
+    if(!possibleNodeTextPos.empty())
+    {
+        foreach(QGraphicsRectItem * position,possibleNodeTextPos)
+        {
+            scgScene->removeItem(position);
+            delete position;
+        }
+        possibleNodeTextPos.clear();
+    }
+    if(isShow)
+    {
+        createPossibleNodePositions(scgScene);
+    }
+}
+
 void SCgNodeTextItem::setTextPos(const QPointF &pos)
 {
     setNodeTextPos(posToIdtfPos(pos));
@@ -132,4 +153,28 @@ void SCgNodeTextItem::setPlainText(const QString &text)
 {
     SCgTextItem::setPlainText(text);
     updateTextPos(mTextPos);
+}
+
+void SCgNodeTextItem::createPossibleNodePositions(SCgScene* scgScene)
+{
+    createPossibleNodePosition(scgScene, false, false);
+    createPossibleNodePosition(scgScene, false, true);
+    createPossibleNodePosition(scgScene, true, false);
+    createPossibleNodePosition(scgScene, true, true);
+}
+
+void SCgNodeTextItem::createPossibleNodePosition(SCgScene *scgScene, bool bottom, bool right)
+{
+    QGraphicsScene *scene = static_cast<QGraphicsScene*>(scgScene);
+    QGraphicsRectItem *nodeTextPosItem;
+    QRectF textRect = boundingRect();
+    QRectF nodeRect =  mParentItem->boundingRect();
+    qreal height = this->boundingRect().height();
+    qreal widht = this->boundingRect().width();
+    qreal x = nodeRect.center().x() - (right ? - 2 : (textRect.width() + 2));
+    qreal y = nodeRect.center().y() - (bottom ? - 2 : (textRect.height() + 2));
+    QRectF possibleTextRect(x, y, widht, height);
+    nodeTextPosItem = new QGraphicsRectItem(possibleTextRect, mParentItem, scene);
+    nodeTextPosItem->setBrush(QBrush(QColor (153, 255, 153, 120 )));
+    possibleNodeTextPos.push_back(nodeTextPosItem);
 }

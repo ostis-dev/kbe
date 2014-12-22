@@ -23,7 +23,7 @@ along with OSTIS.  If not, see .
 #ifndef SCGNODETEXTITEM_H
 #define SCGNODETEXTITEM_H
 
-
+#include <QVector>
 #include "scgtextitem.h"
 #include "scgnode.h"
 
@@ -49,6 +49,10 @@ public:
 
     void setPlainText(const QString &text);
 
+    void createPossibleNodePositions(SCgScene* scgScene);
+
+    void showPossibleNodeTextPos(SCgScene * scgScene, bool isShow);
+
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
@@ -60,6 +64,10 @@ protected:
 
     SCgNode::IdentifierPosition mTextPos;
     SCgNode *mParentItem;
+
+    void createPossibleNodeTextPos(SCgScene * scgScene);
+    void createPossibleNodePosition(SCgScene * scgScene, bool bottom, bool right);
+    QVector<QGraphicsRectItem*> possibleNodeTextPos;
 };
 
 #endif // SCGNODETEXTITEM_H
