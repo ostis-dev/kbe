@@ -95,7 +95,7 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
         if(item && (item->type() == SCgNodeTextItem::Type))
         {
             mTextItem = static_cast<SCgNodeTextItem*>(item);
-            mTextItem->showPossibleNodeTextPos(mScene,true);
+            mTextItem->showPossibleNodeTextPos(mScene, true);
         }
         //We should use there current event position (not mStartPos) because of the delay between mousePress and mouseMove events.
         //______________________________________________________//
@@ -179,8 +179,9 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
-    if(mTextItem){
-        mTextItem->showPossibleNodeTextPos(mScene,false);
+    if(mTextItem)
+    {
+        mTextItem->showPossibleNodeTextPos(mScene, false);
     }
     if(mIsItemsMoved)
     {

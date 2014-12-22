@@ -49,9 +49,9 @@ public:
 
     void setPlainText(const QString &text);
 
-    void createPossibleNodePositions(SCgScene* scgScene);
+    void createPossibleNodePositions(SCgScene *scgScene);
 
-    void showPossibleNodeTextPos(SCgScene * scgScene, bool isShow);
+    void showPossibleNodeTextPos(SCgScene *scgScene, bool isShow);
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -65,8 +65,8 @@ protected:
     SCgNode::IdentifierPosition mTextPos;
     SCgNode *mParentItem;
 
-    void createPossibleNodeTextPos(SCgScene * scgScene);
-    void createPossibleNodePosition(SCgScene * scgScene, bool bottom, bool right);
+    void createPossibleNodeTextPos(SCgScene *scgScene);
+    void createPossibleNodePosition(SCgScene *scgScene, bool bottom, bool right);
     QVector<QGraphicsRectItem*> possibleNodeTextPos;
 };
 

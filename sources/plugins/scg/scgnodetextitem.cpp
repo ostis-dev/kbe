@@ -127,21 +127,22 @@ SCgNode::IdentifierPosition SCgNodeTextItem::nodeTextPos() const
     return mTextPos;
 }
 
-void SCgNodeTextItem :: showPossibleNodeTextPos(SCgScene * scgScene, bool isShow)
+void SCgNodeTextItem::showPossibleNodeTextPos(SCgScene *scgScene, bool isShow)
 {
-    if(!possibleNodeTextPos.empty())
+    if(isShow)
     {
-        foreach(QGraphicsRectItem * position,possibleNodeTextPos)
+        createPossibleNodePositions(scgScene);
+    }
+    else
+    {
+        foreach(QGraphicsRectItem *position, possibleNodeTextPos)
         {
             scgScene->removeItem(position);
             delete position;
         }
         possibleNodeTextPos.clear();
     }
-    if(isShow)
-    {
-        createPossibleNodePositions(scgScene);
-    }
+
 }
 
 void SCgNodeTextItem::setTextPos(const QPointF &pos)
