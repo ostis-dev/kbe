@@ -51,7 +51,23 @@ QPainterPath SCgContour::shape() const
 {
     return mShape;
 }
+void SCgContour::scaleContur(double coficient)
+{
+    if(coficient <= 0 ) {
+       return;
+    }
+    else {
+       for (int i = 0; i < mPoints.size(); i++)
+       {
+           double xPoint = mPoints[i].x() * coficient;
+           double yPoint = mPoints[i].y() * coficient;
+           const QPointF newPosition(xPoint,yPoint);
+           SCgPointObject::changePointPosition(i, newPosition);
+       }
+       updateShape();
+    }
 
+}
 QRectF SCgContour::boundingRect() const
 {
     return mShape.boundingRect().adjusted(-5.f, -5.f, 5.f, 5.f);

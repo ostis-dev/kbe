@@ -23,6 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCGSELECTMODE_H_
 
 #include "scgmode.h"
+#include <math.h>
 #include <QMap>
 #include <QCursor>
 
@@ -46,6 +47,8 @@ public:
     void mouseRelease(QGraphicsSceneMouseEvent *event);
 
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
+
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
     /*! @}*/
 
     virtual SCgScene::EditMode mode()

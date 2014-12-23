@@ -185,6 +185,13 @@ void SCgScene::setIdtfDirtyFlag()
     mIsIdtfModelDirty = true;
 }
 
+void SCgScene::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    Q_ASSERT(mMode);
+    mMode->wheelEvent(event);
+    if(!event->isAccepted())
+        QGraphicsScene::wheelEvent(event);
+}
 void SCgScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     mMode->mouseDoubleClick(event);
