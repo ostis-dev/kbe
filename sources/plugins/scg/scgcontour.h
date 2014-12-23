@@ -36,6 +36,9 @@ public:
     explicit SCgContour();
     virtual ~SCgContour();
 
+
+    //! scale countur
+    void scaleContur(double coficient);
     /*! Set background color
       @param color BAckground color
       */

@@ -51,7 +51,21 @@ SCgSelectMode::~SCgSelectMode()
 {
     //    clean();
 }
+void SCgSelectMode::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
 
+    QPointF mousePosition = event->scenePos();
+    QGraphicsItem *pointItem = mScene->itemAt(mousePosition);
+
+    if(pointItem != NULL && event->modifiers() == Qt::ShiftModifier && pointItem->type() == SCgContour::Type)
+    {
+        double coficient = pow(2.0, event->delta() / 280.0);
+        SCgContour *contur = static_cast<SCgContour*>(pointItem);
+        contur->scaleContur(coficient);
+
+    }
+
+}
 void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
 {
     QPointF mousePos = event->scenePos();

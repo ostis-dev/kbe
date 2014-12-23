@@ -47,6 +47,10 @@ SCgMode::~SCgMode()
 {
     clean();
 }
+void SCgMode::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+
+}
 
 void SCgMode::mousePress(QGraphicsSceneMouseEvent* event)
 {
