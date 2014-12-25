@@ -191,6 +191,10 @@ private slots:
     void onPairMode();
     //! Slot to handle a bus creation mode action
     void onBusMode();
+    //! Slot to handle a triple creation action
+     void onTripleMode();
+     //! Slot to handle a five creation action
+     void onFiveMode();
     //! Slot to handle a contour creation mode action
     void onContourMode();
     //! Slot to handle a grid alignment action
