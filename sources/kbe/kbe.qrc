@@ -25,5 +25,8 @@
         <file>media/icons/pm-collapse.png</file>
         <file>media/icons/pm-expand.png</file>
         <file>media/icons/pm-add.png</file>
+        <file>tool-construction.png</file>
+        <file>tool-construction-five.png</file>
+        <file>tool-construction-triple.png</file>
     </qresource>
 </RCC>

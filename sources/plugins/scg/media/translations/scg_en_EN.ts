@@ -656,6 +656,11 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
+ 	<location filename="../../scgwindow.cpp" line="236"/>
+ 	<source>Triple creation mode</source>
+ 	<translation>Создание конструкции из 3</translation>
+ 	</message>
+ 	<message>
         <location filename="../../scgwindow.cpp" line="237"/>
         <source>Grid alignment</source>
         <translation></translation>
@@ -667,6 +672,11 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
+	 <location filename="../../scgwindow.cpp" line="243"/>
+ 	<source>Five creation mode</source>
+ 	<translation>Конструкция из 5-ти элементов</translation>
+ 	</message>
+ 	<message>
         <location filename="../../scgwindow.cpp" line="244"/>
         <source>Tuple alignment</source>
         <translation></translation>

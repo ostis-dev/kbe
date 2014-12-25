@@ -58,6 +58,8 @@ public:
         Mode_None   =   0,
         Mode_Select,
         Mode_Pair,
+        Mode_Triple,
+        Mode_Five,
         Mode_Bus,
         Mode_Contour,
         Mode_InsertTemplate,
