@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QPainter>
 #include <QVector2D>
+#include <QtCore/qmath.h>
 
 SCgPair::SCgPair() :
     mBeginObject(0),
@@ -131,8 +132,25 @@ void SCgPair::positionChanged()
     // if pair goes from line object (pair, bus), then start update from front point
     if (begType == SCgPair::Type || begType == SCgBus::Type)
     {
-        mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
+        //mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
         mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));
+        if (begType == SCgBus::Type)
+        {
+            qreal x1 = QPointF(mBeginObject->cross(mapToScene(mPoints[0]), mBeginDot)).x();
+            qreal y1 = QPointF(mBeginObject->cross(mapToScene(mPoints[0]), mBeginDot)).y();
+            qreal x2 = QPointF(mBeginObject->cross(mapToScene(mPoints[1]), mEndDot)).x();
+            qreal y2 = QPointF(mBeginObject->cross(mapToScene(mPoints[1]), mEndDot)).y();
+            qreal x3 = mEndObject->scenePos().x();
+            qreal y3 = mEndObject->scenePos().y();
+            qreal x4=((x2-x1)*(y2-y1)*(y3-y1)+x1*pow(y2-y1, 2)+x3*qPow(x2-x1, 2))/(qPow(y2-y1, 2)+qPow(x2-x1, 2));
+            qreal y4=(y2-y1)*(x4-x1)/(x2-x1)+y1;
+
+             mPoints.front() = mapFromScene(x4, y4);
+        }
+        else
+        {
+        mPoints.front() = mapFromScene(mBeginObject->cross(mapToScene(mPoints[1]), mBeginDot));
+        }
     }else
         {
             mPoints.last() = mapFromScene(mEndObject->cross(mapToScene(mPoints[mPoints.size() - 2]), mEndDot));

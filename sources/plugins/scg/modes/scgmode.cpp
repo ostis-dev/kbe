@@ -229,6 +229,15 @@ void SCgMode::keyPress(QKeyEvent *event)
         event->accept();
         clean();
     }
+    if (event->modifiers() == Qt::ShiftModifier) {
+        switch(event->key())
+        {
+        case Qt::Key_A:
+            clean();
+            mScene->clearSelection();
+            break;
+        }
+    }
     if (event->modifiers() == Qt::ControlModifier)
     {
         QPointF offset(0,0);
