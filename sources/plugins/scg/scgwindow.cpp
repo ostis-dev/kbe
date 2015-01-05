@@ -83,12 +83,12 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mFindWidget(0),
     mToolBar(0),
     mUndoStack(0),
-//    mViewMenu(0),
+    //    mViewMenu(0),
     mEditMenu(0),
     mActionUndo(0),
     mActionRedo(0),
     mActionFind(0)//,
-//    mActionMinMap(0)
+  //    mActionMinMap(0)
 {
     mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////
@@ -154,12 +154,12 @@ void SCgWindow::createActions()
     mActionRedo->setShortcut(QKeySequence::Redo);
     mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
 
-//    mActionMinMap = new QAction(tr("Minimap"), this);
-//    mActionMinMap->setCheckable(true);
-//    mActionMinMap->setShortcuts();
-//    fi.setFile();
-//    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
-//    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
+    //    mActionMinMap = new QAction(tr("Minimap"), this);
+    //    mActionMinMap->setCheckable(true);
+    //    mActionMinMap->setShortcuts();
+    //    fi.setFile();
+    //    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
+    //    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
 }
 
 void SCgWindow::createWidgetsForDocks()
@@ -476,11 +476,11 @@ void SCgWindow::onExportImage()
 
     QString fileName = QCoreApplication::applicationDirPath() + "/" + currentFileName();
     fileName = QFileDialog::getSaveFileName(this,
-                                           tr("Export file to ..."),
-                                           fileName,
-                                           formatsStr,
-                                           &selectedFilter,
-                                           options);
+                                            tr("Export file to ..."),
+                                            fileName,
+                                            formatsStr,
+                                            &selectedFilter,
+                                            options);
 
     if (fileName.length() > 0)
     {
@@ -704,17 +704,17 @@ void SCgWindow::createMenu()
     mEditMenu->addActions(mView->actions());
 
 
-//
-//    mViewMenu = new QMenu(tr("View"), this);
-//    mViewMenu ->addAction(mActionMinMap);
+    //
+    //    mViewMenu = new QMenu(tr("View"), this);
+    //    mViewMenu ->addAction(mActionMinMap);
 }
 
 void SCgWindow::deleteMenu()
 {
     Q_ASSERT(mEditMenu);
     delete mEditMenu;
-//    delete mViewMenu;
-//    mViewMenu = 0;
+    //    delete mViewMenu;
+    //    mViewMenu = 0;
     mEditMenu = 0;
 }
 

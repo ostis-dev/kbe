@@ -39,7 +39,7 @@ class QLineEdit;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
-                  public EditorInterface
+        public EditorInterface
 {
     Q_OBJECT
     Q_INTERFACES(EditorInterface)
@@ -158,8 +158,8 @@ private:
      * \defgroup menu Menu
      * @{
      */
-//    //! View menu
-//    QMenu* mViewMenu;
+    //    //! View menu
+    //    QMenu* mViewMenu;
     //!Edit menu
     QMenu* mEditMenu;
     //! undo action
@@ -170,8 +170,8 @@ private:
     QAction* mActionFind;
     QSlider* zoomSlider;
 
-//    //! Show/hide minmap;
-//    QAction* mActionMinMap;
+    //    //! Show/hide minmap;
+    //    QAction* mActionMinMap;
 
     /*! Creates all actions, handled by this window.
      * @see createMenu() for adding actions in menu.
@@ -236,7 +236,7 @@ private slots:
      */
     void cut() const;
 
-     /*!
+    /*!
       *Provides handling Copy menu event.
       */
     void copy() const;
@@ -253,7 +253,7 @@ private slots:
 };
 
 class SCgWindowFactory : public QObject,
-                         public EditorFactoryInterface
+        public EditorFactoryInterface
 {
     Q_OBJECT
     Q_INTERFACES(EditorFactoryInterface)
