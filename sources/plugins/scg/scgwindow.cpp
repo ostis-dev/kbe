@@ -71,6 +71,7 @@ const QStringList SCgWindow::mScales = QStringList()<< "25" << "50"
 const int SCgWindow::mScaleChangeStep = 25;
 const qreal SCgWindow::minScale = 0.20;
 const qreal SCgWindow::maxScale = 9.99;
+const int SCgWindow::ZOOM_SLIDER_WIDTH = 70;
 
 SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     QWidget(parent),
@@ -82,12 +83,12 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
     mFindWidget(0),
     mToolBar(0),
     mUndoStack(0),
-//    mViewMenu(0),
+    //    mViewMenu(0),
     mEditMenu(0),
     mActionUndo(0),
     mActionRedo(0),
     mActionFind(0)//,
-//    mActionMinMap(0)
+  //    mActionMinMap(0)
 {
     mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////
@@ -153,12 +154,12 @@ void SCgWindow::createActions()
     mActionRedo->setShortcut(QKeySequence::Redo);
     mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
 
-//    mActionMinMap = new QAction(tr("Minimap"), this);
-//    mActionMinMap->setCheckable(true);
-//    mActionMinMap->setShortcuts();
-//    fi.setFile();
-//    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
-//    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
+    //    mActionMinMap = new QAction(tr("Minimap"), this);
+    //    mActionMinMap->setCheckable(true);
+    //    mActionMinMap->setShortcuts();
+    //    fi.setFile();
+    //    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
+    //    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
 }
 
 void SCgWindow::createWidgetsForDocks()
@@ -307,17 +308,24 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onZoomIn()));
 
+    zoomSlider = new QSlider();
+    zoomSlider->setOrientation(Qt::Horizontal);
+    zoomSlider->setFixedWidth(SCgWindow::ZOOM_SLIDER_WIDTH);
+    zoomSlider->setMinimum(SCgWindow::minScale*100);
+    zoomSlider->setMaximum(SCgWindow::maxScale*100);
+    zoomSlider->setSliderPosition(100);
+    connect(zoomSlider, SIGNAL(valueChanged(int)),this, SLOT(onZoomSliderChanged(int)));
+
+    mToolBar->addWidget(zoomSlider);
+
     //Scale combobox
-    QComboBox* b = new QComboBox(mToolBar);
+    QComboBox* b = new QComboBox();
     b->setEditable(true);
     b->setInsertPolicy(QComboBox::NoInsert);
-    b->addItems(SCgWindow::mScales);
     b->setCurrentIndex(mScales.indexOf("100"));
     mZoomFactorLine = b->lineEdit();
     mZoomFactorLine->setInputMask("D90%");
-    mToolBar->addWidget(b);
     connect(mZoomFactorLine, SIGNAL(textChanged(const QString&)), mView, SLOT(setScale(const QString&)));
-    connect(mView, SIGNAL(scaleChanged(qreal)), this, SLOT(onViewScaleChanged(qreal)));
 
     //Zoom out
     action = new QAction(findIcon("tool-zoom-out.png"), tr("Zoom out"), mToolBar);
@@ -468,11 +476,11 @@ void SCgWindow::onExportImage()
 
     QString fileName = QCoreApplication::applicationDirPath() + "/" + currentFileName();
     fileName = QFileDialog::getSaveFileName(this,
-                                           tr("Export file to ..."),
-                                           fileName,
-                                           formatsStr,
-                                           &selectedFilter,
-                                           options);
+                                            tr("Export file to ..."),
+                                            fileName,
+                                            formatsStr,
+                                            &selectedFilter,
+                                            options);
 
     if (fileName.length() > 0)
     {
@@ -499,6 +507,7 @@ void SCgWindow::onZoomIn()
         newScale = int(maxScale*100);
 
     mZoomFactorLine->setText(QString::number(newScale));
+    zoomSlider->setValue(newScale);
 }
 
 void SCgWindow::onZoomOut()
@@ -510,13 +519,15 @@ void SCgWindow::onZoomOut()
         newScale = int(minScale*100);
 
     mZoomFactorLine->setText(QString::number(newScale));
+    zoomSlider->setValue(newScale);
 }
 
-void SCgWindow::onViewScaleChanged(qreal newScale)
+void SCgWindow::onZoomSliderChanged(int newScale)
 {
-    qreal oldScale = mZoomFactorLine->text().remove('%').toDouble() / 100;
-    if (newScale != oldScale)
-        mZoomFactorLine->setText(QString::number(int(newScale*100)));
+    if(newScale < int(minScale*100))
+        newScale = int(minScale*100);
+
+    mZoomFactorLine->setText(QString::number(newScale));
 }
 
 void SCgWindow::cut() const
@@ -693,17 +704,17 @@ void SCgWindow::createMenu()
     mEditMenu->addActions(mView->actions());
 
 
-//
-//    mViewMenu = new QMenu(tr("View"), this);
-//    mViewMenu ->addAction(mActionMinMap);
+    //
+    //    mViewMenu = new QMenu(tr("View"), this);
+    //    mViewMenu ->addAction(mActionMinMap);
 }
 
 void SCgWindow::deleteMenu()
 {
     Q_ASSERT(mEditMenu);
     delete mEditMenu;
-//    delete mViewMenu;
-//    mViewMenu = 0;
+    //    delete mViewMenu;
+    //    mViewMenu = 0;
     mEditMenu = 0;
 }
 

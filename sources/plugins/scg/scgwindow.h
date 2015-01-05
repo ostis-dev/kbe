@@ -27,6 +27,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgscene.h"
 
 #include <QToolBox>
+#include <QSlider>
 #include <QMap>
 
 class SCgMinimap;
@@ -38,7 +39,7 @@ class QLineEdit;
 class SCgFindWidget;
 
 class SCgWindow : public QWidget,
-                  public EditorInterface
+        public EditorInterface
 {
     Q_OBJECT
     Q_INTERFACES(EditorInterface)
@@ -97,6 +98,7 @@ protected:
 private:
     //! List of scales.
     static const QStringList mScales;
+    static const int ZOOM_SLIDER_WIDTH;
 public:
     /*! @defgroup scaleConstraints Scale Constraints
      *  @{
@@ -156,8 +158,8 @@ private:
      * \defgroup menu Menu
      * @{
      */
-//    //! View menu
-//    QMenu* mViewMenu;
+    //    //! View menu
+    //    QMenu* mViewMenu;
     //!Edit menu
     QMenu* mEditMenu;
     //! undo action
@@ -166,9 +168,10 @@ private:
     QAction* mActionRedo;
     //! Find by identifier action;
     QAction* mActionFind;
+    QSlider* zoomSlider;
 
-//    //! Show/hide minmap;
-//    QAction* mActionMinMap;
+    //    //! Show/hide minmap;
+    //    QAction* mActionMinMap;
 
     /*! Creates all actions, handled by this window.
      * @see createMenu() for adding actions in menu.
@@ -214,7 +217,7 @@ private slots:
     //! Slot to handle a zoom out action
     void onZoomOut();
     //! Slot to set zoom factor value.
-    void onViewScaleChanged(qreal newScaleValue);
+    void onZoomSliderChanged(int newScale);
 
     //! Handle find next button pressed event
     void findNext();
@@ -233,7 +236,7 @@ private slots:
      */
     void cut() const;
 
-     /*!
+    /*!
       *Provides handling Copy menu event.
       */
     void copy() const;
@@ -250,7 +253,7 @@ private slots:
 };
 
 class SCgWindowFactory : public QObject,
-                         public EditorFactoryInterface
+        public EditorFactoryInterface
 {
     Q_OBJECT
     Q_INTERFACES(EditorFactoryInterface)
