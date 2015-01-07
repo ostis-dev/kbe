@@ -46,7 +46,10 @@ public:
     void mouseRelease(QGraphicsSceneMouseEvent *event);
 
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
+
     /*! @}*/
+
+    void keyPress(QKeyEvent *event);
 
     virtual SCgScene::EditMode mode()
     {

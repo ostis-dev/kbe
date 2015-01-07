@@ -287,3 +287,35 @@ SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)
     } while(!newParent && index != 0);
     return newParent;
 }
+
+void SCgSelectMode::keyPress(QKeyEvent *event) {
+    event->setAccepted(false);
+    if (event->modifiers() == Qt::ShiftModifier && event->key() == Qt::Key_Space) {
+        QList<QGraphicsItem*> items = mScene->selectedItems();
+        QList<QGraphicsItem*>::const_iterator it = items.begin();
+        while(it != items.end())
+        {
+            QGraphicsItem* item = *it;
+            // Item won't be moved if it is movable or its movable ancestor is selected.
+            if (item->type() == SCgContour::Type) {
+                SCgContour* contour = dynamic_cast<SCgContour*>(item);
+                contour->scale(1.02,1.02);
+            }
+            ++it;
+        }
+    } else if (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_Space) {
+        QList<QGraphicsItem*> items = mScene->selectedItems();
+        QList<QGraphicsItem*>::const_iterator it = items.begin();
+        while(it != items.end())
+        {
+            QGraphicsItem* item = *it;
+            // Item won't be moved if it is movable or its movable ancestor is selected.
+            if (item->type() == SCgContour::Type) {
+                SCgContour* contour = dynamic_cast<SCgContour*>(item);
+                contour->scale(0.98,0.98);
+            }
+            ++it;
+        }
+    }
+    return;
+}
