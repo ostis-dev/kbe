@@ -181,6 +181,7 @@ public:
      */
     SCgBaseCommand* changeIdtfCommand(SCgObject *object,
                                       const QString &idtf,
+                                      int newSize,
                                       SCgBaseCommand* parentCmd = 0,
                                       bool addToStack = true);
 

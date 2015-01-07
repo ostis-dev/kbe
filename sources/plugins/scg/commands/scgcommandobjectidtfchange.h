@@ -39,6 +39,7 @@ public:
     explicit SCgCommandObjectIdtfChange(SCgScene *scene,
                                         SCgObject *object,
                                         const QString &newIdtf,
+                                        int newSize,
                                         QUndoCommand *parent = 0);
     //! Destructor
     virtual ~SCgCommandObjectIdtfChange();
@@ -53,6 +54,10 @@ protected:
     QString mOldIdtf;
     //! New identifier
     QString mNewIdtf;
+
+    //! new size and old size
+    int idtfNewSize;
+    int idtfOldSize;
 };
 
 #endif // SCGCOMMANDOBJECTIDTFCHANGE_H

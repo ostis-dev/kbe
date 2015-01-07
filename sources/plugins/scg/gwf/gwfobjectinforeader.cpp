@@ -257,6 +257,8 @@ bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo*
 
     if (!getAttributeString(element, "idtf", info->idtfValueRef()))
         return false;
+    if (!getAttributeString(element, "font_size", info->idtfValueRef()))
+        return false;
 
     return true;
 }

@@ -63,6 +63,7 @@ public:
 
     const QString& typeAlias() const;
     const QString& idtfValue() const;
+    int idtfSize() const;
     QColor shapeColor() const;
     const QString& id() const;
     const QString& parentId() const;
@@ -75,6 +76,7 @@ public:
      */
     QString& typeAliasRef();
     QString& idtfValueRef();
+    int& idtfSizeRef();
     QColor& shapeColorRef();
     QString& idRef();
     QString& parentIdRef();

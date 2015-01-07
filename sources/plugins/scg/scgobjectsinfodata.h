@@ -61,6 +61,7 @@ public:
 private:
     QString mTypeAlias;
     QString mIdtfValue;
+    int idtfSize;
     QColor mShapeColor;
     QString mId;
     QString mParentId;
