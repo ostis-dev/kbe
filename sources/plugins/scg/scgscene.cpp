@@ -185,6 +185,13 @@ void SCgScene::setIdtfDirtyFlag()
     mIsIdtfModelDirty = true;
 }
 
+void SCgScene::wheelEvent(QGraphicsSceneWheelEvent *event)
+{
+    Q_ASSERT(mMode);
+    mMode->wheelEvent(event);
+    if(!event->isAccepted())
+        QGraphicsScene::wheelEvent(event);
+}
 void SCgScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     mMode->mouseDoubleClick(event);
@@ -368,13 +375,13 @@ SCgBaseCommand* SCgScene::deleteSelObjectsCommand(SCgBaseCommand* parentCmd, boo
     return cmd;
 }
 
-SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &idtf, SCgBaseCommand* parentCmd, bool addToStack)
+SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &idtf,int size, SCgBaseCommand* parentCmd, bool addToStack)
 {
     Q_ASSERT_X(object != 0,
-               "void SCgScene::changeIdtf(SCgObject *object, const QString &idtf)",
+               "void SCgScene::changeIdtf(SCgObject *object, const QString &idtf, int size)",
                "Object pointer is null");
 
-    SCgBaseCommand* cmd = new SCgCommandObjectIdtfChange(this, object, idtf, parentCmd);
+    SCgBaseCommand* cmd = new SCgCommandObjectIdtfChange(this, object, idtf, size, parentCmd);
 
     // check if need to change object type
     if (!idtf.isEmpty())

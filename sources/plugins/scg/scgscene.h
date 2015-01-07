@@ -181,6 +181,7 @@ public:
      */
     SCgBaseCommand* changeIdtfCommand(SCgObject *object,
                                       const QString &idtf,
+                                      int newSize,
                                       SCgBaseCommand* parentCmd = 0,
                                       bool addToStack = true);
 
@@ -411,7 +412,7 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
     /* keyboard events */
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);

@@ -41,6 +41,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QUndoStack>
 #include <QCompleter>
 #include <QFileInfo>
+#include <QComboBox>
+#include <QStringList>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     QGraphicsView(parent),
@@ -437,7 +439,15 @@ void SCgView::changeIdentifier()
     dialog.setWindowTitle(tr("Change identifier"));
 
     QLabel* label = new QLabel(tr("New identifier:"),&dialog);
+    QLabel* sizeLabel = new QLabel(tr("Font size:"), &dialog);
+
     QLineEdit* lineEdit = new QLineEdit(&dialog);
+    QComboBox* sizeComboBox = new QComboBox(&dialog);
+    QStringList sizeList;
+
+    sizeList<<"8"<<"9"<<"10"<<"11"<<"12"<<"14"<<"18"<<"24"<<"30"<<"32";
+    sizeComboBox->addItems(sizeList);
+    sizeComboBox->setFixedHeight(34);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
                                                        | QDialogButtonBox::Cancel);
@@ -451,13 +461,32 @@ void SCgView::changeIdentifier()
     layout->addWidget(lineEdit);
     layout->addWidget(buttonBox);
 
+
+
+    QVBoxLayout *layoutSize = new QVBoxLayout;
+    layoutSize->addWidget(sizeLabel);
+    layoutSize->addWidget(sizeComboBox);
+
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    hLayout->addLayout(layout);
+    hLayout->addLayout(layoutSize);
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    mainLayout->addLayout(hLayout);
+    mainLayout->addWidget(buttonBox);
+
     QCompleter *completer = new QCompleter(static_cast<SCgScene*>(scene())->idtfList(), &dialog);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     lineEdit->setCompleter(completer);
     QString oldIdtf = mContextObject->idtfValue();
 
+    int idtfOldSize = mContextObject->idtfSize();
+
     lineEdit->setText(oldIdtf);
     lineEdit->selectAll();
+
+    sizeComboBox->setCurrentIndex(sizeComboBox->findText(QString::number(idtfOldSize)));
+    dialog.setLayout(mainLayout);
 
     dialog.setLayout(layout);
     lineEdit->setFocus();
@@ -465,8 +494,10 @@ void SCgView::changeIdentifier()
     if (dialog.exec())
     {
         QString newIdtf = lineEdit->text();
+        int idtfNewSize = sizeComboBox->currentText().toInt();
         if(oldIdtf != newIdtf)
-            static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf);
+            static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf, idtfNewSize);
+
     }
 }
 

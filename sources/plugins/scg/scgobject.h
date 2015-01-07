@@ -27,7 +27,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsItem>
 
 #include "scgalphabet.h"
-
 class SCgScene;
 class SCgTextItem;
 
@@ -76,6 +75,9 @@ public:
       */
     virtual void setIdtfValue(const QString &idtf);
     QString idtfValue() const;
+
+    virtual void setIdtfSize(int size);
+    int idtfSize() const;
 
     /*! Get cross of this sc.g-object with line from specified point.
       @param  from Point to build line intersection from. It should have scene coordinates.
