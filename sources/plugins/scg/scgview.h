@@ -74,6 +74,7 @@ private:
     QAction* mActionHideAllContent;
     QAction* mActionDeleteContent;
     QAction* mActionChangeIdtf;
+    QMenu*   mMoveToLayerMenu;
     QAction* mActionDelete;
     QAction* mActionContourDelete;
     QAction* mActionSwapPairOrient;
@@ -158,6 +159,9 @@ private slots:
 
     //! Edit mode changed slot @see SCgScene::editModeChanged
     void editModeChanged(int mode);
+
+    //! Move selected objects to another layer
+    void moveSelectedToLayer();
 };
 
 #endif // SCGVIEW_H

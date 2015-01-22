@@ -32,6 +32,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 class SCgMinimap;
 class SCgView;
 class SCgUndoView;
+class SCgLayersWidget;
 
 class QToolBar;
 class QLineEdit;
@@ -148,6 +149,9 @@ private:
 
     //! Undo stack
     QUndoStack *mUndoStack;
+
+    //! Layers widget
+    SCgLayersWidget *mLayersWidget;
 
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;

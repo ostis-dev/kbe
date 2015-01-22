@@ -57,7 +57,7 @@ void SCgCommandCreateContour::redo()
 
     SCgBaseCommand::redo();
 
-    if(mObject->scene() != mScene)
+    if(mObject->scene() != mScene && mObject->isDead())
         mScene->addItem(mObject);
 
     mObject->setDead(false);

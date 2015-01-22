@@ -316,3 +316,13 @@ QPointF SCgObject::idtfPos() const
 {
     return mTextItem->textPos();
 }
+
+SCgLayer* SCgObject::parentLayer() const
+{
+    return mParentLayer;
+}
+
+void SCgObject::setParentLayer(SCgLayer* parentLayer)
+{
+    mParentLayer = parentLayer;
+}
