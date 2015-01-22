@@ -26,7 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 SCgCommandObjectDelete::SCgCommandObjectDelete(SCgScene *scene,
                                                SCgObject *object,
                                                QUndoCommand *parent)
-        : SCgBaseCommand(scene, object, parent)
+        : SCgBaseCommand(scene, object, parent),
+          mParentLayer(object->parentLayer())
 {
     setText(QObject::tr("Delete object"));
 }
@@ -53,6 +54,7 @@ void SCgCommandObjectDelete::redo()
 
         if(object->scene() == mScene)
         {
+            mParentLayer->removeObject(object);
             object->setParentItem(0);
             mScene->removeItem(object);
         }
@@ -77,6 +79,8 @@ void SCgCommandObjectDelete::undo()
 
             object->setParentItem(parent);
             object->positionChanged();
+
+            mParentLayer->addObject(object);
         }
     }
 

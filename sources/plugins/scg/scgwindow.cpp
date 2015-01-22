@@ -54,6 +54,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgfindwidget.h"
 #include "scgview.h"
 #include "scgminimap.h"
+#include "scglayerswidget.h"
 #include "gwf/gwffileloader.h"
 #include "gwf/gwffilewriter.h"
 #include "gwf/gwfobjectinforeader.h"
@@ -168,6 +169,10 @@ void SCgWindow::createWidgetsForDocks()
     mMinimap->setWindowTitle(tr("Mini map"));
     mMinimap->setObjectName("Mini map");
 
+    mLayersWidget = new SCgLayersWidget(mScene, this);
+    mLayersWidget->setWindowTitle(tr("Layers"));
+    mLayersWidget->setObjectName("Layers");
+
     mUndoView = new SCgUndoView(this);
     mUndoView->setStack(mUndoStack);
     mUndoView->setWindowTitle(tr("History"));
@@ -175,6 +180,7 @@ void SCgWindow::createWidgetsForDocks()
 
     //Register this widgets
     mWidgetsForDocks.push_back(mUndoView);
+    mWidgetsForDocks.push_back(mLayersWidget);
     mWidgetsForDocks.push_back(mMinimap);
 }
 

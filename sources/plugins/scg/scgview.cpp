@@ -42,6 +42,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCompleter>
 #include <QFileInfo>
 
+namespace
+{
+    const char* idPropery = "id";
+} //namespace
+
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     QGraphicsView(parent),
     mActionChangeContent(0),
@@ -72,6 +77,7 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     setAcceptDrops(true);
     connect(mWindow->undoStack(), SIGNAL(indexChanged(int)), this, SLOT(updateActionsState(int)) );
     createActions();
+    mMoveToLayerMenu = new QMenu(tr("Move to layer"), mWindow);
 }
 
 SCgView::~SCgView()
@@ -198,20 +204,48 @@ void SCgView::updateActionsState(int idx)
         else
             mActionChangeContent->setText(tr("Set content"));
 
+        mMoveToLayerMenu->setEnabled(false);
+        mMoveToLayerMenu->menuAction()->setVisible(false);
+
         mActionDeleteContent->setEnabled(isContentData);
         mActionDeleteContent->setVisible(isContentData);
 
         mActionShowContent->setEnabled(isContentData);
         mActionShowContent->setVisible(isContentData);
-
-    }else
+    } else
     {
+        mMoveToLayerMenu->setEnabled(false);
+        mMoveToLayerMenu->menuAction()->setVisible(false);
         mActionChangeContent->setEnabled(false);
         mActionChangeContent->setVisible(false);
         mActionShowContent->setEnabled(false);
         mActionShowContent->setVisible(false);
         mActionDeleteContent->setEnabled(false);
         mActionDeleteContent->setVisible(false);
+    }
+
+    bool moveToLayerMenuEnabled = items.size() != 0;
+    mMoveToLayerMenu->clear();
+
+    mMoveToLayerMenu->setEnabled(moveToLayerMenuEnabled);
+    mMoveToLayerMenu->menuAction()->setVisible(moveToLayerMenuEnabled);
+
+    if (moveToLayerMenuEnabled)
+    {
+        SCgScene::SCgLayerMap const& layers = static_cast<SCgScene*>(scene())->scgLayers();
+
+        for(SCgScene::SCgLayerMap::const_iterator layer = layers.constBegin(); layer != layers.constEnd(); ++layer)
+        {
+            if (static_cast<SCgScene*>(scene())->selectedItems().size() == 1 && mContextObject->parentLayer() == layer.value())
+                continue;
+            QAction* moveToLayerAction = mMoveToLayerMenu->addAction(layer.value()->name());
+            moveToLayerAction->setProperty(idPropery, layer.key());
+            connect(moveToLayerAction, SIGNAL(triggered()), this, SLOT(moveSelectedToLayer()));
+        }
+        if (mMoveToLayerMenu->actions().size() == 0)
+        {
+            mMoveToLayerMenu->addAction(tr("Empty"))->setEnabled(false);
+        }
     }
 
     bool pairType = (mContextObject != 0) && (mContextObject->type() == SCgPair::Type);
@@ -245,6 +279,7 @@ void SCgView::updateActionsState(int idx)
     mActionShowAllContent->setEnabled(oneContentHidden);
     mActionHideAllContent->setEnabled(oneContentShowed);
 }
+
 
 QList<QAction*> SCgView::actions() const
 {
@@ -316,6 +351,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
             types.clear();
         }
     }
+    mContextMenu->addMenu(mMoveToLayerMenu);
     mContextMenu->addActions(mActionsList);
 
     mContextMenu->exec(event->globalPos());
@@ -470,11 +506,18 @@ void SCgView::changeIdentifier()
     }
 }
 
+void SCgView::moveSelectedToLayer()
+{
+    static_cast<SCgScene*>(scene())->createMoveToLayerCommand(sender()->property(idPropery).toInt());
+    updateActionsState();
+}
+
 void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
 
     static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    updateActionsState();
 }
 
 void SCgView::changeContent()

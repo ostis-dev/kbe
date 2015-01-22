@@ -24,6 +24,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #define SCGCOMMANDOBJECTDELETE_H
 
 #include "scgbasecommand.h"
+#include "scglayer.h"
 
 /*! Object deletion command
   */
@@ -50,6 +51,8 @@ protected:
     QList<SCgObject*> mDelList;
     //! Map of parent objects
     QMap<SCgObject*, QGraphicsItem*> mParents;
+    //! Parent layer
+    SCgLayer* mParentLayer;
 };
 
 #endif // SCGCOMMANDOBJECTDELETE_H
