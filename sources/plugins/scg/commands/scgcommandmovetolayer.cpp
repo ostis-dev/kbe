@@ -1,8 +1,8 @@
 #include "scgcommandmovetolayer.h"
 
 SCgCommandMoveToLayer::SCgCommandMoveToLayer(SCgScene *scene,
-                                               QList<SCgObject *> objects,
-                                               QList<uint> prevIds,
+                                               QList<SCgObject *>& objects,
+                                               QList<uint>& prevIds,
                                                uint nextId,
                                                QUndoCommand *parent)
     : SCgBaseCommand(scene, 0, parent),

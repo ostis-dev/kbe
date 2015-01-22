@@ -21,8 +21,8 @@ public:
       @param    parent      Pointer to parent command
       */
     explicit SCgCommandMoveToLayer(SCgScene *scene,
-                                    QList<SCgObject*> objects,
-                                    QList<uint> prevIds,
+                                    QList<SCgObject *> &objects,
+                                    QList<uint> &prevIds,
                                     uint nextId,
                                     QUndoCommand *parent = 0);
     //! Destructor
