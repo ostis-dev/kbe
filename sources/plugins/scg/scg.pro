@@ -92,7 +92,12 @@ HEADERS += \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
     arrangers/scgforcecalculator.h \
-    scgnodetextitem.h
+    scgnodetextitem.h \
+    commands/scgcommanddeletelayer.h \
+    commands/scgcommandcreatelayer.h \
+    commands/scgcommandmovetolayer.h \
+    scglayer.h \
+    scglayerswidget.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -172,7 +177,12 @@ SOURCES += \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
     arrangers/scgforcecalculator.cpp \
-    scgnodetextitem.cpp
+    scgnodetextitem.cpp \
+    commands/scgcommanddeletelayer.cpp \
+    commands/scgcommandcreatelayer.cpp \
+    commands/scgcommandmovetolayer.cpp \
+    scglayer.cpp \
+    scglayerswidget.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts

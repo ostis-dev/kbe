@@ -26,6 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QGraphicsItem>
 
+#include <scglayer.h>
+
 #include "scgalphabet.h"
 
 class SCgScene;
@@ -110,6 +112,9 @@ public:
     virtual void setIdtfPos(const QPointF &pos);
     QPointF idtfPos() const;
 
+    SCgLayer* parentLayer() const;
+
+    void setParentLayer(SCgLayer* parentLayer);
 //////////////////////////
 /* Working with types */
 public:
@@ -204,6 +209,9 @@ protected:
 
     //! true, if parent about to change.
     bool mParentChanging;
+
+    //! parent layer
+    SCgLayer* mParentLayer;
 
 protected:
     friend class GwfStreamWriter;

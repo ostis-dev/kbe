@@ -1,0 +1,42 @@
+#include "scgaddlayoutcommand.h"
+
+SCgAddLayoutCommand::SCgAddLayoutCommand(SCgScene *scene,
+                                         QString const& layoutName,
+                                         SCgLayout::Type type,
+                                         QUndoCommand *parent = 0)
+    : SCgBaseCommand(scene, 0, parent),
+      mName(layoutName),
+      mId(scene->addSCgLayout(mName, type)),
+      mScene(scene)
+{
+    emit scene->layoutAdded(mId, mName);
+}
+
+SCgAddLayoutCommand::~SCgAddLayoutCommand()
+{
+
+}
+
+void SCgAddLayoutCommand::undo()
+{
+    mScene->la
+    emit mScene->layoutRemoved(mId);
+    SCgBaseCommand::undo();
+}
+
+void SCgCommandCreateNode::redo()
+{
+    Q_ASSERT_X(mObject != 0,
+               "void SCgCommandCreateNode::redo()",
+               "Node doesn't exists");
+
+    if(mObject->scene() != mScene)
+        mScene->addItem(mObject);
+
+    mObject->setDead(false);
+
+    if (mParentContour)
+        mObject->setParentItem(mParentContour);
+
+    SCgBaseCommand::redo();
+}
