@@ -8,8 +8,7 @@ SCgCommandMoveToLayer::SCgCommandMoveToLayer(SCgScene *scene,
     : SCgBaseCommand(scene, 0, parent),
       mObjects(objects),
       mPrevIds(prevIds),
-      mNextId(nextId),
-      mScene(scene)
+      mNextId(nextId)
 {
     Q_FOREACH(SCgObject* object, objects)
     {

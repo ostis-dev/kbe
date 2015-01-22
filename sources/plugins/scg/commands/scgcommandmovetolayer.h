@@ -43,10 +43,6 @@ private:
 
     //! Next layer's id
     uint mNextId;
-
-    //! SCgScene
-    SCgScene* mScene;
-
 };
 
 #endif // SCGCOMMANDMOVETOLAYER_H

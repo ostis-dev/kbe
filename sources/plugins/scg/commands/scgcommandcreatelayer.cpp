@@ -6,8 +6,7 @@ SCgCommandCreateLayer::SCgCommandCreateLayer(SCgScene *scene,
                                          QUndoCommand *parent)
     : SCgBaseCommand(scene, 0, parent),
       mName(layerName),
-      mId(0),
-      mScene(scene)
+      mId(0)
 {
     scene->connect(this, SIGNAL(layerAdded(int,QString)), SIGNAL(layerAdded(int, QString)), Qt::DirectConnection);
     scene->connect(this, SIGNAL(layerRemoved(int)), SIGNAL(layerRemoved(int)), Qt::DirectConnection);

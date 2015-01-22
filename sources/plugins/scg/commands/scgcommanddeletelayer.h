@@ -54,9 +54,6 @@ private:
     //! Layer id
     uint mId;
 
-    //! SCgScene
-    SCgScene* mScene;
-
 };
 
 #endif // SCGCOMMANDDELETELAYER_H

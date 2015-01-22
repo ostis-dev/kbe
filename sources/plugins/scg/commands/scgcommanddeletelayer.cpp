@@ -6,8 +6,7 @@ SCgCommandDeleteLayer::SCgCommandDeleteLayer(SCgScene *scene,
                                                QUndoCommand *parent)
     : SCgBaseCommand(scene, 0, parent),
       mName(layerName),
-      mId(id),
-      mScene(scene)
+      mId(id)
 {
     scene->connect(this, SIGNAL(layerAdded(int,QString)), SIGNAL(layerAdded(int, QString)), Qt::DirectConnection);
     scene->connect(this, SIGNAL(layerRemoved(int)), SIGNAL(layerRemoved(int)), Qt::DirectConnection);
