@@ -36,7 +36,7 @@ void SCgLayer::clear()
 
 void SCgLayer::show() const
 {
-    if (mState)
+    if (mState || mIsDead)
         return;
     Q_FOREACH(SCgObject* object, mObjects)
     {
@@ -47,7 +47,7 @@ void SCgLayer::show() const
 
 void SCgLayer::hide() const
 {
-    if (!mState)
+    if (!mState || mIsDead)
         return;
     Q_FOREACH(QGraphicsItem* object, mObjects)
     {
