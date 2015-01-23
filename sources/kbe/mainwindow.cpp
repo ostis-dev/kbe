@@ -19,7 +19,6 @@ You should have received a copy of the GNU General Public License
 along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 -----------------------------------------------------------------------------
 */
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -704,9 +703,7 @@ void MainWindow::updateDockWidgets(bool visible)
                 d->setObjectName(w->objectName());
             }
             mDockWidgets[w->objectName()]->setWidget(w);
-
-            if(b.isEmpty())
-                addDockWidget(Qt::RightDockWidgetArea, mDockWidgets[w->objectName()]);
+            addDockWidget(Qt::RightDockWidgetArea, mDockWidgets[w->objectName()]);
         }
 
         if(!b.isEmpty())

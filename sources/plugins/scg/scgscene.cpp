@@ -61,6 +61,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "commands/scgcommandswappairorient.h"
 #include "commands/scgcommandremovebreakpoints.h"
 #include "commands/scgcommandminimizecontour.h"
+#include "commands/scgcommandcreatelayer.h"
+#include "commands/scgcommanddeletelayer.h"
+#include "commands/scgcommandmovetolayer.h"
 
 #include <QUrl>
 #include <QFile>
@@ -79,7 +82,8 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mUndoStack(undoStack),
     mIsGridDrawn(false),
     mIsIdtfModelDirty(true),
-    mCursor(0,0)
+    mCursor(0,0),
+    mCurrentLayer(0)
 {
     mSceneModes.fill(0,(int)Mode_Count);
 
@@ -91,6 +95,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
 
     setEditMode(Mode_Select);
+
     // grid foreground
     //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
     //    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
@@ -447,6 +452,20 @@ SCgBaseCommand* SCgScene::deleteContourCommand(SCgContour *contour, SCgBaseComma
                "Pointer to contour object is null");
 
     SCgBaseCommand* cmd = new SCgCommandDeleteContour(this, contour, parentCmd);
+    contour->parentLayer()->removeObject(contour);
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::deleteLayerCommand(uint id,
+                                              QString name,
+                                              SCgBaseCommand* parentCmd,
+                                              bool addToStack)
+{
+    SCgBaseCommand* cmd = (new SCgCommandDeleteLayer(this, id, name, parentCmd));
 
     if(addToStack)
         mUndoStack->push(cmd);
@@ -672,6 +691,19 @@ SCgBaseCommand* SCgScene::createPairCommand( const QVector<QPointF> &points,
                                              bool addToStack)
 {
     SCgBaseCommand* cmd = (new SCgCommandCreatePair(this, points, beginObj, endObj, parent, parentCmd));
+
+    if(addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand* SCgScene::createLayerCommand(QString name,
+                                              SCgLayer::Type type,
+                                              SCgBaseCommand* parentCmd,
+                                              bool addToStack)
+{
+    SCgBaseCommand* cmd = (new SCgCommandCreateLayer(this, name, type, parentCmd));
 
     if(addToStack)
         mUndoStack->push(cmd);
@@ -941,4 +973,145 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
 void SCgScene::ensureSelectedItemVisible() {
     if (!selectedItems().isEmpty())
         views().at(0)->ensureVisible(selectedItems().at(0));
+}
+
+uint SCgScene::createSCgLayer(QString name, SCgLayer::Type type)
+{
+    for (SCgLayerMap::iterator it = mLayers.begin(); it != mLayers.end(); ++it)
+    {
+        if (it.value()->name() == name)
+        {
+            deleteSCgLayer(it.key());
+            break;
+        }
+    }
+
+    uint id = mLayers.size() + 1;
+    if (name.isEmpty())
+        name = tr("New layer") + " " + QString::number(id);
+
+    SCgLayer* layer = new SCgLayer(name);
+    layer->type = type;
+
+    mLayers[id] = layer;
+    mCurrentLayer = layer;
+
+    return id;
+}
+
+void SCgScene::deleteSCgLayer(uint id)
+{
+    mLayers[id]->clear();
+    if (mCurrentLayer == mLayers[id])
+    {
+        mCurrentLayer = mLayers.begin().value();
+    }
+    mLayers.remove(id);
+    if (mLayers.size() == 0)
+        mCurrentLayer = 0;
+    if (mCurrentLayer)
+        emit currentLayerChanged(mLayers.key(mCurrentLayer));
+}
+
+SCgBaseCommand* SCgScene::createMoveToLayerCommand(uint layer,
+                                         SCgBaseCommand* parentCmd,
+                                         bool addToStack)
+{
+       QList<QGraphicsItem*> selItems = selectedItems();
+       QList<SCgObject*> objects;
+       QList<uint> prevIds;
+       Q_FOREACH(QGraphicsItem* item, selItems)
+       {
+           if (SCgObject* object = dynamic_cast<SCgObject*>(item))
+           {
+               objects.append(object);
+               prevIds.append(mLayers.key(object->parentLayer()));
+           }
+       }
+
+       SCgBaseCommand* cmd = new SCgCommandMoveToLayer(this, objects, prevIds, layer, parentCmd);
+
+       if(addToStack)
+           mUndoStack->push(cmd);
+
+       return cmd;
+}
+
+void SCgScene::moveObjectToLayer(SCgObject* object, uint layerId)
+{
+        object->parentLayer()->removeObject(object);
+        mLayers[layerId]->addObject(object);
+        object->setParentLayer(mLayers[layerId]);
+}
+
+void SCgScene::addItem(QGraphicsItem *item)
+{
+    if (SCgObject* object = dynamic_cast<SCgObject*>(item))
+    {
+        if (!mCurrentLayer || mCurrentLayer->type != SCgLayer::User || mCurrentLayer->isDead())
+        {
+            SCgLayer::Type layerType;
+            QString layerName;
+
+            switch (object->type())
+            {
+            case SCgNode::Type:
+                layerType = SCgLayer::Node;
+                layerName = tr("Node layer");
+                break;
+            case SCgPair::Type:
+                layerType = SCgLayer::Pair;
+                layerName = tr("Pair layer");
+                break;
+            case SCgContour::Type:
+                layerType = SCgLayer::Contour;
+                layerName = tr("Contour layer");
+                break;
+            case SCgBus::Type:
+                layerType = SCgLayer::Bus;
+                layerName = tr("Bus layer");
+                break;
+            default:
+                layerType = SCgLayer::User;
+                layerName = tr("Default layer");
+            }
+
+            if (!mDefaultLayers.contains(layerType))
+            {
+                createLayerCommand(layerName, layerType);
+                mDefaultLayers[layerType] = mLayers.size();
+            }
+            mCurrentLayer = mLayers[mDefaultLayers[layerType]];
+        }
+
+        if (mCurrentLayer->isDead())
+        {
+            createLayerCommand(mCurrentLayer->name(), mCurrentLayer->type);
+        }
+
+        mCurrentLayer->addObject(object);
+    }
+
+    emit currentLayerChanged(mLayers.key(mCurrentLayer));
+
+    if (item->scene() != this)
+        QGraphicsScene::addItem(item);
+}
+
+void SCgScene::removeItem(QGraphicsItem *item)
+{
+    if (SCgObject* object = dynamic_cast<SCgObject*>(item))
+        object->parentLayer()->removeObject(object);
+    QGraphicsScene::removeItem(item);
+}
+
+SCgScene::SCgLayerMap& SCgScene::scgLayers()
+{
+    return mLayers;
+}
+
+void SCgScene::selectCurrentLayer(int id)
+{
+    if (mLayers.contains(id))
+        mCurrentLayer = mLayers[id];
 }
