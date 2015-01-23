@@ -238,9 +238,12 @@ void SCgView::updateActionsState(int idx)
         {
             if (static_cast<SCgScene*>(scene())->selectedItems().size() == 1 && mContextObject->parentLayer() == layer.value())
                 continue;
-            QAction* moveToLayerAction = mMoveToLayerMenu->addAction(layer.value()->name());
-            moveToLayerAction->setProperty(idPropery, layer.key());
-            connect(moveToLayerAction, SIGNAL(triggered()), this, SLOT(moveSelectedToLayer()));
+            if (!layer.value()->isDead())
+            {
+                QAction* moveToLayerAction = mMoveToLayerMenu->addAction(layer.value()->name());
+                moveToLayerAction->setProperty(idPropery, layer.key());
+                connect(moveToLayerAction, SIGNAL(triggered()), this, SLOT(moveSelectedToLayer()));
+            }
         }
         if (mMoveToLayerMenu->actions().size() == 0)
         {
