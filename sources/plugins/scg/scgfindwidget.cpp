@@ -130,20 +130,12 @@ void SCgFindWidget::setTextWrappedVisible(bool visible)
 
 void SCgFindWidget::hideEvent(QHideEvent* event)
 {
-//    if (!event->spontaneous())
-//        qApp->setPalette(mAppPalette);
+    Q_UNUSED(event);
 }
 
 void SCgFindWidget::showEvent(QShowEvent* event)
 {
-//    if (!event->spontaneous()) {
-//        QPalette p = mAppPalette;
-//        p.setColor(QPalette::Inactive, QPalette::Highlight,
-//            p.color(QPalette::Active, QPalette::Highlight));
-//        p.setColor(QPalette::Inactive, QPalette::HighlightedText,
-//            p.color(QPalette::Active, QPalette::HighlightedText));
-//        qApp->setPalette(p);
-//    }
+    Q_UNUSED(event);
 }
 
 void SCgFindWidget::updateButtons()
@@ -155,6 +147,7 @@ void SCgFindWidget::updateButtons()
 
 void SCgFindWidget::caseSensitivityChanged(int val)
 {
+    Q_UNUSED(val);
     emit find(mFindLine->text());
 }
 

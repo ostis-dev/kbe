@@ -13,15 +13,15 @@
 #include <QDialogButtonBox>
 
 #include <QtConcurrentMap>
-//------------------------------------------------------------------------------
+
 SCgEnergyBasedArranger::SCgEnergyBasedArranger(QObject *parent)
-        : SCgArranger(parent)
-        , mDialog(0)
-        , mSpringRate(1)
-        , mSpringLength(100)
-        , mRepulsionFactor(10000)
-        , mFakeRepulsionFactor(500)
-        , mShiftFactor(0.3)
+    : SCgArranger(parent)
+    , mDialog(0)
+    , mSpringRate(1)
+    , mSpringLength(100)
+    , mRepulsionFactor(10000)
+    , mFakeRepulsionFactor(500)
+    , mShiftFactor(0.3)
 {
     mNodes.clear();
     mTimerId = 0;
@@ -162,8 +162,7 @@ void SCgEnergyBasedArranger::timerEvent(QTimerEvent *event)
     Parameters parameters(mSpringRateSpinBox->value(), mSpringLengthSpinBox->value(),
                           mRepulsionFactorSpinBox->value(),
                           mFakeRepulsionFactorSpinBox->value());
-    QFuture<Force> future = QtConcurrent::mapped(mNodes, SCgForceCalculator(mNodes,
-            mPairs, mBusses, parameters));
+    QFuture<Force> future = QtConcurrent::mapped(mNodes, SCgForceCalculator(mNodes, mPairs, mBusses, parameters));
     mFutureWatcher.setFuture(future);
 }
 //------------------------------------------------------------------------------

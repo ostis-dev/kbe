@@ -37,13 +37,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsScene>
 #include <QApplication>
 
-SCgObject::SCgObject(QGraphicsItem *parent, QGraphicsScene *scene) :
-        QGraphicsItem(parent, scene),
-        mConstType(SCgAlphabet::ConstUnknown),
-        mIsBoundingBoxVisible(false),
-        mTextItem(0),
-        mIsDead(false),
-        mParentChanging(false)
+SCgObject::SCgObject(QGraphicsItem *parent)
+    : QGraphicsItem(parent)
+    , mConstType(SCgAlphabet::ConstUnknown)
+    , mIsBoundingBoxVisible(false)
+    , mTextItem(0)
+    , mIsDead(false)
+    , mParentChanging(false)
 {
     mColor = scg_cfg_get_value_color(scg_key_element_color_normal);
 
@@ -75,6 +75,8 @@ bool SCgObject::isSCgPointObjectType(int type)
 
 void SCgObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(widget);
+    Q_UNUSED(option);
     if (mIsBoundingBoxVisible)
     {
         QPen pen(QBrush(Qt::red, Qt::SolidPattern), 1.f, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);

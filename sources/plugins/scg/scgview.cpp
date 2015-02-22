@@ -175,6 +175,8 @@ void SCgView::createActions()
 
 void SCgView::updateActionsState(int idx)
 {
+    Q_UNUSED(idx);
+
     mContextObject = 0;
 
     QList <QGraphicsItem*> items = scene()->selectedItems();
@@ -587,9 +589,9 @@ void SCgView::updateSceneRect(const QRectF& rect)
     if(isSceneRectControlled)
     {
         QPointF topLeft = mapToScene(0,0);
-        QPointF bottomRight = mapToScene(viewport()->width(),viewport()->height());
-        QRectF vis(topLeft,bottomRight);
-        QRectF result = rect.adjusted(-100,-100,100,100).unite(vis).unite(sceneRect());
+        QPointF bottomRight = mapToScene(viewport()->width(), viewport()->height());
+        QRectF vis(topLeft, bottomRight);
+        QRectF result = rect.adjusted(-100, -100, 100, 100).united(vis).united(sceneRect());
         setSceneRect(result);
 
         emit sceneRectChanged(result);

@@ -37,7 +37,7 @@ class AbstractSCgObjectBuilder
 {
 public:
     //! NOTE: @param scene is not used in this context.
-    AbstractSCgObjectBuilder(QGraphicsScene* scene);
+    AbstractSCgObjectBuilder();
     virtual ~AbstractSCgObjectBuilder();
 
     typedef QList<SCgObjectInfo*>       ObjectInfoList;

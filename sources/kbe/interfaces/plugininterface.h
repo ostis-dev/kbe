@@ -50,6 +50,6 @@ public:
 };
 
 Q_DECLARE_INTERFACE(PluginInterface,
-                    "com.OSTIS.kbe.PluginInterface/1.0")
+                    "com.OSTIS.kbe.PluginInterface")
 
 #endif // PLUGIN_H

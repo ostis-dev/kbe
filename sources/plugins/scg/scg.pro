@@ -1,4 +1,4 @@
-QT += xml
+QT += xml widgets concurrent
 
 TARGET        = $$qtLibraryTarget(scg)
 TEMPLATE      = lib
@@ -182,3 +182,6 @@ lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
+
+OTHER_FILES += \
+    scgplugin.json

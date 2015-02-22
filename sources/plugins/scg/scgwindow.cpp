@@ -72,23 +72,23 @@ const int SCgWindow::mScaleChangeStep = 25;
 const qreal SCgWindow::minScale = 0.20;
 const qreal SCgWindow::maxScale = 9.99;
 
-SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent) :
-    QWidget(parent),
-    mView(0),
-    mScene(0),
-    mZoomFactorLine(0),
-    mMinimap(0),
-    mUndoView(0),
-    mFindWidget(0),
-    mToolBar(0),
-    mUndoStack(0),
-//    mViewMenu(0),
-    mEditMenu(0),
-    mActionUndo(0),
-    mActionRedo(0),
-    mActionFind(0)//,
-//    mActionMinMap(0)
+SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent)
+    : QWidget(parent)
+    , mView(0)
+    , mScene(0)
+    , mZoomFactorLine(0)
+    , mMinimap(0)
+    , mUndoView(0)
+    , mFindWidget(0)
+    , mToolBar(0)
+    , mUndoStack(0)
+    , mEditMenu(0)
+    , mActionUndo(0)
+    , mActionRedo(0)
+    , mActionFind(0)
 {
+    Q_UNUSED(_windowTitle);
+
     mUndoStack = new QUndoStack(this);
     /////////////////////////////////////////////////
     //Creating main environment
@@ -709,6 +709,7 @@ void SCgWindow::deleteMenu()
 
 void SCgWindow::stackCleanStateChanged(bool value)
 {
+    Q_UNUSED(value);
     emitEvent(EditorObserverInterface::ContentChanged);
 }
 

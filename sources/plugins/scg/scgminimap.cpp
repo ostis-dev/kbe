@@ -85,6 +85,8 @@ bool SCgMinimap::eventFilter(QObject* watched, QEvent* event)
 
 void SCgMinimap::updateViewedArea(int val)
 {
+    Q_UNUSED(val);
+
     QPointF topLeft = mapFromScene(mView->mapToScene(0,0));
     QPointF bottomRight = mapFromScene(mView->mapToScene(mView->viewport()->width(),mView->viewport()->height()));
     QRectF sceneR = mView->sceneRect();
@@ -126,5 +128,6 @@ void SCgMinimap::sceneRectChanged(const QRectF &rect)
 
 void SCgMinimap::drawBackground ( QPainter * painter, const QRectF & rect )
 {
+    Q_UNUSED(rect);
     painter->drawRect(mView->sceneRect());
 }

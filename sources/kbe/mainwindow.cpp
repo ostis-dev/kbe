@@ -49,6 +49,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QCloseEvent>
 #include <QSettings>
 #include <QDockWidget>
+#include <QMimeData>
 
 MainWindow* MainWindow::mInstance = 0;
 
@@ -216,6 +217,8 @@ void MainWindow::createActions()
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
 {
+    Q_UNUSED(editor);
+
     switch(event)
     {
     case ContentChanged:
@@ -666,6 +669,7 @@ void MainWindow::changeEvent(QEvent *event)
 
 void MainWindow::showEvent(QShowEvent *event)
 {
+    Q_UNUSED(event);
 }
 
 void MainWindow::updateDockWidgets(bool visible)

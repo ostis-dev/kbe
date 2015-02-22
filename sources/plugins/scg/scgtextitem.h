@@ -39,16 +39,14 @@ public:
     * @brief Constructor. All parameters are passed to QGraphicsTextItem's constructor
     * @param str    String that contains
     * @param parent Pointer to the parent graphics item
-    * @param scene  Pointer to the graphics scene that contains current item
     */
-    explicit SCgTextItem(const QString &str, QGraphicsItem* parent = 0, QGraphicsScene* scene = 0);
+    explicit SCgTextItem(const QString &str, QGraphicsItem* parent = 0);
 
     /**
     * @brief Constructor. All parameters are passed to QGraphicsTextItem's constructor
     * @param parent Pointer to the parent graphics item
-    * @param scene  Pointer to the graphics scene that contains current item
     */
-    explicit SCgTextItem(QGraphicsItem* parent = 0, QGraphicsScene* scene = 0);
+    explicit SCgTextItem(QGraphicsItem* parent = 0);
 
     //! Destructor
     virtual ~SCgTextItem();

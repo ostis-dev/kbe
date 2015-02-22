@@ -26,8 +26,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVector2D>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-SCgPointObject::SCgPointObject(QGraphicsItem *parent, QGraphicsScene *scene) :
-    SCgObject(parent, scene)
+SCgPointObject::SCgPointObject(QGraphicsItem *parent)
+    : SCgObject(parent)
 {
 
 }
@@ -87,20 +87,20 @@ void SCgPointObject::changePointPosition(int pointIndex, const QPointF& newPos)
 
 void SCgPointObject::setPoints(const PointFVector &points)
 {
-    if(points.size() < 2)
+    if (points.size() < 2)
         return;
 
     mPoints = points;
-    for (quint32 idx = 0; idx < mPoints.size(); idx++)
+    for (int idx = 0; idx < mPoints.size(); ++idx)
         mPoints[idx] = mapFromScene(mPoints[idx]);
-    //////////////////////////////////////////////////
+
     // update points if they're displayed
     if(!mPointItems.empty())
     {
         destroyPointObjects();
         createPointObjects();
     }
-    ///////////////////////////////////////////////////
+
     positionChanged();
 }
 
@@ -175,6 +175,9 @@ bool SCgPointObject::isAcceptable(SCgObject *obj, SCgPointObject::IncidentRole r
 
 void SCgPointObject::changeIncidentObject(SCgObject *obj, const QPointF &point, SCgPointObject::IncidentRole role)
 {
+    Q_UNUSED(point);
+    Q_UNUSED(obj);
+    Q_UNUSED(role);
     Q_ASSERT_X(obj != 0,
                "void SCgPointObject::changeIncidentObject(SCgObject *obj, const QPointF &point, SCgPointObject::IncidentRole role)",
                "obj is null");

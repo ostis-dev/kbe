@@ -377,6 +377,8 @@ public:
      */
     void cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
 
+    QGraphicsItem* itemAt(const QPointF & point) const;
+
 private:
     QVector<SCgMode*> mSceneModes;
     //! Current edit mode

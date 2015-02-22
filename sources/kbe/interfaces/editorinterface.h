@@ -119,13 +119,13 @@ public:
      @brief    Calls when window made active (selected in main window tab).
      @param    window  Pointer to main window
      */
-    virtual void activate(QMainWindow *window) { mIsActivated = true; }
+    virtual void activate(QMainWindow *window) { Q_UNUSED(window); mIsActivated = true; }
 
     /*! Window deactivation.
      @brief    Calls whne window made inactive (selected other window in main window tab)
      @param    window  Pointer to main window
      */
-    virtual void deactivate(QMainWindow *window) { mIsActivated = false; }
+    virtual void deactivate(QMainWindow *window) { Q_UNUSED(window); mIsActivated = false; }
 
     /*! Check if window is activated
      */
@@ -177,10 +177,10 @@ public:
 
 
 Q_DECLARE_INTERFACE(EditorInterface,
-                    "com.OSTIS.kbe.EditorInterface/1.0")
+                    "com.OSTIS.kbe.EditorInterface")
 Q_DECLARE_INTERFACE(EditorFactoryInterface,
-                    "com.OSTIS.kbe.EditorFactoryInterface/1.0")
+                    "com.OSTIS.kbe.EditorFactoryInterface")
 Q_DECLARE_INTERFACE(EditorObserverInterface,
-                    "com.OSTIS.kbe.EditorObserverInterface/1.0")
+                    "com.OSTIS.kbe.EditorObserverInterface")
 
 #endif // WINDOWINTERFACE_H

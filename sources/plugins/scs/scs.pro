@@ -1,3 +1,4 @@
+QT += concurrent widgets
 
 TARGET        = $$qtLibraryTarget(scs)
 TEMPLATE      = lib
@@ -75,5 +76,8 @@ SOURCES += \
     scscodeanalyzer.cpp \
     scssyntaxhighlighter.cpp \
     scscodecompleter.cpp
+
+OTHER_FILES += \
+    scsplugin.json
 
 

@@ -50,6 +50,8 @@ QPainterPath SCgPointGraphicsItem::shape() const
 
 void SCgPointGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(widget);
+    Q_UNUSED(option);
     painter->setBrush(QBrush(mColor));
     painter->drawPath(mShape);
 }

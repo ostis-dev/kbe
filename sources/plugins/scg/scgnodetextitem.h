@@ -38,8 +38,8 @@ public:
     //! Object type
     enum { Type = UserType + 9 };
 
-    explicit SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
-    explicit SCgNodeTextItem(SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight, QGraphicsScene* scene = 0);
+    explicit SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight);
+    explicit SCgNodeTextItem(SCgNode* parent, SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight);
     virtual ~SCgNodeTextItem();
 
     //! Return a type of graphics item as integer

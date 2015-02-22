@@ -82,7 +82,7 @@ void SCgMode::mousePress(QGraphicsSceneMouseEvent* event)
 
 void SCgMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
 {
-
+    Q_UNUSED(event);
 }
 
 QPointF SCgMode::degreeAlign(const QLineF& l)
@@ -124,7 +124,7 @@ void SCgMode::mouseMove(QGraphicsSceneMouseEvent *event)
 
 void SCgMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
-
+    Q_UNUSED(event);
 }
 
 void SCgMode::startLineCreation(const QPointF &point)
@@ -342,5 +342,5 @@ void SCgMode::keyPress(QKeyEvent *event)
 
 void SCgMode::keyRelease(QKeyEvent *event)
 {
-
+    Q_UNUSED(event);
 }

@@ -79,7 +79,8 @@ void SCgUndoViewModel::stackDestroyed(QObject *obj)
 
 void SCgUndoViewModel::stackChanged()
 {
-    reset();
+    beginResetModel();
+    endResetModel();
     m_sel_model->setCurrentIndex(selectedIndex(), QItemSelectionModel::ClearAndSelect);
 }
 

@@ -39,32 +39,18 @@ bool SCgFileWriterImage::save(QString file_name, QObject *input)
     SCgScene *scene = qobject_cast<SCgScene*>(input);
 
     QSize sz = scene->itemsBoundingRect().size().toSize();
-    QRect rect = scene->itemsBoundingRect().toRect();
 
     QString isSVG = file_name.mid(file_name.length()-3);
-   /* if(isSVG=="svg"){
-         QSvgGenerator generator;
-         generator.setFileName(file_name);
-         generator.setSize(sz);
-         generator.setViewBox(rect);
-         //generator.setTitle(tr("SVG image for GWF"));
-         generator.setDescription(tr("An SVG drawing created by Knowledge base Editor."));
-         QPainter painter(&generator);
-         painter.setRenderHint(QPainter::Antialiasing,true);
-         scene->render(&painter,QRect(QPoint(0,0), sz),scene->itemsBoundingRect());
-         return true;
-     }
-    else*/{
-        QImage img(sz,QImage::Format_ARGB32_Premultiplied);
-        if (!img.isNull())
-        {
-            QPainter painter(&img);
-            painter.setRenderHint(QPainter::Antialiasing, true);
-            painter.eraseRect(QRect(QPoint(0,0),sz));
-            scene->renderToImage(&painter, QRect(QPoint(0,0), sz), scene->itemsBoundingRect());
-            return img.save(file_name);
-        }
+    QImage img(sz,QImage::Format_ARGB32_Premultiplied);
+    if (!img.isNull())
+    {
+        QPainter painter(&img);
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        painter.eraseRect(QRect(QPoint(0,0),sz));
+        scene->renderToImage(&painter, QRect(QPoint(0,0), sz), scene->itemsBoundingRect());
+        return img.save(file_name);
     }
+
     return false;
 }
 

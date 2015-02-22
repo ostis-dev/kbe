@@ -36,8 +36,8 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #define DEFAULT_IDTF_POS BottomRight
 
-SCgNode::SCgNode(QGraphicsItem *parent, QGraphicsScene *scene) :
-    SCgObject(parent, scene),
+SCgNode::SCgNode(QGraphicsItem *parent) :
+    SCgObject(parent),
     SCgContent(),
     mStructType(SCgAlphabet::StructUnknown),
     mIsContentVisible(false),
@@ -155,7 +155,9 @@ void SCgNode::positionChanged()
 
 void SCgNode::objectDelete(SCgObject *object)
 {
-    if (mBus)   mBus->setOwner(0);
+    Q_UNUSED(object);
+    if (mBus)
+        mBus->setOwner(0);
 }
 
 void SCgNode::del(QList<SCgObject*> &delList)
@@ -181,6 +183,8 @@ void SCgNode::undel(SCgScene* scene)
 
 QPointF SCgNode::cross(const QPointF &from, float dot) const
 {
+    Q_UNUSED(dot);
+
     QPointF p(0.f, 0.f);
 
     if (!mIsContentVisible)
@@ -218,6 +222,7 @@ QPointF SCgNode::cross(const QPointF &from, float dot) const
 
 float SCgNode::dotPos(const QPointF &point) const
 {
+    Q_UNUSED(point);
     return 0.f;
 }
 

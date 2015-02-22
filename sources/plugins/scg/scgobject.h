@@ -40,7 +40,7 @@ public:
     enum { Type = UserType + 1 };
     virtual int type() const = 0;
 
-    explicit SCgObject(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    explicit SCgObject(QGraphicsItem *parent = 0);
     virtual ~SCgObject();
 
     //! Check if type is an scg-object type
