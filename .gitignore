@@ -1,2 +1,4 @@
+build-*/*
 all-build-desktop/*
 *.qm
+*.user
