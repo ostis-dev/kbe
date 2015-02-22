@@ -39,7 +39,7 @@ public:
     };
 
     virtual int type() const = 0;
-    explicit SCgPointObject(QGraphicsItem *parent = 0, QGraphicsScene *scene = 0);
+    explicit SCgPointObject(QGraphicsItem *parent = 0);
     virtual ~SCgPointObject();
 
     typedef QVector<QPointF> PointFVector;

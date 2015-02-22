@@ -24,8 +24,8 @@ along with OSTIS.  If not, see .
 #include "scgnodetextitem.h"
 
 
-SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene* scene )
-    : SCgTextItem(str,(QGraphicsItem*)parent,scene)
+SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos)
+    : SCgTextItem(str,(QGraphicsItem*)parent)
     , mTextPos(idtfPos)
 {
     Q_CHECK_PTR(parent);
@@ -34,8 +34,8 @@ SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::I
 }
 
 
-SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos, QGraphicsScene *scene)
-    : SCgTextItem((QGraphicsItem*)parent, scene)
+SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos)
+    : SCgTextItem((QGraphicsItem*)parent)
     , mTextPos(idtfPos)
 {
     Q_CHECK_PTR(parent);

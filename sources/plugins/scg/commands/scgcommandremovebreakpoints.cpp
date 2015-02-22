@@ -25,13 +25,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgcommandremovebreakpoints.h"
 
-SCgCommandRemoveBreakPoints::SCgCommandRemoveBreakPoints(SCgScene *scene,
-                                                         SCgPair *pair,
-                                                         QUndoCommand *parent)
+SCgCommandRemoveBreakPoints::SCgCommandRemoveBreakPoints(SCgScene *scene, SCgPair *pair, QUndoCommand *parent)
     : SCgBaseCommand(scene, pair, parent)
-    , mOldPoints(pair->scenePoints())
     , mOldBeginDot(pair->beginDot())
     , mOldEndDot(pair->endDot())
+    , mOldPoints(pair->scenePoints())
 {
     setText(QObject::tr("Remove pair's break points"));
 }

@@ -60,6 +60,7 @@ ProjectManagerView::ProjectManagerView(QWidget *parent)
 
 void ProjectManagerView::onContextMenuRequested(QPoint mousePoint)
 {
+    Q_UNUSED(mousePoint);
     ProjectManagerModelItem* item = mModel->getItem(currentIndex());
     createContextMenu(item);
 }
@@ -348,17 +349,23 @@ void ProjectManagerView::onRemovePermanently()
     if (!currentIndex().isValid())
         return;
 
-    if (ProjectManagerModelItem* item = mModel->getItem(currentIndex()))
-        switch (item->getItemType())
-        {
-        case ProjectManagerModelItem::File:
-            if (QFile::remove(item->getAbsoluteFilePath()))
-                onRemove();
-            break;
-        case ProjectManagerModelItem::Filter:
-            permanentRemoveTree(item);
-            emit event(ProjectChanged);
-        }
+    ProjectManagerModelItem* item = mModel->getItem(currentIndex());
+    if (item == 0)
+        return;
+
+    switch (item->getItemType())
+    {
+    case ProjectManagerModelItem::File:
+        if (QFile::remove(item->getAbsoluteFilePath()))
+            onRemove();
+        break;
+    case ProjectManagerModelItem::Filter:
+        permanentRemoveTree(item);
+        emit event(ProjectChanged);
+
+    default:
+        break;
+    }
 }
 
 
@@ -372,11 +379,16 @@ void ProjectManagerView::permanentRemoveTree(ProjectManagerModelItem *item)
 
     switch (item->getItemType())
     {
-        case ProjectManagerModelItem::File:
-            QFile::remove(item->getAbsoluteFilePath());
+    case ProjectManagerModelItem::File:
+        QFile::remove(item->getAbsoluteFilePath());
+        break;
 
-        case ProjectManagerModelItem::Filter:
-            mModel->removeItem(item);
+    case ProjectManagerModelItem::Filter:
+        mModel->removeItem(item);
+        break;
+
+    default:
+        break;
     }
 
 }
@@ -666,7 +678,7 @@ void ProjectManagerView::onShowInExplorer()
     else
         return;
 
-    #ifdef defined(Q_OS_WIN)
+    #if defined(Q_OS_WIN)
         const QString explorer = "explorer";
         QString param;
         if (!QFileInfo(pathIn).isDir())
@@ -686,22 +698,6 @@ void ProjectManagerView::onShowInExplorer()
         QProcess::execute("/usr/bin/osascript", scriptArgs);
     #endif
 
-// Todo: opening file in filemanager for Linux
-/*#else
-        const QFileInfo fileInfo(pathIn);
-        const QString folder = fileInfo.absoluteFilePath();
-        const QString app = Utils::UnixUtils::fileBrowser(Core::ICore::instance()->settings());
-        QProcess browserProc;
-        const QString browserArgs = Utils::UnixUtils::substituteFileBrowserParameters(app, folder);
-        if (debug)
-            qDebug() <<  browserArgs;
-        bool success = browserProc.startDetached(browserArgs);
-        const QString error = QString::fromLocal8Bit(browserProc.readAllStandardError());
-        success = success && error.isEmpty();
-        if (!success)
-            showGraphicalShellError(this, app, error);
-    #endif
-*/
 }
 
 
@@ -709,6 +705,7 @@ void ProjectManagerView::onPropertiesShow()
 {
     if (!currentIndex().isValid())
         return;
+
     if (ProjectManagerModelItem* item = mModel->getItem(currentIndex()))
     {
         QStringList properties;

@@ -31,6 +31,7 @@ class SCsPlugin : public QObject, public PluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(PluginInterface)
+    Q_PLUGIN_METADATA(IID "com.OSTIS.kbe.PluginInterface" FILE "scsplugin.json")
 
 public:
     explicit SCsPlugin(QObject *parent = 0);

@@ -33,6 +33,7 @@ class SCgPlugin : public QObject,
 {
     Q_OBJECT
     Q_INTERFACES(PluginInterface)
+    Q_PLUGIN_METADATA(IID "com.OSTIS.kbe.PluginInterface" FILE "scgplugin.json")
 
 public:
     explicit SCgPlugin(QObject *parent = 0);

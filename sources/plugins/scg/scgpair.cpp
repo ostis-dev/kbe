@@ -174,6 +174,8 @@ QVariant SCgPair::itemChange(GraphicsItemChange change, const QVariant &value)
 
 QPointF SCgPair::cross(const QPointF &from, float dot) const
 {
+    Q_UNUSED(from);
+
     // get sector num
     int s = (int)dot;
     // get relative pos in sector
@@ -182,8 +184,10 @@ QPointF SCgPair::cross(const QPointF &from, float dot) const
     Q_ASSERT(mPoints.size() > 1);
 
     // calculating position
-    if (s >= mPoints.size() - 1)    s = mPoints.size() - 2;
-    if (s < 0)  s = 0;
+    if (s >= mPoints.size() - 1)
+        s = mPoints.size() - 2;
+    if (s < 0)
+        s = 0;
 
     return mapToScene(mPoints[s] + (mPoints[s+1] - mPoints[s]) * ds);
 }

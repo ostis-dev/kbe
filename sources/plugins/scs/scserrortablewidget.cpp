@@ -15,21 +15,13 @@ SCsErrorTableWidget::SCsErrorTableWidget(QWidget *parent) :
 	setRowCount(0);
 	setColumnCount(2);
 
-    verticalHeader()->setResizeMode(QHeaderView::Fixed);
-
-	
     QHeaderView *header = new QHeaderView(Qt::Horizontal);
-    header->setResizeMode(QHeaderView::Fixed);
     this->setHorizontalHeader(header);
 
     setMinimumWidth(200);
-    this->horizontalHeader()->setMovable(false);
 
     hide();
 }
-
-
-
 
 void SCsErrorTableWidget::doubleClickAtCell(int row, int col)
 {

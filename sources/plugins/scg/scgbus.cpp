@@ -125,7 +125,9 @@ void SCgBus::updateShape()
 
 void SCgBus::objectDelete(SCgObject *object)
 {
-    if (mOwner) mOwner->setBus(0);
+    Q_UNUSED(object);
+    if (mOwner)
+        mOwner->setBus(0);
 }
 
 void SCgBus::del(QList<SCgObject*> &delList)
@@ -144,6 +146,7 @@ void SCgBus::undel(SCgScene *scene)
 
 QPointF SCgBus::cross(const QPointF &from, float dot) const
 {
+    Q_UNUSED(from);
     // get sector num
     int s = (int)dot;
     // get relative pos in sector
@@ -152,8 +155,10 @@ QPointF SCgBus::cross(const QPointF &from, float dot) const
     Q_ASSERT(mPoints.size() > 1);
 
     // calculating position
-    if (s >= mPoints.size() - 1)    s = mPoints.size() - 2;
-    if (s < 0)  s = 0;
+    if (s >= mPoints.size() - 1)
+        s = mPoints.size() - 2;
+    if (s < 0)
+        s = 0;
 
     return mapToScene(mPoints[s] + (mPoints[s+1] - mPoints[s]) * ds);
 }
@@ -219,6 +224,7 @@ bool SCgBus::isAcceptable(SCgObject* obj, SCgPointObject::IncidentRole role) con
 
 void SCgBus::changeIncidentObject(SCgObject* obj, const QPointF& point, SCgPointObject::IncidentRole role)
 {
+    Q_UNUSED(point);
     if (isAcceptable(obj, role))
         setOwner(static_cast<SCgNode*>(obj));
 }

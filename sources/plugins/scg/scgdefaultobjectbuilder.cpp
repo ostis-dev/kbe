@@ -30,8 +30,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgcontour.h"
 #include "scgpair.h"
 
-DefaultSCgObjectBuilder::DefaultSCgObjectBuilder(QGraphicsScene* scene):AbstractSCgObjectBuilder(scene),
-                                                                        mScene(scene)
+DefaultSCgObjectBuilder::DefaultSCgObjectBuilder(QGraphicsScene* scene)
+    : AbstractSCgObjectBuilder()
+    , mScene(scene)
 {
 }
 

@@ -44,8 +44,8 @@ protected:
     void undo();
 
 private:
-    double mOldEndDot;
     double mOldBeginDot;
+    double mOldEndDot;
     QVector<QPointF> mOldPoints;
 };
 

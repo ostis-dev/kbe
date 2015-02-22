@@ -106,7 +106,9 @@ void SCgContour::minimize()
 
 SCgPointObject::PointFVector SCgContour::minimizedPoints() const
 {
-    // Collect items which is a scgObject:
+    PointFVector newPoints;
+
+    // Collect items which is a scgObject
     QSet<SCgObject *> scgObjects;
     foreach(QGraphicsItem* item, childItems())
     {
@@ -131,25 +133,22 @@ SCgPointObject::PointFVector SCgContour::minimizedPoints() const
         maxX = firstObj->mapToScene(firstObjRect.bottomRight()).x();
         maxY = firstObj->mapToScene(firstObjRect.bottomRight()).y();
 
-        for (++it; it != scgObjects.end(); ++it) {
+        for (++it; it != scgObjects.end(); ++it)
+        {
             SCgObject *obj = *it;
             QRectF objRect = obj->boundingRect();
 
             QPointF topLeft = obj->mapToScene(objRect.topLeft());
             QPointF bottomRight = obj->mapToScene(objRect.bottomRight());
 
-            if (topLeft.x() < minX) {
+            if (topLeft.x() < minX)
                 minX = topLeft.x();
-            }
-            if (topLeft.y() < minY) {
+            if (topLeft.y() < minY)
                 minY = topLeft.y();
-            }
-            if (bottomRight.x() > maxX) {
+            if (bottomRight.x() > maxX)
                 maxX = bottomRight.x();
-            }
-            if (bottomRight.y() > maxY) {
+            if (bottomRight.y() > maxY)
                 maxY = bottomRight.y();
-            }
         }
 
         // Increase distance from borders:
@@ -159,12 +158,11 @@ SCgPointObject::PointFVector SCgContour::minimizedPoints() const
         maxY += borderDistance;
 
         // Remove all points and set only 4 corner points:
-        PointFVector newPoints;
         newPoints << QPointF(minX, minY) << QPointF(maxX, minY)
                   << QPointF(maxX, maxY) << QPointF(minX, maxY);
-
-        return newPoints;
     }
+
+    return newPoints;
 }
 
 void SCgContour::updateShape()
@@ -241,7 +239,7 @@ void SCgContour::updateConnected()
 
 void SCgContour::objectDelete(SCgObject *object)
 {
-
+    Q_UNUSED(object);
 }
 
 void SCgContour::del(QList<SCgObject*> &delList)
@@ -260,6 +258,8 @@ void SCgContour::del(QList<SCgObject*> &delList)
 
 QPointF SCgContour::cross(const QPointF &from, float dot) const
 {
+    Q_UNUSED(dot);
+
     QRectF bound = QPolygonF(mPoints).boundingRect();
     QPointF p(bound.center());
 
@@ -294,7 +294,7 @@ QPointF SCgContour::cross(const QPointF &from, float dot) const
 
 float SCgContour::dotPos(const QPointF &point) const
 {
-    // we doesn't need dot position for contour
+    Q_UNUSED(point);
     return 0.f;
 }
 

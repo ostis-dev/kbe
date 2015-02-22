@@ -23,7 +23,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "scgabstractobjectbuilder.h"
 
-AbstractSCgObjectBuilder::AbstractSCgObjectBuilder(QGraphicsScene* scene)
+AbstractSCgObjectBuilder::AbstractSCgObjectBuilder()
 {
 }
 

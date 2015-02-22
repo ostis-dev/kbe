@@ -28,7 +28,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "scgbus.h"
 
 TemplateSCgObjectsBuilder::TemplateSCgObjectsBuilder(QGraphicsScene* scene) :
-        AbstractSCgObjectBuilder(scene)
+        AbstractSCgObjectBuilder()
 {
     mDecoratedBuilder = new DefaultSCgObjectBuilder(scene);
 }

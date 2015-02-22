@@ -26,7 +26,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.h"
 #include "guidedialog.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QTranslator>
 #include <QLocale>
 #include <QTextCodec>

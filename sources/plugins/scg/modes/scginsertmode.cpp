@@ -25,10 +25,12 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "gwf/gwfobjectinforeader.h"
 #include "scgtemplateobjectbuilder.h"
 #include "scgwindow.h"
+
 #include <QDomDocument>
 #include <QGraphicsView>
 #include <QApplication>
 #include <QClipboard>
+#include <QMimeData>
 
 SCgInsertMode::SCgInsertMode(SCgScene* parent):
     SCgMode(parent),
@@ -94,7 +96,7 @@ void SCgInsertMode::activate()
     }
 
     const QMimeData* data = QApplication::clipboard()->mimeData();
-    if(data->hasFormat(SCgWindow::SupportedPasteMimeType))
+    if (data->hasFormat(SCgWindow::SupportedPasteMimeType))
     {
         QDomDocument document;
 
@@ -103,7 +105,7 @@ void SCgInsertMode::activate()
 
         // Read document
         GwfObjectInfoReader reader;
-        if (! reader.read(document))
+        if (!reader.read(document))
             return;
 
         //Place objects to scene
@@ -113,8 +115,10 @@ void SCgInsertMode::activate()
         QList<SCgObject*> list = objectBuilder.objects();
         QList<QGraphicsItem*> withoutChilds;
         foreach(SCgObject* obj, list)
+        {
             if (!obj->parentItem())
                 withoutChilds.append(obj);
+        }
 
         if(!withoutChilds.empty())
         {
@@ -126,7 +130,8 @@ void SCgInsertMode::activate()
             mInsertedObjectGroup->setOpacity(0.5);
         }
     }
-    else mScene->setEditMode(mScene->previousMode());
+    else
+        mScene->setEditMode(mScene->previousMode());
 
 
 }

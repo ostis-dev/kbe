@@ -72,6 +72,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QGraphicsView>
 #include <QGraphicsProxyWidget>
 #include <QCursor>
+#include <QMimeData>
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     QGraphicsScene(parent),
@@ -91,9 +92,6 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
 
     setEditMode(Mode_Select);
-    // grid foreground
-    //setBackgroundBrush(QBrush(QColor(204, 255, 204, 164), Qt::CrossPattern));
-    //    connect(this, SIGNAL(selectionChanged()), this, SLOT(ensureSelectedItemVisible()));
 }
 
 SCgScene::~SCgScene()
@@ -816,6 +814,7 @@ bool topToBottomleftToRightSortingPredicate(SCgObject* it1, SCgObject* it2)
 
     return isAbove || (isLeft && haveSameY);
 }
+
 SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
 {
     if(ttf.isEmpty())
@@ -830,7 +829,7 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     }
 
     if(list.isEmpty())
-        return false;
+        return 0;
 
     //for providing the same order in different calls of this function
     //we sort itemList by scene positions of items.
@@ -838,7 +837,7 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     QList<SCgObject*>::const_iterator beginIt = list.begin();
 
     //Finds item (rather iterator), that lies closer to mCursor. From this position find process begins.
-    while( true )
+    while (true)
     {
         SCgObject *curr = *beginIt;
         bool isRight = curr->sceneBoundingRect().x() >= mCursor.x();
@@ -864,7 +863,8 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
             else
                 return 0;
         }
-    }else if (flg & FindForward)
+    }
+    else if (flg & FindForward)
         return 0;
     else
         --beginIt;
@@ -875,20 +875,19 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     QList<SCgObject*>::const_iterator it = beginIt;
     while(true)
     {
-        if( (*it)->idtfValue().startsWith(ttf, flg & CaseSensitive
-                                          ? Qt::CaseSensitive
-                                          : Qt::CaseInsensitive) )
+        if( (*it)->idtfValue().startsWith(ttf, ((flg & CaseSensitive) ? Qt::CaseSensitive : Qt::CaseInsensitive)))
         {
             result = *it;
             break;
         }
 
-        if(flg & FindForward)
+        if (flg & FindForward)
         {
             ++it;
             if(it == list.end())
                 break;
-        }else
+        }
+        else
         {
             if(it == list.begin())
                 break;
@@ -899,22 +898,29 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
     return result;
 }
 
-void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
+void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
     // get only the first file
     QString fileName = event->mimeData()->urls().at(0).toLocalFile();
     QString ext = fileName.mid(fileName.lastIndexOf(".") + 1);
     QMap<QString, SCgContentFactory::MimeAndSCgTypes> ext2MIME = SCgContentFactory::registeredExtentions2MIME();
     QList<QString> list = ext2MIME.keys();
-    if (list.contains(ext)) {
+    if (list.contains(ext))
+    {
         QGraphicsItem *item = itemAt(event->scenePos());
         SCgContour *parentContour = 0;
         SCgNode *node = 0;
         // check if we have a contour object under cursor
-        if (!item) createNodeCommand(event->scenePos(), 0);
-        else if (item->type() == SCgContour::Type) {
+        if (!item)
+        {
+            createNodeCommand(event->scenePos(), 0);
+        }
+        else if (item->type() == SCgContour::Type)
+        {
             parentContour = dynamic_cast<SCgContour*>(item);
             createNodeCommand(event->scenePos(), parentContour);
         }
+
         item = itemAt(event->scenePos());
         // check item we have a proxy widget under cursor
         if (item->type() == QGraphicsProxyWidget::Type) item = item->parentItem();
@@ -922,12 +928,11 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
         QString MIMEType = ext2MIME.value(ext).first;
         SCgContent::ContType cType = ext2MIME.value(ext).second;
         QFile file(fileName);
-        if (file.open(QFile::ReadOnly)) {
+        if (file.open(QFile::ReadOnly))
             changeContentDataCommand(node, SCgContent::ContInfo(QVariant(file.readAll()), MIMEType, fileName, cType));
-        }
-        else QMessageBox::information(0,
-                                      tr("File opening error"),
-                                      file.errorString());
+        else
+            QMessageBox::information(0, tr("File opening error"), file.errorString());
+
         event->acceptProposedAction();
     }
     else {
@@ -938,7 +943,14 @@ void SCgScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
     }
 }
 
-void SCgScene::ensureSelectedItemVisible() {
+void SCgScene::ensureSelectedItemVisible()
+{
     if (!selectedItems().isEmpty())
         views().at(0)->ensureVisible(selectedItems().at(0));
+}
+
+QGraphicsItem* SCgScene::itemAt(const QPointF & point) const
+{
+    Q_ASSERT(views().size() > 0);
+    return QGraphicsScene::itemAt(point, views().first()->transform());
 }

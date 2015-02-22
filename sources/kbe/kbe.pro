@@ -4,7 +4,7 @@
 
 DESTDIR = ../bin
 
-QT      += xml
+QT      += xml widgets
 
 TEMPLATE = app
 
