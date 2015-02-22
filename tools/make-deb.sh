@@ -21,7 +21,7 @@ install_all_dependencies_if_not_yet_installed()
   echo -en "\033[37;1;41mCheck dependencies...\033[0m\n"
   install_dependency_if_not_yet_installed md5deep
   install_dependency_if_not_yet_installed gcc
-  install_dependency_if_not_yet_installed qt4-dev-tools
+  install_dependency_if_not_yet_installed qt5-dev-tools
   install_dependency_if_not_yet_installed make
   install_dependency_if_not_yet_installed fakeroot
   install_dependency_if_not_yet_installed libantlr3c-dev
@@ -33,7 +33,7 @@ build_source_files()
   sed -i 's/Config::pathPlugins = root_dir;/Config::pathPlugins = "\/usr\/lib\/kbe";/' kbe/main.cpp
   sed -i 's/Config::pathPlugins.cd("plugins");/\/\/Config::pathPlugins.cd("plugins");/' kbe/main.cpp
   sed '/updater/d' all.pro > all_linux.pro
-  qmake-qt4 all_linux.pro
+  qmake all_linux.pro
   make
 }
 

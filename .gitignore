@@ -2,3 +2,5 @@ build-*/*
 all-build-desktop/*
 *.qm
 *.user
+
+sources/kbe/ui_mainwindow.h

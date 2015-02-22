@@ -6,6 +6,7 @@ kbe (0.3.1-ubuntu) unstable; urgency=low
   * Fixed plugin loading on linux
   * Fixed dock widget positions save/load
   * Fixed main window title
+  * Port code to use qt5
 
   * scg. Added load/save of content state
   * scg. Added command to show/hide all contents

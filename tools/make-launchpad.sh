@@ -82,7 +82,7 @@ push_bzr_repo()
   fi
   bzr branch lp:kbe kbe_bzr
   if [ -d "kbe_bzr" ]; then
-    REVNO=`bzr revno kbe_bzr`
+    REVNO=`bzr revno lp:kbe`
     let REVNO+=1
     mv kbe_bzr/.bzr .bzr
     rm -r kbe_bzr
