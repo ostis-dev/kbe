@@ -32,6 +32,9 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QVector2D>
 #include <QSet>
 
+qreal SCgContour::CornerRadius = 20.f;
+qreal SCgContour::BorderDistance = 20.f;
+
 SCgContour::SCgContour() :
         mColorBack(QColor(250, 250, 250, 164))
 {
@@ -152,10 +155,10 @@ SCgPointObject::PointFVector SCgContour::minimizedPoints() const
         }
 
         // Increase distance from borders:
-        minX -= borderDistance;
-        minY -= borderDistance;
-        maxX += borderDistance;
-        maxY += borderDistance;
+        minX -= BorderDistance;
+        minY -= BorderDistance;
+        maxX += BorderDistance;
+        maxY += BorderDistance;
 
         // Remove all points and set only 4 corner points:
         newPoints << QPointF(minX, minY) << QPointF(maxX, minY)
@@ -183,9 +186,9 @@ void SCgContour::updateShape()
 
         // In case two points are placed close to each other
         // we need to adjust corner radius.
-        qreal cornerRadiusAdjusted = cornerRadius;
+        qreal cornerRadiusAdjusted = CornerRadius;
         qreal dirLength = dir.length();
-        if(dirLength < cornerRadius * 2)
+        if(dirLength < CornerRadius * 2)
             cornerRadiusAdjusted = dirLength / 2;
 
         dir.normalize();

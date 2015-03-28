@@ -33,7 +33,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangerhorizontal.h"
 #include "arrangers/scgarrangertuple.h"
 #include "arrangers/scgarrangervertical.h"
-#include "arrangers/scgarrangerenergybased.h"
 
 #include <QTranslator>
 #include <QApplication>
@@ -82,7 +81,6 @@ void SCgPlugin::initialize()
     SCgLayoutManager::instance().addArranger(new SCgVerticalArranger(this));
     SCgLayoutManager::instance().addArranger(new SCgHorizontalArranger(this));
     SCgLayoutManager::instance().addArranger(new SCgTupleArranger(this));
-    SCgLayoutManager::instance().addArranger(new SCgEnergyBasedArranger(this));
 
     qApp->installTranslator(mTranslator);
 }

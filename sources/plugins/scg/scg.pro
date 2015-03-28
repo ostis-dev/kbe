@@ -14,6 +14,10 @@ MOC_DIR = moc
 
 RESOURCES     = scg.qrc
 
+win32 {
+    DEFINES += _USE_MATH_DEFINES
+}
+
 HEADERS += \
     scgwindow.h \
     scgview.h \
@@ -88,10 +92,8 @@ HEADERS += \
     modes/scgclonemode.h \
     modes/scgbusmode.h \
     commands/scgcommandswappairorient.h \
-    arrangers/scgarrangerenergybased.h \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
-    arrangers/scgforcecalculator.h \
     scgnodetextitem.h
 
 SOURCES += \
@@ -168,10 +170,8 @@ SOURCES += \
     modes/scgclonemode.cpp \
     modes/scgbusmode.cpp \
     commands/scgcommandswappairorient.cpp \
-    arrangers/scgarrangerenergybased.cpp \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
-    arrangers/scgforcecalculator.cpp \
     scgnodetextitem.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \

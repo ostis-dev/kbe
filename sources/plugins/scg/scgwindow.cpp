@@ -43,7 +43,6 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "arrangers/scgarrangerhorizontal.h"
 #include "arrangers/scgarrangergrid.h"
 #include "arrangers/scgarrangertuple.h"
-#include "arrangers/scgarrangerenergybased.h"
 
 #include "select/scgselectinputoutput.h"
 #include "select/scgselectsubgraph.h"
@@ -262,14 +261,6 @@ void SCgWindow::createToolBar()
     alignButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onHorizontalAlignment()));
 
-    // Energy-based layout
-    action = new QAction(findIcon("tool-align-energy.png"), tr("Energy-based layout"), mToolBar);
-    action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("9", "Energy-based layout")));
-    alignButton->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onEnergyBasedLayout()));
-
-
     // selection group button
     QToolButton *selectButton = new QToolButton(mToolBar);
     selectButton->setIcon(findIcon("tool-select-group.png"));
@@ -427,11 +418,6 @@ void SCgWindow::onVerticalAlignment()
 void SCgWindow::onHorizontalAlignment()
 {
     SCgLayoutManager::instance().arrange(mView, SCgHorizontalArranger::Type);
-}
-
-void SCgWindow::onEnergyBasedLayout()
-{
-    SCgLayoutManager::instance().arrange(mView, SCgEnergyBasedArranger::Type);
 }
 
 void SCgWindow::onSelectInputOutput()

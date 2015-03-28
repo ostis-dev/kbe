@@ -102,10 +102,10 @@ public:
 
 protected:
     //! Corner radius for drawing shape
-    static const qreal cornerRadius = 20.0;
+    static qreal CornerRadius;
 
     //! Distance from border to content for minimized contour:
-    static const qreal borderDistance = 20.0;
+    static qreal BorderDistance;
 
     //! Contour shape
     QPainterPath mShape;
