@@ -31,7 +31,5 @@
         <file>media/icons/tool-select-subgraph.png</file>
         <file>media/translations/scg_en_EN.qm</file>
         <file>media/translations/scg_ru_RU.qm</file>
-        <file>media/TypeClonningCursor.bmp</file>
-        <file>media/icons/tool-align-energy.png</file>
     </qresource>
 </RCC>
