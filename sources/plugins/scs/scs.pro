@@ -15,6 +15,17 @@ unix {
     LIBS+= -lantlr3c
 }
 
+win32 {
+    DEFINES +=  _XKEYCHECK_H
+
+    INCLUDEPATH += $$PWD/../../../depends/antlr3c/
+    !contains(QMAKE_TARGET.arch, x86_64) {
+        LIBS += -l$$PWD/../../../depends/antlr3c/antlr3c_x86
+    } else {
+        LIBS += -l$$PWD/../../../depends/antlr3c/antlr3c_x86_64
+    }
+}
+
 TRANSLATIONS += media/translations/scs_en_EN.ts \
                 media/translations/scs_ru_RU.ts
 
@@ -41,7 +52,7 @@ HEADERS += \
     scsparser/SCsCLexer.h \
     scsparser/SCsCParser.h \
     scsparser/scscparserdefs.h \
-	scsparser/scsasynchparser.h \
+    scsparser/scsasynchparser.h \
     scswindow.h \
     scsplugin.h \
     scscodeerroranalyzer.h \
@@ -65,7 +76,7 @@ SOURCES += \
     scsparser/SCsCLexer.c \
     scsparser/SCsCParser.c \
     scsparser/scscparserdefs.c \
-	scsparser/scsasynchparser.cpp \
+    scsparser/scsasynchparser.cpp \
     scswindow.cpp \
     scserrortablewidget.cpp \
     scscodeeditor.cpp \
