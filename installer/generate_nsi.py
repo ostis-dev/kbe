@@ -9,7 +9,7 @@ ex_uninst = ""
 if __name__ == "__main__":
 
 	if len(sys.argv) < 3:
-		print "Usage setcions.py <template nsi file> <output_nsi_file>"
+		print "Usage setcions.py <template nsi file> <output_nsi_file> <32|64>"
 		sys.exit(0)
 	
 	for (root, dirs, files) in os.walk('sources', False):
@@ -41,6 +41,8 @@ if __name__ == "__main__":
 	input.close()
 	
 	output = open(sys.argv[2], 'w')
+	data = data.replace("%BIT_VERSION%", sys.argv[3])
+	data = data.replace("%VERSION%", sys.argv[4])
 	data = data.replace("%INST_FILES%", inst)
 	data = data.replace("%UNINST_FILES%", uninst)
 	data = data.replace("%INST_EXAMPLE%", ex_inst)

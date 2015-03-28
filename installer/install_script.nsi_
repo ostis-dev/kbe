@@ -4,7 +4,7 @@
 Name "KBE"
 
 ; set the name of the installer
-OutFile "kbe-win32-0.3.0.exe"
+OutFile "kbe-win%BIT_VERSION%-%VERSION%.exe"
 
 ;Default installation folder
 InstallDir $PROGRAMFILES32\KBE
@@ -78,23 +78,14 @@ Delete "$INSTDIR\Uninstall.exe"
 %UNINST_FILES%
 
 %UNINST_EXAMPLE%
-
-  Delete "$INSTDIR\plugins\m4scp\libm4scp.a"
-  Delete "$INSTDIR\plugins\m4scp\m4scp.dll"
-  RMDir "$INSTDIR\plugins\m4scp"
-  
-  Delete "$INSTDIR\plugins\scg\libscg.a"
+ 
   Delete "$INSTDIR\plugins\scg\scg.dll"
   RMDir "$INSTDIR\plugins\scg"
 
-  Delete "$INSTDIR\plugins\scs\libscs.a"
   Delete "$INSTDIR\plugins\scs\scs.dll"
   RMDir "$INSTDIR\plugins\scs"
   
   RMDir "$INSTDIR\plugins"
-
-  Delete "$INSTDIR\manual\User Guide.pdf"
-  RMDir "$INSTDIR\manual"
   
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
@@ -107,7 +98,6 @@ Delete "$INSTDIR\Uninstall.exe"
   DeleteRegKey /ifempty HKCU "Software\KBE"
   
   ${unregisterExtension} ".gwf" "GWF File"
-  ${unregisterExtension} ".m4scp" "M4SCP File"
   ${unregisterExtension} ".scs" "SCs File"
 SectionEnd
 
@@ -119,20 +109,11 @@ Section "Examples" example
 SectionEnd
 
 SectionGroup "Plugins" plugins
-	Section "M4SCP" m4scp
-		SectionIn 1
-		SetOutPath "$INSTDIR\plugins\m4scp"
-		File "sources\plugins\m4scp.dll"
-		File "sources\plugins\libm4scp.a"
-		
-		${registerExtension} "$INSTDIR\kbe.exe" ".m4scp" "M4SCP File"
-	SectionEnd
 
 	Section "SCg" scg
 		SectionIn 1 2
 		SetOutPath "$INSTDIR\plugins\scg"
 		File "sources\plugins\scg.dll"
-		File "sources\plugins\libscg.a"
 		
 		${registerExtension} "$INSTDIR\kbe.exe" ".gwf" "GWF File"
 	SectionEnd
@@ -141,42 +122,30 @@ SectionGroup "Plugins" plugins
 		SectionIn 1
 		SetOutPath "$INSTDIR\plugins\scs"
 		File "sources\plugins\scs.dll"
-		File "sources\plugins\libscs.a"
 		
 		${registerExtension} "$INSTDIR\kbe.exe" ".scs" "SCs File"
 	SectionEnd
 	
 SectionGroupEnd
 
-Section "Documentation" doc
-	SectionIn 1 2
-	SetOutPath "$INSTDIR\manual"
-	File "sources\manual\User Guide.pdf"
-SectionEnd
-
 Function .onInit
 	!insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
-LangString DESC_Section1 ${LANG_ENGLISH} "Contains some samples written in SCg, M4SCP and SCs"
-LangString DESC_Section1 ${LANG_RUSSIAN} "Содержит несколько примеров, записанных на SCg, M4SCP и SCs"
-LangString DESC_Section2 ${LANG_ENGLISH} "Standard editor's plugins"
-LangString DESC_Section2 ${LANG_RUSSIAN} "Плагины для редактора из стандартной поставки"
-LangString DESC_Section3 ${LANG_ENGLISH} "Plugin for editting scp-program in m4scp format"
-LangString DESC_Section3 ${LANG_RUSSIAN} "Плагин для редактирования scp-программ в формате m4scp"
-LangString DESC_Section4 ${LANG_ENGLISH} "Plugin for editting simple gwf files"
-LangString DESC_Section4 ${LANG_RUSSIAN} "Плагин для редактирования gwf файлов"
-LangString DESC_Section5 ${LANG_ENGLISH} "Plugin for editting linear records of SC"
-LangString DESC_Section5 ${LANG_RUSSIAN} "Плагин для редактирования линейных записей SC"
-LangString DESC_Section6 ${LANG_ENGLISH} "Reference documentation"
-LangString DESC_Section6 ${LANG_RUSSIAN} "Справочная информация"
+LangString DESC_Section1 ${LANG_ENGLISH} "Contains some samples written in SCg"
+LangString DESC_Section1 ${LANG_RUSSIAN} "Содержит несколько примеров, записанных на SCg"
+LangString DESC_Section2 ${LANG_ENGLISH} "Standard editor's components"
+LangString DESC_Section2 ${LANG_RUSSIAN} "Стандартные компоненты"
+LangString DESC_Section3 ${LANG_ENGLISH} "Component for SCg-text edit"
+LangString DESC_Section3 ${LANG_RUSSIAN} "Компонент редактирования SCg-текстов"
+LangString DESC_Section4 ${LANG_ENGLISH} "Component for SCs-text edit"
+LangString DESC_Section4 ${LANG_RUSSIAN} "Компонент редактирования SCs-текстов"
+
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${example} $(DESC_Section1)
   !insertmacro MUI_DESCRIPTION_TEXT ${plugins} $(DESC_Section2)
-  !insertmacro MUI_DESCRIPTION_TEXT ${m4scp} $(DESC_Section3)
-  !insertmacro MUI_DESCRIPTION_TEXT ${scg} $(DESC_Section4)
-  !insertmacro MUI_DESCRIPTION_TEXT ${scs} $(DESC_Section5)
-  !insertmacro MUI_DESCRIPTION_TEXT ${doc} $(DESC_Section6)
+  !insertmacro MUI_DESCRIPTION_TEXT ${scg} $(DESC_Section3)
+  !insertmacro MUI_DESCRIPTION_TEXT ${scs} $(DESC_Section4)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
