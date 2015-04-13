@@ -1,12 +1,10 @@
 /*
- * pointgraphicsitem.h
- *
- *  Created on: 24.01.2011
- *      Author: ZooNer
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
  */
 
-#ifndef POINTGRAPHICSITEM_H_
-#define POINTGRAPHICSITEM_H_
+#pragma once
 
 #include <QGraphicsItem>
 #include "scgpointobject.h"
@@ -120,4 +118,3 @@ protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 };
 
-#endif /* POINTGRAPHICSITEM_H_ */
