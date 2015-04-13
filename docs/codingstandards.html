@@ -51,13 +51,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 	</li>
 	<li>Implementations should be placed in a source file called the same name as the class but with an extension of .cpp.</li>
 	<li>File names should not contain spaces, although they should be underscore.</li>
-	<li>All header files should have include guards implemented via preprocessor #ifdef/#endif commands. We do not want any pragma rubbish used for this as it's worse than useless as far as being portable goes. The macro used to control the header should be based upon the filename.
+	<li>All header files should have include guards implemented via preprocessor <i>#pragma once</i> command. We do not want any pragma rubbish used for this as it's worse than useless as far as being portable goes. The macro used to control the header should be based upon the filename.
 	For example:
 	<pre>
-#ifndef SCSWINDOW_H
-#define SCSWINDOW_H
+#pragma once
+
 ...
-#endif</pre>
+</pre>
 	</li>
 	<li>Please ensure that all files have a newline at the end of them. Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to includes. Plus it gives loads of annoying warnings on gcc :)</li>
 	<li>Wherever possible header files should contain <a href="http://www.doxygen.org">Doxygen</a> documentation for all classes, data and functions. There will be very few, if any, exceptions to this rule.</li>
@@ -150,7 +150,7 @@ void MyClass::do()
 }
 	</pre>
 	but not like this:
-	<pre>
+	<pre class="wrong">
 void MyClass::do(){
 	...
 	for (quint32 i = 0; i < 10; i++){
@@ -179,7 +179,7 @@ x = 2;
 x += y;
 	</pre>
 	Code should not be like this:
-	<pre>
+	<pre class="wrong">
 if (x == 0) x = 1;
 
 x = 2; x += y;
@@ -192,7 +192,7 @@ if (something)
     x = y;
 	</pre>
 	Not this:
-	<pre>
+	<pre class="wrong">
 if(something)
     x = y;
 	</pre>
@@ -203,7 +203,7 @@ if(something)
 an_object->callFunction(x, y, x);
 	</pre>
 	Not like this:
-	<pre>
+	<pre class="wrong">
 an_object->callFunction (x, y, x);
 	</pre>
 	</li>
@@ -213,7 +213,7 @@ an_object->callFunction (x, y, x);
 a = calculate((x + y) * z);
 	</pre>
 	Not like this:
-	<pre>
+	<pre class="wrong">
 a = calculate( ( x + y ) * z );
 	</pre>
 	</li>
@@ -224,7 +224,7 @@ a = calculate((x + y) * z);
 b = doSomething(a, x, y);
 	</pre>
 	Not anything like these:
-	<pre>
+	<pre class="wrong">
 a = calculate((x+y)*z);
 b=doSomething(a,x , y);
 	</pre>
@@ -239,7 +239,7 @@ public:
 };
 	</pre>
 	rather than like this: 
-	<pre>
+	<pre class="wrong">
 class SomeClass
 {
     public:

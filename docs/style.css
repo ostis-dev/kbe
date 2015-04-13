@@ -25,9 +25,15 @@ pre {
 	border: 1px dashed #037fc5;
 }
 
+pre.wrong {
+	background-color: #ffeeee;
+}
+
 td {  font-size: 10pt}
 th {  font-size: 10pt}
 dt { color: #037fc5; font-weight: bold;}
 
 .TableRow { font-weight: bold; font-size: 12pt; color: #000055; background-color: #eeeeff;}
 .TableRow2 { font-weight: bold; font-size: 12pt; color: #000055; background-color: #ccccee;}
+
+
