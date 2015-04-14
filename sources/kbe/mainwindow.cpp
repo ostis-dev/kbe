@@ -388,27 +388,21 @@ void MainWindow::fileOpen(QString fileName)
         mBlurEffect->setEnabled(true);
         dlg.setDirectory(mLastDir);
         fileName = dlg.getOpenFileName(this,
-                                               tr("Open file"),
-                                               "",
-                                               PluginManager::instance()->openFilters(),
-                                               &selectedFilter,
-                                               options);
-        if (!fileName.isEmpty())
-            load(fileName);
+                                       tr("Open file"),
+                                       "",
+                                       PluginManager::instance()->openFilters(),
+                                       &selectedFilter,
+                                       options);
         mLastDir = QDir(fileName);
         mBlurEffect->setEnabled(false);
-        return;
     }
 
     if (!fileName.isEmpty() && QFile::exists(fileName))
     {
-        load(fileName);
+        if (!mTabWidget->activateTab(fileName))
+            load(fileName);
         return;
     }
-
-    QFileInfo fileInfo(fileName);
-    EditorInterface* childWindow = createSubWindowByExt(fileInfo.suffix());
-    saveWindow(childWindow, fileName, fileInfo.suffix());
 
 }
 
