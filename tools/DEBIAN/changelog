@@ -1,3 +1,11 @@
+
+kbe (0.3.2-ubuntu) unstable; urgency=low
+
+  * Add all supported files filter to open file dialog
+
+ -- Denis Koronchik <denis.koronchik@gmail.com>  Tue, 14 Apr 2014 23:25:02 +0300
+
+
 kbe (0.3.1-ubuntu) unstable; urgency=low
 
   * Added hotkeys to switch tabs
