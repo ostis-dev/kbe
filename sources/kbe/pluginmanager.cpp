@@ -130,18 +130,25 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
 
 QString PluginManager::openFilters() const
 {
-    QString filters;
+    QString filters, allFormats;
     tExtensionsSet::const_iterator it;
     for (it = mSupportedExtensions.begin(); it != mSupportedExtensions.end(); ++it)
     {
         if (!filters.isEmpty())
+        {
             filters += "\n";
+            allFormats += " ";
+        }
+
         filters += QString("%1 format (*.%1)").arg(*it);
+        allFormats += QString("*.%1").arg(*it);
     }
 
     if (!filters.isEmpty())
         filters += "\n";
-    filters += tr("All files (*.*)");
+    filters += tr("All files") + "*.*";
+
+    filters = tr("All supported files") + QString("(%1)\n").arg(allFormats) + filters;
 
     return filters;
 }
