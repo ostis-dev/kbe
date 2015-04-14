@@ -145,7 +145,11 @@ bool SCsWindow::saveToFile(const QString &fileName)
     QTextStream out(&fileOut);
     out.setCodec("UTF-8");
 
-    out << mEditor->document()->toPlainText();
+    QString content = mEditor->document()->toPlainText();
+    if (!content.endsWith("\n"))
+        content += "\n";
+
+    out << content;
     fileOut.close();
 
     mFileName = fileName;
