@@ -27,8 +27,13 @@ public:
      */
     bool closeWindow(QWidget* wnd);
 
-    //!@return list with tab widgets;
+    //! @return list with tab widgets;
     QList<QWidget*> subWindowList() const;
+
+    /*! Makes tab active by filename
+     * @return If specified tab exists, then returns true; otherwise returns false
+     */
+    bool activateTab(QString const & fileName);
 
 protected:
     //! Watches for all child widgets (windows).
@@ -39,7 +44,7 @@ signals:
      * @param w Widget in closed tab.
      * @return True, if tab will be closed.
      */
-    bool tabBeforeClose(QWidget* w);
+    bool tabBeforeClose(QWidget * w);
 
     /*! Tabs updated signal. Calls when new tab added, or any tab removed.
       */

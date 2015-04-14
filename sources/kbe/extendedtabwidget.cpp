@@ -79,11 +79,12 @@ bool ExtendedTabWidget::closeWindow(QWidget* wnd)
                "bool ExtendedTabWidget::close(int index)",
                "Can't get window");
 
-    if(emit tabBeforeClose(wnd))
+    if (emit tabBeforeClose(wnd))
     {
         wnd->close();
         removeTab(indexOf(wnd));
         delete wnd;
+
         tabsUpdate();
         return true;
     }
@@ -95,10 +96,24 @@ QList<QWidget*> ExtendedTabWidget::subWindowList() const
 {
     QList<QWidget*> res;
     int cnt = count();
-    for(int i =0; i < cnt; ++i)
+    for (int i = 0; i < cnt; ++i)
         res.push_back(widget(i));
 
     return res;
+}
+
+bool ExtendedTabWidget::activateTab(QString const & fileName)
+{
+    for (int i = 0; i < count(); ++i)
+    {
+        EditorInterface const * editor = qobject_cast<EditorInterface*>(widget(i));
+        if (editor && editor->currentFileName() == fileName)
+        {
+            setCurrentWidget(widget(i));
+            return true;
+        }
+    }
+    return false;
 }
 
 void ExtendedTabWidget::closeOtherDocuments()
