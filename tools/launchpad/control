@@ -6,7 +6,7 @@ Homepage: https://github.com/deniskoronchik/kbe
 Build-Depends: debhelper (>= 8.0.0), cdbs, qtbase5-dev, qt5-qmake, qt5-default, libantlr3c-dev
 
 Package: kbe
-Architecture: i386
+Architecture: any
 Depends: libc6 (>= 2.3), libgcc1 (>= 1:4.1.1), libqt5xml5, libqt5core5a, libqt5gui5, libqt5widgets5, libqt5concurrent5, libantlr3c-3.2-0
 Description: KBE - Knowledge Base source Editor
  This is a specialized tool that allow to create knowledge bases for intelligent systems based on OSTIS technology.
