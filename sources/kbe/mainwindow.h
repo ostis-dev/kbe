@@ -23,7 +23,7 @@ class QGraphicsBlurEffect;
 class QKeyEvent;
 class EditorInterface;
 class SCgWindow;
-class ProjectManagerDockWidget;
+class SettingsDialog;
 
 class MainWindow : public QMainWindow,
                    public EditorObserverInterface
@@ -122,7 +122,7 @@ private:
     Ui::MainWindow *ui;
 
     ExtendedTabWidget *mTabWidget;
-    int windowCounter;    // windows counter for untitled windows naming
+    int mWindowCounter;    // windows counter for untitled windows naming
 
     //! Active window
     EditorInterface* mLastActiveWindow;
@@ -158,25 +158,28 @@ private:
     //! Last used directory
     QDir mLastDir;
 
+    SettingsDialog * mSettingsDialog;
+
 public slots:
-    void updateMenu();
-    void updateSpecificViewMenu();
+    void onUpdateMenu();
     void updateRecentFileActions();
     void updateWindowTitle();
 
-    void openRecentFile();
-    void fileNew();
-    void fileOpen(QString fileName=QString());
-    void fileSave(QWidget* window = 0);
-    void fileSaveAs(QWidget* window = 0);
-    void fileSaveAll();
-    void fileExportToImage();
-    void fileExit();
+    void onOpenRecentFile();
+    void onFileNew();
+    void onFileOpen(QString fileName=QString());
+    void onFileSave(QWidget* window = 0);
+    void onFileSaveAs(QWidget* window = 0);
+    void onFileSaveAll();
+    void onFileExportToImage();
+    void onFileExit();
 
-    void helpAbout();
-    void helpAboutQt();
-    void feedback();
-    void guide();
+    void onViewSettings();
+
+    void onHelpAbout();
+    void onHelpAboutQt();
+    void onFeedback();
+    void onGuide();
 
     //! Current tab has changed
     void subWindowHasChanged(int index);

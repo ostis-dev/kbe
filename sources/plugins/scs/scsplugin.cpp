@@ -48,3 +48,8 @@ void SCsPlugin::shutdown()
 
     mInterfaces.clear();
 }
+
+QWidget * SCsPlugin::settingsWidget() const
+{
+    return 0;
+}

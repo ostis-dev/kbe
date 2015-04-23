@@ -25,7 +25,7 @@ public:
      * @param wnd Window that will be closed
      * @return True, if window successfully closed.
      */
-    bool closeWindow(QWidget* wnd);
+    bool onCloseWindow(QWidget* wnd);
 
     //! @return list with tab widgets;
     QList<QWidget*> subWindowList() const;
@@ -52,15 +52,15 @@ signals:
 
 public slots:
     //! Closes all subwindows except active
-    void closeOtherDocuments();
+    void onCloseOtherDocuments();
     //! Closes all subwindows
-    void closeAllDocuments();
+    void onCloseAllDocuments();
     /*!
      * Closes window at index @p index.
      * If @p index = -1 closes current window.
      * @return True, if tab is closed.
      */
-    void close(int index = -1);
+    void onClose(int index = -1);
 
     /*! Adds new tab.
      * @param window Pointer to editor interface, that added

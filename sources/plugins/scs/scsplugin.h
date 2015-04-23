@@ -32,6 +32,9 @@ protected:
     //! @copydoc PluginInterface::shutdown
     void shutdown();
 
+    //! @copydoc PluginInterface::settingsWidget
+    QWidget * settingsWidget() const;
+
 private:
     //! List of interfaces
     QList<QObject*> mInterfaces;
