@@ -62,19 +62,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
     connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateMenu()));
 
-    /*creating project manager widget */
-    ProjectManagerDockWidget::instance()->setWindowTitle(tr("Project Manager"));
-    ProjectManagerDockWidget::instance()->setObjectName("Project Name");
-    addDockWidget(Qt::LeftDockWidgetArea,ProjectManagerDockWidget::instance());
-
-    if (ProjectManagerView* prView = ProjectManagerDockWidget::instance()->getTreeView())
-    {
-        connect(prView, SIGNAL(openFile(QString)), this, SLOT(fileOpen(QString)));
-        connect(prView, SIGNAL(event(ProjectManagerView::eProjectManagerEvent)),
-                this, SLOT(acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEvent)));
-    }
-
-
     setCentralWidget(mTabWidget);
 
     connect(mTabWidget, SIGNAL(currentChanged(int)),
@@ -174,16 +161,6 @@ void MainWindow::createActions()
     connect(ui->actionClose_Others, SIGNAL(triggered()), this, SLOT(updateMenu()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(fileExit()));
 
-    if (ProjectManagerView* pmTreeView = ProjectManagerDockWidget::instance()->getTreeView())
-    {
-        connect(ui->actionNew_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectNew()));
-        connect(ui->actionOpen_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectOpen()));
-        ui->actionSave_Project->setEnabled(false);
-        connect(ui->actionSave_Project, SIGNAL(triggered()), pmTreeView, SLOT(onProjectSave()));
-        ui->actionClose_Project->setEnabled(false);
-        connect(ui->actionClose_Project,SIGNAL(triggered()), pmTreeView, SLOT(onProjectClose()));
-    }
-
     for (int i = 0; i < MaxRecentFiles; ++i)
     {
         recentFileActs[i] = new QAction(this);
@@ -259,7 +236,7 @@ void MainWindow::updateSpecificViewMenu()
 {
 //    ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
     ui->menuView->clear();
-    ui->menuView->addAction(ProjectManagerDockWidget::instance()->toggleViewAction());
+
     if(mLastActiveWindow)
     {
         QList<QWidget*> ws = mLastActiveWindow->widgetsForDocks();
@@ -525,47 +502,12 @@ void MainWindow::fileSaveAs(QWidget* window)
 
 void MainWindow::fileSaveAll()
 {
-//    for(int i = 0; i < mTabWidget->subWindowList().size(); i++) {
-//        if (!qobject_cast<SCgWindow*>(activeChild())->isSaved())
-//            fileSave();
-//            mTabWidget->setCurrentIndex(mTabWidget->currentIndex()+1);
-//        }
+
 }
 
 void MainWindow::fileExportToImage()
 {
-//    SCgWindow *childWindow = qobject_cast<SCgWindow*>(activeChild());
 
-//    if(childWindow){
-
-//        QString formatsStr = ReadWriteManager::instance().exportFilters();
-//        QFileDialog::Options options;
-//        options |= QFileDialog::DontUseNativeDialog;
-
-
-//        QString selectedFilter;
-//        QFileDialog dlg;
-
-//        mBlurEffect->setEnabled(true);
-//        QString fileName = QCoreApplication::applicationDirPath() + "/" + childWindow->currentFileName();
-//        fileName = dlg.getSaveFileName(this,
-//                                       tr("Export file to ..."),
-//                                       fileName,
-//                                       formatsStr,
-//                                       &selectedFilter,
-//                                       options);
-
-//        if (!fileName.isEmpty())
-//        {
-//            QString ext = ReadWriteManager::instance().extFromFilter(selectedFilter);
-//            if (!fileName.endsWith("." + ext))
-//                fileName += "." + ext;
-//            AbstractFileWriter *writer = ReadWriteManager::instance().createWriter(ext);
-//            childWindow->saveToFile(fileName, writer);
-//            delete writer;
-//        }
-//        mBlurEffect->setEnabled(false);
-//    }
 
 }
 
@@ -777,54 +719,20 @@ void MainWindow::saveLayout() const
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
-{
+{  
     // close all child windows
     QList<QWidget*> widgets = mWidget2EditorInterface.keys();
     QWidget *widget = 0;
-    foreach (widget, widgets){
-        if(!mTabWidget->closeWindow(widget)){
-            event->ignore();
-            return;
-        }
-    }
-
-    // close project
-    if (ProjectManagerView* pmView = ProjectManagerDockWidget::instance()->getTreeView())
-        if (!pmView->onProjectClose())
+    foreach (widget, widgets)
+    {
+        if(!mTabWidget->closeWindow(widget))
         {
             event->ignore();
             return;
         }
+    }
 
     saveLayout();
-}
-
-void MainWindow::acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEvent event)
-{
-    switch (event)
-    {
-    case ProjectManagerView::ProjectCreated:
-    case ProjectManagerView::ProjectOpened:
-        ui->actionNew_Project->setEnabled(false);
-        ui->actionOpen_Project->setEnabled(false);
-        ui->actionSave_Project->setEnabled(false);
-        ui->actionClose_Project->setEnabled(true);
-        break;
-    case ProjectManagerView::ProjectSaved:
-        ui->actionSave_Project->setEnabled(false);
-        break;
-    case ProjectManagerView::ProjectClosed:
-        ui->actionNew_Project->setEnabled(true);
-        ui->actionOpen_Project->setEnabled(true);
-        ui->actionSave_Project->setEnabled(false);
-        ui->actionClose_Project->setEnabled(false);
-        break;
-    case ProjectManagerView::ProjectChanged:
-        ui->actionSave_Project->setEnabled(true);
-        break;
-    case ProjectManagerView::DefaultEvent:
-        break;
-    }
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -846,10 +754,13 @@ void MainWindow::dropEvent(QDropEvent *event)
 {
     QList<QUrl> urls = event->mimeData()->urls();
     QList<QUrl>::iterator it = urls.begin();
-    for(; it != urls.end(); it++) {
+    for(; it != urls.end(); it++)
+    {
         QString fileName = it->toLocalFile();
         if(QFile::exists(fileName))
             load(fileName);
     }
     event->acceptProposedAction();
 }
+
+
