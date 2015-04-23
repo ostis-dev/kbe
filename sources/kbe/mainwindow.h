@@ -10,8 +10,7 @@
 #include <QMap>
 #include <QDir>
 #include "extendedtabwidget.h"
-#include "projectmanagerdockwidget.h"
-#include "projectmanagerview.h"
+
 #include "interfaces/editorinterface.h"
 
 namespace Ui {
@@ -24,6 +23,7 @@ class QGraphicsBlurEffect;
 class QKeyEvent;
 class EditorInterface;
 class SCgWindow;
+class ProjectManagerDockWidget;
 
 class MainWindow : public QMainWindow,
                    public EditorObserverInterface
@@ -117,6 +117,7 @@ private:
      */
     void saveLayout() const;
 
+
 private:
     Ui::MainWindow *ui;
 
@@ -196,7 +197,5 @@ public slots:
 
     void closeEvent(QCloseEvent *event);
 
-    //! Accepts Project Managers events.
-    void acceptProjectManagerEvent(ProjectManagerView::eProjectManagerEvent evt);
 };
 
