@@ -35,19 +35,19 @@ SCgPlugin::~SCgPlugin()
     delete mTranslator;
 }
 
-const QString& SCgPlugin::name() const
+QString const & SCgPlugin::name() const
 {
     static QString name = "scg";
     return name;
 }
 
-const QString& SCgPlugin::version() const
+QString const & SCgPlugin::version() const
 {
     static QString version = "0.2.0";
     return version;
 }
 
-const QList<QObject*>& SCgPlugin::interfaces() const
+QList<QObject*> const & SCgPlugin::interfaces() const
 {
     return mInterfaces;
 }
@@ -59,7 +59,6 @@ void SCgPlugin::initialize()
     SCgContentFactory::registerFactory("string", new SCgContentStringFactory);
     SCgContentFactory::registerFactory("image", new SCgContentImageFactory);
     SCgContentFactory::registerFactory("numeric", new SCgContentNumericFactory);
-    //SCgContentFactory::registerFactory("video", new SCgContentVideoFactory);
 
     SCgLayoutManager::instance().addArranger(new SCgGridArranger(this));
     SCgLayoutManager::instance().addArranger(new SCgVerticalArranger(this));
@@ -78,4 +77,9 @@ void SCgPlugin::shutdown()
     mInterfaces.clear();
 
     qApp->removeTranslator(mTranslator);
+}
+
+QWidget * SCgPlugin::settingsWidget() const
+{
+    return 0;
 }

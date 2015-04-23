@@ -14,18 +14,20 @@ public:
     virtual ~PluginInterface() {}
 
     //! Returns plugin name
-    virtual const QString& name() const = 0;
+    virtual const QString & name() const = 0;
 
     //! Returns plugin version
-    virtual const QString& version() const = 0;
+    virtual const QString & version() const = 0;
 
     /*! Return list of all interfaces that realized in that plugin
-      * @attention All interfaces need to be a QObject, and created with plugin interface as a parent object
-      */
-    virtual const QList<QObject*>& interfaces() const = 0;
+     * @attention All interfaces need to be a QObject, and created with plugin interface as a parent object
+     */
+    virtual const QList<QObject*> & interfaces() const = 0;
 
-    /*! Initialize plugin
-      */
+    //! Return settings widget for a plugin
+    virtual QWidget * settingsWidget() const = 0;
+
+    //! Initialize plugin
     virtual void initialize() = 0;
 
     //! Shutdown plugin

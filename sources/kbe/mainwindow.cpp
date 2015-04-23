@@ -13,6 +13,7 @@
 #include "pluginmanager.h"
 #include "guidedialog.h"
 #include "newfiledialog.h"
+#include "settingsdialog.h"
 
 #include "version.h"
 
@@ -45,13 +46,13 @@ MainWindow* MainWindow::getInstance()
     return mInstance;
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-        QMainWindow(parent),
-        ui(new Ui::MainWindow),
-        windowCounter(0),
-        mLastActiveWindow(0),
-        mToolBarFile(0),
-        mToolBarEdit(0)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , mWindowCounter(0)
+    , mLastActiveWindow(0)
+    , mToolBarFile(0)
+    , mToolBarEdit(0)
 {
     ui->setupUi(this);
 
@@ -59,8 +60,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /* creating tab widget */
     mTabWidget = new ExtendedTabWidget();
-    connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(updateMenu()));
-    connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(updateMenu()));
+    connect(mTabWidget, SIGNAL(tabsUpdate()), this, SLOT(onUpdateMenu()));
+    connect(mTabWidget, SIGNAL(currentChanged(int)), this, SLOT(onUpdateMenu()));
 
     setCentralWidget(mTabWidget);
 
@@ -73,16 +74,12 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createToolBars();
 
-    updateMenu();
-    updateSpecificViewMenu();
+    onUpdateMenu();
     updateRecentFileActions();
     updateWindowTitle();
 
     new PluginManager();
     PluginManager::instance()->initialize(Config::pathPlugins.absolutePath());
-
-    //QApplication::setStyle(QStyleFactory::create("Plastique"));
-    //QApplication::setPalette(QApplication::style()->standardPalette());
 
     // blur effect
     mBlurEffect = new QGraphicsBlurEffect(this);
@@ -94,6 +91,9 @@ MainWindow::MainWindow(QWidget *parent) :
     restoreGeometry(settings.value(Config::settingsMainWindowGeometry).toByteArray());
 
     setAcceptDrops(true);
+
+    mSettingsDialog = new SettingsDialog(this);
+    mSettingsDialog->initialize();
 }
 
 
@@ -104,9 +104,6 @@ MainWindow::~MainWindow()
     delete mToolBarEdit;
     delete ui;
     delete mTabWidget;
-
-//    ReadWriteManager::destroy();
-//    LayoutManager::destroy();
 
     PluginManager::instance()->shutdown();
     delete PluginManager::instance();
@@ -119,13 +116,13 @@ void MainWindow::createToolBars()
     mToolBarFile->addAction(ui->actionOpen);
     mToolBarFile->addAction(ui->actionSave);
     mToolBarFile->addAction(ui->actionSave_as);
-    //mToolBarFile->addAction(ui->actionSave_all);
+
     mToolBarFile->addSeparator();
     mToolBarFile->addAction(ui->actionClose);
-    //mToolBarFile->addAction(ui->actionClose_All);
-    //mToolBarFile->addAction(ui->actionClose_Others);
+
     mToolBarFile->setObjectName("Main Tools");
     mToolBarFile->setWindowTitle(tr("Main Tools"));
+
     addToolBar(mToolBarFile);
 
     //! @bug State of toolbars is not saved for now.
@@ -147,33 +144,35 @@ void MainWindow::createActions()
     ui->actionAbout->setIcon(QIcon::fromTheme("help-browser", getIcon("help-browser.png")));
     ui->actionFeedback->setIcon(QIcon::fromTheme("mail", getIcon("mail.png")));
 
-    connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(fileNew()));
-    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(fileOpen()));
-    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(fileSave()));
-    connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(fileSaveAs()));
-    connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(fileSaveAll()));
-    connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(fileExportToImage()));
+    connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(onFileNew()));
+    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(onFileOpen()));
+    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(onFileSave()));
+    connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(onFileSaveAs()));
+    connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(onFileSaveAll()));
+    connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(onFileExportToImage()));
 
     connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()) );
     connect(ui->actionClose, SIGNAL(triggered()), mTabWidget, SLOT(close()));
     connect(ui->actionClose_Others, SIGNAL(triggered()), mTabWidget, SLOT(closeOtherDocuments()));
-    connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(updateMenu()));
-    connect(ui->actionClose_Others, SIGNAL(triggered()), this, SLOT(updateMenu()));
-    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(fileExit()));
+    connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(onUpdateMenu()));
+    connect(ui->actionClose_Others, SIGNAL(triggered()), this, SLOT(onUpdateMenu()));
+    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(onFileExit()));
+
+    connect(ui->actionSettings, SIGNAL(triggered()), this, SLOT(onViewSettings()));
 
     for (int i = 0; i < MaxRecentFiles; ++i)
     {
         recentFileActs[i] = new QAction(this);
         recentFileActs[i]->setVisible(false);
         ui->menuFile->insertAction(ui->actionExit, recentFileActs[i]);
-        connect(recentFileActs[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
+        connect(recentFileActs[i], SIGNAL(triggered()), this, SLOT(onOpenRecentFile()));
     }
     separatorAct = ui->menuFile->insertSeparator(ui->actionExit);
 
-    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(helpAbout()));
-    connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(helpAboutQt()));
-    connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(feedback()));
-    connect(ui->actionGuide, SIGNAL(triggered()), this, SLOT(guide()));
+    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(onHelpAbout()));
+    connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(onHelpAboutQt()));
+    connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(onFeedback()));
+    connect(ui->actionGuide, SIGNAL(triggered()), this, SLOT(onGuide()));
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
@@ -185,8 +184,7 @@ void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
     case ContentChanged:
     case ContentLoaded:
     case ContentSaved:
-        updateMenu();
-        updateSpecificViewMenu();
+        onUpdateMenu();
         updateWindowTitle();
         break;
     }
@@ -218,37 +216,19 @@ EditorInterface *MainWindow::activeChild()
     return 0;
 }
 
-void MainWindow::updateMenu()
+void MainWindow::onUpdateMenu()
 {
     EditorInterface *subWindow = activeChild();
 
     ui->actionSave->setEnabled(subWindow && !subWindow->isSaved());
     ui->actionSave_as->setEnabled(subWindow != 0);
     ui->actionSave_all->setEnabled(subWindow != 0 && !checkSubWindowSavedState());
-    //ui->menuExport->setEnabled(subWindow !=0);
 
     ui->actionClose->setEnabled(subWindow != 0);
     ui->actionClose_All->setEnabled(subWindow != 0);
     ui->actionClose_Others->setEnabled(mTabWidget->subWindowList().size() > 1);
 }
 
-void MainWindow::updateSpecificViewMenu()
-{
-//    ui->menuView->menuAction()->setVisible(false);//setDisabled(true);
-    ui->menuView->clear();
-
-    if(mLastActiveWindow)
-    {
-        QList<QWidget*> ws = mLastActiveWindow->widgetsForDocks();
-        if(!ws.empty())
-        {
-
-            foreach(QWidget* w, ws)
-                ui->menuView->addAction(mDockWidgets[w->objectName()]->toggleViewAction());
-        }
-    }
-//    ui->menuView->menuAction()->setVisible(true);
-}
 void MainWindow::updateRecentFileActions()
 {
     QSettings settings;
@@ -282,7 +262,7 @@ void MainWindow::updateWindowTitle()
     }
 }
 
-void MainWindow::openRecentFile()
+void MainWindow::onOpenRecentFile()
 {
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
@@ -309,7 +289,7 @@ EditorInterface* MainWindow::createSubWindowByType(const QString& type)
 {
     EditorInterface* childWindow = 0;
 
-    if (PluginManager::instance()->editorFactoriesByType().contains(type))
+    if (PluginManager::instance()->getEditorFactoriesByType().contains(type))
         childWindow = PluginManager::instance()->createWindowByType(type);
     else
         return 0;
@@ -325,7 +305,7 @@ EditorInterface* MainWindow::createSubWindowByExt(const QString& ext)
 {
     EditorInterface* childWindow = 0;
 
-    if (PluginManager::instance()->editorFactoriesByExt().contains(ext))
+    if (PluginManager::instance()->getEditorFactoriesByExt().contains(ext))
         childWindow = PluginManager::instance()->createWindowByExt(ext);
     else
         return 0;
@@ -341,9 +321,9 @@ QString MainWindow::getSettingKeyValueForWindow(const QString& editorType) const
     return Config::settingsDocksGeometry + "/" + editorType;
 }
 
-void MainWindow::fileNew()
+void MainWindow::onFileNew()
 {
-    if (PluginManager::instance()->editorFactoriesByType().size() > 0)
+    if (PluginManager::instance()->getEditorFactoriesByType().size() > 0)
     {
         NewFileDialog *fileNewDlg = new NewFileDialog(this);
 
@@ -353,7 +333,7 @@ void MainWindow::fileNew()
     }
 }
 
-void MainWindow::fileOpen(QString fileName)
+void MainWindow::onFileOpen(QString fileName)
 {
     if (fileName.isNull())
     {
@@ -387,7 +367,7 @@ void MainWindow::load(QString fileName)
 {
     QFileInfo fi(fileName);
     QString ext = fi.suffix();
-    if(PluginManager::instance()->supportedFilesExt().contains(ext))
+    if(PluginManager::instance()->getSupportedFilesExt().contains(ext))
     {
         EditorInterface* childWindow = createSubWindowByExt(ext);
 
@@ -416,7 +396,7 @@ bool MainWindow::saveWindow(EditorInterface* window, QString& name, const QStrin
     {
         bool retVal = false;
 
-        if(PluginManager::instance()->supportedFilesExt().contains(ext))
+        if(PluginManager::instance()->getSupportedFilesExt().contains(ext))
         {
             if (!name.endsWith("." + ext))
                 name += "." + ext;
@@ -431,7 +411,7 @@ bool MainWindow::saveWindow(EditorInterface* window, QString& name, const QStrin
     return false;
 }
 
-void MainWindow::fileSave(QWidget* window)
+void MainWindow::onFileSave(QWidget* window)
 {
     EditorInterface* childWindow = 0;
 
@@ -454,11 +434,11 @@ void MainWindow::fileSave(QWidget* window)
             QString ext = fileName.mid(dPos);
             saveWindow(childWindow, fileName, ext);
         }else
-            fileSaveAs(childWindow->widget());
+            onFileSaveAs(childWindow->widget());
     }
 }
 
-void MainWindow::fileSaveAs(QWidget* window)
+void MainWindow::onFileSaveAs(QWidget* window)
 {
     EditorInterface* childWindow = 0;
     Widget2EditorInterfaceMap::iterator it = mWidget2EditorInterface.find(window);
@@ -500,23 +480,29 @@ void MainWindow::fileSaveAs(QWidget* window)
 
 }
 
-void MainWindow::fileSaveAll()
+void MainWindow::onFileSaveAll()
 {
 
 }
 
-void MainWindow::fileExportToImage()
+void MainWindow::onFileExportToImage()
 {
 
 
 }
 
-void MainWindow::fileExit()
+void MainWindow::onFileExit()
 {
     close();
 }
 
-void MainWindow::helpAbout()
+void MainWindow::onViewSettings()
+{
+    Q_ASSERT(mSettingsDialog);
+    mSettingsDialog->show();
+}
+
+void MainWindow::onHelpAbout()
 {
     QMessageBox::about(this, tr("About KBE"),
                        tr("<table><tr valign=\"middle\"><td align=\"left\"><img src=\"%1\"></td>"
@@ -551,12 +537,12 @@ void MainWindow::helpAbout()
                        .arg(tr("Contributors")));
 }
 
-void MainWindow::helpAboutQt()
+void MainWindow::onHelpAboutQt()
 {
     QMessageBox::aboutQt(this, "About Qt");
 }
 
-void MainWindow::feedback()
+void MainWindow::onFeedback()
 {
     QMessageBox::about(this, tr("Feedback"),
                        QString("%1 <a href=\"http://forum.ostis.net/viewtopic.php?f=7&t=3\">%2</a>."
@@ -568,7 +554,7 @@ void MainWindow::feedback()
                        .arg(tr("site")));
 }
 
-void MainWindow::guide()
+void MainWindow::onGuide()
 {
     GuideDialog dlg;
     dlg.exec();
@@ -661,7 +647,6 @@ void MainWindow::subWindowHasChanged(int index)
         updateDockWidgets(true);
     }
 
-    updateSpecificViewMenu();
     updateWindowTitle();
 }
 
@@ -692,7 +677,7 @@ bool MainWindow::windowWillBeClosed(QWidget* w)
 
         if (question == QMessageBox::Yes)
         {
-            fileSave(it.key());
+            onFileSave(it.key());
         }
         if(question == QMessageBox::Cancel){
             return false;
@@ -725,7 +710,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     QWidget *widget = 0;
     foreach (widget, widgets)
     {
-        if(!mTabWidget->closeWindow(widget))
+        if(!mTabWidget->onCloseWindow(widget))
         {
             event->ignore();
             return;

@@ -25,7 +25,7 @@ ExtendedTabWidget::ExtendedTabWidget(QWidget *parent) :
     setTabsClosable(true);
     setIconSize(QSize(32, 32));
 
-    connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(close(int)));
+    connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(onClose(int)));
 }
 
 ExtendedTabWidget::~ExtendedTabWidget()
@@ -73,7 +73,7 @@ QString ExtendedTabWidget::tabTextFor(QWidget* subWindow)
     return title.isEmpty() ? tr("(Untitled)") : title;
 }
 
-bool ExtendedTabWidget::closeWindow(QWidget* wnd)
+bool ExtendedTabWidget::onCloseWindow(QWidget* wnd)
 {
     Q_ASSERT_X(wnd,
                "bool ExtendedTabWidget::close(int index)",
@@ -116,36 +116,37 @@ bool ExtendedTabWidget::activateTab(QString const & fileName)
     return false;
 }
 
-void ExtendedTabWidget::closeOtherDocuments()
+void ExtendedTabWidget::onCloseOtherDocuments()
 {
     QWidget* currentWindow = currentWidget();
     QList<QWidget*> list = subWindowList();
     QList<QWidget*>::const_iterator it = list.begin();
 
     for(; it != list.end(); it++)
-        if (*it != currentWindow)
-            if (!(*it)->close())
-                return;
+    {
+        if (*it != currentWindow && !(*it)->close())
+            return;
+    }
 }
 
-void ExtendedTabWidget::closeAllDocuments()
+void ExtendedTabWidget::onCloseAllDocuments()
 {
     QWidget* w = widget(0);
-    while(w)
+    while (w)
     {
-        if(!closeWindow(w))
+        if (!onCloseWindow(w))
             return;
         w = widget(0);
     }
     tabsUpdate();
 }
 
-void ExtendedTabWidget::close(int index)
+void ExtendedTabWidget::onClose(int index)
 {
     if (index == -1)
         index = currentIndex();
 
-    closeWindow(widget(index));
+    onCloseWindow(widget(index));
 }
 
 int ExtendedTabWidget::addSubWindow(EditorInterface* window)
@@ -161,12 +162,3 @@ int ExtendedTabWidget::addSubWindow(EditorInterface* window)
     tabsUpdate();
     return index;
 }
-
-/*
-void ExtendedTabWidget::addMenu(QMdiSubWindow* wnd)
-{
-    QMenu* menu = wnd->systemMenu();
-    menu->addAction(MainWindow::getInstance()->ui->actionClose_Others);
-    menu->addAction(MainWindow::getInstance()->ui->actionClose_All);
-}
-*/
