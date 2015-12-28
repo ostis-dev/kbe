@@ -43,20 +43,17 @@ public:
     /*! @}*/
 
     //! Cleans current edit state.
-    virtual void clean()
-    {
-        if (mPathItem)
-            endLineCreation();
-    }
-
-    //! @return edit mode corresponding to this handler
-    virtual SCgScene::EditMode mode() = 0;
+    virtual void clean();
 
     //! Activate current event handler. Need to be overridden in subclasses.
-    virtual void activate() {return; }
+    virtual void activate();
 
     //! Deactivate current event handler. Need to be overridden in subclasses.
-    virtual void deactivate() {return; }
+    virtual void deactivate();
+
+    //! @return edit mode corresponding to this handler
+    virtual SCgScene::EditMode mode() const = 0;
+
 
 protected:
     //! goes through all ancestors and checks if one of them movable and selected
@@ -100,6 +97,7 @@ protected:
 
     //! object at first line point
     SCgObject* mObjectAtFirstPoint;
+
 private:
 
 };

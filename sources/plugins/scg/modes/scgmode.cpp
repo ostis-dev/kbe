@@ -15,12 +15,12 @@
 #define KEYBOARD_SELECTION_RANGE 30.f
 #define KEYBOARD_SELECTION_MAX_DISTANCE 250.f
 
-SCgMode::SCgMode(SCgScene* parent) :
-        QObject(parent),
-        mPathItem(0),
-        mScene(parent),
-        mLastLineItem(0),
-        mObjectAtFirstPoint(0)
+SCgMode::SCgMode(SCgScene* parent)
+    : QObject(parent)
+    , mPathItem(0)
+    , mScene(parent)
+    , mLastLineItem(0)
+    , mObjectAtFirstPoint(0)
 {
     mPen.setWidthF(2.f);
     mPen.setCapStyle(Qt::RoundCap);
@@ -327,4 +327,18 @@ void SCgMode::keyPress(QKeyEvent *event)
 void SCgMode::keyRelease(QKeyEvent *event)
 {
     Q_UNUSED(event);
+}
+
+void SCgMode::clean()
+{
+    if (mPathItem)
+        endLineCreation();
+}
+
+void SCgMode::activate()
+{
+}
+
+void SCgMode::deactivate()
+{
 }

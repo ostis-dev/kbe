@@ -20,12 +20,13 @@
 #include <QGraphicsView>
 #include <QBitmap>
 
-SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
-    mIsItemsMoved(false),
-    mIsTypeClonning(false),
-    mObjectType(0),
-    mCloningType(""),
-    mCurrentPointObject(0)
+SCgSelectMode::SCgSelectMode(SCgScene* parent)
+    : SCgMode(parent)
+    , mIsItemsMoved(false)
+    , mIsTypeClonning(false)
+    , mObjectType(0)
+    , mCloningType("")
+    , mCurrentPointObject(0)
 {
     QPixmap pix(":/scg/media/TypeClonningCursor.bmp");
     pix.setMask(pix.createMaskFromColor(QColor("white")));
@@ -248,6 +249,11 @@ void SCgSelectMode::clean()
     mIsTypeClonning = false;
     mObjectType = 0;
     mCloningType = "";
+}
+
+SCgScene::EditMode SCgSelectMode::mode() const
+{
+    return SCgScene::Mode_Select;
 }
 
 SCgContour* SCgSelectMode::findNearestParentContour(QGraphicsItem *item)

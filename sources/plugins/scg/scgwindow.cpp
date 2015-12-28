@@ -206,6 +206,15 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Contour] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
+
+    action = new QAction(findIcon("tool-scp.png"), tr("SCp programming mode"), mToolBar);
+    action->setCheckable(true);
+    action->setShortcut(QKeySequence(tr("5", "SCp programming mode")));
+    group->addAction(action);
+    mToolBar->addAction(action);
+    mMode2Action[SCgScene::Mode_SCp] = action;
+    connect(action, SIGNAL(triggered(bool)), this, SLOT(onSCpMode()));
+
     //
     mToolBar->addSeparator();
     //
@@ -258,7 +267,7 @@ void SCgWindow::createToolBar()
     selectButton->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onSelectInputOutput()));
 
-    // sbgraph selection
+    // graph selection
     action = new QAction(findIcon("tool-select-subgraph.png"), tr("Select subgraph"), mToolBar);
     action->setCheckable(false);
     selectButton->addAction(action);
@@ -356,32 +365,36 @@ void SCgWindow::_update()
     mView->repaint();
 }
 
+void SCgWindow::onModeImpl(SCgScene::EditMode editMode, QCursor const & cursor, QGraphicsView::DragMode dragMode)
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(editMode);
+    mView->viewport()->setCursor(cursor);
+    mView->setDragMode(dragMode);
+}
+
 void SCgWindow::onSelectMode()
 {
-    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Select);
-    mView->viewport()->setCursor(Qt::ArrowCursor);
-    mView->setDragMode(QGraphicsView::RubberBandDrag);
+    onModeImpl(SCgScene::Mode_Select, Qt::ArrowCursor, QGraphicsView::RubberBandDrag);
 }
 
 void SCgWindow::onPairMode()
 {
-    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Pair);
-    mView->viewport()->setCursor(Qt::UpArrowCursor);
-    mView->setDragMode(QGraphicsView::NoDrag);
+    onModeImpl(SCgScene::Mode_Pair, Qt::UpArrowCursor, QGraphicsView::NoDrag);
 }
 
 void SCgWindow::onBusMode()
 {
-    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Bus);
-    mView->viewport()->setCursor(Qt::CrossCursor);
-    mView->setDragMode(QGraphicsView::NoDrag);
+    onModeImpl(SCgScene::Mode_Bus, Qt::CrossCursor, QGraphicsView::NoDrag);
 }
 
 void SCgWindow::onContourMode()
 {
-    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Contour);
-    mView->viewport()->setCursor(Qt::CrossCursor);
-    mView->setDragMode(QGraphicsView::NoDrag);
+    onModeImpl(SCgScene::Mode_Contour, Qt::CrossCursor, QGraphicsView::NoDrag);
+}
+
+void SCgWindow::onSCpMode()
+{
+    onModeImpl(SCgScene::Mode_SCp, Qt::ArrowCursor, QGraphicsView::RubberBandDrag);
 }
 
 void SCgWindow::onGridAlignment()
@@ -645,9 +658,7 @@ bool SCgWindow::isSaved() const
 
 QStringList SCgWindow::supportedFormatsExt() const
 {
-    QStringList res;
-    res << "gwf";
-    return res;
+    return SCgWindowFactory::_supportedFormats();
 }
 
 void SCgWindow::createMenu()
@@ -708,12 +719,18 @@ EditorInterface* SCgWindowFactory::createInstance()
 
 QStringList SCgWindowFactory::supportedFormatsExt()
 {
-    QStringList res;
-    res << "gwf";
-    return res;
+    return _supportedFormats();
 }
 
 QIcon SCgWindowFactory::icon() const
 {
     return SCgWindow::findIcon("mime_type.png");
+}
+
+QStringList SCgWindowFactory::_supportedFormats()
+{
+    QStringList res;
+    res << "gwf";
+    res << "scg";
+    return res;
 }

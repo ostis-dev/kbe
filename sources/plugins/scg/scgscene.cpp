@@ -22,6 +22,7 @@
 #include "modes/scgselectmode.h"
 #include "modes/scginsertmode.h"
 #include "modes/scgclonemode.h"
+#include "modes/scpmode.h"
 
 #include "commands/scgbasecommand.h"
 #include "commands/scgcommandchangeincedentobject.h"
@@ -45,6 +46,7 @@
 #include "commands/scgcommandswappairorient.h"
 #include "commands/scgcommandremovebreakpoints.h"
 #include "commands/scgcommandminimizecontour.h"
+#include "commands/scpcommandcreateoperator.h"
 
 #include <QUrl>
 #include <QFile>
@@ -74,6 +76,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
+    mSceneModes[Mode_SCp] = new SCpMode(this);
 
     setEditMode(Mode_Select);
 }
@@ -735,6 +738,15 @@ SCgBaseCommand* SCgScene::changeObjectPointsCommand(SCgPointObject* obj,
 
     if(addToStack)
         mUndoStack->push(cmd);
+
+    return cmd;
+}
+
+SCgBaseCommand * SCgScene::createSCpOperatorCommand(QPointF const & pos, SCgContour * parentContour,
+                                                    SCgBaseCommand * parentCmd)
+{
+    SCgBaseCommand * const cmd = new SCpCommandCreateOperator(this, pos, parentContour, parentCmd);
+    mUndoStack->push(cmd);
 
     return cmd;
 }

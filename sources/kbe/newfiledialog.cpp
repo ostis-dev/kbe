@@ -18,7 +18,7 @@ NewFileDialog::NewFileDialog(QWidget *parent) :
     QDialog(parent)
 {
     QVBoxLayout *lay = new QVBoxLayout;
-    QLabel *lab = new QLabel(tr("List of available formats:"));
+    QLabel *lab = new QLabel(tr("List of available editors:"));
 
     mAvailableTypesList = new QListWidget(this);
     mAvailableTypesList->setSelectionMode(QAbstractItemView::SingleSelection);

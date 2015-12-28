@@ -31,10 +31,7 @@ public:
     //! Cleans current edit state.
     virtual void clean();
 
-    virtual SCgScene::EditMode mode()
-    {
-        return SCgScene::Mode_InsertTemplate;
-    }
+    virtual SCgScene::EditMode mode() const;
 
     //! @sa SCgEventHandler::deactivate()
     virtual void activate();

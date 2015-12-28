@@ -17,15 +17,14 @@ public:
     //! Destructor
     virtual ~SCgCloneMode();
 
-    void mousePress(QGraphicsSceneMouseEvent *event);
+    virtual void mousePress(QGraphicsSceneMouseEvent *event);
 
     //! @sa SCgEventHandler::activate()
-    void activate();
+    virtual void activate();
 
     //! @sa SCgEventHandler::deactivate()
-    void deactivate();
+    virtual void deactivate();
 
-    //! @sa SCgEventHandler::mode()
-    SCgScene::EditMode mode() { return SCgScene::Mode_Clone; }
+    virtual SCgScene::EditMode mode() const;
 };
 

@@ -43,6 +43,7 @@ public:
         Mode_Pair,
         Mode_Bus,
         Mode_Contour,
+        Mode_SCp,
         Mode_InsertTemplate,
         Mode_Clone,
 
@@ -338,6 +339,9 @@ public:
                                               const QVector<QPointF>& newPoints,
                                               SCgBaseCommand* parentCmd = 0,
                                               bool addToStack = true);
+
+    SCgBaseCommand* createSCpOperatorCommand(QPointF const & pos, SCgContour * parentContour = 0,
+                                             SCgBaseCommand * parentCmd = 0);
 
     /*! @} */
 

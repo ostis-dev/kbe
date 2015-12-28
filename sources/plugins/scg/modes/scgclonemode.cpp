@@ -13,8 +13,8 @@
 #include <QDomDocument>
 #include <QGraphicsView>
 
-SCgCloneMode::SCgCloneMode(SCgScene *scene) :
-    SCgInsertMode(scene)
+SCgCloneMode::SCgCloneMode(SCgScene *scene)
+    : SCgInsertMode(scene)
 {
 }
 
@@ -99,4 +99,9 @@ void SCgCloneMode::activate()
 void SCgCloneMode::deactivate()
 {
     SCgInsertMode::deactivate();
+}
+
+SCgScene::EditMode SCgCloneMode::mode() const
+{
+    return SCgScene::Mode_Clone;
 }

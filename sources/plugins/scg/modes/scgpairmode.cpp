@@ -7,7 +7,8 @@
 #include "scgpairmode.h"
 #include "scgcontour.h"
 
-SCgPairMode::SCgPairMode(SCgScene* parent):SCgMode(parent)
+SCgPairMode::SCgPairMode(SCgScene* parent)
+    : SCgMode(parent)
 {
     mPen.setColor(Qt::red);
 }
@@ -75,3 +76,7 @@ void SCgPairMode::mouseMove(QGraphicsSceneMouseEvent *event)
     SCgMode::mouseMove(event);
 }
 
+SCgScene::EditMode SCgPairMode::mode() const
+{
+    return SCgScene::Mode_Pair;
+}

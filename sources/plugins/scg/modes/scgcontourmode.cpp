@@ -9,7 +9,9 @@
 
 #include <QVector2D>
 
-SCgContourMode::SCgContourMode(SCgScene* parent):SCgMode(parent),mClosingSubpathLine(0)
+SCgContourMode::SCgContourMode(SCgScene* parent)
+    : SCgMode(parent)
+    , mClosingSubpathLine(0)
 {
     mPen.setColor(Qt::green);
 }
@@ -90,6 +92,10 @@ void SCgContourMode::mouseMove(QGraphicsSceneMouseEvent *event)
     SCgMode::mouseMove(event);
 }
 
+SCgScene::EditMode SCgContourMode::mode() const
+{
+    return SCgScene::Mode_Contour;
+}
 
 void SCgContourMode::startLineCreation(const QPointF &point)
 {

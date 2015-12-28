@@ -8,27 +8,25 @@
 
 #include "scgmode.h"
 
-class SCgPairMode: public SCgMode
+class SCpMode : public SCgMode
 {
     Q_OBJECT
 public:
-    explicit SCgPairMode(SCgScene* parent);
+    explicit SCpMode(SCgScene * parent);
+    virtual ~SCpMode();
 
-    virtual ~SCgPairMode();
+protected:
+    virtual SCgScene::EditMode mode() const;
 
     /*! @defgroup mouseEvendHandling Mouse Events
      *  @{
      */
     void mousePress(QGraphicsSceneMouseEvent *event);
+
     void mouseMove(QGraphicsSceneMouseEvent *event);
+
+    void mouseRelease(QGraphicsSceneMouseEvent *event);
+
+    void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
     /*! @}*/
-
-    virtual SCgScene::EditMode mode() const;
-
-protected:
-
-
 };
-
-
-

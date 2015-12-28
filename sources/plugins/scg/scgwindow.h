@@ -11,6 +11,7 @@
 
 #include <QToolBox>
 #include <QMap>
+#include <QGraphicsView>
 
 class SCgMinimap;
 class SCgView;
@@ -165,6 +166,9 @@ private:
     void deleteMenu();
     /**@}*/
 
+private:
+    void onModeImpl(SCgScene::EditMode editMode, QCursor const & cursor, QGraphicsView::DragMode dragMode);
+
 signals:
 
 private slots:
@@ -176,6 +180,9 @@ private slots:
     void onBusMode();
     //! Slot to handle a contour creation mode action
     void onContourMode();
+
+    void onSCpMode();
+
     //! Slot to handle a grid alignment action
     void onGridAlignment();
     //! Slot to handle a tuple alignment action
@@ -235,6 +242,9 @@ class SCgWindowFactory : public QObject,
 {
     Q_OBJECT
     Q_INTERFACES(EditorFactoryInterface)
+
+    friend class SCgWindow;
+
 public:
     explicit SCgWindowFactory(QObject *parent);
     virtual ~SCgWindowFactory();
@@ -247,6 +257,9 @@ public:
     QStringList supportedFormatsExt();
     //! @copydoc EditorFactoryInterface::icon
     QIcon icon() const;
+
+protected:
+    static QStringList _supportedFormats();
 
 };
 

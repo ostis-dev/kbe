@@ -23,10 +23,7 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 
-    virtual SCgScene::EditMode mode()
-    {
-        return SCgScene::Mode_Contour;
-    }
+    virtual SCgScene::EditMode mode() const;
 
 protected:
 

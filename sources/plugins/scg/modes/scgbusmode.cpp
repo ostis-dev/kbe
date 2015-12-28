@@ -12,7 +12,8 @@
 #include <QVector2D>
 #include <QApplication>
 
-SCgBusMode::SCgBusMode(SCgScene* parent):SCgMode(parent)
+SCgBusMode::SCgBusMode(SCgScene* parent)
+    : SCgMode(parent)
 {
     mPen.setColor(Qt::blue);
     mPen.setWidthF(5.f);
@@ -84,6 +85,11 @@ void SCgBusMode::mouseMove(QGraphicsSceneMouseEvent *event)
     }
 
     SCgMode::mouseMove(event);
+}
+
+SCgScene::EditMode SCgBusMode::mode() const
+{
+    return SCgScene::Mode_Bus;
 }
 
 

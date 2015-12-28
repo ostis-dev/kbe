@@ -16,9 +16,9 @@
 #include <QClipboard>
 #include <QMimeData>
 
-SCgInsertMode::SCgInsertMode(SCgScene* parent):
-    SCgMode(parent),
-    mInsertedObjectGroup(0)
+SCgInsertMode::SCgInsertMode(SCgScene* parent)
+    : SCgMode(parent)
+    , mInsertedObjectGroup(0)
 {
 }
 
@@ -69,6 +69,11 @@ void SCgInsertMode::clean()
         delete mInsertedObjectGroup;
         mInsertedObjectGroup = 0;
     }
+}
+
+SCgScene::EditMode SCgInsertMode::mode() const
+{
+    return SCgScene::Mode_InsertTemplate;
 }
 
 void SCgInsertMode::activate()

@@ -16,7 +16,7 @@ class SCgContentViewer;
 class SCgNode : public SCgObject, public SCgContent
 {
 	Q_OBJECT
-friend class SCgBus;
+    friend class SCgBus;
 
 public:
     enum { Type = UserType + 2 };

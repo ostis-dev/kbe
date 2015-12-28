@@ -32,12 +32,9 @@ public:
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 
-    virtual SCgScene::EditMode mode()
-    {
-        return SCgScene::Mode_Select;
-    }
 
-    void clean();
+    virtual void clean();
+    virtual SCgScene::EditMode mode() const;
 
 protected:
 

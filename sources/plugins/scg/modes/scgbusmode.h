@@ -19,14 +19,12 @@ public:
     /*! @defgroup mouseEvendHandling Mouse Events
      *  @{
      */
-    void mousePress(QGraphicsSceneMouseEvent *event);
-    void mouseMove(QGraphicsSceneMouseEvent *event);
+    virtual void mousePress(QGraphicsSceneMouseEvent *event);
+    virtual void mouseMove(QGraphicsSceneMouseEvent *event);
     /*! @}*/
 
-    SCgScene::EditMode mode()
-    {
-        return SCgScene::Mode_Bus;
-    }
+    virtual SCgScene::EditMode mode() const;
+
 
 protected:
 
