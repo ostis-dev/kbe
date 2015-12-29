@@ -30,7 +30,10 @@
         <file>media/icons/tool-select-group.png</file>
         <file>media/icons/tool-select-inout.png</file>
         <file>media/icons/tool-select-subgraph.png</file>
+        <file>media/scp/scp-operator-header.png</file>
         <file>media/translations/scg_en_EN.qm</file>
         <file>media/translations/scg_ru_RU.qm</file>
+        <file>media/scp/scp-operator-body.png</file>
+        <file>media/scp/scp-operator-icon.png</file>
     </qresource>
 </RCC>

@@ -64,7 +64,7 @@ public:
       */
     void setContent(const QString& mimeType, const QVariant& data, const QString& fileName, SCgContent::ContType cType);
 
-    void objectDelete(SCgObject *object);
+    void connectedObjectDelete(SCgObject *object);
     void positionChanged();
 
 

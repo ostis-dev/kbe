@@ -14,7 +14,6 @@ class SCgCommandObjectMove : public SCgBaseCommand
 public:
     explicit SCgCommandObjectMove(SCgScene *scene,
                                   SCgObject* obj,
-                                  const QPointF& oldPos,
                                   const QPointF& newPos,
                                   QUndoCommand *parent = 0 );
     virtual ~SCgCommandObjectMove();

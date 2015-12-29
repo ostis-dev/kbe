@@ -69,7 +69,7 @@ public:
 
     /*! @see SCgObject::objectDelete
       */
-    void objectDelete(SCgObject *object);
+    void connectedObjectDelete(SCgObject *object);
 
     QPointF cross(const QPointF &from, float dot) const;
     float dotPos(const QPointF &point) const;

@@ -7,6 +7,8 @@
 #include "scpmode.h"
 #include "scgcontour.h"
 
+#include "commands/scpcommandcreateoperator.h"
+
 SCpMode::SCpMode(SCgScene * parent)
     : SCgMode(parent)
 {
@@ -23,17 +25,19 @@ SCgScene::EditMode SCpMode::mode() const
 
 void SCpMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event);
+
 
 }
 
 void SCpMode::mouseMove(QGraphicsSceneMouseEvent *event)
 {
-
+    Q_UNUSED(event);
 }
 
 void SCpMode::mouseRelease(QGraphicsSceneMouseEvent *event)
 {
-
+    Q_UNUSED(event);
 }
 
 void SCpMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
@@ -51,7 +55,8 @@ void SCpMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
             SCgContour * contour = 0;
             if (item != 0 && item->type() == SCgContour::Type)
                 contour = static_cast<SCgContour*>(item);
-            mScene->createSCpOperatorCommand(mousePos, contour);
+
+            mScene->doCommand(new SCpCommandCreateOperator(mScene, mousePos, contour));
             event->accept();
         }
     }

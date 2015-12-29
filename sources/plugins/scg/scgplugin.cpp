@@ -18,6 +18,8 @@
 #include "arrangers/scgarrangertuple.h"
 #include "arrangers/scgarrangervertical.h"
 
+#include "scp/scpgraphicalstyle.h"
+
 #include <QTranslator>
 #include <QApplication>
 #include <QLocale>
@@ -66,6 +68,8 @@ void SCgPlugin::initialize()
     SCgLayoutManager::instance().addArranger(new SCgTupleArranger(this));
 
     qApp->installTranslator(mTranslator);
+
+    SCpGraphicalStyle::instance()->initialize();
 }
 
 void SCgPlugin::shutdown()
@@ -77,6 +81,9 @@ void SCgPlugin::shutdown()
     mInterfaces.clear();
 
     qApp->removeTranslator(mTranslator);
+
+    SCpGraphicalStyle::instance()->shutdown();
+    SCpGraphicalStyle::destroy();
 }
 
 QWidget * SCgPlugin::settingsWidget() const

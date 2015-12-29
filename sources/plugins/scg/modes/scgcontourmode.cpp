@@ -7,6 +7,8 @@
 #include "scgcontourmode.h"
 #include "scgcontour.h"
 
+#include "commands/scgcommandcreatecontour.h"
+
 #include <QVector2D>
 
 SCgContourMode::SCgContourMode(SCgScene* parent)
@@ -44,8 +46,7 @@ void SCgContourMode::mousePress(QGraphicsSceneMouseEvent *event)
 
                 // get child items
                 QList<QGraphicsItem*> childs = selectItemsForContour();
-
-                mScene->createContourCommand(childs, mLinePoints, c);
+                mScene->doCommand(new SCgCommandCreateContour(mScene, childs, mLinePoints, c));
                 endLineCreation();
             }
         }

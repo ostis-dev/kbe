@@ -7,6 +7,8 @@
 #include "scgpairmode.h"
 #include "scgcontour.h"
 
+#include "commands/scgcommandcreatepair.h"
+
 SCgPairMode::SCgPairMode(SCgScene* parent)
     : SCgMode(parent)
 {
@@ -29,28 +31,29 @@ void SCgPairMode::mousePress(QGraphicsSceneMouseEvent *event)
         // if we not create pair yet and press on scg-object, then
         // start pair creation
         if (obj && !mPathItem)
+        {
             startLineCreation(mousePos);
-        else
-        if (obj && obj != mPathItem->parentItem())
+        }
+        else if (obj && obj != mPathItem->parentItem())
         {
             SCgObject *begObj = mObjectAtFirstPoint;
             SCgObject *endObj = obj;
 
-            // do not create lines with equivalent begin end end object
+            // do not create lines with equivalent begin and end object
             if (begObj != endObj && begObj && !begObj->isDead())
             {
-                SCgContour* c=0;
+                SCgContour* c = 0;
                 // get parent contour
                 QGraphicsItem* parent = begObj->parentItem();
-                if(parent && parent == endObj->parentItem())
+                if (parent && parent == endObj->parentItem())
                     if (parent->type() == SCgContour::Type)
                         c = static_cast<SCgContour*>(parent);
 
-                mScene->createPairCommand(mLinePoints, begObj, endObj, c);
+                mScene->doCommand(new SCgCommandCreatePair(mScene, mLinePoints, begObj, endObj, c));
             }
 
             endLineCreation();
-        } // if (obj)
+        }
     }
 }
 

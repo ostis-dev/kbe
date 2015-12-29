@@ -97,7 +97,9 @@ HEADERS += \
     scgnodetextitem.h \
     modes/scpmode.h \
     scp/scpoperator.h \
-    commands/scpcommandcreateoperator.h
+    commands/scpcommandcreateoperator.h \
+    scp/scpgraphicalstyle.h \
+    scp/scpoperatorpin.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -178,7 +180,9 @@ SOURCES += \
     scgnodetextitem.cpp \
     modes/scpmode.cpp \
     scp/scpoperator.cpp \
-    commands/scpcommandcreateoperator.cpp
+    commands/scpcommandcreateoperator.cpp \
+    scp/scpgraphicalstyle.cpp \
+    scp/scpoperatorpin.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts

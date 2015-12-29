@@ -16,6 +16,9 @@
 #include "scgpointgraphicsitem.h"
 #include "scgnodetextitem.h"
 
+#include "commands/scgcommandobjecttypechange.h"
+#include "commands/scgcommandcreatenode.h"
+
 #include <QDomDocument>
 #include <QGraphicsView>
 #include <QBitmap>
@@ -64,7 +67,8 @@ void SCgSelectMode::mouseDoubleClick(QGraphicsSceneMouseEvent *event)
             SCgContour *contour = 0;
             if (item != 0 && item->type() == SCgContour::Type)
                 contour = static_cast<SCgContour*>(item);
-            mScene->createNodeCommand(mousePos, contour);
+
+            mScene->doCommand(new SCgCommandCreateNode(mScene, mousePos, contour));
             event->accept();
         }
     }
@@ -116,7 +120,7 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
     }
     else
     {
-        if(mCurrentPointObject)
+        if (mCurrentPointObject)
         {
             QGraphicsItem *it = mScene->itemAt(event->scenePos());
 
@@ -126,13 +130,8 @@ void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
                 mCurrentPointObject = 0;
             }
 
-            /*QPainterPath p = mCurrentPointObject->shape();
-        if(!p.contains(mCurrentPointObject->mapFromScene(event->scenePos())))
-        {
-            mCurrentPointObject->destroyPointObjects();
-            mCurrentPointObject = 0;
-        }*/
-        }else
+        }
+        else
         {
             QPointF cur_pos = event->scenePos();
             QGraphicsItem* item = mScene->itemAt(cur_pos);
@@ -229,7 +228,7 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
         {
             SCgObject *obj = static_cast<SCgObject*>(pItem);
             if (obj && obj->typeAlias() != mCloningType)
-                mScene->changeObjectTypeCommand(obj, mCloningType);
+                mScene->doCommand(new SCgCommandObjectTypeChange(mScene, obj, mCloningType));
         }
         mIsTypeClonning = false;
         mObjectType = 0;

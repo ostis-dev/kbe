@@ -46,6 +46,8 @@ protected:
 
     void wheelEvent(QWheelEvent *event);
 
+    SCgScene * scgScene() const;
+
 private:
     /**
      * \defgroup menu Actions

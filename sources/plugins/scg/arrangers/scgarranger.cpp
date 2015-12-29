@@ -13,6 +13,11 @@
 #include "scgcontour.h"
 #include "scgbus.h"
 
+#include "commands/scgcommandremovebreakpoints.h"
+#include "commands/scgcommandminimizecontour.h"
+#include "commands/scgcommandobjectmove.h"
+#include "commands/scgcommandpointschange.h"
+
 #include <QDialogButtonBox>
 #include <QApplication>
 #include <QMessageBox>
@@ -51,42 +56,56 @@ void SCgArranger::arrange(SCgView* view)
 
 void SCgArranger::registerCommand(SCgObject* obj, const QPointF& newPos)
 {
-    if(!mParentCommand)
-        mParentCommand = mScene->changeObjectPositionCommand(obj, newPos, 0, false);
+    if (!mParentCommand)
+    {
+        mParentCommand = new SCgCommandObjectMove(mScene, obj, newPos);
+    }
     else
-        mScene->changeObjectPositionCommand(obj, newPos, mParentCommand, false);
+    {
+        new SCgCommandObjectMove(mScene, obj, newPos, mParentCommand);
+    }
 }
 
 void SCgArranger::registerCommand(SCgPointObject* obj, const QVector<QPointF>& newPoints)
 {
 
     if(!mParentCommand)
-        mParentCommand = mScene->changeObjectPointsCommand(obj, newPoints, 0, false);
+    {
+        mParentCommand = new SCgCommandPointsChange(mScene, obj, newPoints);
+    }
     else
-        mScene->changeObjectPointsCommand(obj, newPoints, mParentCommand, false);
+    {
+        new SCgCommandPointsChange(mScene, obj, newPoints, mParentCommand);
+    }
 }
 
 void SCgArranger::registerCommandRemoveBreakPoints(SCgPair *pair)
 {
-    if (!mParentCommand) {
-        mParentCommand = mScene->removeBreakPointsCommand(pair, 0, false);
-    } else {
-        mScene->removeBreakPointsCommand(pair, mParentCommand, false);
+    if (!mParentCommand)
+    {
+        mParentCommand = new SCgCommandRemoveBreakPoints(mScene, pair);
+    }
+    else
+    {
+        new SCgCommandRemoveBreakPoints(mScene, pair, mParentCommand);
     }
 }
 
 void SCgArranger::registerCommandMinimizeContour(SCgContour *contour)
 {
-    if (!mParentCommand) {
-        mParentCommand = mScene->minimizeContourCommand(contour, 0, false);
-    } else {
-        mScene->minimizeContourCommand(contour, mParentCommand, false);
+    if (!mParentCommand)
+    {
+        mParentCommand = new SCgCommandMinimizeContour(mScene, contour, 0);
+    }
+    else
+    {
+        new SCgCommandMinimizeContour(mScene, contour, mParentCommand);
     }
 }
 
 SCgObject* SCgArranger::createGhost(SCgObject* obj, qreal opacityLevel)
 {
-    if(!obj)
+    if (!obj)
         return 0;
 
     SCgObject* ghost = 0;

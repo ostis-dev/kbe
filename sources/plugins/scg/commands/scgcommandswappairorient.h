@@ -13,7 +13,7 @@ class SCgPair;
 class SCgCommandSwapPairOrient : public SCgBaseCommand
 {
 public:
-    explicit SCgCommandSwapPairOrient(SCgScene *scene, SCgPair *pair, QUndoCommand *parent);
+    explicit SCgCommandSwapPairOrient(SCgScene *scene, SCgPair *pair, QUndoCommand * parent = 0);
     virtual ~SCgCommandSwapPairOrient();
 
 protected:

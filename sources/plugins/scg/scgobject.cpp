@@ -12,6 +12,7 @@
 #include "scgpair.h"
 #include "scgcontour.h"
 #include "scgtextitem.h"
+#include "scp/scpoperator.h"
 
 #include "scgpointgraphicsitem.h"
 #include "scgconfig.h"
@@ -28,6 +29,7 @@ SCgObject::SCgObject(QGraphicsItem *parent)
     , mTextItem(0)
     , mIsDead(false)
     , mParentChanging(false)
+    , mIsHovered(false)
 {
     mColor = scg_cfg_get_value_color(scg_key_element_color_normal);
 
@@ -42,14 +44,15 @@ SCgObject::~SCgObject()
     SCgObjectList::iterator it;
     SCgObjectList objects = mConnectedObjects;
     for (it = objects.begin(); it != objects.end(); it++)
-        (*it)->objectDelete(this);
+        (*it)->connectedObjectDelete(this);
 
     if (mTextItem)  delete mTextItem;
 }
 
 bool SCgObject::isSCgObjectType(int type)
 {
-    return (type >= (int)SCgNode::Type && type <= (int)SCgContour::Type);
+    return (type >= (int)SCgNode::Type && type <= (int)SCgContour::Type) ||
+            (type == SCpOperator::Type);
 }
 
 bool SCgObject::isSCgPointObjectType(int type)
@@ -137,6 +140,7 @@ void SCgObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
     if (!isSelected())
         mColor = scg_cfg_get_value_color(scg_key_element_color_highlight);//QColor(64, 128, 255, 255);
+    mIsHovered = true;
 
     QGraphicsItem::hoverEnterEvent(event);
 }
@@ -147,6 +151,7 @@ void SCgObject::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
         mColor = scg_cfg_get_value_color(scg_key_element_color_normal);//QColor(0, 0, 0, 255);
     else
         mColor = scg_cfg_get_value_color(scg_key_element_color_selected);//QColor(255, 128, 64);
+    mIsHovered = false;
 
     QGraphicsItem::hoverLeaveEvent(event);
 }
@@ -267,7 +272,8 @@ void SCgObject::setDead(bool dead)
 
 void SCgObject::del(QList<SCgObject*> &delList)
 {
-    if (mIsDead)    return;
+    if (mIsDead)
+        return;
 
     mIsDead = true;
 
@@ -301,4 +307,9 @@ void SCgObject::setIdtfPos(const QPointF &pos)
 QPointF SCgObject::idtfPos() const
 {
     return mTextItem->textPos();
+}
+
+bool SCgObject::isHovered() const
+{
+    return mIsHovered;
 }

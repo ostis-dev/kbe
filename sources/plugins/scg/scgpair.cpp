@@ -133,7 +133,7 @@ void SCgPair::positionChanged()
     updateShape();
 }
 
-void SCgPair::objectDelete(SCgObject *object)
+void SCgPair::connectedObjectDelete(SCgObject *object)
 {
     if (mBeginObject == object)
         mBeginObject = 0;

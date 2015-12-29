@@ -224,7 +224,7 @@ void SCgContour::updateConnected()
     }
 }
 
-void SCgContour::objectDelete(SCgObject *object)
+void SCgContour::connectedObjectDelete(SCgObject *object)
 {
     Q_UNUSED(object);
 }

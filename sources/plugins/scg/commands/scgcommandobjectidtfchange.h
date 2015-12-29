@@ -32,6 +32,8 @@ protected:
     //! @see    QUndoCommand::undo
     void undo();
 
+    void tryUpdateType(QString const & idtf);
+
     //! Old identifier
     QString mOldIdtf;
     //! New identifier

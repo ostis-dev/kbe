@@ -12,6 +12,13 @@
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
 
+#include "commands/scgcommandobjectidtfchange.h"
+#include "commands/scgcommandobjecttypechange.h"
+#include "commands/scgcommanddeletecontour.h"
+#include "commands/scgcommandswappairorient.h"
+#include "commands/scgcommandcontentvisibility.h"
+#include "commands/scgcommandcontentchange.h"
+
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
@@ -242,11 +249,9 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 {
     if (event->reason() == QContextMenuEvent::Keyboard || event->reason() == QContextMenuEvent::Other)
         return;
-    // get scg-object under mouse
-    QPointF mousePos = mapToScene(event->pos());/* +
-                                QPointF(horizontalScrollBar()->value(), verticalScrollBar()->value()) -
-                                scene()->sceneRect().topLeft();*/
 
+    // get scg-object under mouse
+    QPointF mousePos = mapToScene(event->pos());
     SCgObject *object = static_cast<SCgScene*>(scene())->objectAt(mousePos);
 
     // create context menu
@@ -395,6 +400,11 @@ void SCgView::wheelEvent(QWheelEvent *event)
         QGraphicsView::wheelEvent(event);
 }
 
+SCgScene * SCgView::scgScene() const
+{
+    return static_cast<SCgScene*>(scene());
+}
+
 void SCgView::deleteSelected()
 {
     static_cast<SCgScene*>(scene())->deleteSelObjectsCommand();
@@ -404,8 +414,8 @@ void SCgView::deleteJustContour()
 {
     Q_ASSERT(mContextObject && mContextObject->type() == SCgContour::Type);
 
-    SCgContour *contour = static_cast<SCgContour*>(mContextObject);
-    static_cast<SCgScene*>(scene())->deleteContourCommand(contour);
+    SCgContour * contour = static_cast<SCgContour*>(mContextObject);
+    scgScene()->doCommand(new SCgCommandDeleteContour(scgScene(), contour));
 }
 
 void SCgView::swapPairOrient()
@@ -413,7 +423,7 @@ void SCgView::swapPairOrient()
     Q_ASSERT(mContextObject && mContextObject->type() == SCgPair::Type);
 
     SCgPair *pair = static_cast<SCgPair*>(mContextObject);
-    static_cast<SCgScene*>(scene())->swapPairOrientCommand(pair);
+    scgScene()->doCommand(new SCgCommandSwapPairOrient(scgScene(), pair));
 }
 
 void SCgView::changeIdentifier()
@@ -453,7 +463,7 @@ void SCgView::changeIdentifier()
     {
         QString newIdtf = lineEdit->text();
         if(oldIdtf != newIdtf)
-            static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf);
+            scgScene()->doCommand(new SCgCommandObjectIdtfChange(scgScene(), mContextObject, newIdtf));
     }
 }
 
@@ -461,7 +471,7 @@ void SCgView::changeType(QAction *action)
 {
     Q_ASSERT(mContextObject);
 
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    scgScene()->doCommand(new SCgCommandObjectTypeChange(scgScene(), mContextObject, action->data().toString()));
 }
 
 void SCgView::changeContent()
@@ -475,7 +485,7 @@ void SCgView::changeContent()
         SCgContent::ContInfo info;
         dlg.contentInfo(info);
         if (node->contentType() != SCgContent::Empty || info.type != SCgContent::Empty)
-            static_cast<SCgScene*>(scene())->changeContentDataCommand(node, info);
+            scgScene()->doCommand(new SCgCommandContentChange(scgScene(), node, info));
     }
 }
 
@@ -488,16 +498,16 @@ void SCgView::setContentVisible(bool visibility)
 
         SCgNode *node = static_cast<SCgNode*>(mContextObject);
 
-        if(visibility != node->isContentVisible())
-            static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(node, visibility);
+        if (visibility != node->isContentVisible())
+            scgScene()->doCommand(new SCgCommandContentVisibility(scgScene(), node, visibility));
     }
     else if (_sender == mActionShowAllContent)
     {
-        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(0, true, true);
+        scgScene()->doCommand(new SCgCommandAllContentVisibility(scgScene(), true));
     }
     else if(_sender == mActionHideAllContent)
     {
-        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(0, false, true);
+        scgScene()->doCommand(new SCgCommandAllContentVisibility(scgScene(), false));
     }
 }
 
@@ -506,8 +516,7 @@ void SCgView::deleteContent()
     Q_ASSERT(mContextObject && mContextObject->type() == SCgNode::Type);
 
     SCgNode* node = static_cast<SCgNode*> (mContextObject);
-    SCgContent::ContInfo empty;
-    static_cast<SCgScene*>(scene())->changeContentDataCommand(node, empty);
+    scgScene()->doCommand(new SCgCommandContentChange(scgScene(), node, SCgContent::ContInfo()));
 }
 
 void SCgView::setScale(const QString& sc)

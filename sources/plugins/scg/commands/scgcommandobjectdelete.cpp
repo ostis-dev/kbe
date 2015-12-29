@@ -53,7 +53,7 @@ void SCgCommandObjectDelete::undo()
     for (it = mDelList.begin(); it != mDelList.end(); ++it)
     {
         SCgObject *object = *it;
-        if(!object->parentItem())
+        if (!object->parentItem())
         {
             QGraphicsItem *parent = mParents[object];
 
@@ -64,4 +64,6 @@ void SCgCommandObjectDelete::undo()
         }
     }
 
+    mDelList.clear();
+    mParents.clear();
 }

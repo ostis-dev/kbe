@@ -209,7 +209,7 @@ void SCgWindow::createToolBar()
 
     action = new QAction(findIcon("tool-scp.png"), tr("SCp programming mode"), mToolBar);
     action->setCheckable(true);
-    action->setShortcut(QKeySequence(tr("5", "SCp programming mode")));
+    action->setShortcut(QKeySequence(tr("`", "SCp programming mode")));
     group->addAction(action);
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_SCp] = action;

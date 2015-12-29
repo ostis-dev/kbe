@@ -107,7 +107,7 @@ void SCgBus::updateShape()
         mTextItem->setTextPos((mPoints.at(0) + mPoints.at(1)) / 2.f);
 }
 
-void SCgBus::objectDelete(SCgObject *object)
+void SCgBus::connectedObjectDelete(SCgObject *object)
 {
     Q_UNUSED(object);
     if (mOwner)

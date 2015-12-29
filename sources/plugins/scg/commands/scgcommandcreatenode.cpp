@@ -24,7 +24,7 @@ SCgCommandCreateNode::SCgCommandCreateNode(SCgScene *scene,
 
 SCgCommandCreateNode::~SCgCommandCreateNode()
 {
-    if(mObject)
+    if (mObject)
         delete mObject;
 }
 
@@ -52,7 +52,7 @@ void SCgCommandCreateNode::redo()
                "void SCgCommandCreateNode::redo()",
                "Node doesn't exists");
 
-    if(mObject->scene() != mScene)
+    if (mObject->scene() != mScene)
         mScene->addItem(mObject);
 
     mObject->setDead(false);

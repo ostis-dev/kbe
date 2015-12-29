@@ -100,9 +100,9 @@ QPainterPath SCgNode::shape() const
     if (mIsContentVisible)
     {
         path.addRect(boundRect);
-    }else
+    }
+    else
     {
-        QMatrix matrix;
         switch (mConstType)
         {
         case SCgAlphabet::Const:
@@ -137,7 +137,7 @@ void SCgNode::positionChanged()
 {
 }
 
-void SCgNode::objectDelete(SCgObject *object)
+void SCgNode::connectedObjectDelete(SCgObject *object)
 {
     Q_UNUSED(object);
     if (mBus)
@@ -175,7 +175,8 @@ QPointF SCgNode::cross(const QPointF &from, float dot) const
     {
         QVector2D vec(from - scenePos());
         p = vec.normalized().toPointF() * (mSize.width() / 2.f);
-    }else
+    }
+    else
     {
 
         // count intersection with content border

@@ -8,6 +8,8 @@
 #include "scgcontour.h"
 #include "scgnode.h"
 
+#include "commands/scgcommandcreatebus.h"
+
 #include <QMessageBox>
 #include <QVector2D>
 #include <QApplication>
@@ -58,7 +60,7 @@ void SCgBusMode::mousePress(QGraphicsSceneMouseEvent *event)
                     contour = static_cast<SCgContour*>(parent);
 
                 SCgNode *owner = static_cast<SCgNode*>(mObjectAtFirstPoint);
-                mScene->createBusCommand(owner, mLinePoints, contour);
+                mScene->doCommand(new SCgCommandCreateBus(mScene, owner, mLinePoints, contour));
                 endLineCreation();
             }
         }

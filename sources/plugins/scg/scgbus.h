@@ -40,7 +40,7 @@ public:
     //! @see SCgPointObject::updateShape;
     void updateShape();
     //! @see SCgObject::objectDelete;
-    void objectDelete(SCgObject *object);
+    void connectedObjectDelete(SCgObject *object);
 
     /*! Get bus width
       */

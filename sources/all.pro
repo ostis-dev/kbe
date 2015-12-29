@@ -9,7 +9,7 @@ DESTDIR = ./bin
 
 SUBDIRS = plugins/scg \
           #plugins/scn \
-          plugins/scs \
+          #plugins/scs \
           kbe
 
 #win32: SUBDIRS += updater

@@ -75,7 +75,7 @@ protected:
     //! @copydoc QGraphicsItem::paint()
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     //! @see SCgObject::objectDelete(). DEPRECATED
-    void objectDelete(SCgObject *object);
+    void connectedObjectDelete(SCgObject *object);
     //! @copydoc SCgObject::itemChange
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 

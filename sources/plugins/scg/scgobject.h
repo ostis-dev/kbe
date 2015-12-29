@@ -93,6 +93,8 @@ public:
     virtual void setIdtfPos(const QPointF &pos);
     QPointF idtfPos() const;
 
+    bool isHovered() const;
+
 //////////////////////////
 /* Working with types */
 public:
@@ -124,10 +126,10 @@ protected:
       That method calls in connected object to notify it,
       that this one is deleting. As parameter it takes object
       that is deleting.
-      When you immplementing this method, you need to remove all pointers
-      and references to deletion object.
+      When you implementing this method, you need to remove all pointers
+      and references to deleting object.
       */
-    virtual void objectDelete(SCgObject *object) = 0;
+    virtual void connectedObjectDelete(SCgObject *object) = 0;
 
 public:
     /*! Check if object is dead.
@@ -183,10 +185,12 @@ protected:
     SCgTextItem *mTextItem;
 
     //! Dead flag
-    bool mIsDead;
+    bool mIsDead:1;
 
     //! true, if parent about to change.
-    bool mParentChanging;
+    bool mParentChanging:1;
+
+    bool mIsHovered:1;
 
 protected:
     friend class GwfStreamWriter;
