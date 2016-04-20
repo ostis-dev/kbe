@@ -8,6 +8,7 @@
 
 #include "interfaces/editorinterface.h"
 #include "scgscene.h"
+#include "scgnode.h"
 
 #include <QToolBox>
 #include <QMap>
@@ -176,6 +177,10 @@ private slots:
     void onBusMode();
     //! Slot to handle a contour creation mode action
     void onContourMode();
+     //! Slot to handle a 3-element construction creation
+    void on3ElementConstructionCreation();
+    //! Slot to handle a 5-element construction creation
+    void on5ElementConstructionCreation();
     //! Slot to handle a grid alignment action
     void onGridAlignment();
     //! Slot to handle a tuple alignment action
