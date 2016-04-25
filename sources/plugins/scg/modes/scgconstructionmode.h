@@ -49,4 +49,8 @@ public:
 private:
     ConstructionType type;
     QGraphicsItemGroup* mConstruction;
+
+    void threeElementConstruction(QList<QGraphicsItem*> & items);
+
+    void fiveElementConstruction(QList<QGraphicsItem*> & items);
 };

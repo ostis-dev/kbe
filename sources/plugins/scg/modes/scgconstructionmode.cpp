@@ -7,6 +7,8 @@
 #include <QGraphicsView>
 #include <QApplication>
 
+#define CONSTRUCTION_LENGTH 100
+#define CONSTRUCTION_WIDTH 50
 
 SCgConstructionMode::SCgConstructionMode(SCgScene* parent, ConstructionType type):
     SCgMode(parent),
@@ -78,6 +80,38 @@ void SCgConstructionMode::clean()
     }
 }
 
+void SCgConstructionMode::threeElementConstruction(QList<QGraphicsItem*> & items)
+{
+    SCgNode * firstNode = mScene->createSCgNode(QPointF(0, 0));
+    SCgNode * secondNode = mScene->createSCgNode(QPointF(CONSTRUCTION_LENGTH, 0));
+
+    QVector<QPointF> mFirsLinePoints;
+    mFirsLinePoints.append(firstNode->scenePos());
+    mFirsLinePoints.append(secondNode->scenePos());
+
+    SCgPair * firstPair = mScene->createSCgPair(firstNode, secondNode, mFirsLinePoints);
+
+    items.append(firstNode);
+    items.append(secondNode);
+    items.append(firstPair);
+}
+
+void SCgConstructionMode::fiveElementConstruction(QList<QGraphicsItem*> & items)
+{
+    threeElementConstruction(items);
+
+    SCgNode * thirdNode = mScene->createSCgNode(QPointF(CONSTRUCTION_LENGTH / 2, -CONSTRUCTION_WIDTH));
+
+    QVector<QPointF> mSecondLinePoints;
+    mSecondLinePoints.append(thirdNode->scenePos());
+    mSecondLinePoints.append(QPointF(CONSTRUCTION_LENGTH / 2, 0));
+
+    SCgPair * secondPair = mScene->createSCgPair(thirdNode, (SCgObject *)items.back(), mSecondLinePoints);
+
+    items.append(thirdNode);
+    items.append(secondPair);
+}
+
 void SCgConstructionMode::activate()
 {
     if (mConstruction)
@@ -90,30 +124,13 @@ void SCgConstructionMode::activate()
     QGraphicsView* v = mScene->views().at(0);
     QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
 
-    SCgNode * firstNode = mScene->createSCgNode(QPointF(0, 0));
-    SCgNode * secondNode = mScene->createSCgNode(QPointF(100, 0));
-
-    QVector<QPointF> mFirsLinePoints;
-    mFirsLinePoints.append(firstNode->scenePos());
-    mFirsLinePoints.append(secondNode->scenePos());
-
-    SCgPair * firstPair = mScene->createSCgPair(firstNode, secondNode, mFirsLinePoints);
-
-    items.append(firstNode);
-    items.append(secondNode);
-    items.append(firstPair);
-
-    if(type == SCgConstructionMode::Type_5elements) {
-        SCgNode * thirdNode = mScene->createSCgNode(QPointF(50, -50));
-
-        QVector<QPointF> mSecondLinePoints;
-        mSecondLinePoints.append(thirdNode->scenePos());
-        mSecondLinePoints.append(QPointF(50, 0));
-
-        SCgPair * secondPair = mScene->createSCgPair(thirdNode, firstPair, mSecondLinePoints);
-
-        items.append(thirdNode);
-        items.append(secondPair);
+    if(type == SCgConstructionMode::Type_3elements)
+    {
+        threeElementConstruction(items);
+    }
+    else
+    {
+        fiveElementConstruction(items);
     }
 
     mConstruction = mScene->createItemGroup(items);
