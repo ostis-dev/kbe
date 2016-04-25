@@ -1,27 +1,10 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
-
-#ifndef SCGPLUGIN_H
-#define SCGPLUGIN_H
+#pragma once
 
 #include <QObject>
 #include "interfaces/plugininterface.h"
@@ -41,15 +24,17 @@ public:
 
 protected:
     //! @copydoc PluginInterface::name
-    const QString& name() const;
+    QString const & name() const;
     //! @copydoc PluginInterface::version
-    const QString& version() const;
+    QString const & version() const;
     //! @copydoc PluginInterface::interfaces
-    const QList<QObject*>& interfaces() const;
+    QList<QObject*> const & interfaces() const;
     //! @copydoc PluginInterface::initialize
     void initialize();
     //! @copydoc PluginInterface::shutdown
     void shutdown();
+    //! @copydoc PluginInterface::settingsWidget
+    QWidget * settingsWidget() const;
 
 private:
     QList<QObject*> mInterfaces;
@@ -63,4 +48,4 @@ public slots:
 
 };
 
-#endif // SCGPLUGIN_H
+

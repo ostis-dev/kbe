@@ -1,24 +1,8 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
-
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
 #include "pluginmanager.h"
 #include "interfaces/plugininterface.h"
@@ -29,10 +13,11 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDirIterator>
 #include <QDebug>
 #include <QPluginLoader>
+#include <QWidget>
 
 PluginManager* PluginManager::mInstance = 0;
 
-PluginManager::PluginManager(QObject *parent) :
+PluginManager::PluginManager(QObject * parent) :
     QObject(parent)
 {
     Q_ASSERT(mInstance == 0);
@@ -50,11 +35,12 @@ PluginManager* PluginManager::instance()
     return mInstance;
 }
 
-void PluginManager::initialize(const QString &_dirPath)
+void PluginManager::initialize(QString const & _dirPath)
 {
 
     //! TODO: reutrn error
-    if (!QDir(_dirPath).exists()) return;
+    if (!QDir(_dirPath).exists())
+        return;
 
     QDir pluginsDir(_dirPath);
 
@@ -83,13 +69,13 @@ void PluginManager::shutdown()
 
 }
 
-void PluginManager::loadPlugin(const QString &path)
+void PluginManager::loadPlugin(QString const & path)
 {
     qDebug() << "Load plugin: " << path;
 
     Q_ASSERT(mPluginLoaders.find(path) == mPluginLoaders.end());
 
-    QPluginLoader *loader = new QPluginLoader(path, this);
+    QPluginLoader * loader = new QPluginLoader(path, this);
 
     if (!loader->load())
     {
@@ -111,23 +97,24 @@ void PluginManager::loadPlugin(const QString &path)
 
 }
 
-void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
+void PluginManager::processLoadPlugin(PluginInterface * pluginInterface)
 {
     // iterate all interfaces in plugin and register them in managers
     Q_ASSERT(pluginInterface != 0);
 
     pluginInterface->initialize();
 
-    const QList<QObject*> &interfaces = pluginInterface->interfaces();
+    QList<QObject*> const & interfaces = pluginInterface->interfaces();
     QObject *_interface;
     foreach(_interface, interfaces)
     {
-        EditorFactoryInterface* factory = qobject_cast<EditorFactoryInterface*>(_interface);
+        EditorFactoryInterface * factory = qobject_cast<EditorFactoryInterface*>(_interface);
         if (factory != 0)
         {
             QString type = factory->name();
             Q_ASSERT(mEditorFactoriesByType.find(type) == mEditorFactoriesByType.end());
             mEditorFactoriesByType[type] = factory;
+
             QStringList extList = factory->supportedFormatsExt();
             QString ext;
             foreach(ext, extList)
@@ -135,34 +122,48 @@ void PluginManager::processLoadPlugin(PluginInterface *pluginInterface)
                 mSupportedExtensions << ext;
                 mEditorFactoriesByExt[ext] = factory;
             }
-
-            continue;
         }
-
-        // interface can't be handled
-        qWarning() << "Can't prosess interface: " << _interface;
+        else
+        {
+            // interface can't be handled
+            qWarning() << "Can't prosess interface: " << _interface;
+        }
     }
+
+    Q_ASSERT(mSettingWidgets.find(pluginInterface->name()) == mSettingWidgets.end());
+
+    QWidget * settings = pluginInterface->settingsWidget();
+    if (settings)
+        mSettingWidgets[pluginInterface->name()] = settings;
+
 }
 
 QString PluginManager::openFilters() const
 {
-    QString filters;
+    QString filters, allFormats;
     tExtensionsSet::const_iterator it;
     for (it = mSupportedExtensions.begin(); it != mSupportedExtensions.end(); ++it)
     {
         if (!filters.isEmpty())
+        {
             filters += "\n";
+            allFormats += " ";
+        }
+
         filters += QString("%1 format (*.%1)").arg(*it);
+        allFormats += QString("*.%1").arg(*it);
     }
 
     if (!filters.isEmpty())
         filters += "\n";
-    filters += tr("All files (*.*)");
+    filters += tr("All files") + "*.*";
+
+    filters = tr("All supported files") + QString("(%1)\n").arg(allFormats) + filters;
 
     return filters;
 }
 
-QString PluginManager::saveFilters(const QStringList &supExtensions) const
+QString PluginManager::saveFilters(QStringList const & supExtensions) const
 {
     QString filters;
     QStringList::const_iterator it;
@@ -176,22 +177,7 @@ QString PluginManager::saveFilters(const QStringList &supExtensions) const
     return filters;
 }
 
-const PluginManager::tExtensionsSet& PluginManager::supportedFilesExt() const
-{
-    return mSupportedExtensions;
-}
-
-const PluginManager::tEditorFactoryInterfacesMap& PluginManager::editorFactoriesByType() const
-{
-    return mEditorFactoriesByType;
-}
-
-const PluginManager::tEditorFactoryInterfacesMap& PluginManager::editorFactoriesByExt() const
-{
-    return mEditorFactoriesByExt;
-}
-
-EditorInterface* PluginManager::createWindowByType(const QString &type)
+EditorInterface* PluginManager::createWindowByType(QString const & type)
 {
     // trying to find factory
     tEditorFactoryInterfacesMap::iterator it = mEditorFactoriesByType.find(type);
@@ -202,7 +188,7 @@ EditorInterface* PluginManager::createWindowByType(const QString &type)
 }
 
 
-EditorInterface* PluginManager::createWindowByExt(const QString &ext)
+EditorInterface* PluginManager::createWindowByExt(QString const & ext)
 {
     // trying to find factory
     tEditorFactoryInterfacesMap::iterator it = mEditorFactoriesByExt.find(ext);

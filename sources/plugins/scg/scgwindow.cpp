@@ -1,24 +1,8 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
-
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
 #include "scgwindow.h"
 
@@ -222,6 +206,26 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Contour] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
+
+    //SCg-constructions creation mode button
+    QToolButton *constructionButton = new QToolButton(mToolBar);
+    constructionButton->setIcon(findIcon("sc-construction3.png"));
+    constructionButton->setPopupMode(QToolButton::InstantPopup);
+    constructionButton->setToolTip(tr("Constructions"));
+    mToolBar->addWidget(constructionButton);
+
+    //3-element construction
+    action = new QAction(findIcon("sc-construction3.png"), tr("3-element construction"), mToolBar);
+    action->setCheckable(false);
+    constructionButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(on3ElementConstructionCreation()));
+
+    //5-element construction
+    action = new QAction(findIcon("sc-construction5.png"), tr("5-element construction"), mToolBar);
+    action->setCheckable(false);
+    constructionButton->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(on5ElementConstructionCreation()));
+
     //
     mToolBar->addSeparator();
     //
@@ -398,6 +402,16 @@ void SCgWindow::onContourMode()
     static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_Contour);
     mView->viewport()->setCursor(Qt::CrossCursor);
     mView->setDragMode(QGraphicsView::NoDrag);
+}
+
+void SCgWindow::on3ElementConstructionCreation()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_3elementConstruction);
+}
+
+void SCgWindow::on5ElementConstructionCreation()
+{
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_5elementConstruction);
 }
 
 void SCgWindow::onGridAlignment()

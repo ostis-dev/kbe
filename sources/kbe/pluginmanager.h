@@ -1,27 +1,10 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
-
-#ifndef PLUGINMANAGER_H
-#define PLUGINMANAGER_H
+#pragma once
 
 #include <QObject>
 #include <QMap>
@@ -49,6 +32,7 @@ public:
     typedef QMap<QString, QPluginLoader*> tPluginLoadersMap;
     typedef QSet<QString> tExtensionsSet;
     typedef QMap<QString, EditorFactoryInterface*> tEditorFactoryInterfacesMap;
+    typedef QMap<QString, QWidget*> tSettingWidgetsMap;
 
 public:
 
@@ -68,39 +52,40 @@ public:
       * based on list of file extensions
       * @param supExtensions List of sopperted file extensions
       */
-    QString saveFilters(const QStringList &supExtensions) const;
+    QString saveFilters(QStringList const & supExtensions) const;
 
     //! Return set of supported file extensions
-    const tExtensionsSet& supportedFilesExt() const;
-
+    tExtensionsSet const & getSupportedFilesExt() const { return mSupportedExtensions; }
     //! Return map of registered editor factories by types
-    const tEditorFactoryInterfacesMap& editorFactoriesByType() const;
+    tEditorFactoryInterfacesMap const & getEditorFactoriesByType() const { return mEditorFactoriesByType; }
     //! Return map of registered editor factories by file extensions
-    const tEditorFactoryInterfacesMap& editorFactoriesByExt() const;
+    tEditorFactoryInterfacesMap const & getEditorFactoriesByExt() const { return mEditorFactoriesByExt; }
+    //! Return map of registered settings widgets
+    tSettingWidgetsMap const & getSettingWidgets() const { return mSettingWidgets; }
 
     /*! Create editor for specified window type
       * @param type String that represents window type
       * @return If window created, then return pointer to it; otherwise returns null.
       */
-    EditorInterface* createWindowByType(const QString &type);
+    EditorInterface * createWindowByType(QString const & type);
 
     /*! Create editor for specified file extension
      * @param ext File extension
      * @return If window created, then return pointer to it; otherwise returns null.
      */
-    EditorInterface* createWindowByExt(const QString &ext);
+    EditorInterface * createWindowByExt(QString const & ext);
 
 protected:
     /*! Load plugin with specified \p path
       * @param path Path to plugin
       */
-    void loadPlugin(const QString &path);
+    void loadPlugin(QString const & path);
 
     /*! Process loaded plugin interface. Get all
       * possible interfaces from it and register them in managers.
       * @param pluginInterface Pointer to plugin interface
       */
-    void processLoadPlugin(PluginInterface *pluginInterface);
+    void processLoadPlugin(PluginInterface * pluginInterface);
 
 
 protected:
@@ -110,8 +95,10 @@ protected:
     tExtensionsSet mSupportedExtensions;
     //! Registered factories by types
     tEditorFactoryInterfacesMap mEditorFactoriesByType;
-    //! REgistered factories by extinsions
+    //! Registered factories by extinsions
     tEditorFactoryInterfacesMap mEditorFactoriesByExt;
+    //! Pointer to all settings widgets by names
+    tSettingWidgetsMap mSettingWidgets;
 
 signals:
 
@@ -119,4 +106,3 @@ public slots:
 
 };
 
-#endif // PLUGINMANAGER_H

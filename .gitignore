@@ -4,6 +4,8 @@ all-build-desktop/*
 *.user
 *.user.*
 
+*~
+
 sources/kbe/ui_mainwindow.h
 
 installer/sources/*

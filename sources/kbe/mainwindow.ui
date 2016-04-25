@@ -37,12 +37,9 @@
      <addaction name="actionTo_image"/>
     </widget>
     <addaction name="actionNew"/>
-    <addaction name="actionNew_Project"/>
     <addaction name="actionOpen"/>
-    <addaction name="actionOpen_Project"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="actionSave_Project"/>
     <addaction name="actionSave_all"/>
     <addaction name="separator"/>
     <addaction name="menuExport"/>
@@ -64,15 +61,14 @@
     <addaction name="actionFeedback"/>
     <addaction name="actionGuide"/>
    </widget>
-   <widget class="QMenu" name="menuView">
+   <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>View</string>
+     <string>Tools</string>
     </property>
-    <addaction name="actionView_ProjectManager"/>
-    <addaction name="separator"/>
+    <addaction name="actionSettings"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuView"/>
+   <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -105,7 +101,7 @@
     <string>Save as</string>
    </property>
    <property name="shortcut">
-    <string/>
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionExit">
@@ -147,7 +143,7 @@
     <string>Save all</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string/>
    </property>
   </action>
   <action name="actionClose_All">
@@ -213,6 +209,11 @@
   <action name="actionClose_Project">
    <property name="text">
     <string>Close Project</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
    </property>
   </action>
  </widget>

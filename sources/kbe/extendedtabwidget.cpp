@@ -1,24 +1,8 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
-
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
 #include "extendedtabwidget.h"
 #include "mainwindow.h"
@@ -41,7 +25,7 @@ ExtendedTabWidget::ExtendedTabWidget(QWidget *parent) :
     setTabsClosable(true);
     setIconSize(QSize(32, 32));
 
-    connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(close(int)));
+    connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(onClose(int)));
 }
 
 ExtendedTabWidget::~ExtendedTabWidget()
@@ -89,17 +73,18 @@ QString ExtendedTabWidget::tabTextFor(QWidget* subWindow)
     return title.isEmpty() ? tr("(Untitled)") : title;
 }
 
-bool ExtendedTabWidget::closeWindow(QWidget* wnd)
+bool ExtendedTabWidget::onCloseWindow(QWidget* wnd)
 {
     Q_ASSERT_X(wnd,
                "bool ExtendedTabWidget::close(int index)",
                "Can't get window");
 
-    if(emit tabBeforeClose(wnd))
+    if (emit tabBeforeClose(wnd))
     {
         wnd->close();
         removeTab(indexOf(wnd));
         delete wnd;
+
         tabsUpdate();
         return true;
     }
@@ -111,42 +96,57 @@ QList<QWidget*> ExtendedTabWidget::subWindowList() const
 {
     QList<QWidget*> res;
     int cnt = count();
-    for(int i =0; i < cnt; ++i)
+    for (int i = 0; i < cnt; ++i)
         res.push_back(widget(i));
 
     return res;
 }
 
-void ExtendedTabWidget::closeOtherDocuments()
+bool ExtendedTabWidget::activateTab(QString const & fileName)
+{
+    for (int i = 0; i < count(); ++i)
+    {
+        EditorInterface const * editor = qobject_cast<EditorInterface*>(widget(i));
+        if (editor && editor->currentFileName() == fileName)
+        {
+            setCurrentWidget(widget(i));
+            return true;
+        }
+    }
+    return false;
+}
+
+void ExtendedTabWidget::onCloseOtherDocuments()
 {
     QWidget* currentWindow = currentWidget();
     QList<QWidget*> list = subWindowList();
     QList<QWidget*>::const_iterator it = list.begin();
 
     for(; it != list.end(); it++)
-        if (*it != currentWindow)
-            if (!(*it)->close())
-                return;
+    {
+        if (*it != currentWindow && !(*it)->close())
+            return;
+    }
 }
 
-void ExtendedTabWidget::closeAllDocuments()
+void ExtendedTabWidget::onCloseAllDocuments()
 {
     QWidget* w = widget(0);
-    while(w)
+    while (w)
     {
-        if(!closeWindow(w))
+        if (!onCloseWindow(w))
             return;
         w = widget(0);
     }
     tabsUpdate();
 }
 
-void ExtendedTabWidget::close(int index)
+void ExtendedTabWidget::onClose(int index)
 {
     if (index == -1)
         index = currentIndex();
 
-    closeWindow(widget(index));
+    onCloseWindow(widget(index));
 }
 
 int ExtendedTabWidget::addSubWindow(EditorInterface* window)
@@ -162,12 +162,3 @@ int ExtendedTabWidget::addSubWindow(EditorInterface* window)
     tabsUpdate();
     return index;
 }
-
-/*
-void ExtendedTabWidget::addMenu(QMdiSubWindow* wnd)
-{
-    QMenu* menu = wnd->systemMenu();
-    menu->addAction(MainWindow::getInstance()->ui->actionClose_Others);
-    menu->addAction(MainWindow::getInstance()->ui->actionClose_All);
-}
-*/

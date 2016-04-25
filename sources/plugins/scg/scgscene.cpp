@@ -1,24 +1,8 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
-
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
 #include "scgscene.h"
 
@@ -37,6 +21,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 #include "modes/scgcontourmode.h"
 #include "modes/scgselectmode.h"
 #include "modes/scginsertmode.h"
+#include "modes/scgconstructionmode.h"
 #include "modes/scgclonemode.h"
 
 #include "commands/scgbasecommand.h"
@@ -89,6 +74,8 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Contour] = new SCgContourMode(this);
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
+    mSceneModes[Mode_3elementConstruction] = new SCgConstructionMode(this, SCgConstructionMode::Type_3elements);
+    mSceneModes[Mode_5elementConstruction] = new SCgConstructionMode(this, SCgConstructionMode::Type_5elements);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
 
     setEditMode(Mode_Select);
@@ -504,7 +491,9 @@ SCgBaseCommand* SCgScene::changeContentDataCommand(SCgNode *node, const SCgConte
 
 void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
-    Q_ASSERT(mMode->mode() == Mode_InsertTemplate);
+    Q_ASSERT(mMode->mode() == Mode_InsertTemplate
+             || mMode->mode() == Mode_3elementConstruction
+             || mMode->mode() == Mode_5elementConstruction);
 
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)

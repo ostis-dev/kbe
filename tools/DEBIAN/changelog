@@ -1,3 +1,11 @@
+
+kbe (0.3.2-ubuntu) unstable; urgency=low
+
+  * Add all supported files filter to open file dialog
+
+ -- Denis Koronchik <denis.koronchik@gmail.com>  Tue, 14 Apr 2014 23:25:02 +0300
+
+
 kbe (0.3.1-ubuntu) unstable; urgency=low
 
   * Added hotkeys to switch tabs
@@ -7,6 +15,8 @@ kbe (0.3.1-ubuntu) unstable; urgency=low
   * Fixed dock widget positions save/load
   * Fixed main window title
   * Port code to use qt5
+  * Change license to MIT
+  * Fixed problems with opening of already opened files
 
   * scg. Added load/save of content state
   * scg. Added command to show/hide all contents
@@ -17,8 +27,9 @@ kbe (0.3.1-ubuntu) unstable; urgency=low
   * scg. Fixed visual style of scg-elements
   * scg. Fixed default encoding to utf-8
 
-  * scg. Added support of scs 0.2.0 standard
-  * scg. Fixed default encoding to utf-8
+  * scs. Added support of scs 0.2.0 standard
+  * scs. Fixed default encoding to utf-8
+  * scs. Added new line into the end of file
 
  -- Denis Koronchik <denis.koronchik@gmail.com>  Tue, 5 May 2014 01:06:43 +0300
 

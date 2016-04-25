@@ -1,28 +1,10 @@
 /*
------------------------------------------------------------------------------
-This source file is part of OSTIS (Open Semantic Technology for Intelligent Systems)
-For the latest info, see http://www.ostis.net
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
 
-Copyright (c) 2010-2014 OSTIS
-
-OSTIS is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-OSTIS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
------------------------------------------------------------------------------
-*/
-
-
-#ifndef EXTENDEDMDIAREA_H_
-#define EXTENDEDMDIAREA_H_
+#pragma once
 
 #include <QObject>
 #include <QTabWidget>
@@ -43,10 +25,15 @@ public:
      * @param wnd Window that will be closed
      * @return True, if window successfully closed.
      */
-    bool closeWindow(QWidget* wnd);
+    bool onCloseWindow(QWidget* wnd);
 
-    //!@return list with tab widgets;
+    //! @return list with tab widgets;
     QList<QWidget*> subWindowList() const;
+
+    /*! Makes tab active by filename
+     * @return If specified tab exists, then returns true; otherwise returns false
+     */
+    bool activateTab(QString const & fileName);
 
 protected:
     //! Watches for all child widgets (windows).
@@ -57,7 +44,7 @@ signals:
      * @param w Widget in closed tab.
      * @return True, if tab will be closed.
      */
-    bool tabBeforeClose(QWidget* w);
+    bool tabBeforeClose(QWidget * w);
 
     /*! Tabs updated signal. Calls when new tab added, or any tab removed.
       */
@@ -65,15 +52,15 @@ signals:
 
 public slots:
     //! Closes all subwindows except active
-    void closeOtherDocuments();
+    void onCloseOtherDocuments();
     //! Closes all subwindows
-    void closeAllDocuments();
+    void onCloseAllDocuments();
     /*!
      * Closes window at index @p index.
      * If @p index = -1 closes current window.
      * @return True, if tab is closed.
      */
-    void close(int index = -1);
+    void onClose(int index = -1);
 
     /*! Adds new tab.
      * @param window Pointer to editor interface, that added
@@ -88,4 +75,3 @@ public:
     QString tabTextFor(QWidget* subWindow);
 };
 
-#endif /* EXTENDEDMDIAREA_H_ */
