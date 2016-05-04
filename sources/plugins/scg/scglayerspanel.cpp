@@ -42,11 +42,13 @@ SCgLayersPanel::SCgLayersPanel(SCgScene* scene, QWidget* parent)
     connect(mLayerListView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customContextMenu(QPoint)));
     connect(mLayerListView, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectLayer(QListWidgetItem*)));
     connect(mLayerListView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(selectObjects()));
+    connect(mLayerListView, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(setVisibleSelected()));
 }
 
 SCgLayersPanel::~SCgLayersPanel()
 {
     delete mLayerListView;
+    delete mToolBar;
 }
 
 void SCgLayersPanel::addLayer(int id, const QString &name)
@@ -58,7 +60,6 @@ void SCgLayersPanel::addLayer(int id, const QString &name)
         item->setCheckState(Qt::Checked);
         mLayerDict[id] = name;
         mLayerListView->addItem(item);
-        connect(*item, SIGNAL(stateChanged(int)), SLOT(setVisibleSelected(int)));
     }
 }
 
@@ -110,6 +111,7 @@ void SCgLayersPanel::showAll()
         int id = mLayerDict.key(layerName);
         mScene->getLayers()[id]->show();
         item->setForeground(Qt::black);
+        item->setCheckState(Qt::Checked);
     }
 }
 
@@ -122,6 +124,7 @@ void SCgLayersPanel::hideAll()
         int id = mLayerDict.key(layerName);
         mScene->getLayers()[id]->hide();
         item->setForeground(Qt::gray);
+        item->setCheckState(Qt::Unchecked);
     }
 }
 
@@ -151,24 +154,21 @@ void SCgLayersPanel::showSelected()
         int id = mLayerDict.key(layerName);
         mScene->getLayers()[id]->show();
         item->setForeground(Qt::black);
+        item->setCheckState(Qt::Checked);
     }
 }
 
-void SCgLayersPanel::setVisibleSelected(int i) {
-    if (i == 0)
+void SCgLayersPanel::setVisibleSelected() {
+    QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
+    Q_FOREACH (QListWidgetItem* item, selItems)
     {
-        QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
-        Q_FOREACH (QListWidgetItem* item, selItems)
+        if (item->checkState() == Qt::Unchecked)
         {
             QString layerName = item->text();
             int id = mLayerDict.key(layerName);
             mScene->getLayers()[id]->hide();
             item->setForeground(Qt::gray);
-        }
-    } else
-    {
-        QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
-        Q_FOREACH (QListWidgetItem* item, selItems)
+        } else
         {
             QString layerName = item->text();
             int id = mLayerDict.key(layerName);
@@ -187,6 +187,7 @@ void SCgLayersPanel::hideSelected()
         int id = mLayerDict.key(layerName);
         mScene->getLayers()[id]->hide();
         item->setForeground(Qt::gray);
+        item->setCheckState(Qt::Unchecked);
     }
 }
 

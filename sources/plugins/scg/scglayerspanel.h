@@ -53,7 +53,7 @@ private slots:
     //! Hide selected layers
     void hideSelected();
 
-    void setVisibleSelected(int i);
+    void setVisibleSelected();
 
     //! Show selected layers
     void showSelected();
