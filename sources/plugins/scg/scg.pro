@@ -94,7 +94,12 @@ HEADERS += \
     commands/scgcommandswappairorient.h \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
-    scgnodetextitem.h
+    scgnodetextitem.h \
+    scglayer.h \
+    commands/scgcommandcreatelayer.h \
+    commands/scgcommanddeletelayer.h \
+    commands/scgcommandmovetolayer.h \
+    scglayerspanel.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -172,7 +177,12 @@ SOURCES += \
     commands/scgcommandswappairorient.cpp \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
-    scgnodetextitem.cpp
+    scgnodetextitem.cpp \
+    scglayer.cpp \
+    commands/scgcommandcreatelayer.cpp \
+    commands/scgcommanddeletelayer.cpp \
+    commands/scgcommandmovetolayer.cpp \
+    scglayerspanel.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts

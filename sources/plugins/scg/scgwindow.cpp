@@ -43,6 +43,7 @@
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
+#include "scglayerspanel.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -62,6 +63,7 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent)
     , mZoomFactorLine(0)
     , mMinimap(0)
     , mUndoView(0)
+    , mLayersPanel(0)
     , mFindWidget(0)
     , mToolBar(0)
     , mUndoStack(0)
@@ -112,6 +114,7 @@ SCgWindow::~SCgWindow()
     delete mMinimap;
     delete mFindWidget;
     delete mUndoStack;
+    delete mLayersPanel;
 }
 
 QUndoStack* SCgWindow::undoStack() const
@@ -156,9 +159,14 @@ void SCgWindow::createWidgetsForDocks()
     mUndoView->setWindowTitle(tr("History"));
     mUndoView->setObjectName("History");
 
+    mLayersPanel = new SCgLayersPanel(mScene, this);
+    mLayersPanel->setWindowTitle(tr("Layers"));
+    mLayersPanel->setObjectName("Layers");
+
     //Register this widgets
     mWidgetsForDocks.push_back(mUndoView);
     mWidgetsForDocks.push_back(mMinimap);
+    mWidgetsForDocks.push_back(mLayersPanel);
 }
 
 

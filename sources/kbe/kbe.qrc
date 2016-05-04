@@ -25,5 +25,9 @@
         <file>media/icons/pm-collapse.png</file>
         <file>media/icons/pm-expand.png</file>
         <file>media/icons/pm-add.png</file>
+        <file>media/icons/add.png</file>
+        <file>media/icons/disable.png</file>
+        <file>media/icons/enable.png</file>
+        <file>media/icons/remove.png</file>
     </qresource>
 </RCC>

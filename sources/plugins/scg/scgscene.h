@@ -13,6 +13,7 @@
 
 #include "scgobject.h"
 #include "scgcontent.h"
+#include "scglayer.h"
 #include "commands/scgbasecommand.h"
 
 class SCgMode;
@@ -36,6 +37,7 @@ public:
     typedef QPair<ParentAndPosition, ParentAndPosition> BeginAndEndPoints;
     typedef QMap<QGraphicsItem* ,  BeginAndEndPoints> ItemUndoInfo;
     typedef QMap<QGraphicsItem* ,  BeginAndEndPoints> ObjectUndoInfo;
+    typedef QMap<int, SCgLayer*> SCgLayerMap;
     typedef enum
     {
         Mode_None   =   0,
@@ -339,6 +341,36 @@ public:
                                               SCgBaseCommand* parentCmd = 0,
                                               bool addToStack = true);
 
+    /*! Create undo/redo command to create layer
+    * @param name Layer's name
+    * @param type Layer's type
+    * @param parentCmd Pointer to parend undo/redo command
+    * @param addToStack Flag to add created command into stack
+    */
+    SCgBaseCommand* createLayerCommand(QString name = "",
+                                       SCgLayer::Type type = SCgLayer::User,
+                                       SCgBaseCommand* parentCmd = 0,
+                                       bool addToStack = true);
+
+    /*! Create undo/redo command to delete layer
+     * @param id Layer's id
+     * @param name Layer's name
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
+    SCgBaseCommand* deleteLayerCommand(uint id, QString name,
+                                        SCgBaseCommand* parentCmd = 0,
+                                        bool addToStack = true);
+
+    /*! Create undo/redo command to move selected objects to layer
+     * @param id Layer's id
+     * @param parentCmd Pointer to parend undo/redo command
+     * @param addToStack Flag to add created command into stack
+     */
+    SCgBaseCommand* createMoveToLayerCommand(uint layer,
+                                             SCgBaseCommand* parentCmd = 0,
+                                             bool addToStack = true);
+
     /*! @} */
 
     //! Adds given command @p cmd to scene's undoStack.
@@ -359,6 +391,31 @@ public:
      * @param parent Parent contour.
      */
     void cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent);
+
+    /*! Create layer.
+     * @param name Layer's name
+     * @param type Layer's type
+     */
+    uint createSCgLayer(QString name, SCgLayer::Type type = SCgLayer::User);
+
+    /*! Remove layer.
+     * @param id Layer's id
+     */
+    void deleteSCgLayer(uint id);
+
+    /*! Move to layer.
+     * @param object Pointer to object for moving
+     * @param layerId New object's layer's id
+     */
+    void moveObjectToLayer(SCgObject *object, uint layerId);
+
+    //! Returns layers map
+    SCgLayerMap& getLayers();
+
+    /*! Selects current layer.
+     * @param id Layer's id
+     */
+    void selectCurrentLayer(int id);
 
     QGraphicsItem* itemAt(const QPointF & point) const;
 
@@ -390,6 +447,26 @@ private:
     //! previous edit mode
     EditMode mPreviousEditMode;
 
+    //! layers
+    SCgLayerMap mLayers;
+
+    //! default layers
+    QMap<SCgLayer::Type, uint> mDefaultLayers;
+
+    //! current layer
+    SCgLayer* mCurrentLayer;
+
+public:
+    /*! Adds item to scene.
+     * @param item Pointer to object for adding
+     */
+    void addItem(QGraphicsItem *item);
+
+    /*! Removes item to scene.
+     * @param item Pointer to object for removing
+     */
+    void removeItem(QGraphicsItem *item);
+
 protected:
     /* mouse events */
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
@@ -411,6 +488,22 @@ signals:
       * @param mode New edit mode
       */
     void editModeChanged(int mode);
+
+    /*! Signal that emits on removing layer
+      * @param id Layer's id
+      */
+    void layerRemoved(int id);
+
+    /*! Signal that emits on adding layer
+      * @param id Layer's id
+      * @param name Layer's name
+      */
+    void layerAdded(int id, QString name);
+
+    /*! Signal that emits on current layer change
+      * @param id Layer's id
+      */
+    void currentLayerChanged(int id);
 
 public slots:
     void setIdtfDirtyFlag();
