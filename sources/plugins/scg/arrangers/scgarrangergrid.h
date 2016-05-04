@@ -90,9 +90,8 @@ private:
     QSet<SCgObject*> mPlaced;
 
     void sumGhostsPosition();
-    //! Set bounds on grid(optional)
-    void CheckClicked(bool checked);
 
+    //! Set bounds on grid(optional)
     void ValueDefiner(int newSpacing);
 
 

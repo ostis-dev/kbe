@@ -294,14 +294,6 @@ void SCgGridArranger::sumGhostsPosition()
 
 }
 
-void SCgGridArranger::CheckClicked(bool checked)
-{
-    if(checked)
-        mYSpinBox->setValue(mXSpinBox->value());
-
-    mIsSymmetrical = checked;
-}
-
 void SCgGridArranger::ValueDefiner(int newSpacing)
 {
     mXStep = newSpacing;
