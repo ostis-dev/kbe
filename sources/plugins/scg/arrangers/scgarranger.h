@@ -66,6 +66,8 @@ protected:
     //! Command for minimizing contour.
     void registerCommandMinimizeContour(SCgContour *contour);
 
+    void CalculateCordinates(QObject *parent);
+
     //! Deletes all ghosts from scene.
     void deleteGhosts();
 
@@ -78,6 +80,9 @@ protected:
 
     //! Holds ghost items <RealObject, Ghost>
     QMap<SCgObject*, SCgObject*> mGhosts;
+
+    void matchCommand(SCgObject* obj, const QPointF& newPos);
+    void useBreakPoints(SCgPair *pair);
 
 private:
     SCgScene* mScene;

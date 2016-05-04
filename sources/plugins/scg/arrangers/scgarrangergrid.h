@@ -89,6 +89,12 @@ private:
     //! Holds items already placed to the grid on current operation.
     QSet<SCgObject*> mPlaced;
 
+    void sumGhostsPosition();
+    //! Set bounds on grid(optional)
+    void CheckClicked(bool checked);
+
+    void ValueDefiner(int newSpacing);
+
 
 };
 

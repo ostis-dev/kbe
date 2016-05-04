@@ -310,3 +310,31 @@ void SCgTupleArranger::dValueChanged(int newSpacing)
     mObjectsDist = newSpacing;
     recalculateGhostsPosition();
 }
+
+void SCgTupleArranger::ConfirmClicker()
+{
+    SCgBus *bus = mTupleNode->bus();
+    Q_ASSERT(bus != 0);
+    SCgBus *ghostBus = qgraphicsitem_cast<SCgBus*>(mGhosts[bus]);
+    Q_ASSERT(ghostBus != 0);
+
+    registerCommand(bus, ghostBus->points());
+    foreach(SCgPair *pair, mBusPairs)
+    {
+        SCgObject *end = pair->endObject();
+        SCgObject *beg = pair->beginObject();
+        Q_ASSERT(end != 0 && beg != 0);
+        SCgPair *ghostPair = qgraphicsitem_cast<SCgPair*>(mGhosts[pair]);
+        Q_ASSERT(ghostPair != 0);
+
+        registerCommand(pair, ghostPair->points());
+
+        if (beg->type() == SCgBus::Type)
+            registerCommand(end, mGhosts[end]->pos());
+        else
+            registerCommand(beg, mGhosts[beg]->pos());
+    }
+
+    deleteGhosts();
+}
+

@@ -162,3 +162,20 @@ void SCgArranger::createGhosts(const QList<QGraphicsItem*>& list)
         if (it->opacity() == 1 && SCgObject::isSCgObjectType(it->type()))
             createGhost(static_cast<SCgObject*>(it));
 }
+
+void SCgArranger::matchCommand(SCgObject* obj, const QPointF& newPos)
+{
+    if(!mParentCommand)
+        mParentCommand = mScene->changeObjectPositionCommand(obj, newPos, 0, false);
+    else
+        mScene->changeObjectPositionCommand(obj, newPos, mParentCommand, false);
+}
+
+void SCgArranger::useBreakPoints(SCgPair *pair)
+{
+    if (!mParentCommand) {
+        mParentCommand = mScene->removeBreakPointsCommand(pair, 0, false);
+    } else {
+        mScene->removeBreakPointsCommand(pair, mParentCommand, false);
+}}
+
