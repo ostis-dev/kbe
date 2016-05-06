@@ -363,15 +363,6 @@ public:
                                         SCgBaseCommand* parentCmd = 0,
                                         bool addToStack = true);
 
-    /*! Create undo/redo command to move selected objects to layer
-     * @param id Layer's id
-     * @param parentCmd Pointer to parend undo/redo command
-     * @param addToStack Flag to add created command into stack
-     */
-    SCgBaseCommand* createMoveToLayerCommand(uint layer,
-                                             SCgBaseCommand* parentCmd = 0,
-                                             bool addToStack = true);
-
     /*! @} */
 
     //! Adds given command @p cmd to scene's undoStack.

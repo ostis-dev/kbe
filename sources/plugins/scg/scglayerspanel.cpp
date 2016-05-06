@@ -19,6 +19,7 @@ SCgLayersPanel::SCgLayersPanel(SCgScene* scene, QWidget* parent)
     : QWidget(parent),
       mScene(scene)
 {
+    mScene->setLayersPanel(this);
     mToolBar = new QToolBar(this);
     mToolBar->addAction(QIcon(":/media/icons/add.png"), "Add layer", this, SLOT(createLayer()));
     mToolBar->addAction(QIcon(":/media/icons/remove.png"), "Delete layer", this, SLOT(deleteLayer()));
@@ -29,7 +30,6 @@ SCgLayersPanel::SCgLayersPanel(SCgScene* scene, QWidget* parent)
     mLayerListView->setSortingEnabled(true);
     mLayerListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     mLayerListView->setContextMenuPolicy(Qt::CustomContextMenu);
-    mScene->setLayersPanel(this);
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(mToolBar);
@@ -144,20 +144,14 @@ void SCgLayersPanel::setVisibleSelected() {
         {
             QString layerName = item->text();
             int id = mLayerDict.key(layerName);
-            if (mScene->getLayers()[id] != 0)
-            {
-                mScene->getLayers()[id]->hide();
-                item->setForeground(Qt::gray);
-            }
+            mScene->getLayers()[id]->hide();
+            item->setForeground(Qt::gray);
         } else
         {
             QString layerName = item->text();
             int id = mLayerDict.key(layerName);
-            if (mScene->getLayers()[id] != 0)
-            {
-                mScene->getLayers()[id]->show();
-                item->setForeground(Qt::black);
-            }
+            mScene->getLayers()[id]->show();
+            item->setForeground(Qt::black);
         }
     }
 }
@@ -175,7 +169,7 @@ void SCgLayersPanel::selectLayer(int id)
 
     int count = mLayerListView->count();
 
-    for(int index = 0; index < count; index++)
+    for(int index = 0; index < count; ++index)
     {
         QListWidgetItem * item = mLayerListView->item(index);
         item->setSelected(false);

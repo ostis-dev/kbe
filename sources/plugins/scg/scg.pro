@@ -98,7 +98,6 @@ HEADERS += \
     scglayer.h \
     commands/scgcommandcreatelayer.h \
     commands/scgcommanddeletelayer.h \
-    commands/scgcommandmovetolayer.h \
     scglayerspanel.h
 
 SOURCES += \
@@ -181,7 +180,6 @@ SOURCES += \
     scglayer.cpp \
     commands/scgcommandcreatelayer.cpp \
     commands/scgcommanddeletelayer.cpp \
-    commands/scgcommandmovetolayer.cpp \
     scglayerspanel.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \

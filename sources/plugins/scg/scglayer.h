@@ -27,6 +27,8 @@ public:
     } type;
 
     explicit SCgLayer(QString const& getName, QObject *parent = 0);
+
+    //! Destructor
     ~SCgLayer();
 
     //! Selects objects on scene

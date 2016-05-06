@@ -48,7 +48,6 @@
 #include "commands/scgcommandminimizecontour.h"
 #include "commands/scgcommandcreatelayer.h"
 #include "commands/scgcommanddeletelayer.h"
-#include "commands/scgcommandmovetolayer.h"
 
 #include <QUrl>
 #include <QFile>
@@ -772,30 +771,6 @@ SCgBaseCommand* SCgScene::deleteLayerCommand(uint id,
         mUndoStack->push(cmd);
 
     return cmd;
-}
-
-SCgBaseCommand* SCgScene::createMoveToLayerCommand(uint layer,
-                                         SCgBaseCommand* parentCmd,
-                                         bool addToStack)
-{
-       QList<QGraphicsItem*> selItems = selectedItems();
-       QList<SCgObject*> objects;
-       QList<uint> prevIds;
-       Q_FOREACH(QGraphicsItem* item, selItems)
-       {
-           if (SCgObject* object = dynamic_cast<SCgObject*>(item))
-           {
-               objects.append(object);
-               prevIds.append(mLayers.key(object->getLayer()));
-           }
-       }
-
-       SCgBaseCommand* cmd = new SCgCommandMoveToLayer(this, objects, prevIds, layer, parentCmd);
-
-       if(addToStack)
-           mUndoStack->push(cmd);
-
-       return cmd;
 }
 
 void SCgScene::addCommandToStack(SCgBaseCommand* cmd)
