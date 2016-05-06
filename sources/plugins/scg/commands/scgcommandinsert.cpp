@@ -50,7 +50,7 @@ void SCgCommandInsert::redo()
 
         object->setParentItem(mParent);
         object->positionChanged();
-        object->setLayer(mLayer);
+        mLayer->addObject(object);
     }
 }
 
