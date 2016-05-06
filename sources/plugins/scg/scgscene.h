@@ -24,6 +24,7 @@ class SCgContour;
 class QGraphicsItemGroup;
 class SCgBaseCommand;
 class SCgPointObject;
+class SCgLayersPanel;
 
 class QUndoStack;
 
@@ -376,6 +377,8 @@ public:
     //! Adds given command @p cmd to scene's undoStack.
     void addCommandToStack(SCgBaseCommand* cmd);
 
+    void setLayersPanel(SCgLayersPanel* widget);
+
 
     //! Returned previous edit mode
     EditMode previousMode() const;
@@ -425,6 +428,8 @@ private:
     SCgMode* mMode;
     //! Undo stack
     QUndoStack *mUndoStack;
+    //! Layer widget
+    SCgLayersPanel *mLayersWidget;
 
     //! True, if needed to draw grid
     bool mIsGridDrawn;

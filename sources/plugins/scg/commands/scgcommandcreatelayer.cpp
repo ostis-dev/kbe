@@ -34,7 +34,7 @@ SCgCommandCreateLayer::SCgCommandCreateLayer(SCgScene *scene,
     emit layerAdded(mId, mName);
     emit currentLayerChanged(mId);
 
-    setText(QObject::tr("Create layer"));
+    setText(QObject::tr("Create layer")+ " \"" + mName+ "\"");
 }
 
 SCgCommandCreateLayer::~SCgCommandCreateLayer()

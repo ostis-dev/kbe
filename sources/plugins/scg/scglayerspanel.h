@@ -19,6 +19,8 @@ public:
     SCgLayersPanel(SCgScene *scene, QWidget *parent = 0);
 
     virtual ~SCgLayersPanel();
+
+    int getSelectedLayerId();
 public slots:
     /*! Adds layer to layer's list
       * @param id Layer's id
@@ -50,13 +52,8 @@ private slots:
     //! Show all layers
     void showAll();
 
-    //! Hide selected layers
-    void hideSelected();
-
+    //! Update visibility of selected layers
     void setVisibleSelected();
-
-    //! Show selected layers
-    void showSelected();
 
     //! Select objects on scene for selected layers
     void selectObjects();
@@ -65,9 +62,6 @@ private slots:
       * @param item selected layer
       */
     void selectLayer(QListWidgetItem* item);
-
-    //! Show context menu
-    void customContextMenu(QPoint point);
 
 private:
     //! list of layers

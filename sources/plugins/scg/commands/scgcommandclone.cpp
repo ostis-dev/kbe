@@ -9,8 +9,9 @@
 SCgCommandClone::SCgCommandClone(SCgScene *scene,
                                  QList<SCgObject *> objList,
                                  SCgContour *parentContour,
+                                 SCgLayer* layer,
                                  QUndoCommand *parent)
-    : SCgCommandInsert(scene, objList, parentContour, parent)
+    : SCgCommandInsert(scene, objList, parentContour, layer, parent)
 {
     setText(QObject::tr("Clone"));
 }

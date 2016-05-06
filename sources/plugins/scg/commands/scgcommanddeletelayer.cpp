@@ -22,7 +22,7 @@ SCgCommandDeleteLayer::SCgCommandDeleteLayer(SCgScene *scene,
     emit layerRemoved(mId);
     emit currentLayerChanged(mId);
 
-    setText(QObject::tr("Delete layer"));
+    setText(QObject::tr("Delete layer")+ " \"" + mName+ "\"");
 }
 
 SCgCommandDeleteLayer::~SCgCommandDeleteLayer()

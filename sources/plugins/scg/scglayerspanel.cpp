@@ -29,6 +29,7 @@ SCgLayersPanel::SCgLayersPanel(SCgScene* scene, QWidget* parent)
     mLayerListView->setSortingEnabled(true);
     mLayerListView->setSelectionMode(QAbstractItemView::ExtendedSelection);
     mLayerListView->setContextMenuPolicy(Qt::CustomContextMenu);
+    mScene->setLayersPanel(this);
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(mToolBar);
@@ -39,16 +40,23 @@ SCgLayersPanel::SCgLayersPanel(SCgScene* scene, QWidget* parent)
     connect(mScene, SIGNAL(layerRemoved(int)), SLOT(removeLayer(int)));
     connect(mScene, SIGNAL(currentLayerChanged(int)), this, SLOT(selectLayer(int)));
 
-    connect(mLayerListView, SIGNAL(customContextMenuRequested(QPoint)), SLOT(customContextMenu(QPoint)));
     connect(mLayerListView, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(selectLayer(QListWidgetItem*)));
     connect(mLayerListView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), SLOT(selectObjects()));
-    connect(mLayerListView, SIGNAL(itemChanged(QListWidgetItem*)), SLOT(setVisibleSelected()));
+    connect(mLayerListView, SIGNAL(itemClicked(QListWidgetItem*)), SLOT(setVisibleSelected()));
 }
 
 SCgLayersPanel::~SCgLayersPanel()
 {
     delete mLayerListView;
     delete mToolBar;
+}
+
+int SCgLayersPanel::getSelectedLayerId()
+{
+    QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
+    QString layerName = selItems.first()->text();
+    int id = mLayerDict.key(layerName);
+    return id;
 }
 
 void SCgLayersPanel::addLayer(int id, const QString &name)
@@ -128,66 +136,29 @@ void SCgLayersPanel::hideAll()
     }
 }
 
-void SCgLayersPanel::customContextMenu(QPoint point)
-{
-    QMenu contextMenu(tr("Edit layers"), this);
-
-    QAction* selectObjectAction = contextMenu.addAction(tr("Select objects"), this, SLOT(selectObjects()));
-    QFont boldFont = selectObjectAction->font();
-    boldFont.setBold(true);
-    selectObjectAction->setFont(boldFont);
-    contextMenu.addSeparator();
-    contextMenu.addAction(tr("Show"), this, SLOT(showSelected()));
-    contextMenu.addAction(tr("Hide"), this, SLOT(hideSelected()));
-    contextMenu.addSeparator();
-    contextMenu.addAction(tr("Remove"), this, SLOT(deleteLayer()));
-
-    contextMenu.exec(mapToGlobal(point));
-}
-
-void SCgLayersPanel::showSelected()
-{
-    QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
-    Q_FOREACH (QListWidgetItem* item, selItems)
-    {
-        QString layerName = item->text();
-        int id = mLayerDict.key(layerName);
-        mScene->getLayers()[id]->show();
-        item->setForeground(Qt::black);
-        item->setCheckState(Qt::Checked);
-    }
-}
-
 void SCgLayersPanel::setVisibleSelected() {
-    QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
-    Q_FOREACH (QListWidgetItem* item, selItems)
+    for(int i = 0; i < mLayerListView->count(); ++i)
     {
+        QListWidgetItem* item = mLayerListView->item(i);
         if (item->checkState() == Qt::Unchecked)
         {
             QString layerName = item->text();
             int id = mLayerDict.key(layerName);
-            mScene->getLayers()[id]->hide();
-            item->setForeground(Qt::gray);
+            if (mScene->getLayers()[id] != 0)
+            {
+                mScene->getLayers()[id]->hide();
+                item->setForeground(Qt::gray);
+            }
         } else
         {
             QString layerName = item->text();
             int id = mLayerDict.key(layerName);
-            mScene->getLayers()[id]->show();
-            item->setForeground(Qt::black);
+            if (mScene->getLayers()[id] != 0)
+            {
+                mScene->getLayers()[id]->show();
+                item->setForeground(Qt::black);
+            }
         }
-    }
-}
-
-void SCgLayersPanel::hideSelected()
-{
-    QList<QListWidgetItem*> selItems = mLayerListView->selectedItems();
-    Q_FOREACH (QListWidgetItem* item, selItems)
-    {
-        QString layerName = item->text();
-        int id = mLayerDict.key(layerName);
-        mScene->getLayers()[id]->hide();
-        item->setForeground(Qt::gray);
-        item->setCheckState(Qt::Unchecked);
     }
 }
 

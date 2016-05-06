@@ -15,6 +15,7 @@
 #include "scgpointgraphicsitem.h"
 #include "scgcontentfactory.h"
 #include "scgnodetextitem.h"
+#include "scglayerspanel.h"
 
 #include "modes/scgbusmode.h"
 #include "modes/scgpairmode.h"
@@ -499,7 +500,8 @@ void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)
         objList.append(static_cast<SCgObject*>(item));
-    mUndoStack->push(new SCgCommandInsert(this,objList,parent,0));
+    int id = mLayersWidget->getSelectedLayerId();
+    mUndoStack->push(new SCgCommandInsert(this,objList,parent,this->getLayers()[id], 0));
 
     setEditMode(mPreviousEditMode);
 }
@@ -512,7 +514,8 @@ void SCgScene::cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
     foreach (QGraphicsItem* item, itemList)
         objList.append(static_cast<SCgObject*>(item));
 
-    mUndoStack->push(new SCgCommandClone(this,objList,parent,0));
+    int id = mLayersWidget->getSelectedLayerId();
+    mUndoStack->push(new SCgCommandClone(this,objList,parent,this->getLayers()[id], 0));
 
     setEditMode(mPreviousEditMode);
 }
@@ -802,6 +805,11 @@ void SCgScene::addCommandToStack(SCgBaseCommand* cmd)
                "Pointer to command is null");
 
     mUndoStack->push(cmd);
+}
+
+void SCgScene::setLayersPanel(SCgLayersPanel* widget)
+{
+    mLayersWidget = widget;
 }
 
 void SCgScene::setDrawGrid(bool draw, QColor color, int xStep, int yStep)
