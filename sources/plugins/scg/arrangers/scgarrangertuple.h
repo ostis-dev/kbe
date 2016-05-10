@@ -69,6 +69,8 @@ private:
     //! List of pairs, that go out from a tuple bus
     QList<SCgPair*> mBusPairs;
 
+    QList<SCgContour*> mContour;
+
     //! Distance between tuple objects (end objects for bus pairs)
     qreal mObjectsDist;
     //! Initial x offset

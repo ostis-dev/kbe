@@ -1,4 +1,5 @@
 /*
+ *
  * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
  * Distributed under the MIT License
  * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
@@ -20,7 +21,10 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QToolButton>
+#include <QTextStream>
 #include <QFileDialog>
+#include "QtGlobal"
+
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -33,7 +37,6 @@
 
 #include "scgplugin.h"
 #include "scgexportimage.h"
-
 #include "scgfindwidget.h"
 #include "scgview.h"
 #include "scgminimap.h"
@@ -43,6 +46,8 @@
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
+#include "scgconverter.h"
+#include "foo.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -321,6 +326,9 @@ QIcon SCgWindow::icon() const
 bool SCgWindow::loadFromFile(const QString &fileName)
 {
     GWFFileLoader loader;
+    //Foo temp;
+   // quint32 t = temp.helloworld();
+
 
     if (loader.load(fileName, mView->scene()))
     {
@@ -497,6 +505,34 @@ void SCgWindow::cut() const
 
 void SCgWindow::copy() const
 {
+//    QTextStream cout(stdout);
+
+    QByteArray copiedData;
+    GwfStreamWriter writer(&copiedData);
+    ////////////////////////////////////
+    writer.startWriting();
+
+    QList<QGraphicsItem *>  items = mView->scene()->selectedItems();
+    if (items.isEmpty())
+        return;
+
+    foreach (QGraphicsItem *item, items)
+        if(SCgObject::isSCgObjectType(item->type()) )
+            writer.writeObject(static_cast<SCgObject*>(item));
+
+    writer.finishWriting();
+    ///////////////////////////////////
+    QMimeData* d = new QMimeData();
+
+    d->setData(SupportedPasteMimeType, copiedData);
+    QApplication::clipboard()->setMimeData(d);
+//cout<<copiedData<<endl;
+}
+
+void SCgWindow::copyInSCS()
+{
+    QTextStream cout(stdout);
+
     QByteArray copiedData;
     GwfStreamWriter writer(&copiedData);
     ////////////////////////////////////
@@ -517,7 +553,19 @@ void SCgWindow::copy() const
     d->setData(SupportedPasteMimeType, copiedData);
     QApplication::clipboard()->setMimeData(d);
 
+
+    QFile file("F:/log.txt");
+
+    if (file.open(QIODevice::Append)) {
+       file.write(copiedData);
+    }
+    file.close();
+
+     SCgConverter temp(copiedData);
+     temp.startConverter();
 }
+
+
 
 void SCgWindow::paste() const
 {

@@ -26,6 +26,7 @@
 #include <QUndoStack>
 #include <QCompleter>
 #include <QFileInfo>
+#include <QTextStream>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     QGraphicsView(parent),
@@ -39,6 +40,7 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     mActionContourDelete(0),
     mActionSwapPairOrient(0),
     mActionCopy(0),
+    mActionCopyInSCS(0),
     mActionCut(0),
     mActionPaste(0),
     mActionSelectAll(0),
@@ -122,6 +124,10 @@ void SCgView::createActions()
     mActionSelectAll->setShortcut(QKeySequence::SelectAll);
     connect(mActionSelectAll, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
+    mActionCopyInSCS = new QAction(QIcon::fromTheme("edit-copyInSCS", mWindow->findIcon("edit-copy.png")), tr("Сохранить в SCs"),this);
+    mActionCopyInSCS->setShortcut(QKeySequence(Qt::Key_Q));
+    connect(mActionCopyInSCS, SIGNAL(triggered()), mWindow, SLOT(copyInSCS()));
+
 
     mActionsList.append(mActionChangeContent);
     mActionsList.append(mActionShowContent);
@@ -141,6 +147,7 @@ void SCgView::createActions()
     mActionsList.append(sep);
 
     mActionsList.append(mActionCopy);
+    mActionsList.append(mActionCopyInSCS);
     mActionsList.append(mActionCut);
     mActionsList.append(mActionPaste);
 
@@ -216,6 +223,7 @@ void SCgView::updateActionsState(int idx)
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
+    mActionCopyInSCS->setEnabled(isAnySelected);
 
     //check for showed/hidden contents
     items = scene()->items();
