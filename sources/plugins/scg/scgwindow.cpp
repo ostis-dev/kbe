@@ -47,8 +47,6 @@
 #include "config.h"
 #include "scgundoview.h"
 #include "scgconverter.h"
-#include "foo.h"
-
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
@@ -326,9 +324,6 @@ QIcon SCgWindow::icon() const
 bool SCgWindow::loadFromFile(const QString &fileName)
 {
     GWFFileLoader loader;
-    //Foo temp;
-   // quint32 t = temp.helloworld();
-
 
     if (loader.load(fileName, mView->scene()))
     {

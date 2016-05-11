@@ -51,6 +51,7 @@ private:
     struct contour{
         QString name;
         QString id;
+        QString parentId;
     };
 
     QVector<contour> elementContour;
@@ -58,6 +59,7 @@ private:
     struct bus{
         QString owner;
         QString id;
+
     };
 
     QVector<bus> elementBus;

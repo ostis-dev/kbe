@@ -36,6 +36,7 @@ QVector<pair> elementPair;
 struct contour{
     QString name;
     QString id;
+    QString parendId;
 };
 
 QVector<contour> elementContour;
@@ -64,7 +65,7 @@ void SCgConverter::startConverter() {
 
     QTextStream cout(stdout);
     int dif;
-    //cout<<fileText<<endl<<endl;
+    cout<<fileText<<endl<<endl;
     for (int index=0; index<fileText.length()-10;index++){
         if (findString(index,"<node")){
             node newNode;
@@ -200,6 +201,13 @@ void SCgConverter::startConverter() {
                     newContour.id=str;
 
                 }
+
+                if (findString(dif,"parent=\"")){
+                    QString str=returnString(dif,"parent=");
+                    newContour.parentId=str;
+                  //  cout<<str;
+                }
+
                 dif++;
             }
             newContour.name="Contour"+QString::number(elementContour.length()+1);
@@ -229,6 +237,17 @@ void SCgConverter::startConverter() {
             elementBus.append(newBus);
         }
       }
+
+    for (int index=0;index<elementContour.length();index++){
+        node newNode;
+        newNode.id=elementContour[index].id;
+        newNode.idtf=elementContour[index].name;
+        newNode.parentId=elementContour[index].parentId;
+        newNode.type=5;
+        cout<<newNode.parentId<<" "<<newNode.id<<"\n";
+        elementNode.append(newNode);
+    }
+
 
     createSCS();
 }
@@ -275,12 +294,12 @@ void SCgConverter::createSCS(){
         out.setCodec("UTF8");
         out<<elementContour[index].name<<" =  \n [* ";
 
-        node newNode;
+       /* node newNode;
         newNode.id=elementContour[index].id;
         newNode.idtf=elementContour[index].name;
         newNode.parentId="0";
         newNode.type=5;
-        elementNode.append(newNode);
+        elementNode.append(newNode);*/
         file.close();
         createBunchRelation(elementContour[index].id);
         createBinaryRelation(elementContour[index].id);
