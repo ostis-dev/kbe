@@ -1,19 +1,32 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252">
-<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Code Standarts</title>
+    <meta http-equiv="CONTENT-TYPE" content="text/html; charset=windows-1252">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body bgcolor="#000033" dir="ltr" lang="en-US" link="#ffff00" text="#ccccff">
+<body bgcolor="#000033" dir="ltr" lang="en-US">
 
-<p class="header" align="center"><img alt="" src="ostis-logo.png"></p>
-<p class="header" align="center">OSTIS (Open Semantic Technology for Intelligent Systems)</p>
-<p class="header" align="center">Knowledge Base source Editor</p>
-<p class="header" align="center">Coding standards</p>
-
-<hr width="90%">
-This document describes the coding standards all developers are expected to adhere to when writing code for the KBE project. 
+<header class="header">
+                    <img class="headerLogo" src="ostis-logo.png" alt="//ostis-logo.png">
+                
+                <a class="headerLink" href="http://www.ostis.net">
+                    <h3 class="mainLink">knowledge Base Editor</h3>
+                </a>
+                <nav>
+                    <ul class="mainNav">
+                        <li><a href="http://www.ostis.net" title="">OSTIS</a></li>
+                        <li><a href="codingstandards.html" title="">Coding standarts</a></li>
+                        <li><a href="install.html" title="">How to install?</a></li>
+                        <li><a href="changelog.html" title="">Changes in last version</a></li>  
+                        <li><a href="http://www.ostis.net" title="">Support</a></li>
+                        <li><a href="license.html">License documentation</a></li>                    
+                    </ul>
+                </nav>
+</header>
+<a href="readme.html" class="button2" tabindex="0">Visit OSTIS website</a>
+<p class="bigText2">This document describes the coding standards all developers are expected to adhere to when writing code for the KBE project.</p>
 
 <p class="header">Files</p>
 <ol>
@@ -84,13 +97,13 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 	</li>
 </ol>
 
-<p class="header">Portablity</p>
+<p class="header bigText2">Portablity</p>
 <ol>
 	<li>All code must be cross platform, ANSI C++. No dependencies on platform-specific headers and / or types are allowed (the only exception is when dealing with platform-specific features like windowing, which must be implemented for each platform separately).</li>
 	<li>If you serialise / deserialise any data, subclass from Serializer and use its methods, it will insulate you from endianness issues. If you need to serialise any types it doesn't already handle, make sure you deal with endianness issues in the same way Serializer does (ie use native endianness by default but detect the inverse on reading and perform flipping if required).</li>
 </ol>
 
-<p class="header">C++ Standards compliance</p>
+<p class="header bigText2">C++ Standards compliance</p>
 <ol>
 	<li>Always prefer the QT over custom or stl containers / algorithms.</li>
 	<li>Always prefer C++ techniques over C:
@@ -108,7 +121,7 @@ along with OSTIS.  If not, see <http://www.gnu.org/licenses/>.
 	<li>Avoid non-const by-ref parameters unless you have no other option. We prefer not to have in/our parameters since they are less intuitive.</li>
 </ol>
 
-<p class="header">Naming conventions & Documentation</p>
+<p class="header bigText2">Naming conventions & Documentation</p>
 <ol>
 	<li>Classes, types and structures must be title case (MyNewClass)</li>
 	<li>Methods and local variables must be camel case (myNewMethod)</li>
@@ -135,7 +148,7 @@ typedef enum
 	<li>Use verbose, descriptive names for classes, methods, variables - everything except trival counters. Code should be self-describing, don't be obtuse</li>
 </ol>
 
-<p class="header">Style issues</p>
+<p class="header bigText2">Style issues</p>
 <ol>
 	<li>Any and all braces opening a code block should be on their own line, and not attached to the control structure that came before. That is, like this
 	<pre>
@@ -283,24 +296,24 @@ cSomeClass::cSomeClass(): mMember1(0), mMember2(0), ...
 	<li>Only use C++ style casts. C style casts should not be used. Or better yet, find a way not to use the cast at all</li>
 </ol>
 
-<p class="header">Error handling</p>
+<p class="header bigText2">Error handling</p>
 <ol>
 	<li>Whenever you make an assumption in your code, verify it with an Q_ASSERT()</li>
 </ol>
 
-<p class="header">Design issues</p>
+<p class="header bigText2">Design issues</p>
 <ol>
 	<li>Use existing design patterns and identify them by their well known names. A good starting reference is the 'Gang of Four' book</li>
 	<li>Use strong encapsulation. Top-level interfaces should hide implementations and not require the user of the library to understand internals. Avoid public attributes except in structs</li>
 	<li>Don't use 'friend' if you can avoid it. Where classes need to collaborate on an internal implementation, prefix the methods they use to communicate with '_' (this is our demarcation for 'recommended for internal use only'). This can also be used to expose advanced functionality only intended for very skilled users</li>
 </ol>
 
-<hr width="90%">
-<p align="center">Copyright &copy; 2010 by The OSTIS Team
-<script>
-<!--//hide script from old browsers
-document.write( "Last modified "+ document.lastModified );
-//end hiding contents -->
-</script></p>
+<footer>
+            <p class="foot">Copyright &copy; 2010 by The OSTIS Team.
+                <script>
+                    document.write( "Last modified "+ document.lastModified );
+                </script>
+            </p>
+        </footer>
 
 </body>
