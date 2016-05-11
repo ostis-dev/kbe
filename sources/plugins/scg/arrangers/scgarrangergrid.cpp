@@ -47,8 +47,6 @@ bool SCgGridArranger::configDialog()
     recalculateGhostsPosition();
 
     bool res = mDialog->exec() == QDialog::Accepted;
-
-    deleteGhosts();
     mPlaced.clear();
     drawGrid(false);
 
