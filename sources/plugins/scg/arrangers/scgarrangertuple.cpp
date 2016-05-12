@@ -191,7 +191,14 @@ bool SCgTupleArranger::findArrangeItems()
                     mArrangeItems.append(end);
 
                     dot = pair->beginDot();
-                }
+                } else
+                    if (end && (int)end->type()==(int)65541){
+
+                         mArrangeItems.append(pair);
+                          mArrangeItems.append(end);
+
+                          dot = pair->beginDot();
+                    }
             }
 
             if (pair->endObject() == bus)
@@ -259,30 +266,39 @@ void SCgTupleArranger::recalculateGhostsPosition()
         Q_ASSERT(ghostEnd);
         SCgObject *ghostBeg = mGhosts[pair->beginObject()];
         Q_ASSERT(ghostBeg);
+        int difY =0;
+        int difX = 0;
+        if (ghostEnd->type()==65541)
+            {
 
+                    difY=ghostEnd->boundingRect().height()/2+5;
+                    difX = ghostEnd->boundingRect().width()/2+5;
+
+            }
         if (ghostBeg->type() == SCgBus::Type)
         {
-            ghostEnd->setPos(mTupleNode->pos().x() + mOffsetX,
-                             mTupleNode->pos().y() + yPos);
+            ghostEnd->setPos(mTupleNode->pos().x() + mOffsetX+difX,
+                             mTupleNode->pos().y() + yPos+difY);
             QVector<QPointF> points;
-            points.append(QPointF(mTupleNode->pos().x(),
-                                  mTupleNode->pos().y() + yPos));
+            points.append(QPointF(mTupleNode->pos().x()+difX,
+                                  mTupleNode->pos().y() + yPos+difY));
             points.append(ghostEnd->pos());
             ghostPair->setPoints(points);
 
             yPos += ghostEnd->boundingRect().height();
         }else
         {
-            ghostBeg->setPos(mTupleNode->pos().x() + mOffsetX,
-                             mTupleNode->pos().y() + yPos);
+            ghostBeg->setPos(mTupleNode->pos().x() + mOffsetX+difX,
+                             mTupleNode->pos().y() + yPos+difY);
             QVector<QPointF> points;
             points.append(ghostBeg->pos());
-            points.append(QPointF(mTupleNode->pos().x(),
-                                  mTupleNode->pos().y() + yPos));
+            points.append(QPointF(mTupleNode->pos().x()+difX,
+                                  mTupleNode->pos().y() + yPos+difY));
             ghostPair->setPoints(points);
 
             yPos += ghostBeg->boundingRect().height();
         }
+
 
 
         //ghostPair->setBeginDot(ghostBus->dotPos(QPointF(mTupleNode->pos().x(),
