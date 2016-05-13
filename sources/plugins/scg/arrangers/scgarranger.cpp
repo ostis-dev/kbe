@@ -151,3 +151,4 @@ void SCgArranger::createGhosts(const QList<QGraphicsItem*>& list)
         if (it->opacity() == 1 && SCgObject::isSCgObjectType(it->type()))
             createGhost(static_cast<SCgObject*>(it));
 }
+

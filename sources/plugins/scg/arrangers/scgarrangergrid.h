@@ -64,8 +64,7 @@ protected slots:
     /*! @defgroup Slots Slots to react on user actions
      *  @{
      */
-    void xValueChanged(int newSpacing);
-    void yValueChanged(int newSpacing);
+    void AllValueChanged(int newSpacing);
     void symmetricalCheckBoxClicked(bool checked);
     /*! @}*/
 

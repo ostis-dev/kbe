@@ -43,6 +43,8 @@ public:
 
     //! @return type of this arranger.
     virtual int type() const = 0;
+
+
 protected:
 
     //! Shows menu to user and returns true, if user agree with changes.
@@ -87,5 +89,6 @@ private:
     * @p opacityLevel - opacity value for top level items.
     **/
     SCgObject* createGhost(SCgObject* obj, qreal opacityLevel = 0.4);
+    SCgObject* collectObjects(SCgObject* obj, qreal opacityLevel);
 };
 

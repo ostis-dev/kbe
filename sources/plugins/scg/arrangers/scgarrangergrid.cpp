@@ -52,25 +52,17 @@ bool SCgGridArranger::configDialog()
 
     mDialog->setParent(0, Qt::Dialog);
 
-
-
     return res;
 }
 
-void SCgGridArranger::xValueChanged(int newSpacing)
+void SCgGridArranger::AllValueChanged(int newSpacing)
 {
     mXStep = newSpacing;
     if(mIsSymmetrical && mYStep != mXStep)
+    {
         mYSpinBox->setValue(newSpacing);
-    else
-        recalculateGhostsPosition();
-}
-
-void SCgGridArranger::yValueChanged(int newSpacing)
-{
-    mYStep = newSpacing;
-    if(mIsSymmetrical && mYStep != mXStep)
         mXSpinBox->setValue(newSpacing);
+    }
     else
         recalculateGhostsPosition();
 }
