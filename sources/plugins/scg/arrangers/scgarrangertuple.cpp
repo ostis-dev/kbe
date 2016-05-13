@@ -76,18 +76,19 @@ void SCgTupleArranger::startOperation()
     foreach(SCgPair *pair, mBusPairs)
     {
         SCgObject *end = pair->endObject();
-        SCgObject *beg = pair->beginObject();
-        Q_ASSERT(end != 0 && beg != 0);
+        SCgObject *begin = pair->beginObject();
+        Q_ASSERT(end != 0 && begin != 0);
         SCgPair *ghostPair = qgraphicsitem_cast<SCgPair*>(mGhosts[pair]);
         Q_ASSERT(ghostPair != 0);
 
         registerCommand(pair, ghostPair->points());
 
-        if (beg->type() == SCgBus::Type)
+        if (begin->type() == SCgBus::Type)
             registerCommand(end, mGhosts[end]->pos());
         else
-            registerCommand(beg, mGhosts[beg]->pos());
+            registerCommand(begin, mGhosts[begin]->pos());
     }
+
 }
 
 QString SCgTupleArranger::name() const

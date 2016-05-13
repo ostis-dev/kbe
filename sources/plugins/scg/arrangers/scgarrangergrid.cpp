@@ -52,6 +52,8 @@ bool SCgGridArranger::configDialog()
 
     mDialog->setParent(0, Qt::Dialog);
 
+
+
     return res;
 }
 
@@ -117,18 +119,12 @@ QDialog* SCgGridArranger::createDialog()
     vl->addWidget(ySpin);
     hl->addLayout(vl);
 
-    QCheckBox* symChkBox = new QCheckBox(tr("Symmetrical grid"));
-
-    symChkBox->setChecked(mIsSymmetrical);
-
     vl = new QVBoxLayout();
     vl->addLayout(hl);
-    vl->addWidget(symChkBox);
     vl->addWidget(buttonBox);
 
     connect(xSpin, SIGNAL(valueChanged(int)), this, SLOT(xValueChanged(int)));
     connect(ySpin, SIGNAL(valueChanged(int)), this, SLOT(yValueChanged(int)));
-    connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
     connect(buttonBox, SIGNAL(accepted()), mDialog, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), mDialog, SLOT(reject()));
 

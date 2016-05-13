@@ -67,6 +67,7 @@ protected:
     void registerCommandMinimizeContour(SCgContour *contour);
 
 
+
     /*! Creates ghosts of objects for current list(@p list).
     @see createGhost()*/
     void createGhosts(const QList<QGraphicsItem*>& list);
