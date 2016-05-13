@@ -5,9 +5,9 @@
  */
 
 #include <QGraphicsSceneMouseEvent>
-#include "scgnodetextitem.h"
+#include <QGraphicsTextItem>
 #include <QCursor>
-#include <cmath>
+#include "scgnodetextitem.h"
 
 // Used as width of horizontal borders of identifier bounding rectangle
 const int adjust = 10;
@@ -174,7 +174,6 @@ void SCgNodeTextItem::changeIdtfWidth(double dx)
     QPointF prevPos = pos();
 
     SCgNode::IdentifierPosition idtfPos = nodeTextPos();
-
     this->setTextWidth(this->textWidth() + dx);
 
     QRectF newRect = boundingRect();
