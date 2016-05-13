@@ -45,6 +45,8 @@
 #include "commands/scgcommandswappairorient.h"
 #include "commands/scgcommandremovebreakpoints.h"
 #include "commands/scgcommandminimizecontour.h"
+//TODO: Implement call of SCgCommandIdtfWidthChange for SCgNodeTextItem (changing identifier's width - method: changeIdtfWidth(...)).
+#include "commands/scgcommandidtfwidthchange.h"
 
 #include <QUrl>
 #include <QFile>
