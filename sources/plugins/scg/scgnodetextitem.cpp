@@ -5,7 +5,6 @@
  */
 
 #include <QGraphicsSceneMouseEvent>
-#include <QGraphicsTextItem>
 #include <QCursor>
 #include "scgnodetextitem.h"
 
@@ -178,7 +177,7 @@ void SCgNodeTextItem::changeIdtfWidth(double dx)
 
     QRectF newRect = boundingRect();
     QPointF newPos;
-    QPointF diff;
+    QPointF diff = QPointF();
 
     switch(idtfPos)
     {
@@ -195,7 +194,7 @@ void SCgNodeTextItem::changeIdtfWidth(double dx)
             diff = prevRect.topRight() - newRect.topRight();
             break;
         default:
-            throw std::exception("Unknown enum member.");
+            qWarning("Unknown enum member.");
     }
 
     newPos = prevPos + diff;

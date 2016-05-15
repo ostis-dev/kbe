@@ -8,10 +8,8 @@ CONFIG += ordered
 DESTDIR = ./bin
 
 SUBDIRS = plugins/scg \
-          kbe
-
           #plugins/scn \
-          #plugins/scs \
-
+          plugins/scs \
+          kbe
 
 #win32: SUBDIRS += updater
