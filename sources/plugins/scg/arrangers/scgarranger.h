@@ -68,6 +68,8 @@ protected:
     //! Command for minimizing contour.
     void registerCommandMinimizeContour(SCgContour *contour);
 
+    void useBreakPoints(SCgPair *pair);
+
 
 
     /*! Creates ghosts of objects for current list(@p list).

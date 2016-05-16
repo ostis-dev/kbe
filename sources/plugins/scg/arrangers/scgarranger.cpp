@@ -152,3 +152,10 @@ void SCgArranger::createGhosts(const QList<QGraphicsItem*>& list)
             createGhost(static_cast<SCgObject*>(it));
 }
 
+void SCgArranger::useBreakPoints(SCgPair *pair)
+ {
+     if (!mParentCommand) {
+         mParentCommand = mScene->removeBreakPointsCommand(pair, 0, false);
+     } else {
+         mScene->removeBreakPointsCommand(pair, mParentCommand, false);
+ }}

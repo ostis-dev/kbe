@@ -33,6 +33,8 @@ protected:
     //!  @see SCgArranger::startOperation()
     void startOperation();
 
+    void sumGhostsPosition();
+
     //! Holds dialog window, shown to user.
     //! @see SCgGridArranger::createDialog()
     QDialog* mDialog;
@@ -90,4 +92,5 @@ private:
 
 
 };
+
 
