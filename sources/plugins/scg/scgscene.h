@@ -14,6 +14,9 @@
 #include "scgobject.h"
 #include "scgcontent.h"
 #include "commands/scgbasecommand.h"
+#include "scglayer.h"
+
+class SCgLayerWidget;
 
 class SCgMode;
 class SCgNode;
@@ -362,12 +365,31 @@ public:
 
     QGraphicsItem* itemAt(const QPointF & point) const;
 
+    QList<SCgLayer*> getLayers();
+
+    SCgLayer* findLayerWithName(const QString &name);
+
+    SCgLayer* createSCgLayer(const QString &name);
+
+    void deleteSCgLayer(SCgLayer* layer);
+
+    void setLayerWidget(SCgLayerWidget* widget);
+
+    SCgLayerWidget* getLayerWidget();
+
+    bool isStandartLayerType(const QString &layerName);
+
+    void moveObjectToStdLayers(SCgObject* object);
+
 private:
+    QList<SCgLayer*> layers;
+
     QVector<SCgMode*> mSceneModes;
     //! Current edit mode
     SCgMode* mMode;
     //! Undo stack
     QUndoStack *mUndoStack;
+    SCgLayerWidget *layerWidget;
 
     //! True, if needed to draw grid
     bool mIsGridDrawn;

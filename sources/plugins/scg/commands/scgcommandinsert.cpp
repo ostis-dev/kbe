@@ -11,10 +11,12 @@
 SCgCommandInsert::SCgCommandInsert(SCgScene *scene,
                                    QList<SCgObject*> objList,
                                    SCgContour* parentContour,
+                                   QString layerName,
                                    QUndoCommand *parent)
     : SCgBaseCommand(scene, 0, parent)
     , mList(objList)
     , mParent(parentContour)
+    , layerName(layerName)
 {
     foreach(SCgObject* obj, mList)
         connect(obj, SIGNAL(destroyed(QObject*)), this, SLOT(objectFromListDestroyed(QObject*)));
@@ -48,6 +50,16 @@ void SCgCommandInsert::redo()
 
         object->setParentItem(mParent);
         object->positionChanged();
+        if (mScene->isStandartLayerType(layerName))
+        {
+            mScene->moveObjectToStdLayers(object);
+        } else {
+            SCgLayer* layer = mScene->findLayerWithName(layerName);
+            if (layer != 0)
+            {
+                layer->addObject(object);
+            }
+        }
     }
 }
 

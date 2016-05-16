@@ -28,6 +28,7 @@ SCgObject::SCgObject(QGraphicsItem *parent)
     , mTextItem(0)
     , mIsDead(false)
     , mParentChanging(false)
+    , layer(0)
 {
     mColor = scg_cfg_get_value_color(scg_key_element_color_normal);
 
@@ -263,6 +264,16 @@ void SCgObject::setDead(bool dead)
 {
     mIsDead = dead;
     update();
+}
+
+void SCgObject::setLayer(SCgLayer *layer)
+{
+    this->layer = layer;
+}
+
+SCgLayer* SCgObject::getLayer()
+{
+    return layer;
 }
 
 void SCgObject::del(QList<SCgObject*> &delList)

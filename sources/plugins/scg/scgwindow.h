@@ -11,6 +11,7 @@
 
 #include <QToolBox>
 #include <QMap>
+#include "scglayerwidget.h"
 
 class SCgMinimap;
 class SCgView;
@@ -131,6 +132,8 @@ private:
 
     //! Undo stack
     QUndoStack *mUndoStack;
+
+    SCgLayerWidget *mLayersWidget;
 
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;

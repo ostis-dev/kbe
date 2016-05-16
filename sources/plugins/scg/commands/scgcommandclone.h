@@ -23,6 +23,7 @@ public:
     explicit SCgCommandClone(SCgScene *scene,
                               QList<SCgObject*> objList,
                               SCgContour* parentContour,
+                              QString layerName,
                               QUndoCommand *parent = 0);
     //! Destructor
     virtual ~SCgCommandClone();

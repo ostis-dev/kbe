@@ -24,6 +24,7 @@ public:
     explicit SCgCommandInsert(SCgScene *scene,
                               QList<SCgObject*> objList,
                               SCgContour* parentContour,
+                              QString layerName,
                               QUndoCommand *parent = 0);
     //! Destructor
     virtual ~SCgCommandInsert();
@@ -37,6 +38,7 @@ protected:
     QList<SCgObject*> mList;
     //! Parent contour
     SCgContour* mParent;
+    QString layerName;
 private slots:
 
     void objectFromListDestroyed(QObject* obj);

@@ -4,6 +4,11 @@
  * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
  */
 
+#define NODE_LAYER "node layer"
+#define ARC_LAYER "arc layer"
+#define BUS_LAYER "bus layer"
+#define CONTOUR_LAYER "contour layer"
+
 #include "scgscene.h"
 
 #include "scgobject.h"
@@ -15,6 +20,7 @@
 #include "scgpointgraphicsitem.h"
 #include "scgcontentfactory.h"
 #include "scgnodetextitem.h"
+#include "scglayerwidget.h"
 
 #include "modes/scgbusmode.h"
 #include "modes/scgpairmode.h"
@@ -227,6 +233,22 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     node->setTypeAlias("node/const/general");
 
     addItem(node);
+    if (isStandartLayerType(layerWidget->getSelectedLayerName()))
+    {
+        SCgLayer* layer = findLayerWithName(NODE_LAYER);
+        if (layer != 0)
+        {
+            node->setLayer(layer);
+            layer->addObject(node);
+        }
+    } else {
+        SCgLayer* layer = findLayerWithName(layerWidget->getSelectedLayerName());
+        if (layer != 0)
+        {
+            node->setLayer(layer);
+            layer->addObject(node);
+        }
+    }
     return node;
 }
 
@@ -245,6 +267,22 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
     pair->setPoints(points);
 
     addItem(pair);
+    if (isStandartLayerType(layerWidget->getSelectedLayerName()))
+    {
+        SCgLayer* layer = findLayerWithName(ARC_LAYER);
+        if (layer != 0)
+        {
+            pair->setLayer(layer);
+            layer->addObject(pair);
+        }
+    } else {
+        SCgLayer* layer = findLayerWithName(layerWidget->getSelectedLayerName());
+        if (layer != 0)
+        {
+            pair->setLayer(layer);
+            layer->addObject(pair);
+        }
+    }
 
     return pair;
 }
@@ -259,6 +297,22 @@ SCgBus* SCgScene::createSCgBus(const QVector<QPointF>& points, SCgNode *owner)
     bus->setPoints(points);
 
     addItem(bus);
+    if (isStandartLayerType(layerWidget->getSelectedLayerName()))
+    {
+        SCgLayer* layer = findLayerWithName(BUS_LAYER);
+        if (layer != 0)
+        {
+            bus->setLayer(layer);
+            layer->addObject(bus);
+        }
+    } else {
+        SCgLayer* layer = findLayerWithName(layerWidget->getSelectedLayerName());
+        if (layer != 0)
+        {
+            bus->setLayer(layer);
+            layer->addObject(bus);
+        }
+    }
 
     return bus;
 }
@@ -276,6 +330,22 @@ SCgContour* SCgScene::createSCgContour(const QVector<QPointF> &points)
     contour->setPoints(v);
 
     addItem(contour);
+    if (isStandartLayerType(layerWidget->getSelectedLayerName()))
+    {
+        SCgLayer* layer = findLayerWithName(CONTOUR_LAYER);
+        if (layer != 0)
+        {
+            contour->setLayer(layer);
+            layer->addObject(contour);
+        }
+    } else {
+        SCgLayer* layer = findLayerWithName(layerWidget->getSelectedLayerName());
+        if (layer != 0)
+        {
+            contour->setLayer(layer);
+            layer->addObject(contour);
+        }
+    }
 
     return contour;
 }
@@ -493,7 +563,7 @@ void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)
         objList.append(static_cast<SCgObject*>(item));
-    mUndoStack->push(new SCgCommandInsert(this,objList,parent,0));
+    mUndoStack->push(new SCgCommandInsert(this,objList,parent, layerWidget->getSelectedLayerName(), 0));
 
     setEditMode(mPreviousEditMode);
 }
@@ -506,7 +576,7 @@ void SCgScene::cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
     foreach (QGraphicsItem* item, itemList)
         objList.append(static_cast<SCgObject*>(item));
 
-    mUndoStack->push(new SCgCommandClone(this,objList,parent,0));
+    mUndoStack->push(new SCgCommandClone(this,objList,parent, layerWidget->getSelectedLayerName(), 0));
 
     setEditMode(mPreviousEditMode);
 }
@@ -931,6 +1001,84 @@ void SCgScene::ensureSelectedItemVisible()
 {
     if (!selectedItems().isEmpty())
         views().at(0)->ensureVisible(selectedItems().at(0));
+}
+
+QList<SCgLayer*> SCgScene::getLayers()
+{
+    return layers;
+}
+
+SCgLayer *SCgScene::findLayerWithName(const QString &name)
+{
+    Q_FOREACH (SCgLayer* layer, layers)
+    {
+        if (layer->getName() == name)
+        {
+            return layer;
+        }
+    }
+    return 0;
+}
+
+SCgLayer* SCgScene::createSCgLayer(const QString &name)
+{
+    SCgLayer* layer = new SCgLayer(name);
+    layers.append(layer);
+    return layer;
+}
+
+void SCgScene::deleteSCgLayer(SCgLayer* layer)
+{
+    layers.removeOne(layer);
+    Q_FOREACH (SCgObject* object, layer->getObjects())
+    {
+        moveObjectToStdLayers(object);
+    }
+    delete layer;
+}
+
+void SCgScene::setLayerWidget(SCgLayerWidget *widget)
+{
+    layerWidget = widget;
+}
+
+SCgLayerWidget *SCgScene::getLayerWidget()
+{
+    return layerWidget;
+}
+
+bool SCgScene::isStandartLayerType(const QString &layerName)
+{
+    if (layerName == NODE_LAYER
+            || layerName == ARC_LAYER
+            || layerName == BUS_LAYER
+            || layerName == CONTOUR_LAYER
+            || layerName == "")
+        return true;
+    return false;
+}
+
+void SCgScene::moveObjectToStdLayers(SCgObject *object)
+{
+    switch (object->type())
+    {
+    case SCgNode::Type:
+        object->setLayer(findLayerWithName(NODE_LAYER));
+        findLayerWithName(NODE_LAYER)->addObject(object);
+        break;
+    case SCgPair::Type:
+        object->setLayer(findLayerWithName(ARC_LAYER));
+        findLayerWithName(ARC_LAYER)->addObject(object);
+        break;
+    case SCgContour::Type:
+        object->setLayer(findLayerWithName(CONTOUR_LAYER));
+        findLayerWithName(CONTOUR_LAYER)->addObject(object);
+        break;
+    case SCgBus::Type:
+        object->setLayer(findLayerWithName(BUS_LAYER));
+        findLayerWithName(BUS_LAYER)->addObject(object);
+        break;
+    }
 }
 
 QGraphicsItem* SCgScene::itemAt(const QPointF & point) const
