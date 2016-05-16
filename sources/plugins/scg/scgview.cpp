@@ -26,8 +26,19 @@
 #include <QUndoStack>
 #include <QCompleter>
 #include <QFileInfo>
+#include <QGroupBox>
+#include <QVBoxLayout>
+#include <QRadioButton>
+#include <QIcon>
+#include <QWidget>
+#include <QLabel>
+#include <QMessageBox>
 
 SCgView::SCgView(QWidget *parent, SCgWindow *window) :
+    mActionChangeConstPair(0),
+    mActionChangeVarPair(0),
+    mActionChangeConstNode(0),
+    mActionChangeVarNode(0),
     QGraphicsView(parent),
     mActionChangeContent(0),
     mActionShowContent(0),
@@ -122,6 +133,24 @@ void SCgView::createActions()
     mActionSelectAll->setShortcut(QKeySequence::SelectAll);
     connect(mActionSelectAll, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
+    mActionChangeConstPair=new QAction(tr("Change const pair"),mWindow);
+    mActionChangeConstPair->setShortcut(QKeySequence( tr("Alt+T") ));
+    connect(mActionChangeConstPair, SIGNAL(triggered()), this, SLOT(changeConstPair()));
+
+    mActionChangeVarPair=new QAction(tr("Change variant pair"),mWindow);
+    mActionChangeVarPair->setShortcut(QKeySequence( tr("Alt+P") ));
+    connect(mActionChangeVarPair, SIGNAL(triggered()), this, SLOT(changeVarPair()));
+
+    mActionChangeConstNode=new QAction(tr("Change const node"),mWindow);
+    mActionChangeConstNode->setShortcut(QKeySequence( tr("Alt+C") ));
+    connect(mActionChangeConstNode, SIGNAL(triggered()), this, SLOT(changeConstNode()));
+
+    mActionChangeVarNode=new QAction(tr("Change variant node"),mWindow);
+    mActionChangeVarNode->setShortcut(QKeySequence( tr("Alt+S") ));
+    connect(mActionChangeVarNode, SIGNAL(triggered()), this, SLOT(changeVarNode()));
+
+
+
 
     mActionsList.append(mActionChangeContent);
     mActionsList.append(mActionShowContent);
@@ -156,6 +185,12 @@ void SCgView::createActions()
 
     mActionsList.append(mActionContourDelete);
     mActionsList.append(mActionDelete);
+    mActionsList.append(mActionChangeConstPair);
+    mActionsList.append(mActionChangeVarPair);
+    mActionsList.append(mActionChangeConstNode);
+    mActionsList.append(mActionChangeVarNode);
+
+
 }
 
 void SCgView::updateActionsState(int idx)
@@ -216,6 +251,12 @@ void SCgView::updateActionsState(int idx)
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
+
+    mActionChangeConstPair->setEnabled(isAnySelected);
+    mActionChangeVarPair->setEnabled(isAnySelected);
+    mActionChangeConstNode->setEnabled(isAnySelected);
+    mActionChangeVarNode->setEnabled(isAnySelected);
+
 
     //check for showed/hidden contents
     items = scene()->items();
@@ -462,6 +503,359 @@ void SCgView::changeType(QAction *action)
     Q_ASSERT(mContextObject);
 
     static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+}
+
+void SCgView::changeConstPair(){
+
+    if(mContextObject && mContextObject->type() == SCgPair::Type){
+
+    Q_ASSERT(mContextObject);
+
+    QDialog dialogConstPair(this);
+    QSize size(24,24);
+    dialogConstPair.setWindowTitle("Change constant Pair");
+    SCgAlphabet sc;
+
+    QGroupBox *groupBox = new QGroupBox(tr("Константные sc.g-дуги"));
+
+         QRadioButton *radioConstPair1 = new QRadioButton("pair/const/-/-/noorien");
+         QRadioButton *radioConstPair2 = new QRadioButton("pair/const/-/-/orient");
+         QRadioButton *radioConstPair3 = new QRadioButton("pair/const/fuz/perm/orient/accessory");
+         QRadioButton *radioConstPair4 = new QRadioButton("pair/const/fuz/temp/orient/accessory");
+         QRadioButton *radioConstPair5 = new QRadioButton("pair/const/neg/perm/orient/accessory");
+         QRadioButton *radioConstPair6 = new QRadioButton("pair/const/neg/temp/orient/accessory");
+         QRadioButton *radioConstPair7 = new QRadioButton("pair/const/pos/perm/orient/accessory");
+         QRadioButton *radioConstPair8 = new QRadioButton("pair/const/pos/temp/orient/accessory");
+
+         radioConstPair1->setChecked(true);
+         radioConstPair1->setIcon(sc.createPairIcon(size,"pair/const/-/-/noorien"));
+         radioConstPair2->setIcon(sc.createPairIcon(size,"pair/const/-/-/orient"));
+         radioConstPair3->setIcon(sc.createPairIcon(size,"pair/const/fuz/perm/orient/accessory"));
+         radioConstPair4->setIcon(sc.createPairIcon(size,"pair/const/fuz/temp/orient/accessory"));
+         radioConstPair5->setIcon(sc.createPairIcon(size,"pair/const/neg/perm/orient/accessory"));
+         radioConstPair6->setIcon(sc.createPairIcon(size,"pair/const/neg/temp/orient/accessory"));
+         radioConstPair7->setIcon(sc.createPairIcon(size,"pair/const/pos/perm/orient/accessory"));
+         radioConstPair8->setIcon(sc.createPairIcon(size,"pair/const/pos/temp/orient/accessory"));
+
+         QVBoxLayout *vbox = new QVBoxLayout;
+
+         vbox->addWidget(radioConstPair1);
+         vbox->addWidget(radioConstPair2);
+         vbox->addWidget(radioConstPair3);
+         vbox->addWidget(radioConstPair4);
+         vbox->addWidget(radioConstPair5);
+         vbox->addWidget(radioConstPair6);
+         vbox->addWidget(radioConstPair7);
+         vbox->addWidget(radioConstPair8);
+
+         vbox->addStretch(1);
+         groupBox->setLayout(vbox);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                                       | QDialogButtonBox::Cancel);
+    buttonBox->setParent(&dialogConstPair);
+
+    connect(buttonBox, SIGNAL(accepted()), &dialogConstPair, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), &dialogConstPair, SLOT(reject()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(groupBox);
+    layout->addWidget(buttonBox);
+
+    dialogConstPair.setLayout(layout);
+
+if(dialogConstPair.exec())
+   {
+    if(radioConstPair1->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/-/-/noorien");
+    else if(radioConstPair2->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/-/-/orient");
+    else if(radioConstPair3->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/fuz/perm/orient/accessory");
+    else if(radioConstPair4->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/fuz/temp/orient/accessory");
+    else if(radioConstPair5->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/neg/perm/orient/accessory");
+    else if(radioConstPair6->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/neg/temp/orient/accessory");
+    else if(radioConstPair7->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/pos/perm/orient/accessory");
+    else if(radioConstPair8->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/const/pos/temp/orient/accessory");
+
+    }
+    }else{
+        QMessageBox msgBox;
+
+        msgBox.setText("Воспользуйтесь сочетанием клавиш Alt+S(вариативные узлы)\nили Alt+C(константные узлы) ");
+
+        msgBox.exec();
+
+    }
+
+}
+
+void SCgView::changeVarPair(){
+    if(mContextObject && mContextObject->type() == SCgPair::Type){
+    Q_ASSERT(mContextObject);
+
+    QDialog dialogVarPair(this);
+    QSize size(24,24);
+    dialogVarPair.setWindowTitle("Change variant Pair");
+    SCgAlphabet sc;
+
+    QGroupBox *groupBox = new QGroupBox(tr("Вариативные sc.g-дуги"));
+
+         QRadioButton *radioVarPair1 = new QRadioButton("pair/var/-/-/noorien");
+         QRadioButton *radioVarPair2 = new QRadioButton("pair/var/-/-/orient");
+         QRadioButton *radioVarPair3 = new QRadioButton("pair/var/fuz/perm/orient/accessory");
+         QRadioButton *radioVarPair4 = new QRadioButton("pair/var/fuz/temp/orient/accessory");
+         QRadioButton *radioVarPair5 = new QRadioButton("pair/var/neg/perm/orient/accessory");
+         QRadioButton *radioVarPair6 = new QRadioButton("pair/var/neg/temp/orient/accessory");
+         QRadioButton *radioVarPair7 = new QRadioButton("pair/var/pos/perm/orient/accessory");
+         QRadioButton *radioVarPair8 = new QRadioButton("pair/var/pos/temp/orient/accessory");
+
+         radioVarPair1->setChecked(true);
+         radioVarPair1->setIcon(sc.createPairIcon(size,"pair/var/-/-/noorien"));
+         radioVarPair2->setIcon(sc.createPairIcon(size,"pair/var/-/-/orient"));
+         radioVarPair3->setIcon(sc.createPairIcon(size,"pair/var/fuz/perm/orient/accessory"));
+         radioVarPair4->setIcon(sc.createPairIcon(size,"pair/var/fuz/temp/orient/accessory"));
+         radioVarPair5->setIcon(sc.createPairIcon(size,"pair/var/neg/perm/orient/accessory"));
+         radioVarPair6->setIcon(sc.createPairIcon(size,"pair/var/neg/temp/orient/accessory"));
+         radioVarPair7->setIcon(sc.createPairIcon(size,"pair/var/pos/perm/orient/accessory"));
+         radioVarPair8->setIcon(sc.createPairIcon(size,"pair/var/pos/temp/orient/accessory"));
+
+         QVBoxLayout *vbox = new QVBoxLayout;
+
+         vbox->addWidget(radioVarPair1);
+         vbox->addWidget(radioVarPair2);
+         vbox->addWidget(radioVarPair3);
+         vbox->addWidget(radioVarPair4);
+         vbox->addWidget(radioVarPair5);
+         vbox->addWidget(radioVarPair6);
+         vbox->addWidget(radioVarPair7);
+         vbox->addWidget(radioVarPair8);
+
+         vbox->addStretch(1);
+         groupBox->setLayout(vbox);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                                       | QDialogButtonBox::Cancel);
+    buttonBox->setParent(&dialogVarPair);
+
+    connect(buttonBox, SIGNAL(accepted()), &dialogVarPair, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), &dialogVarPair, SLOT(reject()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(groupBox);
+    layout->addWidget(buttonBox);
+
+    dialogVarPair.setLayout(layout);
+
+if(dialogVarPair.exec())
+   {
+    if(radioVarPair1->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/-/-/noorien");
+    else if(radioVarPair2->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/-/-/orient");
+    else if(radioVarPair3->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/fuz/perm/orient/accessory");
+    else if(radioVarPair4->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/fuz/temp/orient/accessory");
+    else if(radioVarPair5->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/neg/perm/orient/accessory");
+    else if(radioVarPair6->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/neg/temp/orient/accessory");
+    else if(radioVarPair7->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/pos/perm/orient/accessory");
+    else if(radioVarPair8->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"pair/var/pos/temp/orient/accessory");
+
+    }
+    }else{
+        QMessageBox msgBox;
+
+        msgBox.setText("Воспользуйтесь сочетанием клавиш Alt+S(вариативные узлы)\nили Alt+C(константные узлы) ");
+
+        msgBox.exec();
+
+    }
+
+}
+void SCgView::changeConstNode(){
+    if(mContextObject && mContextObject->type() == SCgNode::Type){
+    Q_ASSERT(mContextObject);
+
+    QDialog dialogConstNode(this);
+    QSize size(24,24);
+    dialogConstNode.setWindowTitle("Change const Node");
+    SCgAlphabet sc;
+
+    QGroupBox *groupBox = new QGroupBox(tr("Константные sc.g-узлы"));
+
+         QRadioButton *radioConstNode1 = new QRadioButton("node/const/general");
+         QRadioButton *radioConstNode2 = new QRadioButton("node/const/abstract");
+         QRadioButton *radioConstNode3 = new QRadioButton("node/const/material");
+         QRadioButton *radioConstNode4 = new QRadioButton("node/const/struct");
+         QRadioButton *radioConstNode5 = new QRadioButton("node/const/tuple");
+         QRadioButton *radioConstNode6 = new QRadioButton("node/const/role");
+         QRadioButton *radioConstNode7 = new QRadioButton("node/const/relation");
+         QRadioButton *radioConstNode8 = new QRadioButton("node/const/group");
+
+         radioConstNode1->setChecked(true);
+         radioConstNode1->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_General));
+         radioConstNode2->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Abstract));
+         radioConstNode3->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Material));
+         radioConstNode4->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Struct));
+         radioConstNode5->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Tuple));
+         radioConstNode6->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Role));
+         radioConstNode7->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Relation));
+         radioConstNode8->setIcon(sc.createNodeIcon(size,sc.Const,sc.StructType_Group));
+
+         QVBoxLayout *vbox = new QVBoxLayout;
+
+         vbox->addWidget(radioConstNode1);
+         vbox->addWidget(radioConstNode2);
+         vbox->addWidget(radioConstNode3);
+         vbox->addWidget(radioConstNode4);
+         vbox->addWidget(radioConstNode5);
+         vbox->addWidget(radioConstNode6);
+         vbox->addWidget(radioConstNode7);
+         vbox->addWidget(radioConstNode8);
+
+         vbox->addStretch(1);
+         groupBox->setLayout(vbox);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                                       | QDialogButtonBox::Cancel);
+    buttonBox->setParent(&dialogConstNode);
+
+    connect(buttonBox, SIGNAL(accepted()), &dialogConstNode, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), &dialogConstNode, SLOT(reject()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(groupBox);
+    layout->addWidget(buttonBox);
+
+    dialogConstNode.setLayout(layout);
+
+if(dialogConstNode.exec())
+   {
+    if(radioConstNode1->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/general");
+    else if(radioConstNode2->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/abstract");
+    else if(radioConstNode3->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/material");
+    else if(radioConstNode4->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/struct");
+    else if(radioConstNode5->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/tuple");
+    else if(radioConstNode6->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/role");
+    else if(radioConstNode7->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/relation");
+    else if(radioConstNode8->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/const/group");
+
+    }
+    }else{
+        QMessageBox msgBox;
+
+        msgBox.setText("Воспользуйтесь сочетанием клавиш Alt+T(константные дуги)\nили Alt+P(вариативные дуги) ");
+
+        msgBox.exec();
+
+    }
+
+
+}
+void SCgView::changeVarNode(){
+    if(mContextObject && mContextObject->type() == SCgNode::Type){
+    Q_ASSERT(mContextObject);
+
+    QDialog dialogVarNode(this);
+    QSize size(24,24);
+    dialogVarNode.setWindowTitle("Change variant Node");
+    SCgAlphabet sc;
+
+    QGroupBox *groupBox = new QGroupBox(tr("Вариативные sc.g-узлы"));
+
+         QRadioButton *radioVarNode1 = new QRadioButton("node/var/general");
+         QRadioButton *radioVarNode2 = new QRadioButton("node/var/abstract");
+         QRadioButton *radioVarNode3 = new QRadioButton("node/var/material");
+         QRadioButton *radioVarNode4 = new QRadioButton("node/var/struct");
+         QRadioButton *radioVarNode5 = new QRadioButton("node/var/tuple");
+         QRadioButton *radioVarNode6 = new QRadioButton("node/var/role");
+         QRadioButton *radioVarNode7 = new QRadioButton("node/var/relation");
+         QRadioButton *radioVarNode8 = new QRadioButton("node/var/group");
+
+         radioVarNode1->setChecked(true);
+         radioVarNode1->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_General));
+         radioVarNode2->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Abstract));
+         radioVarNode3->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Material));
+         radioVarNode4->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Struct));
+         radioVarNode5->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Tuple));
+         radioVarNode6->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Role));
+         radioVarNode7->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Relation));
+         radioVarNode8->setIcon(sc.createNodeIcon(size,sc.Var,sc.StructType_Group));
+
+         QVBoxLayout *vbox = new QVBoxLayout;
+
+         vbox->addWidget(radioVarNode1);
+         vbox->addWidget(radioVarNode2);
+         vbox->addWidget(radioVarNode3);
+         vbox->addWidget(radioVarNode4);
+         vbox->addWidget(radioVarNode5);
+         vbox->addWidget(radioVarNode6);
+         vbox->addWidget(radioVarNode7);
+         vbox->addWidget(radioVarNode8);
+
+         vbox->addStretch(1);
+         groupBox->setLayout(vbox);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                                       | QDialogButtonBox::Cancel);
+    buttonBox->setParent(&dialogVarNode);
+
+    connect(buttonBox, SIGNAL(accepted()), &dialogVarNode, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), &dialogVarNode, SLOT(reject()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(groupBox);
+    layout->addWidget(buttonBox);
+
+    dialogVarNode.setLayout(layout);
+
+if(dialogVarNode.exec())
+   {
+    if(radioVarNode1->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/general");
+    else if(radioVarNode2->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/abstract");
+    else if(radioVarNode3->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/material");
+    else if(radioVarNode4->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/struct");
+    else if(radioVarNode5->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/tuple");
+    else if(radioVarNode6->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/role");
+    else if(radioVarNode7->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/relation");
+    else if(radioVarNode8->isChecked())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject,"node/var/group");
+
+    }
+    }else{
+        QMessageBox msgBox;
+
+        msgBox.setText("Воспользуйтесь сочетанием клавиш Alt+T(константные дуги)\nили Alt+P(вариативные дуги) ");
+
+        msgBox.exec();
+
+    }
+
 }
 
 void SCgView::changeContent()

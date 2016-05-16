@@ -68,6 +68,11 @@ private:
     QAction* mActionPaste;
     //! Select All action
     QAction* mActionSelectAll;
+    //! Change Action
+    QAction *mActionChangeConstPair;
+    QAction *mActionChangeVarPair;
+    QAction *mActionChangeConstNode;
+    QAction *mActionChangeVarNode;
 
     QList<QAction*> mActionsList;
     void createActions();
@@ -141,6 +146,12 @@ private slots:
 
     //! Edit mode changed slot @see SCgScene::editModeChanged
     void editModeChanged(int mode);
+
+    //! Change type pair and node
+    void changeConstPair();
+    void changeVarPair();
+    void changeConstNode();
+    void changeVarNode();
 };
 
 
