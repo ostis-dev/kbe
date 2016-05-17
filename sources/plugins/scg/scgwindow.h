@@ -19,6 +19,7 @@ class SCgUndoView;
 class QToolBar;
 class QLineEdit;
 class SCgFindWidget;
+class SCgPrinterGridDialog;
 
 class SCgWindow : public QWidget,
                   public EditorInterface
@@ -132,6 +133,8 @@ private:
     //! Undo stack
     QUndoStack *mUndoStack;
 
+    SCgPrinterGridDialog *mPrinterGridDialog;
+
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;
 
@@ -149,6 +152,8 @@ private:
     QAction* mActionRedo;
     //! Find by identifier action;
     QAction* mActionFind;
+
+    QAction* mActionPrinterGrid;
 
 //    //! Show/hide minmap;
 //    QAction* mActionMinMap;
@@ -208,6 +213,8 @@ private slots:
 
     //! Shows find widget
     void showTextSearch();
+
+    void showPrinterGridDialog();
 
     /*!
      *Provides handling Cut menu event.
