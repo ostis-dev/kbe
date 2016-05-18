@@ -97,6 +97,8 @@ public:
      */
     void setDrawGrid(bool draw, QColor color = QColor(), int xStep = 20, int yStep = 20);
 
+    void setPrinterGrid(bool draw, const QSizeF &size = QSizeF(), QColor color = QColor());
+
     /*! Finds SCgObject by identifier on scene.
      * Items are sorted in lexicographical order. Find process starts from cursor (@see setCursor(QPointF))
      * @param ttf Identifier to find
@@ -374,6 +376,11 @@ private:
     //! Grid parameters.
     int mXStep, mYStep;
     QColor mGridColor;
+
+    bool mIsPrinterGridDrawn;
+    QSizeF mPrinterGridSize;
+    QColor mPrinterGridColor;
+    QRectF mPrinterGridBndRect;
 
     //! Holds true if some identifiers were changed during the editing KB(and after creating new SCgScene).
     bool mIsIdtfModelDirty;

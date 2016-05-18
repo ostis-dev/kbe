@@ -63,6 +63,7 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mMode(0),
     mUndoStack(undoStack),
     mIsGridDrawn(false),
+    mIsPrinterGridDrawn(false),
     mIsIdtfModelDirty(true),
     mCursor(0,0)
 {
@@ -777,6 +778,47 @@ void SCgScene::drawBackground(QPainter* painter, const QRectF& rect)
         painter->drawLines(linesX);
         painter->drawLines(linesY);
     }
+    else if (mIsPrinterGridDrawn)
+    {
+        QRectF bndRect = itemsBoundingRect();
+
+        if (bndRect != mPrinterGridBndRect)
+        {
+            mPrinterGridBndRect = bndRect;
+            update();
+        }
+        else
+        {
+            qreal width = mPrinterGridSize.width();
+            qreal height = mPrinterGridSize.height();
+
+            qreal left = bndRect.left() - 5;
+            qreal top = bndRect.top() - 5;
+
+            QPen drawPen(QBrush(mPrinterGridColor), 1, Qt::DashLine);
+            painter->setPen(drawPen);
+
+            for (qreal x = left; x < bndRect.right(); x += width)
+                for (qreal y = top; y < bndRect.bottom(); y += height)
+                {
+                    QRectF pageRect = QRectF(x, y, width, height);
+
+                    if (rect.intersects(pageRect))
+                    {
+                        if (x == left)
+                            painter->drawLine(pageRect.bottomLeft(), pageRect.topLeft());
+
+                        if (y == top)
+                            painter->drawLine(pageRect.topLeft(), pageRect.topRight());
+
+                        painter->drawLine(pageRect.topRight(), pageRect.bottomRight());
+                        painter->drawLine(pageRect.bottomRight(), pageRect.bottomLeft());
+                    }
+                }
+        }
+
+
+    }
     else
         QGraphicsScene::drawBackground(painter, rect);
 }
@@ -937,4 +979,14 @@ QGraphicsItem* SCgScene::itemAt(const QPointF & point) const
 {
     Q_ASSERT(views().size() > 0);
     return QGraphicsScene::itemAt(point, views().first()->transform());
+}
+
+void SCgScene::setPrinterGrid(bool draw, const QSizeF &size, QColor color)
+{
+    mIsPrinterGridDrawn = draw;
+    mPrinterGridSize = size;
+    mPrinterGridColor = color;
+    mPrinterGridBndRect = itemsBoundingRect();
+
+    update();
 }

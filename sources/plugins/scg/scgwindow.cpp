@@ -43,6 +43,7 @@
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
+#include "scgprintergriddialog.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -69,6 +70,8 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent)
     , mActionUndo(0)
     , mActionRedo(0)
     , mActionFind(0)
+    , mActionPrinterGrid(0)
+    , mPrinterGridDialog(0)
 {
     Q_UNUSED(_windowTitle);
 
@@ -84,6 +87,8 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent)
     connect(mFindWidget, SIGNAL(findNext()), this, SLOT(findNext()));
     connect(mFindWidget, SIGNAL(findPrevious()), this, SLOT(findPrevious()));
     connect(mFindWidget, SIGNAL(find(QString)), this, SLOT(findTextChanged(QString)));
+
+    mPrinterGridDialog = new SCgPrinterGridDialog(this);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(mView);
@@ -135,6 +140,9 @@ void SCgWindow::createActions()
     mActionRedo->setEnabled(false);
     mActionRedo->setShortcut(QKeySequence::Redo);
     mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
+
+    mActionPrinterGrid = new QAction(tr("Show printer grid"), this);
+    connect(mActionPrinterGrid, SIGNAL(triggered()), this, SLOT(showPrinterGridDialog()));
 
 //    mActionMinMap = new QAction(tr("Minimap"), this);
 //    mActionMinMap->setCheckable(true);
@@ -604,6 +612,7 @@ void SCgWindow::activate(QMainWindow *window)
     createMenu();
     QList<QAction*> allMenus = window->menuBar()->actions();
     window->menuBar()->insertMenu(allMenus.at(1), mEditMenu);
+    allMenus.at(1)->menu()->addAction(mActionPrinterGrid);
 
     QToolBar *tool_bar = toolBar();
     if (tool_bar != 0)
@@ -683,6 +692,11 @@ void SCgWindow::stackCleanStateChanged(bool value)
     emitEvent(EditorObserverInterface::ContentChanged);
 }
 
+void SCgWindow::showPrinterGridDialog()
+{
+    if (mPrinterGridDialog->exec() == QDialog::Accepted)
+        mScene->setPrinterGrid(mPrinterGridDialog->isPrinterGridEnabled(), mPrinterGridDialog->paperSize(), QColor(0, 0, 255));
+}
 
 // ---------------------
 SCgWindowFactory::SCgWindowFactory(QObject *parent) :
