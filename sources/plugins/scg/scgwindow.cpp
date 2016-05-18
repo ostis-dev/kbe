@@ -34,7 +34,6 @@
 
 #include "select/scgselectinputoutput.h"
 #include "select/scgselectsubgraph.h"
-
 #include "scgplugin.h"
 #include "scgexportimage.h"
 #include "scgfindwidget.h"
