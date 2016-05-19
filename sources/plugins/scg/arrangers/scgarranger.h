@@ -66,8 +66,7 @@ protected:
     //! Command for minimizing contour.
     void registerCommandMinimizeContour(SCgContour *contour);
 
-    //! Deletes all ghosts from scene.
-    void deleteGhosts();
+    void useBreakPoints(SCgPair *pair);
 
     /*! Creates ghosts of objects for current list(@p list).
     @see createGhost()*/

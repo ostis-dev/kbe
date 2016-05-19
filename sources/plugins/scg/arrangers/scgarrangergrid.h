@@ -37,8 +37,10 @@ protected:
     //! @see SCgGridArranger::createDialog()
     QDialog* mDialog;
 
-    //! Creates dialog for asking grid parameters.
-    QDialog* createDialog();
+    void activate();
+
+    void newDialog(int newSpacing);
+
 
     //! Translates specified point, given in scene coordinates, to nearest grid node.
     inline QPointF mapFromSceneToGrid(const QPointF& point);
@@ -67,6 +69,7 @@ protected slots:
     void xValueChanged(int newSpacing);
     void yValueChanged(int newSpacing);
     void symmetricalCheckBoxClicked(bool checked);
+    void sumGhostsPosition();
     /*! @}*/
 
 private:
