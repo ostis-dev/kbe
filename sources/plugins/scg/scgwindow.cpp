@@ -218,13 +218,13 @@ void SCgWindow::createToolBar()
     action = new QAction(findIcon("sc-construction3.png"), tr("3-element construction"), mToolBar);
     action->setCheckable(false);
     constructionButton->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(on3ElementConstructionCreation()));
+    connect(action, SIGNAL(triggered()), this, SLOT(onThreeElementConstructionCreation()));
 
     //5-element construction
     action = new QAction(findIcon("sc-construction5.png"), tr("5-element construction"), mToolBar);
     action->setCheckable(false);
     constructionButton->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(on5ElementConstructionCreation()));
+    connect(action, SIGNAL(triggered()), this, SLOT(onFiveElementConstructionCreation()));
 
     //
     mToolBar->addSeparator();
@@ -404,14 +404,14 @@ void SCgWindow::onContourMode()
     mView->setDragMode(QGraphicsView::NoDrag);
 }
 
-void SCgWindow::on3ElementConstructionCreation()
+void SCgWindow::onThreeElementConstructionCreation()
 {
-    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_3elementConstruction);
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_ThreeElements);
 }
 
-void SCgWindow::on5ElementConstructionCreation()
+void SCgWindow::onFiveElementConstructionCreation()
 {
-    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_5elementConstruction);
+    static_cast<SCgScene*>(mView->scene())->setEditMode(SCgScene::Mode_FiveElements);
 }
 
 void SCgWindow::onGridAlignment()

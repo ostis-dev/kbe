@@ -12,8 +12,8 @@ class SCgConstructionMode: public SCgMode
 public:
     typedef enum {
 
-        Type_3elements,
-        Type_5elements
+        Type_ThreeElements,
+        Type_FiveElements
 
     } ConstructionType;
 

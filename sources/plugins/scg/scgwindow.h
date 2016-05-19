@@ -178,9 +178,9 @@ private slots:
     //! Slot to handle a contour creation mode action
     void onContourMode();
      //! Slot to handle a 3-element construction creation
-    void on3ElementConstructionCreation();
+    void onThreeElementConstructionCreation();
     //! Slot to handle a 5-element construction creation
-    void on5ElementConstructionCreation();
+    void onFiveElementConstructionCreation();
     //! Slot to handle a grid alignment action
     void onGridAlignment();
     //! Slot to handle a tuple alignment action

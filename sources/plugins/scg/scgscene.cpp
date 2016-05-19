@@ -74,8 +74,8 @@ SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     mSceneModes[Mode_Contour] = new SCgContourMode(this);
     mSceneModes[Mode_Select] = new SCgSelectMode(this);
     mSceneModes[Mode_InsertTemplate] = new SCgInsertMode(this);
-    mSceneModes[Mode_3elementConstruction] = new SCgConstructionMode(this, SCgConstructionMode::Type_3elements);
-    mSceneModes[Mode_5elementConstruction] = new SCgConstructionMode(this, SCgConstructionMode::Type_5elements);
+    mSceneModes[Mode_ThreeElements] = new SCgConstructionMode(this, SCgConstructionMode::Type_ThreeElements);
+    mSceneModes[Mode_FiveElements] = new SCgConstructionMode(this, SCgConstructionMode::Type_FiveElements);
     mSceneModes[Mode_Clone] = new SCgCloneMode(this);
 
     setEditMode(Mode_Select);
@@ -492,8 +492,8 @@ SCgBaseCommand* SCgScene::changeContentDataCommand(SCgNode *node, const SCgConte
 void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
     Q_ASSERT(mMode->mode() == Mode_InsertTemplate
-             || mMode->mode() == Mode_3elementConstruction
-             || mMode->mode() == Mode_5elementConstruction);
+             || mMode->mode() == Mode_ThreeElements
+             || mMode->mode() == Mode_FiveElements);
 
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)

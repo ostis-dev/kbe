@@ -24,13 +24,13 @@ SCgConstructionMode::~SCgConstructionMode()
 
 SCgScene::EditMode SCgConstructionMode::mode()
 {
-    if(type == SCgConstructionMode::Type_3elements)
+    if(type == SCgConstructionMode::Type_ThreeElements)
     {
-        return SCgScene::Mode_3elementConstruction;
+        return SCgScene::Mode_ThreeElements;
     }
     else
     {
-       return SCgScene::Mode_5elementConstruction;
+       return SCgScene::Mode_FiveElements;
     }
 }
 
@@ -124,7 +124,7 @@ void SCgConstructionMode::activate()
     QGraphicsView* v = mScene->views().at(0);
     QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
 
-    if(type == SCgConstructionMode::Type_3elements)
+    if(type == SCgConstructionMode::Type_ThreeElements)
     {
         threeElementConstruction(items);
     }
