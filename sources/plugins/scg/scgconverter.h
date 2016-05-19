@@ -25,7 +25,7 @@ private:
         int type;
         QString idtf;
         QString id;
-         QString parentId;
+        QString parentId;
     };
 
     QVector<node> elementNode;
@@ -35,15 +35,15 @@ private:
          QString bId;
          QString eId;
          QString id;
-          QString parentId;
+         QString parentId;
     };
     QVector<arc> elementArc;
     struct pair{
         int type;
         QString bId;
-         QString eId;
-         QString id;
-          QString parentId;
+        QString eId;
+        QString id;
+        QString parentId;
     };
 
     QVector<pair> elementPair;

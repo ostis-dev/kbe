@@ -54,6 +54,8 @@ public:
     QPainterPath shape() const;
 
 protected:
+    //! @see QGraphicsItem::boundingRect()
+        QRectF boundingRect() const;
 
     //! @see QGraphicsItem::contains
     bool contains(const QPointF &point) const;
