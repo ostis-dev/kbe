@@ -54,6 +54,8 @@ protected:
     //! Return arranger name
     virtual QString name() const = 0;
 
+    void useBreakPoints(SCgPair *pair);
+
     //! Command for changing node position.
     void registerCommand(SCgObject* obj, const QPointF& newPos);
 
@@ -65,9 +67,6 @@ protected:
 
     //! Command for minimizing contour.
     void registerCommandMinimizeContour(SCgContour *contour);
-
-    //! Deletes all ghosts from scene.
-    void deleteGhosts();
 
     /*! Creates ghosts of objects for current list(@p list).
     @see createGhost()*/

@@ -48,7 +48,6 @@ bool SCgGridArranger::configDialog()
 
     bool res = mDialog->exec() == QDialog::Accepted;
 
-    deleteGhosts();
     mPlaced.clear();
     drawGrid(false);
 
@@ -83,60 +82,6 @@ void SCgGridArranger::symmetricalCheckBoxClicked(bool checked)
     mIsSymmetrical = checked;
 }
 
-QDialog* SCgGridArranger::createDialog()
-{
-    mDialog = new QDialog();
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
-    buttonBox->setParent(mDialog);
-
-    QSpinBox* xSpin = new QSpinBox(mDialog);
-    QSpinBox* ySpin = new QSpinBox(mDialog);
-
-    QLabel* xLabel= new QLabel(tr("X axis step"),mDialog);
-    QLabel* yLabel= new QLabel(tr("Y axis step"),mDialog);
-
-    xSpin->setToolTip(tr("X axis step"));
-    xSpin->setMinimum(15);
-    xSpin->setMaximum(200);
-    xSpin->setValue(mXStep);
-    ySpin->setToolTip(tr("Y axis step"));
-    ySpin->setMinimum(15);
-    ySpin->setMaximum(200);
-    ySpin->setValue(mYStep);
-    mXSpinBox = xSpin;
-    mYSpinBox = ySpin;
-
-    QHBoxLayout *hl = new QHBoxLayout();
-
-    QVBoxLayout *vl = new QVBoxLayout();
-    vl->addWidget(xLabel);
-    vl->addWidget(xSpin);
-    hl->addLayout(vl);
-
-    vl = new QVBoxLayout();
-    vl->addWidget(yLabel);
-    vl->addWidget(ySpin);
-    hl->addLayout(vl);
-
-    QCheckBox* symChkBox = new QCheckBox(tr("Symmetrical grid"));
-
-    symChkBox->setChecked(mIsSymmetrical);
-
-    vl = new QVBoxLayout();
-    vl->addLayout(hl);
-    vl->addWidget(symChkBox);
-    vl->addWidget(buttonBox);
-
-    connect(xSpin, SIGNAL(valueChanged(int)), this, SLOT(xValueChanged(int)));
-    connect(ySpin, SIGNAL(valueChanged(int)), this, SLOT(yValueChanged(int)));
-    connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
-    connect(buttonBox, SIGNAL(accepted()), mDialog, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), mDialog, SLOT(reject()));
-
-    mDialog->setLayout(vl);
-    return mDialog;
-}
 
 inline QPointF SCgGridArranger::mapFromSceneToGrid(const QPointF& point)
 {
@@ -269,6 +214,123 @@ void SCgGridArranger::placeToGrid(SCgObject* obj, SCgObject* realObj)
     }
 }
 
+QDialog* SCgGridArranger::newDialog()
+{
+    mDialog = new QDialog();
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                     | QDialogButtonBox::Cancel);
+    buttonBox->setParent(mDialog);
+
+    QSpinBox* xSpin = new QSpinBox(mDialog);
+    QSpinBox* ySpin = new QSpinBox(mDialog);
+
+    QLabel* xLabel= new QLabel(tr("X axis step"),mDialog);
+    QLabel* yLabel= new QLabel(tr("Y axis step"),mDialog);
+
+    xSpin->setToolTip(tr("X axis step"));
+    xSpin->setMinimum(15);
+    xSpin->setMaximum(200);
+    xSpin->setValue(mXStep);
+    ySpin->setToolTip(tr("Y axis step"));
+    ySpin->setMinimum(15);
+    ySpin->setMaximum(200);
+    ySpin->setValue(mYStep);
+    Spin->setToolTip(tr("Coordinates"));
+    Spin->setMinimum(15);
+    Spin->setMaximum(200);
+    Spin->setValue(mYStep);
+    mXSpinBox = xSpin;
+    mYSpinBox = ySpin;
+
+    activate();
+
+    QHBoxLayout *hl = new QHBoxLayout();
+
+    QVBoxLayout *vl = new QVBoxLayout();
+    vl->addWidget(xLabel);
+    vl->addWidget(xSpin);
+    hl->addLayout(vl);
+
+    vl = new QVBoxLayout();
+    vl->addWidget(yLabel);
+    vl->addWidget(ySpin);
+    hl->addLayout(vl);
+
+    QCheckBox* symChkBox = new QCheckBox(tr("Symmetrical grid"));
+
+    symChkBox->setChecked(mIsSymmetrical);
+
+    mXStep = newSpacing;
+     if(mIsSymmetrical && mYStep != mXStep)
+         mYSpinBox->setValue(newSpacing);
+          else
+         recalculateGhostsPosition();
+
+    vl = new QVBoxLayout();
+    vl->addLayout(hl);
+    vl->addWidget(symChkBox);
+    vl->addWidget(buttonBox);
+
+    connect(xSpin, SIGNAL(valueChanged(int)), this, SLOT(xValueChanged(int)));
+    connect(ySpin, SIGNAL(valueChanged(int)), this, SLOT(yValueChanged(int)));
+    connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
+    connect(buttonBox, SIGNAL(accepted()), mDialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), mDialog, SLOT(reject()));
+    connect(Spin, SIGNAL(valueChanged(int)), this, SLOT(XtypeChanged(int)));
+    connect(Spin, SIGNAL(valueChanged(int)), this, SLOT(YtypeChanged(int)));
+    connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
+
+    mDialog->setLayout(vl);
+    return mDialog;
+}
+
+void SCgGridArranger::activate()
+{
+    QList<QPoinFt*> items;
+
+    QGraphicsView* v = mScene->views().at(0);
+    QPointF p = v->mapToScene(v->mapFromGlobal(QPointF::pos()));
+
+    SCgGhost * firstGhost = mScene->createSCgGhost(QPointF(0, 0));
+    SCgGhost * secondGhost = mScene->createSCgGhost(QPointF(100, 0));
+
+    QVector<QPointF> mFirsLinePoints;
+    mFirsLinePoints.append(firstGhost->scenePos());
+    mFirsLinePoints.append(secondGhost->scenePos());
+
+    SCgPair * firstPair = mScene->createSCgPair(firstGhost, secondGhost, mFirstLineGhost);
+
+    items.append(firstGhost);
+    items.append(secondGhost);
+    items.append(firstGhost);
+
+    if(type == SCgGhostMode::Type_5elements) {
+        SCgGhost * thirdGhost = mScene->createSCgGhost(QPointF(50, -50));
+
+        QVector<QPointF> mSecondLineGhost;
+        mSecondLineGhost.append(thirdNode->scenePos());
+        mSecondLineGhost.append(QPointF(50, 0));
+
+        SCgGhostMode * secondPair = mScene->createSCgPair(thirdGhost, firstPair, mSecondLineGhost);
+
+        items.append(thirdGhost);
+        items.append(secondPair);
+    } else if (event->modifiers() == Qt::ShiftModifier) {
+    switch(event->key())
+    {
+        case Qt::Key_A:
+        clean();
+        mScene->createItemGroup();
+        break;
+        }
+     }
+
+    mGhost = mScene->createItemGroup(items);
+
+    mGhost->setPos(p);
+    mGhost->setBounds(p);
+}
+
 
 void SCgGridArranger::drawGrid(bool draw)
 {
@@ -279,4 +341,12 @@ void SCgGridArranger::drawGrid(bool draw)
 QString SCgGridArranger::name() const
 {
     return tr("Grid arrange");
+}
+
+void SCgGridArranger::CheckClick(bool checked)
+{
+    if(checked)
+        mYSpinBox->setValue(mXSpinBox->value());
+
+    mIsSymmetrical = checked;
 }

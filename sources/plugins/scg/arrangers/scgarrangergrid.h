@@ -38,7 +38,7 @@ protected:
     QDialog* mDialog;
 
     //! Creates dialog for asking grid parameters.
-    QDialog* createDialog();
+    QDialog* newDialog();
 
     //! Translates specified point, given in scene coordinates, to nearest grid node.
     inline QPointF mapFromSceneToGrid(const QPointF& point);
@@ -88,6 +88,8 @@ private:
 
     //! Holds items already placed to the grid on current operation.
     QSet<SCgObject*> mPlaced;
+
+    void CheckClick(bool checked);
 
 
 };
