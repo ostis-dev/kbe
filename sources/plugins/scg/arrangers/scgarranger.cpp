@@ -144,21 +144,17 @@ SCgObject* SCgArranger::createGhost(SCgObject* obj, qreal opacityLevel)
     return ghost;
 }
 
-
-void SCgArranger::deleteGhosts()
-{
-    QMap<SCgObject*, SCgObject*>::const_iterator i = mGhosts.constBegin();
-    for (;i != mGhosts.constEnd();++i)
-        i.value()->setParentItem(0);
-    for (i = mGhosts.begin();i != mGhosts.constEnd(); ++i)
-        delete i.value();
-
-    mGhosts.clear();
-}
-
 void SCgArranger::createGhosts(const QList<QGraphicsItem*>& list)
 {
     foreach(QGraphicsItem* it, list)
         if (it->opacity() == 1 && SCgObject::isSCgObjectType(it->type()))
             createGhost(static_cast<SCgObject*>(it));
 }
+
+void SCgArranger::useBreakPoints(SCgPair *pair)
+  {
+      if (!mParentCommand) {
+          mParentCommand = mScene->removeBreakPointsCommand(pair, 0, false);
+      } else {
+          mScene->removeBreakPointsCommand(pair, mParentCommand, false);
+  }}

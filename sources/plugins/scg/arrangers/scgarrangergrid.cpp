@@ -24,6 +24,7 @@ SCgGridArranger::SCgGridArranger(QObject *parent):
     mIsSymmetrical(true),
     mXSpinBox(0),
     mYSpinBox(0),
+    mSpinBox(0),
     mGridColor(QColor(191, 100, 150, 150))
 {
 
@@ -37,7 +38,7 @@ SCgGridArranger::~SCgGridArranger()
 bool SCgGridArranger::configDialog()
 {
     if(!mDialog)
-            createDialog();
+            //createDialog();
     mDialog->setParent(mView->viewport(), Qt::Dialog);
 
     // Create ghost only for visible objects
@@ -47,8 +48,6 @@ bool SCgGridArranger::configDialog()
     recalculateGhostsPosition();
 
     bool res = mDialog->exec() == QDialog::Accepted;
-
-    deleteGhosts();
     mPlaced.clear();
     drawGrid(false);
 
@@ -83,60 +82,6 @@ void SCgGridArranger::symmetricalCheckBoxClicked(bool checked)
     mIsSymmetrical = checked;
 }
 
-QDialog* SCgGridArranger::createDialog()
-{
-    mDialog = new QDialog();
-    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
-    buttonBox->setParent(mDialog);
-
-    QSpinBox* xSpin = new QSpinBox(mDialog);
-    QSpinBox* ySpin = new QSpinBox(mDialog);
-
-    QLabel* xLabel= new QLabel(tr("X axis step"),mDialog);
-    QLabel* yLabel= new QLabel(tr("Y axis step"),mDialog);
-
-    xSpin->setToolTip(tr("X axis step"));
-    xSpin->setMinimum(15);
-    xSpin->setMaximum(200);
-    xSpin->setValue(mXStep);
-    ySpin->setToolTip(tr("Y axis step"));
-    ySpin->setMinimum(15);
-    ySpin->setMaximum(200);
-    ySpin->setValue(mYStep);
-    mXSpinBox = xSpin;
-    mYSpinBox = ySpin;
-
-    QHBoxLayout *hl = new QHBoxLayout();
-
-    QVBoxLayout *vl = new QVBoxLayout();
-    vl->addWidget(xLabel);
-    vl->addWidget(xSpin);
-    hl->addLayout(vl);
-
-    vl = new QVBoxLayout();
-    vl->addWidget(yLabel);
-    vl->addWidget(ySpin);
-    hl->addLayout(vl);
-
-    QCheckBox* symChkBox = new QCheckBox(tr("Symmetrical grid"));
-
-    symChkBox->setChecked(mIsSymmetrical);
-
-    vl = new QVBoxLayout();
-    vl->addLayout(hl);
-    vl->addWidget(symChkBox);
-    vl->addWidget(buttonBox);
-
-    connect(xSpin, SIGNAL(valueChanged(int)), this, SLOT(xValueChanged(int)));
-    connect(ySpin, SIGNAL(valueChanged(int)), this, SLOT(yValueChanged(int)));
-    connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
-    connect(buttonBox, SIGNAL(accepted()), mDialog, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), mDialog, SLOT(reject()));
-
-    mDialog->setLayout(vl);
-    return mDialog;
-}
 
 inline QPointF SCgGridArranger::mapFromSceneToGrid(const QPointF& point)
 {
@@ -280,3 +225,143 @@ QString SCgGridArranger::name() const
 {
     return tr("Grid arrange");
 }
+
+
+ void SCgGridArranger::sumGhostsPosition()
+  {
+      drawGrid(true);
+      mPlaced.clear();
+      QMap<SCgObject*, SCgObject*>::const_iterator i = mGhosts.constBegin();
+      while (i != mGhosts.constEnd())
+      {
+          placeToGrid(i.value(), i.key());
+          ++i;
+      }
+
+ }
+
+ QDialog* SCgGridArranger::newDialog(int newSpacing)
+ {
+     mDialog = new QDialog();
+     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                      | QDialogButtonBox::Cancel);
+     buttonBox->setParent(mDialog);
+
+     QSpinBox* xSpin = new QSpinBox(mDialog);
+     QSpinBox* ySpin = new QSpinBox(mDialog);
+
+     QLabel* xLabel= new QLabel(tr("X axis step"),mDialog);
+     QLabel* yLabel= new QLabel(tr("Y axis step"),mDialog);
+     QLabel* Label= new QLabel(tr("Coordinates"),mDialog);
+
+     void SCgGridArranger::activate();
+
+     xSpin->setToolTip(tr("X axis step"));
+     xSpin->setMinimum(15);
+     xSpin->setMaximum(200);
+     xSpin->setValue(mXStep);
+     ySpin->setToolTip(tr("Y axis step"));
+     ySpin->setMinimum(15);
+     ySpin->setMaximum(200);
+     ySpin->setValue(mYStep);
+     Spin->setToolTip(tr("Coordinates"));
+     Spin->setMinimum(15);
+     Spin->setMaximum(200);
+     Spin->setValue(mYStep);
+     mXSpinBox = xSpin;
+     mYSpinBox = ySpin;
+     mSpinBox = Spin;
+
+     QHBoxLayout *hl = new QHBoxLayout();
+
+     QVBoxLayout *vl = new QVBoxLayout();
+     vl->addWidget(xLabel);
+     vl->addWidget(xSpin);
+     hl->addLayout(vl);
+
+     vl = new QVBoxLayout();
+     vl->addWidget(yLabel);
+     vl->addWidget(ySpin);
+     hl->addLayout(vl);
+
+     QCheckBox* symChkBox = new QCheckBox(tr("Symmetrical grid"));
+
+     symChkBox->setChecked(mIsSymmetrical);
+
+     vl = new QVBoxLayout();
+     vl->addLayout(hl);
+     vl->addWidget(symChkBox);
+     vl->addWidget(buttonBox);
+
+     mXStep = newSpacing;
+     if(mIsSymmetrical && mYStep != mXStep)
+         mYSpinBox->setValue(newSpacing);
+     else
+         recalculateGhostsPosition();
+
+     connect(xSpin, SIGNAL(valueChanged(int)), this, SLOT(xValueChanged(int)));
+     connect(ySpin, SIGNAL(valueChanged(int)), this, SLOT(yValueChanged(int)));
+     connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
+     connect(buttonBox, SIGNAL(accepted()), mDialog, SLOT(accept()));
+     connect(buttonBox, SIGNAL(rejected()), mDialog, SLOT(reject()));
+
+     mDialog->setLayout(vl);
+     return mDialog;
+ }
+
+ inline QPointF SCgGridArranger::mapFromSceneToGrid(const QPointF& point)
+ {
+     return QPointF(qRound(point.x() / mXStep) * mXStep, qRound(point.y() / mYStep) * mYStep);
+ }
+
+ void SCgGridArranger::recalculateGhostsPosition()
+ {
+     drawGrid(true);
+     mPlaced.clear();
+     QMap<SCgObject*, SCgObject*>::const_iterator i = mGhosts.constBegin();
+     while (i != mGhosts.constEnd())
+     {
+         placeToGrid(i.value(), i.key());
+         ++i;
+     }
+
+ }
+
+ void SCgGridArranger::activate()
+ {
+     QList<QPoint*> items;
+
+     QGraphicsView* v = mScene->views().at(0);
+     QPointF p = v->mapToScene(v->mapFromGlobal(QCursor::pos()));
+
+     SCgGhost * firstGhost = mScene->createSCgGhost(QPointF(0, 0));
+     SCgGhost * secondGhost = mScene->createSCgGhost(QPointF(100, 0));
+
+     QVector<QPointF> mFirsLinePoints;
+     mFirsLinePoints.append(firstGhost->scenePos());
+     mFirsLinePoints.append(secondGhost->scenePos());
+
+     SCgPair * firstPair = mScene->createSCgPair(firstGhost, secondGhost, mFirsLineGhost);
+
+     items.append(firstGhost);
+     items.append(secondGhost);
+     items.append(firstGhost);
+
+     if(type == SCgConstructionMode::Type_5elements) {
+         SCgGhost * thirdGhost = mScene->createSCgGhost(QPointF(50, -50));
+
+         QVector<QPointF> mSecondLineGhost;
+         mSecondLineGhost.append(thirdNode->scenePos());
+         mSecondLineGhost.append(QPointF(50, 0));
+
+         SCgPair * secondPair = mScene->createSCgPair(thirdGhost, firstPair, mSecondLineGhost);
+
+         items.append(thirdGhost);
+         items.append(secondPair);
+     }
+
+     mGhost = mScene->createItemGroup(items);
+
+     mGhost->setPos(p);
+     mGhost->setOpacity(0.5);
+ }

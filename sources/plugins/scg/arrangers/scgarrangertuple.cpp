@@ -54,7 +54,6 @@ bool SCgTupleArranger::configDialog()
 
     if (res == QDialog::Rejected)
     {
-        deleteGhosts();
         mArrangeItems.clear();
         mBusPairs.clear();
         mTupleNode = 0;
@@ -90,8 +89,6 @@ void SCgTupleArranger::startOperation()
         else
             registerCommand(beg, mGhosts[beg]->pos());
     }
-
-    deleteGhosts();
 }
 
 QString SCgTupleArranger::name() const
