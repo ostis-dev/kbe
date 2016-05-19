@@ -33,9 +33,6 @@ public:
       */
     void positionChanged();
 
-    //! @see QGraphicsItem::boundingRect()
-    QRectF boundingRect() const;
-
     //! Minimizes size and leaves only 4 points:
     void minimize();
 
@@ -55,7 +52,7 @@ public:
 
 protected:
     //! @see QGraphicsItem::boundingRect()
-        QRectF boundingRect() const;
+    QRectF boundingRect() const;
 
     //! @see QGraphicsItem::contains
     bool contains(const QPointF &point) const;
