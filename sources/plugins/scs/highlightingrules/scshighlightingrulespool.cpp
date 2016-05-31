@@ -26,64 +26,79 @@ SCsHighlightingRulesPool::SCsHighlightingRulesPool()
     QBrush brush = QBrush(Qt::black);
     commaFormat.setForeground(brush);
     QRegExp pattern;
-	QRegExp start,end;
+  QRegExp start,end;
 
-	QTextCharFormat format;
-	// simply idtf
-	format.setForeground(QColor(128, 0, 0));// const
-	mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z0-9_.]+"), format));
+  QTextCharFormat format;
+  // simply idtf
+  format.setForeground(QColor(128, 0, 0));// const
+  mRules.append(new SCsStdHighlightingRule(QRegExp("[A-Za-z0-9_.]+"), format));
 
-    initScArcRules();
+    initScOrienArcRules();
+    initScNoOrienArcRules();
 
-	// multi line comment
-	format.setForeground(Qt::darkGray);
-	start = QRegExp("/\\*");
-	end = QRegExp("\\*/");
-	mRules.append(new SCsMultiLinetHighlightingRule(start, end, format, SCsMultiLinetHighlightingRule::MultiLineCommentRuleState));
+  // multi line comment
+  format.setForeground(Qt::darkGray);
+  start = QRegExp("/\\*");
+  end = QRegExp("\\*/");
+  mRules.append(new SCsMultiLinetHighlightingRule(start, end, format, SCsMultiLinetHighlightingRule::MultiLineCommentRuleState));
 
 
-	//keyword
-	format.setForeground(Qt::darkGray);
-	pattern = QRegExp("/!\\*\\s*keyword:\\s*([a-zA-Z0-9_]+)\\s*\\*/");
-	mRules.append(new SCsStdHighlightingRule(pattern,format));
+  //keyword
+  format.setForeground(Qt::darkGray);
+  pattern = QRegExp("/!\\*\\s*keyword:\\s*([a-zA-Z0-9_]+)\\s*\\*/");
+  mRules.append(new SCsStdHighlightingRule(pattern,format));
 
-	// single line comment
-	format.setForeground(Qt::darkGray);
-	//start = QRegExp("//[^\n]*");
-	start = QRegExp("//.*$");
-	end = QRegExp("$");
-	mRules.append(new SCsMultiLinetHighlightingRule(start, end, format, SCsMultiLinetHighlightingRule::SingleLineRuleState));
-	//mRules.append(new SCsStdHighlightingRule(start,format));
+  // single line comment
+  format.setForeground(Qt::darkGray);
+  //start = QRegExp("//[^\n]*");
+  start = QRegExp("//.*$");
+  end = QRegExp("$");
+  mRules.append(new SCsMultiLinetHighlightingRule(start, end, format, SCsMultiLinetHighlightingRule::SingleLineRuleState));
+  //mRules.append(new SCsStdHighlightingRule(start,format));
 
-	
-	// URL
-	format.setForeground(QBrush(QColor(0, 128, 0)));
-	pattern = QRegExp("\".*\"");
-	mRules.append(new SCsStdHighlightingRule(pattern, format));
+  
+  // URL
+  format.setForeground(QBrush(QColor(0, 128, 0)));
+  pattern = QRegExp("\".*\"");
+  mRules.append(new SCsStdHighlightingRule(pattern, format));
 
-	// content
-	format.setForeground(QColor(122, 55, 139));
-	start = QRegExp("\\[");
-	end = QRegExp("\\]");
-	mRules.append(new SCsMultiLinetHighlightingRule(start,end, format, SCsMultiLinetHighlightingRule::ContentRuleState));
+  // content
+  format.setForeground(QColor(122, 55, 139));
+  start = QRegExp("\\[");
+  end = QRegExp("\\]");
+  mRules.append(new SCsMultiLinetHighlightingRule(start,end, format, SCsMultiLinetHighlightingRule::ContentRuleState));
+
+
+  format.setForeground(QColor(24, 10, 209));
+  start = QRegExp("\\(\\*");
+  end = QRegExp("\\*\\)");
+  mRules.append(new SCsMultiLinetHighlightingRule(start,end, format, SCsMultiLinetHighlightingRule::ContentRuleState));
+
+
+  format.setForeground(QColor(49, 245, 99));
+  start = QRegExp("\\{");
+  end = QRegExp("\\}");
+  mRules.append(new SCsMultiLinetHighlightingRule(start,end, format, SCsMultiLinetHighlightingRule::ContentRuleState));
+
+
 
 }
 
-void SCsHighlightingRulesPool::initScArcRules()
+//orient arcs
+void SCsHighlightingRulesPool::initScOrienArcRules()
 {
     QTextCharFormat format;
 
 
     QStringList arcs;
-    arcs          << "<>"
+    arcs          << "->"
+                  << "<-"
                   << ">"
                   << "<"
                   << "\\.\\.>"
                   << "<\\.\\."
-                  << "->"
-                  << "<-"
-                  << "<=>"
                   << "=>"
+                  << "="
                   << "<="
                   << "-\\|>"
                   << "<\\|-"
@@ -94,10 +109,30 @@ void SCsHighlightingRulesPool::initScArcRules()
                   << "~\\|>"
                   << "<\\|~"
                   << "~/>"
-                  << "</~"
-                  << "=" ;
+                  << "</~";
 
     format.setForeground(QColor(255, 0, 128));
+    QStringList::Iterator it;
+    for( it = arcs.begin(); it != arcs.end(); ++it )
+    {
+        mRules.append(new SCsStdHighlightingRule(QRegExp(*it), format) );
+        mRules.append(new SCsStdHighlightingRule(QRegExp("_"+*it), format) );
+    }
+
+}
+//no orient arcs
+void SCsHighlightingRulesPool::initScNoOrienArcRules()
+{
+    QTextCharFormat format;
+
+
+    QStringList arcs;
+    arcs
+                                    << "<>"
+                                    << "<=>"
+                                    << "<->";
+
+    format.setForeground(QColor(37, 178, 55));
     QStringList::Iterator it;
     for( it = arcs.begin(); it != arcs.end(); ++it )
     {
