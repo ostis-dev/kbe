@@ -6,10 +6,15 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include "scgnodetextitem.h"
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <scgscene.h>
+#include <QRectF>
 
 
-SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos)
-    : SCgTextItem(str,(QGraphicsItem*)parent)
+
+SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene* scene )
+    : SCgTextItem(str,(QGraphicsItem*)parent,scene)
     , mTextPos(idtfPos)
 {
     Q_CHECK_PTR(parent);
@@ -18,8 +23,8 @@ SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::I
 }
 
 
-SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition idtfPos)
-    : SCgTextItem((QGraphicsItem*)parent)
+SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::eIdentifierPosition idtfPos, QGraphicsScene *scene)
+    : SCgTextItem((QGraphicsItem*)parent, scene)
     , mTextPos(idtfPos)
 {
     Q_CHECK_PTR(parent);
@@ -36,11 +41,11 @@ void SCgNodeTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 
     if ((flags() & QGraphicsItem::ItemIsMovable) != 0)
-        setNodeTextPos(posToIdtfPos(mapToParent(event->pos())));
+        setTextPos(posToIdtfPos(mapToParent(event->pos())));
 }
 
 
-void SCgNodeTextItem::setNodeTextPos(SCgNode::IdentifierPosition pos)
+void SCgNodeTextItem::setTextPos(SCgNode::eIdentifierPosition pos)
 {
     if (mTextPos != pos)
     {
@@ -49,9 +54,9 @@ void SCgNodeTextItem::setNodeTextPos(SCgNode::IdentifierPosition pos)
     }
 }
 
-SCgNode::IdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) const
+SCgNode::eIdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) const
 {
-    SCgNode::IdentifierPosition idtfPos = SCgNode::BottomRight;
+    SCgNode::eIdentifierPosition idtfPos = SCgNode::BottomRight;
 
     qreal x = point.x();
     qreal y = point.y();
@@ -80,7 +85,7 @@ SCgNode::IdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) 
 }
 
 
-void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
+void SCgNodeTextItem::updateTextPos(SCgNode::eIdentifierPosition pos)
 {
     QRectF rect = boundingRect();
     QRectF parentRect =  mParentItem->boundingRect();
@@ -102,18 +107,67 @@ void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
     setSelected(false);
 }
 
-SCgNode::IdentifierPosition SCgNodeTextItem::nodeTextPos() const
+SCgNode::eIdentifierPosition SCgNodeTextItem::textPos() const
 {
     return mTextPos;
 }
 
-void SCgNodeTextItem::setTextPos(const QPointF &pos)
+
+void SCgNodeTextItem :: showPositions(SCgScene * scgScene, bool isShow)
 {
-    setNodeTextPos(posToIdtfPos(pos));
+    if(textItemPositions.empty())
+    {
+        createTextItemPositions(scgScene);
+    } else {
+        foreach(QGraphicsRectItem * position,textItemPositions) {
+            if(isShow) {
+                position->show();
+            } else {
+                position->hide();
+            }
+        }
+    }
+
 }
 
-void SCgNodeTextItem::setPlainText(const QString &text)
-{
-    SCgTextItem::setPlainText(text);
-    updateTextPos(mTextPos);
+void SCgNodeTextItem :: createTextItemPositions(SCgScene * scgScene) {
+
+    QGraphicsScene * scene = static_cast<QGraphicsScene*>(scgScene);
+    QGraphicsRectItem * textPositionItem;
+    QRectF rect = boundingRect();
+    QRectF parentRect =  mParentItem->boundingRect();
+
+    qreal height = this->boundingRect().height();
+    qreal widht = this->boundingRect().width();
+    qreal x, y;
+
+    x = parentRect.left() - rect.width() + 8;
+    y = parentRect.bottom() - 8;
+    QRectF * textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+    y = parentRect.top() - rect.height() + 8;
+    textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+    x = parentRect.right() - 8;
+    textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
+    y = parentRect.bottom() - 8;
+    textRect  = new QRectF(x,y,widht,height);
+    textPositionItem = new QGraphicsRectItem(*textRect,mParentItem,scene);
+    textPositionItem->hide();
+    textItemPositions.push_back(textPositionItem);
+
 }
+
+
+
+
