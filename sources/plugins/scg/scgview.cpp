@@ -73,11 +73,13 @@ void SCgView::createActions()
 
     mActionChangeContent = new QAction(mWindow->findIcon("edit-content-change.png"),tr("Set content"),mWindow);
     mActionChangeContent->setShortcut(QKeySequence( tr("C") ));
+    mWindow->addAction(mActionChangeContent);
     connect(mActionChangeContent, SIGNAL(triggered()), this, SLOT(changeContent()));
 
     mActionShowContent = new QAction(tr("Show content"),mWindow);
     mActionShowContent->setCheckable(true);
     mActionShowContent->setShortcut(QKeySequence( tr("H") ));
+    mWindow->addAction(mActionShowContent);
     connect(mActionShowContent, SIGNAL(triggered(bool)), this, SLOT(setContentVisible(bool)));
 
     mActionShowAllContent = new QAction(tr("Show all content"), mWindow);
@@ -88,38 +90,47 @@ void SCgView::createActions()
 
     mActionDeleteContent = new QAction(mWindow->findIcon("edit-content-delete.png"), tr("Delete content"), mWindow);
     mActionDeleteContent->setShortcut(QKeySequence( tr("D") ));
+    mWindow->addAction(mActionDeleteContent);
     connect(mActionDeleteContent, SIGNAL(triggered()), this, SLOT(deleteContent()));
 
     mActionChangeIdtf = new QAction(mWindow->findIcon("edit-change-idtf.png"), tr("Change identifier"), mWindow);
     mActionChangeIdtf->setShortcut(QKeySequence( tr("I") ));
+    mWindow->addAction(mActionChangeIdtf);
     connect(mActionChangeIdtf, SIGNAL(triggered()), this, SLOT(changeIdentifier()));
 
     mActionDelete = new QAction(QIcon::fromTheme("edit-delete", mWindow->findIcon("edit-delete.png")), tr("Delete"), mWindow);
     mActionDelete->setShortcut(QKeySequence::Delete);
+    mWindow->addAction(mActionDelete);
     connect(mActionDelete, SIGNAL(triggered()), this, SLOT(deleteSelected()));
 
     mActionContourDelete = new QAction(mWindow->findIcon("edit-delete.png"), tr("Delete contour"), mWindow);
     mActionContourDelete->setShortcut( QKeySequence(tr("Backspace")) );
+    mWindow->addAction(mActionContourDelete);
     connect(mActionContourDelete, SIGNAL(triggered()), this, SLOT(deleteJustContour()));
 
     mActionSwapPairOrient = new QAction(mWindow->findIcon("edit-swap-pair.png"), tr("Swap orientation"), mWindow);
     mActionSwapPairOrient->setShortcut( QKeySequence(tr("S")));
+    mWindow->addAction(mActionSwapPairOrient);
     connect(mActionSwapPairOrient, SIGNAL(triggered()), this, SLOT(swapPairOrient()));
 
     mActionCopy = new QAction(QIcon::fromTheme("edit-copy", mWindow->findIcon("edit-copy.png")), tr("Copy"),this);
     mActionCopy->setShortcut(QKeySequence::Copy);
+    mWindow->addAction(mActionCopy);
     connect(mActionCopy, SIGNAL(triggered()), mWindow, SLOT(copy()));
 
     mActionCut = new QAction(QIcon::fromTheme("edit-cut", mWindow->findIcon("edit-cut.png")), tr("Cut"),this);
     mActionCut->setShortcut(QKeySequence::Cut);
+    mWindow->addAction(mActionCut);
     connect(mActionCut, SIGNAL(triggered()), mWindow, SLOT(cut()));
 
     mActionPaste = new QAction(QIcon::fromTheme("edit-paste", mWindow->findIcon("edit-paste.png")), tr("Paste"),this);
     mActionPaste->setShortcut(QKeySequence::Paste);
+    mWindow->addAction(mActionPaste);
     connect(mActionPaste, SIGNAL(triggered()), mWindow, SLOT(paste()));
 
     mActionSelectAll = new QAction(QIcon::fromTheme("edit-select-all", mWindow->findIcon("edit-select-all.png")), tr("Select All"),this);
     mActionSelectAll->setShortcut(QKeySequence::SelectAll);
+    mWindow->addAction(mActionSelectAll);
     connect(mActionSelectAll, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
 
