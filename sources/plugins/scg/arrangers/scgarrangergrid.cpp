@@ -280,3 +280,25 @@ QString SCgGridArranger::name() const
 {
     return tr("Grid arrange");
 }
+
+void SCgGridArranger::sumGhostsPosition()
+{
+    drawGrid(true);
+    mPlaced.clear();
+    QMap<SCgObject*, SCgObject*>::const_iterator i = mGhosts.constBegin();
+    while (i != mGhosts.constEnd())
+    {
+        placeToGrid(i.value(), i.key());
+        ++i;
+    }
+
+}
+
+void SCgGridArranger::ValueDefiner(int newSpacing)
+{
+    mXStep = newSpacing;
+    if(mIsSymmetrical && mYStep != mXStep)
+        mYSpinBox->setValue(newSpacing);
+    else
+        recalculateGhostsPosition();
+}

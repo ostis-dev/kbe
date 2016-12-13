@@ -27,6 +27,8 @@ protected:
     //!  @see SCgArranger::userMenu
     bool configDialog();
 
+    bool MvsArranger();
+
     //!  @see SCgArranger::startOperation
     void startOperation();
 
@@ -39,6 +41,7 @@ protected:
     /*! Create configuration dialog
       */
     void createDialog();
+    void ConfirmClicker();
 
     /*! Get items that will be arranged
       * @param Return true, if all items founded; otherwise return false
