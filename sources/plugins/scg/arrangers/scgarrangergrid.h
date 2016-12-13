@@ -33,6 +33,8 @@ protected:
     //!  @see SCgArranger::startOperation()
     void startOperation();
 
+    void sumGhostsPosition();
+
     //! Holds dialog window, shown to user.
     //! @see SCgGridArranger::createDialog()
     QDialog* mDialog;
@@ -64,8 +66,7 @@ protected slots:
     /*! @defgroup Slots Slots to react on user actions
      *  @{
      */
-    void xValueChanged(int newSpacing);
-    void yValueChanged(int newSpacing);
+    void AllValueChanged(int newSpacing);
     void symmetricalCheckBoxClicked(bool checked);
     /*! @}*/
 
@@ -91,4 +92,5 @@ private:
 
 
 };
+
 

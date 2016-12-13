@@ -47,8 +47,6 @@ bool SCgGridArranger::configDialog()
     recalculateGhostsPosition();
 
     bool res = mDialog->exec() == QDialog::Accepted;
-
-    deleteGhosts();
     mPlaced.clear();
     drawGrid(false);
 
@@ -57,20 +55,14 @@ bool SCgGridArranger::configDialog()
     return res;
 }
 
-void SCgGridArranger::xValueChanged(int newSpacing)
+void SCgGridArranger::AllValueChanged(int newSpacing)
 {
     mXStep = newSpacing;
     if(mIsSymmetrical && mYStep != mXStep)
+    {
         mYSpinBox->setValue(newSpacing);
-    else
-        recalculateGhostsPosition();
-}
-
-void SCgGridArranger::yValueChanged(int newSpacing)
-{
-    mYStep = newSpacing;
-    if(mIsSymmetrical && mYStep != mXStep)
         mXSpinBox->setValue(newSpacing);
+    }
     else
         recalculateGhostsPosition();
 }
@@ -119,18 +111,12 @@ QDialog* SCgGridArranger::createDialog()
     vl->addWidget(ySpin);
     hl->addLayout(vl);
 
-    QCheckBox* symChkBox = new QCheckBox(tr("Symmetrical grid"));
-
-    symChkBox->setChecked(mIsSymmetrical);
-
     vl = new QVBoxLayout();
     vl->addLayout(hl);
-    vl->addWidget(symChkBox);
     vl->addWidget(buttonBox);
 
     connect(xSpin, SIGNAL(valueChanged(int)), this, SLOT(xValueChanged(int)));
     connect(ySpin, SIGNAL(valueChanged(int)), this, SLOT(yValueChanged(int)));
-    connect(symChkBox, SIGNAL(clicked (bool)), this, SLOT(symmetricalCheckBoxClicked(bool)));
     connect(buttonBox, SIGNAL(accepted()), mDialog, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), mDialog, SLOT(reject()));
 
@@ -280,3 +266,16 @@ QString SCgGridArranger::name() const
 {
     return tr("Grid arrange");
 }
+
+void SCgGridArranger::sumGhostsPosition()
+ {
+     drawGrid(true);
+     mPlaced.clear();
+     QMap<SCgObject*, SCgObject*>::const_iterator i = mGhosts.constBegin();
+     while (i != mGhosts.constEnd())
+     {
+         placeToGrid(i.value(), i.key());
+         ++i;
+     }
+
+ }

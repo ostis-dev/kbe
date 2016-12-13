@@ -43,6 +43,8 @@ public:
 
     //! @return type of this arranger.
     virtual int type() const = 0;
+
+
 protected:
 
     //! Shows menu to user and returns true, if user agree with changes.
@@ -66,8 +68,9 @@ protected:
     //! Command for minimizing contour.
     void registerCommandMinimizeContour(SCgContour *contour);
 
-    //! Deletes all ghosts from scene.
-    void deleteGhosts();
+    void useBreakPoints(SCgPair *pair);
+
+
 
     /*! Creates ghosts of objects for current list(@p list).
     @see createGhost()*/
@@ -88,5 +91,6 @@ private:
     * @p opacityLevel - opacity value for top level items.
     **/
     SCgObject* createGhost(SCgObject* obj, qreal opacityLevel = 0.4);
+    SCgObject* collectObjects(SCgObject* obj, qreal opacityLevel);
 };
 
