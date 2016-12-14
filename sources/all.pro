@@ -8,7 +8,7 @@ CONFIG += ordered
 DESTDIR = ./bin
 
 SUBDIRS = plugins/scg \
-          #plugins/scn \
+          plugins/scn \
           plugins/scs \
           kbe
 

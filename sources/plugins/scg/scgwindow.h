@@ -8,6 +8,7 @@
 
 #include "interfaces/editorinterface.h"
 #include "scgscene.h"
+#include "scgconverter.h"
 
 #include <QToolBox>
 #include <QMap>
@@ -86,6 +87,7 @@ public:
      */
     static const qreal minScale;
     static const qreal maxScale;
+
     /*! @}*/
 private:
     //! @see onZoomIn(), onZoomOut()
@@ -134,6 +136,9 @@ private:
 
     //! Widgets, which will be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;
+
+    //
+   // SCgConverter *conv;
 
     /**
      * \defgroup menu Menu
@@ -218,6 +223,7 @@ private slots:
       *Provides handling Copy menu event.
       */
     void copy() const;
+     void copyInSCS();
 
     /*!
      *Provides handling Paste menu event.
@@ -229,6 +235,7 @@ private slots:
 
     void stackCleanStateChanged(bool value);
 };
+
 
 class SCgWindowFactory : public QObject,
                          public EditorFactoryInterface
