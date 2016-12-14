@@ -173,6 +173,9 @@ void MainWindow::createActions()
     connect(ui->actionAbout_Qt, SIGNAL(triggered()), this, SLOT(onHelpAboutQt()));
     connect(ui->actionFeedback, SIGNAL(triggered()), this, SLOT(onFeedback()));
     connect(ui->actionGuide, SIGNAL(triggered()), this, SLOT(onGuide()));
+
+    this->addAction(ui->actionExit);
+    this->addAction(ui->actionAbout);
 }
 
 void MainWindow::updateEvent(EditorInterface *editor, EditEvents event)
