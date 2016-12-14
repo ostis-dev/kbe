@@ -22,6 +22,7 @@
 #include <QToolButton>
 #include <QFileDialog>
 
+
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
 #include "arrangers/scgarrangerhorizontal.h"
@@ -304,6 +305,8 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onZoomOut()));
 
+
+
     mToolBar->setWindowTitle(tr("SCg Tools"));
     mToolBar->setObjectName("SCgMainToolBar");
 
@@ -484,6 +487,7 @@ void SCgWindow::onZoomOut()
 
     mZoomFactorLine->setText(QString::number(newScale));
 }
+
 
 void SCgWindow::onViewScaleChanged(qreal newScale)
 {

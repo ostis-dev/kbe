@@ -132,9 +132,13 @@ public:
      */
     QString aliasFromPermanencyCode(SCgPermType code) const;
 
-protected:
+public:
     QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgNodeStructType &type_struct);
     QIcon createPairIcon(const QSize &size, QString type);
+    //! Map to convert struct type into string
+    typedef QMap<SCgNodeStructType, QString> SCgStructType2AliasMap;
+    SCgStructType2AliasMap mStructAliases;
+
 
 private:
 
@@ -163,9 +167,7 @@ private:
     typedef QMap<SCgConstType, QString> SCgConstType2AliasMap;
     SCgConstType2AliasMap mConstAliases;
 
-    //! Map to convert struct type into string
-    typedef QMap<SCgNodeStructType, QString> SCgStructType2AliasMap;
-    SCgStructType2AliasMap mStructAliases;
+
 
     //! Map to convert positivity type into string
     typedef QMap<SCgPosType, QString> SCgPositivityType2AliasMap;

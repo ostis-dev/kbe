@@ -86,6 +86,7 @@ public:
      */
     static const qreal minScale;
     static const qreal maxScale;
+
     /*! @}*/
 private:
     //! @see onZoomIn(), onZoomOut()
