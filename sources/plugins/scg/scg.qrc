@@ -31,5 +31,7 @@
         <file>media/icons/tool-select-subgraph.png</file>
         <file>media/translations/scg_en_EN.qm</file>
         <file>media/translations/scg_ru_RU.qm</file>
+        <file>media/icons/sc-construction3.png</file>
+        <file>media/icons/sc-construction5.png</file>
     </qresource>
 </RCC>

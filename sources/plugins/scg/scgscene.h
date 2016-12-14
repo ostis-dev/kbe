@@ -44,6 +44,8 @@ public:
         Mode_Bus,
         Mode_Contour,
         Mode_InsertTemplate,
+        Mode_ThreeElements,
+        Mode_FiveElements,
         Mode_Clone,
 
         // Don't use it. (Used to know count of all edit modes)
