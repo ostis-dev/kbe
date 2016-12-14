@@ -32,13 +32,18 @@ public:
     void setPlainText(const QString &text);
 
 protected:
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
     void setNodeTextPos(SCgNode::IdentifierPosition pos);
     SCgNode::IdentifierPosition nodeTextPos() const;
 
     void updateTextPos(SCgNode::IdentifierPosition pos);
     SCgNode::IdentifierPosition posToIdtfPos(const QPointF &point) const;
+
+    void changeIdtfWidth(double dx);
 
     SCgNode::IdentifierPosition mTextPos;
     SCgNode *mParentItem;

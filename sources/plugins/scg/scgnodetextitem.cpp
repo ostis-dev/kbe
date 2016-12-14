@@ -5,8 +5,11 @@
  */
 
 #include <QGraphicsSceneMouseEvent>
+#include <QCursor>
 #include "scgnodetextitem.h"
 
+// Used as width of horizontal borders of identifier bounding rectangle
+const int adjust = 10;
 
 SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::IdentifierPosition idtfPos)
     : SCgTextItem(str,(QGraphicsItem*)parent)
@@ -15,6 +18,7 @@ SCgNodeTextItem::SCgNodeTextItem(const QString &str, SCgNode* parent, SCgNode::I
     Q_CHECK_PTR(parent);
     mParentItem = parent;
     updateTextPos(mTextPos);
+    setAcceptHoverEvents(true);
 }
 
 
@@ -25,6 +29,7 @@ SCgNodeTextItem::SCgNodeTextItem(SCgNode *parent, SCgNode::IdentifierPosition id
     Q_CHECK_PTR(parent);
     mParentItem = parent;
     updateTextPos(mTextPos);
+    setAcceptHoverEvents(true);
 }
 
 
@@ -32,11 +37,55 @@ SCgNodeTextItem::~SCgNodeTextItem()
 {
 
 }
+
+void SCgNodeTextItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    setCursor(Qt::OpenHandCursor);
+}
+
+void SCgNodeTextItem::hoverMoveEvent(QGraphicsSceneHoverEvent *event)
+{
+    if ( (nodeTextPos() == SCgNode::TopLeft || nodeTextPos() == SCgNode::BottomLeft) &&
+            (event->pos().x() < boundingRect().left() + adjust) )
+    {
+        setCursor(Qt::SizeHorCursor);
+    }
+    else if ( (nodeTextPos() == SCgNode::TopRight || nodeTextPos() == SCgNode::BottomRight) &&
+             (event->pos().x() > boundingRect().right() - adjust) )
+    {
+        setCursor(Qt::SizeHorCursor);
+    }
+    else setCursor(Qt::OpenHandCursor);
+}
+
+void SCgNodeTextItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+        setCursor(Qt::OpenHandCursor);
+}
+
 void SCgNodeTextItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+    if (event->buttons() & Qt::LeftButton)
+        setCursor(Qt::ClosedHandCursor);
 
-    if ((flags() & QGraphicsItem::ItemIsMovable) != 0)
-        setNodeTextPos(posToIdtfPos(mapToParent(event->pos())));
+    double dx = event->pos().x() - event->lastPos().x();
+    if ( (nodeTextPos() == SCgNode::TopLeft || nodeTextPos() == SCgNode::BottomLeft) &&
+            (event->pos().x() < boundingRect().left() + adjust) )
+    {
+        setCursor(Qt::SizeHorCursor);
+        changeIdtfWidth(-dx);
+    }
+    else if ( (nodeTextPos() == SCgNode::TopRight || nodeTextPos() == SCgNode::BottomRight) &&
+             (event->pos().x() > boundingRect().right() - adjust) )
+    {
+        setCursor(Qt::SizeHorCursor);
+        changeIdtfWidth(dx);
+    }
+    {
+        if ((flags() & QGraphicsItem::ItemIsMovable) != 0)
+            setNodeTextPos(posToIdtfPos(mapToParent(event->pos())));
+    }
 }
 
 
@@ -116,4 +165,38 @@ void SCgNodeTextItem::setPlainText(const QString &text)
 {
     SCgTextItem::setPlainText(text);
     updateTextPos(mTextPos);
+}
+
+void SCgNodeTextItem::changeIdtfWidth(double dx)
+{
+    QRectF prevRect = boundingRect();
+    QPointF prevPos = pos();
+
+    SCgNode::IdentifierPosition idtfPos = nodeTextPos();
+    this->setTextWidth(this->textWidth() + dx);
+
+    QRectF newRect = boundingRect();
+    QPointF newPos;
+    QPointF diff = QPointF();
+
+    switch(idtfPos)
+    {
+        case SCgNode::TopLeft :
+            diff = prevRect.bottomRight() - newRect.bottomRight();
+            break;
+        case SCgNode::TopRight :
+            diff = prevRect.bottomLeft() - newRect.bottomLeft();
+            break;
+        case SCgNode::BottomRight :
+            diff = prevRect.topLeft() - newRect.topLeft();
+            break;
+        case SCgNode::BottomLeft :
+            diff = prevRect.topRight() - newRect.topRight();
+            break;
+        default:
+            qWarning("Unknown enum member.");
+    }
+
+    newPos = prevPos + diff;
+    setPos(newPos);
 }
