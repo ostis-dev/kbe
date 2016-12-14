@@ -10,6 +10,7 @@
 #include <QGraphicsItem>
 
 #include "scgalphabet.h"
+#include "scglayer.h"
 
 class SCgScene;
 class SCgTextItem;
@@ -153,6 +154,10 @@ public:
       */
     virtual void undel(SCgScene *scene);
 
+    void setLayer(SCgLayer* layer);
+
+    SCgLayer* getLayer();
+
     /*!
      * @return unique identifier of this object in current environment.
      */
@@ -187,6 +192,8 @@ protected:
 
     //! true, if parent about to change.
     bool mParentChanging;
+
+    SCgLayer* layer;
 
 protected:
     friend class GwfStreamWriter;
