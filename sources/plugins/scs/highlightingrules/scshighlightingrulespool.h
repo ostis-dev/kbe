@@ -20,7 +20,8 @@ public:
 private:
     SCsHighlightingRulesPool();
 
-    void initScArcRules();
+    void initScOrienArcRules();
+    void initScNoOrienArcRules();
 
     QList<SCsAbstractHighlightingRule*> mRules;
     static SCsHighlightingRulesPool* msInstance;
