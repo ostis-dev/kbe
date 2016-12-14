@@ -4,7 +4,8 @@
  * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
  */
 
-#pragma once
+#ifndef SCGSELECTMODE_H_
+#define SCGSELECTMODE_H_
 
 #include "scgmode.h"
 #include <QMap>
@@ -28,6 +29,8 @@ public:
     void mouseMove(QGraphicsSceneMouseEvent *event);
 
     void mouseRelease(QGraphicsSceneMouseEvent *event);
+
+    void wheelEvent(QGraphicsSceneWheelEvent *event);
 
     void mouseDoubleClick(QGraphicsSceneMouseEvent *event);
     /*! @}*/
@@ -60,4 +63,3 @@ private:
     SCgContour *findNearestParentContour(QGraphicsItem* item);
 
 };
-
