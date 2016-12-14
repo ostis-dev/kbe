@@ -15,6 +15,7 @@
 class SCgMinimap;
 class SCgView;
 class SCgUndoView;
+class SCgLayersPanel;
 
 class QToolBar;
 class QLineEdit;
@@ -132,7 +133,10 @@ private:
     //! Undo stack
     QUndoStack *mUndoStack;
 
-    //! Widgets, which will be placed into dock area of main window.
+    //! Layers widget
+    SCgLayersPanel *mLayersPanel;
+
+    //! Widgets, which mWidgetsForDockswill be placed into dock area of main window.
     QList<QWidget*> mWidgetsForDocks;
 
     /**

@@ -19,11 +19,13 @@ public:
       @param scene          Pointer to SCgScene that will be used for command working
       @param objList        List of inserted objects
       @param parentContour  Pointer to parent contour (if 0 then parent is scene).
+      @param layer          Pointer to parent layer
       @param parent         Pointer to parent command
       */
     explicit SCgCommandInsert(SCgScene *scene,
                               QList<SCgObject*> objList,
                               SCgContour* parentContour,
+                              SCgLayer* layer,
                               QUndoCommand *parent = 0);
     //! Destructor
     virtual ~SCgCommandInsert();
@@ -37,6 +39,8 @@ protected:
     QList<SCgObject*> mList;
     //! Parent contour
     SCgContour* mParent;
+    //! Parent layer
+    SCgLayer* mLayer;
 private slots:
 
     void objectFromListDestroyed(QObject* obj);

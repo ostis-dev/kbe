@@ -302,3 +302,13 @@ QPointF SCgObject::idtfPos() const
 {
     return mTextItem->textPos();
 }
+
+SCgLayer* SCgObject::getLayer() const
+{
+    return mLayer;
+}
+
+void SCgObject::setLayer(SCgLayer* layer)
+{
+    mLayer = layer;
+}

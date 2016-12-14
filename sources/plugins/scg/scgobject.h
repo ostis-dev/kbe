@@ -10,6 +10,7 @@
 #include <QGraphicsItem>
 
 #include "scgalphabet.h"
+#include "scglayer.h"
 
 class SCgScene;
 class SCgTextItem;
@@ -93,6 +94,9 @@ public:
     virtual void setIdtfPos(const QPointF &pos);
     QPointF idtfPos() const;
 
+    SCgLayer* getLayer() const;
+
+    void setLayer(SCgLayer* parentLayer);
 //////////////////////////
 /* Working with types */
 public:
@@ -187,6 +191,9 @@ protected:
 
     //! true, if parent about to change.
     bool mParentChanging;
+
+    //! Object layer
+    SCgLayer* mLayer;
 
 protected:
     friend class GwfStreamWriter;
