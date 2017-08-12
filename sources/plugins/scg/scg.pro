@@ -94,7 +94,8 @@ HEADERS += \
     commands/scgcommandswappairorient.h \
     commands/scgcommandremovebreakpoints.h \
     commands/scgcommandminimizecontour.h \
-    scgnodetextitem.h
+    scgnodetextitem.h \
+    scgtypedialog.h
 
 SOURCES += \
     scgwindow.cpp \
@@ -172,7 +173,8 @@ SOURCES += \
     commands/scgcommandswappairorient.cpp \
     commands/scgcommandremovebreakpoints.cpp \
     commands/scgcommandminimizecontour.cpp \
-    scgnodetextitem.cpp
+    scgnodetextitem.cpp \
+    scgtypedialog.cpp
 
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts

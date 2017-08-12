@@ -11,6 +11,7 @@
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
+#include "scgtypedialog.h"
 
 #include <math.h>
 #include <QUrl>
@@ -70,6 +71,11 @@ void SCgView::createActions()
     QAction* sep = new QAction(this);
     sep->setSeparator(true);
     mActionsList.append(sep);
+
+    mActionChangeType = new QAction(tr("Change type"), mWindow);
+    mActionChangeType->setShortcut(QKeySequence( tr("T") ));
+    mWindow->addAction(mActionChangeType);
+    connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(showTypeDialog()));
 
     mActionChangeContent = new QAction(mWindow->findIcon("edit-content-change.png"),tr("Set content"),mWindow);
     mActionChangeContent->setShortcut(QKeySequence( tr("C") ));
@@ -133,7 +139,7 @@ void SCgView::createActions()
     mWindow->addAction(mActionSelectAll);
     connect(mActionSelectAll, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
-
+    mActionsList.append(mActionChangeType);
     mActionsList.append(mActionChangeContent);
     mActionsList.append(mActionShowContent);
     mActionsList.append(mActionShowAllContent);
@@ -216,6 +222,9 @@ void SCgView::updateActionsState(int idx)
 
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
+
+    mActionChangeType->setEnabled(mContextObject);
+    mActionChangeType->setVisible(mContextObject);
 
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
@@ -465,6 +474,28 @@ void SCgView::changeIdentifier()
         QString newIdtf = lineEdit->text();
         if(oldIdtf != newIdtf)
             static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf);
+    }
+}
+
+void SCgView::showTypeDialog()
+{
+    if (!mContextObject)
+        return;
+
+    QString stype;
+    if (mContextObject->type() == SCgNode::Type)
+        stype = "node";
+    else if (mContextObject->type() == SCgPair::Type)
+        stype = "pair";
+
+    SCgTypeSelectionDialog typeDialog(stype);
+
+    if (typeDialog.exec() == QDialog::Accepted)
+    {
+        QAction* action = new QAction(this);
+        action->setData(QVariant(typeDialog.getChosenType()));
+        changeType(action);
+        delete action;
     }
 }
 
