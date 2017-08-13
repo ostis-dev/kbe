@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QDialogButtonBox>
 
 SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& type, QWidget* parent)
     : QDialog(parent)
@@ -26,10 +27,17 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& type, QWidget* par
     QGroupBox* unknownGroup = new QGroupBox(alphabet.aliasFromConstCode(SCgAlphabet::ConstUnknown));
     unknownGroup->setLayout(unknownLayout);
 
-    topLayout->addWidget(constGroup);
-    topLayout->addWidget(varGroup);
+    topLayout->addWidget(constGroup, 1);
+    topLayout->addWidget(varGroup, 1);
     mainLayout->addLayout(topLayout);
     mainLayout->addWidget(unknownGroup);
+
+    QDialogButtonBox* box = new QDialogButtonBox(QDialogButtonBox::Cancel);
+    box->button(QDialogButtonBox::Cancel)->setDefault(true);
+    connect(box, SIGNAL(rejected()), this, SLOT(reject()));
+    mainLayout->addWidget(box);
+
+    mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(mainLayout);
 
     SCgAlphabet::SCgObjectTypesMap types;
