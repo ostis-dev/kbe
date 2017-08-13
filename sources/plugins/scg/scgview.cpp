@@ -186,7 +186,9 @@ void SCgView::updateActionsState(int idx)
         if(SCgObject::isSCgObjectType(items.first()->type()))
             mContextObject = static_cast<SCgObject*>(items.first());
 
-    if(mContextObject && mContextObject->type() == SCgNode::Type)
+    bool nodeType = (mContextObject) && (mContextObject->type() == SCgNode::Type);
+
+    if(nodeType)
     {
         mActionChangeContent->setEnabled(true);
         mActionChangeContent->setVisible(true);
@@ -218,19 +220,21 @@ void SCgView::updateActionsState(int idx)
         mActionDeleteContent->setVisible(false);
     }
 
-    bool pairType = (mContextObject != 0) && (mContextObject->type() == SCgPair::Type);
+    bool pairType = (mContextObject) && (mContextObject->type() == SCgPair::Type);
 
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
 
-    mActionChangeType->setEnabled(mContextObject);
-    mActionChangeType->setVisible(mContextObject);
+    mActionChangeType->setEnabled(nodeType || pairType);
+    mActionChangeType->setVisible(nodeType || pairType);
 
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
-    mActionContourDelete->setEnabled(mContextObject && mContextObject->type() == SCgContour::Type);
-    mActionContourDelete->setVisible(mContextObject && mContextObject->type() == SCgContour::Type);
+    bool contourType = (mContextObject) && (mContextObject->type() == SCgContour::Type);
+
+    mActionContourDelete->setEnabled(contourType);
+    mActionContourDelete->setVisible(contourType);
 
     bool isAnySelected = !scene()->selectedItems().isEmpty();
     mActionDelete->setEnabled(isAnySelected);
@@ -492,10 +496,9 @@ void SCgView::showTypeDialog()
 
     if (typeDialog.exec() == QDialog::Accepted)
     {
-        QAction* action = new QAction(this);
-        action->setData(QVariant(typeDialog.getChosenType()));
-        changeType(action);
-        delete action;
+        QAction action(this);
+        action.setData(QVariant(typeDialog.getChosenType()));
+        changeType(&action);
     }
 }
 
