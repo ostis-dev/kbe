@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="en_US">
+<TS version="2.1" language="en_US">
 <context>
     <name>ExtendedTabWidget</name>
     <message>
-        <location filename="../../extendedtabwidget.cpp" line="89"/>
+        <location filename="../../extendedtabwidget.cpp" line="73"/>
         <source>(Untitled)</source>
         <translation></translation>
     </message>
@@ -12,12 +12,12 @@
 <context>
     <name>GuideDialog</name>
     <message>
-        <location filename="../../guidedialog.cpp" line="43"/>
+        <location filename="../../guidedialog.cpp" line="28"/>
         <source>Show on startup</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../guidedialog.cpp" line="44"/>
+        <location filename="../../guidedialog.cpp" line="29"/>
         <source>Close</source>
         <translation></translation>
     </message>
@@ -40,261 +40,317 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="56"/>
+        <location filename="../../mainwindow.ui" line="57"/>
         <source>Help</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="65"/>
-        <source>View</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../mainwindow.ui" line="75"/>
+        <location filename="../../mainwindow.ui" line="77"/>
         <source>New</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="78"/>
+        <location filename="../../mainwindow.ui" line="80"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="83"/>
+        <location filename="../../mainwindow.ui" line="85"/>
         <source>Open</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="86"/>
+        <location filename="../../mainwindow.ui" line="88"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="91"/>
+        <location filename="../../mainwindow.ui" line="93"/>
         <source>Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="94"/>
+        <location filename="../../mainwindow.ui" line="96"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="99"/>
+        <location filename="../../mainwindow.ui" line="101"/>
         <source>Save as</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="107"/>
+        <location filename="../../mainwindow.ui" line="109"/>
         <source>Exit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="110"/>
+        <location filename="../../mainwindow.ui" line="112"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="115"/>
+        <location filename="../../mainwindow.ui" line="117"/>
         <source>About ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="118"/>
+        <location filename="../../mainwindow.ui" line="120"/>
         <source>F1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="126"/>
+        <location filename="../../mainwindow.ui" line="128"/>
         <source>Import</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="131"/>
+        <location filename="../../mainwindow.ui" line="133"/>
         <source>Image</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="136"/>
+        <location filename="../../mainwindow.ui" line="138"/>
         <source>About Qt ...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="141"/>
+        <location filename="../../mainwindow.ui" line="143"/>
         <source>Save all</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="144"/>
+        <location filename="../../mainwindow.ui" line="191"/>
+        <source>Project Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="196"/>
+        <source>New Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="201"/>
+        <source>Open Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="206"/>
+        <source>Save Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="211"/>
+        <source>Close Project</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="216"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="104"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="149"/>
+        <location filename="../../mainwindow.ui" line="66"/>
+        <source>Tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.ui" line="151"/>
         <source>Close All</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="152"/>
+        <location filename="../../mainwindow.ui" line="154"/>
         <source>Ctrl+Shift+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="160"/>
+        <location filename="../../mainwindow.ui" line="162"/>
         <source>Close Others</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="165"/>
+        <location filename="../../mainwindow.ui" line="167"/>
         <source>Close</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="168"/>
+        <location filename="../../mainwindow.ui" line="170"/>
         <source>Ctrl+W</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="176"/>
-        <location filename="../../mainwindow.cpp" line="602"/>
+        <location filename="../../mainwindow.ui" line="178"/>
+        <location filename="../../mainwindow.cpp" line="550"/>
         <source>Feedback</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.ui" line="184"/>
+        <location filename="../../mainwindow.ui" line="186"/>
         <source>Guide</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="284"/>
+        <location filename="../../mainwindow.cpp" line="264"/>
         <source>Knowledge Base source Editor - version %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="140"/>
+        <location filename="../../mainwindow.cpp" line="124"/>
         <source>Main Tools</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="264"/>
+        <location filename="../../mainwindow.cpp" line="244"/>
         <source>&amp;%1 %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="281"/>
+        <location filename="../../mainwindow.cpp" line="261"/>
         <source>%1 - KBE version %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="306"/>
+        <location filename="../../mainwindow.cpp" line="286"/>
         <source>Can&apos;t load file.
 File &quot;%1&quot; not found. </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="333"/>
-        <source>List of available formats:</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../mainwindow.cpp" line="343"/>
-        <source>OK</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../mainwindow.cpp" line="350"/>
-        <source>Cancel</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../mainwindow.cpp" line="383"/>
+        <location filename="../../mainwindow.cpp" line="351"/>
         <source>Open file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="417"/>
+        <location filename="../../mainwindow.cpp" line="393"/>
         <source>Can&apos;t load file.
 Unsupported file format &quot;%1&quot;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="433"/>
+        <location filename="../../mainwindow.cpp" line="409"/>
         <source>Can&apos;t save file.
 Unsupported file format &quot;%1&quot;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="489"/>
+        <location filename="../../mainwindow.cpp" line="465"/>
         <source>Save file to ..</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="562"/>
+        <location filename="../../mainwindow.cpp" line="510"/>
         <source>About KBE</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="563"/>
+        <location filename="../../mainwindow.cpp" line="511"/>
         <source>&lt;table&gt;&lt;tr valign=&quot;middle&quot;&gt;&lt;td align=&quot;left&quot;&gt;&lt;img src=&quot;%1&quot;&gt;&lt;/td&gt;&lt;td&gt;%2 %3: %4 &lt;br&gt; &lt;br&gt; Site: &lt;STYLE type=&quot;text/css&quot;&gt;a:link {text-decoration: none}&lt;/STYLE&gt;&lt;a href=&quot;http://www.ostis.net&quot;&gt;http://www.ostis.net&lt;/a&gt;&lt;br&gt; &lt;br&gt;Copyright  OSTIS.net&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;%5:&lt;ul&gt;&lt;li&gt;Denis Koronchik&lt;/li&gt;&lt;li&gt;Gumbar Ilya (zooner)&lt;/li&gt;&lt;li&gt;Harkunov Evgeny (filosov)&lt;/li&gt;&lt;/ul&gt;%6:&lt;ul&gt;&lt;li&gt;Witkowsky Dmitry (wagos)&lt;/li&gt;&lt;li&gt;Aliaksei Palkanau (lifus)&lt;/li&gt;&lt;li&gt;Nikita Grishko (Gr1N)&lt;/li&gt;&lt;li&gt;Denis Klimenko&lt;/li&gt;&lt;li&gt;Konstantin Savon (Konstantsin)&lt;/li&gt;&lt;li&gt;Sergei Yakimchik (Gudini)&lt;/li&gt;&lt;li&gt;Lapitsky Artem&lt;/li&gt;&lt;li&gt;Eugen Zakharich&lt;/li&gt;&lt;li&gt;Pavel Karpan (pioneer)&lt;/li&gt;&lt;li&gt;Dmitry Kolb (skif-sarmat)&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="588"/>
+        <location filename="../../mainwindow.cpp" line="536"/>
         <source>Knowledge Base source Editor </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="589"/>
+        <location filename="../../mainwindow.cpp" line="537"/>
         <source>version</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="591"/>
+        <location filename="../../mainwindow.cpp" line="539"/>
         <source>Authors</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="592"/>
+        <location filename="../../mainwindow.cpp" line="540"/>
         <source>Contributors</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="605"/>
+        <location filename="../../mainwindow.cpp" line="553"/>
         <source>Founded errors and new ideas you can write in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="606"/>
+        <location filename="../../mainwindow.cpp" line="554"/>
         <source>forum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="607"/>
+        <location filename="../../mainwindow.cpp" line="555"/>
         <source>Also you can find our contact information on </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="609"/>
+        <location filename="../../mainwindow.cpp" line="557"/>
         <source>site</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="727"/>
+        <location filename="../../mainwindow.cpp" line="675"/>
+        <source>newly created document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../mainwindow.cpp" line="677"/>
         <source>Save changes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../mainwindow.cpp" line="728"/>
+        <location filename="../../mainwindow.cpp" line="678"/>
         <source>Do you want to save changes in %1 ?</source>
         <translation></translation>
     </message>
 </context>
 <context>
+    <name>NewFileDialog</name>
+    <message>
+        <location filename="../../newfiledialog.cpp" line="21"/>
+        <source>List of available formats:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../newfiledialog.cpp" line="39"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../newfiledialog.cpp" line="46"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PluginManager</name>
     <message>
-        <location filename="../../pluginmanager.cpp" line="158"/>
-        <source>All files (*.*)</source>
-        <translation></translation>
+        <location filename="../../pluginmanager.cpp" line="159"/>
+        <source>All files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../pluginmanager.cpp" line="161"/>
+        <source>All supported files</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SettingsDialog</name>
+    <message>
+        <location filename="../../settingsdialog.cpp" line="18"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../settingsdialog.cpp" line="48"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
