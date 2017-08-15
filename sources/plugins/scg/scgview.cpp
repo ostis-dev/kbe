@@ -72,7 +72,7 @@ void SCgView::createActions()
     sep->setSeparator(true);
     mActionsList.append(sep);
 
-    mActionChangeType = new QAction(tr("Change type"), mWindow);
+    mActionChangeType = new QAction(tr("Select type"), mWindow);
     mActionChangeType->setShortcut(QKeySequence( tr("T") ));
     mWindow->addAction(mActionChangeType);
     connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(showTypeDialog()));

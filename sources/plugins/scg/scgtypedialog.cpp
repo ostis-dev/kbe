@@ -1,15 +1,22 @@
+/*
+ * This source file is part of an OSTIS project. For the latest info, see http://ostis.net
+ * Distributed under the MIT License
+ * (See accompanying file COPYING.MIT or copy at http://opensource.org/licenses/MIT)
+ */
+
 #include "scgtypedialog.h"
 #include "scgnode.h"
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QGroupBox>
 #include <QDialogButtonBox>
 
-SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& type, QWidget* parent)
+SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& objectType, QWidget* parent)
     : QDialog(parent)
 {
-    setWindowTitle(tr("Choose type"));
+    setWindowTitle(tr("Select type"));
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QHBoxLayout* topLayout = new QHBoxLayout();
@@ -18,13 +25,11 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& type, QWidget* par
     QVBoxLayout* varLayout = new QVBoxLayout();
     QHBoxLayout* unknownLayout = new QHBoxLayout();
 
-    SCgAlphabet& alphabet = SCgAlphabet::getInstance();
-
-    QGroupBox* constGroup = new QGroupBox(alphabet.aliasFromConstCode(SCgAlphabet::Const));
+    QGroupBox* constGroup = new QGroupBox(tr("Constants"));
     constGroup->setLayout(constLayout);
-    QGroupBox* varGroup = new QGroupBox(alphabet.aliasFromConstCode(SCgAlphabet::Var));
+    QGroupBox* varGroup = new QGroupBox(tr("Variables"));
     varGroup->setLayout(varLayout);
-    QGroupBox* unknownGroup = new QGroupBox(alphabet.aliasFromConstCode(SCgAlphabet::ConstUnknown));
+    QGroupBox* unknownGroup = new QGroupBox(tr("Constancy unknown"));
     unknownGroup->setLayout(unknownLayout);
 
     topLayout->addWidget(constGroup, 1);
@@ -40,20 +45,22 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& type, QWidget* par
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(mainLayout);
 
+    // display available types
+    SCgAlphabet& alphabet = SCgAlphabet::getInstance();
     SCgAlphabet::SCgObjectTypesMap types;
     SCgAlphabet::SCgObjectTypesMap::iterator it;
 
-    alphabet.getObjectTypes(type, SCgAlphabet::Const, types);
+    alphabet.getObjectTypes(objectType, SCgAlphabet::Const, types);
     for (it = types.begin(); it != types.end(); ++it)
         addTypeButton(it.value(), it.key(), constLayout);
 
     types.clear();
-    alphabet.getObjectTypes(type, SCgAlphabet::Var, types);
+    alphabet.getObjectTypes(objectType, SCgAlphabet::Var, types);
     for (it = types.begin(); it != types.end(); ++it)
         addTypeButton(it.value(), it.key(), varLayout);
 
     types.clear();
-    alphabet.getObjectTypes(type, SCgAlphabet::ConstUnknown, types);
+    alphabet.getObjectTypes(objectType, SCgAlphabet::ConstUnknown, types);
     for (it = types.begin(); it != types.end(); ++it)
         addTypeButton(it.value(), it.key(), unknownLayout);
 }
@@ -83,4 +90,3 @@ QString SCgTypeSelectionDialog::getChosenType() const
 {
     return mChosenType;
 }
-
