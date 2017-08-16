@@ -186,7 +186,7 @@ void SCgView::updateActionsState(int idx)
         if(SCgObject::isSCgObjectType(items.first()->type()))
             mContextObject = static_cast<SCgObject*>(items.first());
 
-    bool nodeType = (mContextObject) && (mContextObject->type() == SCgNode::Type);
+    bool const nodeType = (mContextObject) && (mContextObject->type() == SCgNode::Type);
 
     if(nodeType)
     {
@@ -220,7 +220,7 @@ void SCgView::updateActionsState(int idx)
         mActionDeleteContent->setVisible(false);
     }
 
-    bool pairType = (mContextObject) && (mContextObject->type() == SCgPair::Type);
+    bool const pairType = (mContextObject) && (mContextObject->type() == SCgPair::Type);
 
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
@@ -231,7 +231,7 @@ void SCgView::updateActionsState(int idx)
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
-    bool contourType = (mContextObject) && (mContextObject->type() == SCgContour::Type);
+    bool const contourType = (mContextObject) && (mContextObject->type() == SCgContour::Type);
 
     mActionContourDelete->setEnabled(contourType);
     mActionContourDelete->setVisible(contourType);
@@ -486,13 +486,7 @@ void SCgView::showTypeDialog()
     if (!mContextObject)
         return;
 
-    QString stype;
-    if (mContextObject->type() == SCgNode::Type)
-        stype = "node";
-    else if (mContextObject->type() == SCgPair::Type)
-        stype = "pair";
-
-    SCgTypeSelectionDialog typeDialog(stype);
+    SCgTypeSelectionDialog typeDialog(mContextObject->type());
 
     if (typeDialog.exec() == QDialog::Accepted)
     {

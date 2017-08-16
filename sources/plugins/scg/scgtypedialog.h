@@ -19,11 +19,11 @@ class SCgTypeSelectionDialog : public QDialog
     Q_OBJECT
 public:
     /*!
-     * \param objectType SCg-object type
-     * \warning Object type should be valid ("node" or "pair"),
-     * otherwise displayed types may not be applied to the actual object.
+     * \param objectType @see SCgObject::type()
+     * \warning Object type should be valid (SCgNode::Type or SCgPair::Type),
+     * otherwise no available types will be displayed.
     */
-    SCgTypeSelectionDialog(const QString& objectType, QWidget* parent = 0);
+    SCgTypeSelectionDialog(int objectType, QWidget* parent = 0);
 
     //! \return SCg-object type; @see SCgAlphabet::initialize().
     QString getChosenType() const;
