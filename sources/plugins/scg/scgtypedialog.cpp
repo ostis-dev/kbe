@@ -6,6 +6,7 @@
 
 #include "scgtypedialog.h"
 #include "scgnode.h"
+#include "scgpair.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -13,7 +14,7 @@
 #include <QGroupBox>
 #include <QDialogButtonBox>
 
-SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& objectType, QWidget* parent)
+SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     : QDialog(parent)
 {
     setWindowTitle(tr("Select type"));
@@ -45,23 +46,34 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(const QString& objectType, QWidge
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(mainLayout);
 
-    // display available types
     SCgAlphabet& alphabet = SCgAlphabet::getInstance();
-    SCgAlphabet::SCgObjectTypesMap types;
-    SCgAlphabet::SCgObjectTypesMap::iterator it;
+    SCgAlphabet::SCgObjectTypesMap constTypes;
+    SCgAlphabet::SCgObjectTypesMap varTypes;
+    SCgAlphabet::SCgObjectTypesMap unknownTypes;
 
-    alphabet.getObjectTypes(objectType, SCgAlphabet::Const, types);
-    for (it = types.begin(); it != types.end(); ++it)
+    switch (objectType)
+    {
+    case SCgNode::Type:
+        alphabet.getNodeTypes(SCgAlphabet::Const, constTypes);
+        alphabet.getNodeTypes(SCgAlphabet::Var, varTypes);
+        alphabet.getNodeTypes(SCgAlphabet::ConstUnknown, unknownTypes);
+        break;
+    case SCgPair::Type:
+        alphabet.getPairTypes(SCgAlphabet::Const, constTypes);
+        alphabet.getPairTypes(SCgAlphabet::Var, varTypes);
+        alphabet.getPairTypes(SCgAlphabet::ConstUnknown, unknownTypes);
+        break;
+    default:
+        break;
+    }
+
+    SCgAlphabet::SCgObjectTypesMap::const_iterator it;
+
+    for (it = constTypes.cbegin(); it != constTypes.cend(); ++it)
         addTypeButton(it.value(), it.key(), constLayout);
-
-    types.clear();
-    alphabet.getObjectTypes(objectType, SCgAlphabet::Var, types);
-    for (it = types.begin(); it != types.end(); ++it)
+    for (it = varTypes.cbegin(); it != varTypes.cend(); ++it)
         addTypeButton(it.value(), it.key(), varLayout);
-
-    types.clear();
-    alphabet.getObjectTypes(objectType, SCgAlphabet::ConstUnknown, types);
-    for (it = types.begin(); it != types.end(); ++it)
+    for (it = unknownTypes.cbegin(); it != unknownTypes.cend(); ++it)
         addTypeButton(it.value(), it.key(), unknownLayout);
 }
 
