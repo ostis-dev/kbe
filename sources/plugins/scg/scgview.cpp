@@ -289,44 +289,6 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 
     // create new context menu
     mContextMenu = new QMenu;
-
-    if (mContextObject)
-    {
-        // creating menu actions depending on object type
-        if (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type)
-        {
-            // type changing
-            QMenu *menu = mContextMenu->addMenu(tr("Change type"));
-
-            connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(changeType(QAction*)));
-
-            QMenu* constSub = menu->addMenu(tr("Const"));
-            QMenu* varSub = menu->addMenu(tr("Var"));
-
-            QString stype;
-            SCgAlphabet::SCgObjectTypesMap types;
-            SCgAlphabet::SCgObjectTypesMap::const_iterator iter;
-
-            if (mContextObject->type() == SCgNode::Type)
-                stype = "node";
-            else if (mContextObject->type() == SCgPair::Type)
-                stype = "pair";
-
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Const, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                constSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
-            types.clear();
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Var, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                varSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
-            types.clear();
-
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::ConstUnknown, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                menu->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
-            types.clear();
-        }
-    }
     mContextMenu->addActions(mActionsList);
 
     mContextMenu->exec(event->globalPos());
@@ -489,18 +451,14 @@ void SCgView::showTypeDialog()
     SCgTypeSelectionDialog typeDialog(mContextObject->type());
 
     if (typeDialog.exec() == QDialog::Accepted)
-    {
-        QAction action(this);
-        action.setData(QVariant(typeDialog.getChosenType()));
-        changeType(&action);
-    }
+        changeType(typeDialog.getChosenType());
 }
 
-void SCgView::changeType(QAction *action)
+void SCgView::changeType(const QString& newType)
 {
     Q_ASSERT(mContextObject);
 
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newType);
 }
 
 void SCgView::changeContent()
