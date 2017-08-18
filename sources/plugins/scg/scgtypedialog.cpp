@@ -13,12 +13,20 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QDialogButtonBox>
+#include <QAction>
+#include <QShortcut>
 
 SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     : QDialog(parent)
     , mObjectType(objectType)
 {
     setWindowTitle(tr("Select type"));
+    setStyleSheet("QGroupBox QPushButton"
+                  "{ padding: 3px 3px 3px 3px;"
+                  "  text-align: left; }"
+                  "QGroupBox QPushButton:focus"
+                  "{ outline: none;"
+                  "  background-color: #dbdbdb; }");
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
     QHBoxLayout* topLayout = new QHBoxLayout();
@@ -27,14 +35,29 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     QVBoxLayout* varLayout = new QVBoxLayout();
     QHBoxLayout* unknownLayout = new QHBoxLayout();
 
-    mConstGroup = new QGroupBox(tr("Constants"));
+    mConstGroup = new QGroupBox(tr("Constants") + " (C)");
     mConstGroup->setLayout(constLayout);
 
-    mVarGroup = new QGroupBox(tr("Variables"));
+    QAction* focusConstAction = new QAction(this);
+    focusConstAction->setShortcut(QKeySequence("C"));
+    addAction(focusConstAction);
+    connect(focusConstAction, SIGNAL(triggered(bool)), mConstGroup, SLOT(setFocus()));
+
+    mVarGroup = new QGroupBox(tr("Variables") + " (V)");
     mVarGroup->setLayout(varLayout);
 
-    mUnknownGroup = new QGroupBox(tr("Constancy unknown"));
+    QAction* focusVarAction = new QAction(this);
+    focusVarAction->setShortcut(QKeySequence("V"));
+    addAction(focusVarAction);
+    connect(focusVarAction, SIGNAL(triggered(bool)), mVarGroup, SLOT(setFocus()));
+
+    mUnknownGroup = new QGroupBox(tr("Constancy unknown") + " (X)");
     mUnknownGroup->setLayout(unknownLayout);
+
+    QAction* focusUnknownAction = new QAction(this);
+    focusUnknownAction->setShortcut(QKeySequence("X"));
+    addAction(focusUnknownAction);
+    connect(focusUnknownAction, SIGNAL(triggered(bool)), mUnknownGroup, SLOT(setFocus()));
 
     topLayout->addWidget(mConstGroup, 1);
     topLayout->addWidget(mVarGroup, 1);
@@ -88,22 +111,33 @@ void SCgTypeSelectionDialog::displayTypes()
 
     SCgAlphabet::SCgObjectTypesMap::const_iterator it;
 
+    int hotkey = 1;
     for (it = constTypes.cbegin(); it != constTypes.cend(); ++it)
-        addTypeButton(it.value(), it.key(), mConstGroup->layout());
+        addTypeButton(it.value(), it.key(), hotkey++, mConstGroup);
+    hotkey = 1;
     for (it = varTypes.cbegin(); it != varTypes.cend(); ++it)
-        addTypeButton(it.value(), it.key(), mVarGroup->layout());
+        addTypeButton(it.value(), it.key(), hotkey++, mVarGroup);
+    hotkey = 1;
     for (it = unknownTypes.cbegin(); it != unknownTypes.cend(); ++it)
-        addTypeButton(it.value(), it.key(), mUnknownGroup->layout());
+        addTypeButton(it.value(), it.key(), hotkey++, mUnknownGroup);
 }
 
-void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& text, QLayout* layout)
+void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& text, int hotkey, QWidget* parent)
 {
     QPushButton* button = new QPushButton(icon, text);
     button->setIconSize(QSize(24, 24));
-    button->setStyleSheet("padding: 3px 3px 3px 3px; text-align: left;");
-    layout->addWidget(button);
-
+    button->setToolTip(QString::number(hotkey));
     connect(button, SIGNAL(clicked(bool)), this, SLOT(onChooseType()));
+
+    if (parent->layout())
+        parent->layout()->addWidget(button);
+    else
+        return;
+
+    QShortcut* shortcut = new QShortcut(parent);
+    shortcut->setKey(QString::number(hotkey));
+    shortcut->setContext(Qt::WidgetWithChildrenShortcut);
+    connect(shortcut, SIGNAL(activated()), button, SLOT(click()));
 }
 
 QString SCgTypeSelectionDialog::getChosenType() const
