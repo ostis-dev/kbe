@@ -7,7 +7,8 @@
 #pragma once
 
 #include <QDialog>
-class QBoxLayout;
+class QLayout;
+class QGroupBox;
 
 /*! \brief Dialog for selecting type of SCg-object
  *
@@ -32,9 +33,17 @@ public slots:
     void onChooseType();
 
 private:
-    void addTypeButton(const QIcon& icon, const QString& text, QBoxLayout* layout);
+    //! Place buttons, each representing one available type, on dialog
+    void displayTypes();
+    void addTypeButton(const QIcon& icon, const QString& text, QLayout* layout);
+
+    const int mObjectType;
 
     //! If slot onChooseType() was called by one of the buttons
     //! mChosenType will contain chosen type.
     QString mChosenType;
+
+    QGroupBox* mConstGroup;
+    QGroupBox* mVarGroup;
+    QGroupBox* mUnknownGroup;
 };

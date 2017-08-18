@@ -16,6 +16,7 @@
 
 SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     : QDialog(parent)
+    , mObjectType(objectType)
 {
     setWindowTitle(tr("Select type"));
 
@@ -26,17 +27,19 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     QVBoxLayout* varLayout = new QVBoxLayout();
     QHBoxLayout* unknownLayout = new QHBoxLayout();
 
-    QGroupBox* constGroup = new QGroupBox(tr("Constants"));
-    constGroup->setLayout(constLayout);
-    QGroupBox* varGroup = new QGroupBox(tr("Variables"));
-    varGroup->setLayout(varLayout);
-    QGroupBox* unknownGroup = new QGroupBox(tr("Constancy unknown"));
-    unknownGroup->setLayout(unknownLayout);
+    mConstGroup = new QGroupBox(tr("Constants"));
+    mConstGroup->setLayout(constLayout);
 
-    topLayout->addWidget(constGroup, 1);
-    topLayout->addWidget(varGroup, 1);
+    mVarGroup = new QGroupBox(tr("Variables"));
+    mVarGroup->setLayout(varLayout);
+
+    mUnknownGroup = new QGroupBox(tr("Constancy unknown"));
+    mUnknownGroup->setLayout(unknownLayout);
+
+    topLayout->addWidget(mConstGroup, 1);
+    topLayout->addWidget(mVarGroup, 1);
     mainLayout->addLayout(topLayout);
-    mainLayout->addWidget(unknownGroup);
+    mainLayout->addWidget(mUnknownGroup);
 
     QDialogButtonBox* box = new QDialogButtonBox(QDialogButtonBox::Cancel);
     box->button(QDialogButtonBox::Cancel)->setDefault(true);
@@ -46,12 +49,28 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     mainLayout->setSizeConstraint(QLayout::SetFixedSize);
     setLayout(mainLayout);
 
+    displayTypes();
+}
+
+void SCgTypeSelectionDialog::onChooseType()
+{
+    QPushButton* typeButton = qobject_cast<QPushButton*>(sender());
+
+    if (typeButton)
+    {
+        mChosenType = typeButton->text();
+        accept();
+    }
+}
+
+void SCgTypeSelectionDialog::displayTypes()
+{
     SCgAlphabet& alphabet = SCgAlphabet::getInstance();
     SCgAlphabet::SCgObjectTypesMap constTypes;
     SCgAlphabet::SCgObjectTypesMap varTypes;
     SCgAlphabet::SCgObjectTypesMap unknownTypes;
 
-    switch (objectType)
+    switch (mObjectType)
     {
     case SCgNode::Type:
         alphabet.getNodeTypes(SCgAlphabet::Const, constTypes);
@@ -70,25 +89,14 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     SCgAlphabet::SCgObjectTypesMap::const_iterator it;
 
     for (it = constTypes.cbegin(); it != constTypes.cend(); ++it)
-        addTypeButton(it.value(), it.key(), constLayout);
+        addTypeButton(it.value(), it.key(), mConstGroup->layout());
     for (it = varTypes.cbegin(); it != varTypes.cend(); ++it)
-        addTypeButton(it.value(), it.key(), varLayout);
+        addTypeButton(it.value(), it.key(), mVarGroup->layout());
     for (it = unknownTypes.cbegin(); it != unknownTypes.cend(); ++it)
-        addTypeButton(it.value(), it.key(), unknownLayout);
+        addTypeButton(it.value(), it.key(), mUnknownGroup->layout());
 }
 
-void SCgTypeSelectionDialog::onChooseType()
-{
-    QPushButton* typeButton = qobject_cast<QPushButton*>(sender());
-
-    if (typeButton)
-    {
-        mChosenType = typeButton->text();
-        accept();
-    }
-}
-
-void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& text, QBoxLayout* layout)
+void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& text, QLayout* layout)
 {
     QPushButton* button = new QPushButton(icon, text);
     button->setIconSize(QSize(24, 24));
