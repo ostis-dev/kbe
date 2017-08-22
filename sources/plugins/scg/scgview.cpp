@@ -11,6 +11,7 @@
 #include "scgcontour.h"
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
+#include "scgtypedialog.h"
 
 #include <math.h>
 #include <QUrl>
@@ -70,6 +71,11 @@ void SCgView::createActions()
     QAction* sep = new QAction(this);
     sep->setSeparator(true);
     mActionsList.append(sep);
+
+    mActionChangeType = new QAction(tr("Select type"), mWindow);
+    mActionChangeType->setShortcut(QKeySequence( tr("T") ));
+    mWindow->addAction(mActionChangeType);
+    connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(showTypeDialog()));
 
     mActionChangeContent = new QAction(mWindow->findIcon("edit-content-change.png"),tr("Set content"),mWindow);
     mActionChangeContent->setShortcut(QKeySequence( tr("C") ));
@@ -133,7 +139,7 @@ void SCgView::createActions()
     mWindow->addAction(mActionSelectAll);
     connect(mActionSelectAll, SIGNAL(triggered()), this, SLOT(selectAllCommand()));
 
-
+    mActionsList.append(mActionChangeType);
     mActionsList.append(mActionChangeContent);
     mActionsList.append(mActionShowContent);
     mActionsList.append(mActionShowAllContent);
@@ -180,7 +186,9 @@ void SCgView::updateActionsState(int idx)
         if(SCgObject::isSCgObjectType(items.first()->type()))
             mContextObject = static_cast<SCgObject*>(items.first());
 
-    if(mContextObject && mContextObject->type() == SCgNode::Type)
+    bool const nodeType = (mContextObject) && (mContextObject->type() == SCgNode::Type);
+
+    if(nodeType)
     {
         mActionChangeContent->setEnabled(true);
         mActionChangeContent->setVisible(true);
@@ -212,16 +220,21 @@ void SCgView::updateActionsState(int idx)
         mActionDeleteContent->setVisible(false);
     }
 
-    bool pairType = (mContextObject != 0) && (mContextObject->type() == SCgPair::Type);
+    bool const pairType = (mContextObject) && (mContextObject->type() == SCgPair::Type);
 
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
 
+    mActionChangeType->setEnabled(nodeType || pairType);
+    mActionChangeType->setVisible(nodeType || pairType);
+
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
-    mActionContourDelete->setEnabled(mContextObject && mContextObject->type() == SCgContour::Type);
-    mActionContourDelete->setVisible(mContextObject && mContextObject->type() == SCgContour::Type);
+    bool const contourType = (mContextObject) && (mContextObject->type() == SCgContour::Type);
+
+    mActionContourDelete->setEnabled(contourType);
+    mActionContourDelete->setVisible(contourType);
 
     bool isAnySelected = !scene()->selectedItems().isEmpty();
     mActionDelete->setEnabled(isAnySelected);
@@ -276,44 +289,6 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
 
     // create new context menu
     mContextMenu = new QMenu;
-
-    if (mContextObject)
-    {
-        // creating menu actions depending on object type
-        if (mContextObject->type() == SCgNode::Type || mContextObject->type() == SCgPair::Type)
-        {
-            // type changing
-            QMenu *menu = mContextMenu->addMenu(tr("Change type"));
-
-            connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(changeType(QAction*)));
-
-            QMenu* constSub = menu->addMenu(tr("Const"));
-            QMenu* varSub = menu->addMenu(tr("Var"));
-
-            QString stype;
-            SCgAlphabet::SCgObjectTypesMap types;
-            SCgAlphabet::SCgObjectTypesMap::const_iterator iter;
-
-            if (mContextObject->type() == SCgNode::Type)
-                stype = "node";
-            else if (mContextObject->type() == SCgPair::Type)
-                stype = "pair";
-
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Const, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                constSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
-            types.clear();
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::Var, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                varSub->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
-            types.clear();
-
-            SCgAlphabet::getInstance().getObjectTypes(stype, SCgAlphabet::ConstUnknown, types);
-            for (iter = types.begin(); iter != types.end(); ++iter)
-                menu->addAction(iter.value(), iter.key())->setData(QVariant(iter.key()));
-            types.clear();
-        }
-    }
     mContextMenu->addActions(mActionsList);
 
     mContextMenu->exec(event->globalPos());
@@ -468,11 +443,22 @@ void SCgView::changeIdentifier()
     }
 }
 
-void SCgView::changeType(QAction *action)
+void SCgView::showTypeDialog()
+{
+    if (!mContextObject)
+        return;
+
+    SCgTypeSelectionDialog typeDialog(mContextObject->type());
+
+    if (typeDialog.exec() == QDialog::Accepted)
+        changeType(typeDialog.getChosenType());
+}
+
+void SCgView::changeType(const QString& newType)
 {
     Q_ASSERT(mContextObject);
 
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, action->data().toString());
+    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newType);
 }
 
 void SCgView::changeContent()

@@ -51,6 +51,7 @@ private:
      * \defgroup menu Actions
      * @{
      */
+    QAction* mActionChangeType;
     QAction* mActionChangeContent;
     QAction* mActionShowContent;
     QAction* mActionShowAllContent;
@@ -123,10 +124,10 @@ private slots:
     //! Start dialog for sc.g-element identifier changing
     void changeIdentifier();
 
-    /*! Change type of context element.
-      * @param action Pointer to action that assigned to specified sc.g-element type
-      */
-    void changeType(QAction *action);
+    void showTypeDialog();
+
+    //! Change type of context element.
+    void changeType(const QString& newType);
 
     //! Starts content change dialog
     void changeContent();
