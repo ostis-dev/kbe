@@ -83,6 +83,8 @@ public:
       */
     SCgObject* objectAt(const QPointF &point) const;
 
+    SCgObject::SCgObjectList getSelectedObjects() const;
+
     /*! Render scene to image
       */
     void renderToImage(QPainter *painter, const QRectF &target, const QRectF &source, Qt::AspectRatioMode aspectRatioMode = Qt::KeepAspectRatio);

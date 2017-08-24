@@ -225,9 +225,6 @@ void SCgView::updateActionsState(int idx)
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
 
-    mActionChangeType->setEnabled(nodeType || pairType);
-    mActionChangeType->setVisible(nodeType || pairType);
-
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
@@ -240,6 +237,9 @@ void SCgView::updateActionsState(int idx)
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
+
+    mActionChangeType->setEnabled(isAnySelected);
+    mActionChangeType->setVisible(isAnySelected);
 
     //check for showed/hidden contents
     items = scene()->items();
@@ -445,20 +445,26 @@ void SCgView::changeIdentifier()
 
 void SCgView::showTypeDialog()
 {
-    if (!mContextObject)
+    int type = 0;
+
+    SCgObject::SCgObjectList objectList = static_cast<SCgScene*>(scene())->getSelectedObjects();
+    if (!objectList.isEmpty() && SCgObject::areObjectsOfEqualType(objectList))
+        type = objectList[0]->type();
+
+    if ((type != SCgNode::Type) && (type != SCgPair::Type))
         return;
 
-    SCgTypeSelectionDialog typeDialog(mContextObject->type());
+    SCgTypeSelectionDialog typeDialog(type);
 
     if (typeDialog.exec() == QDialog::Accepted)
-        changeType(typeDialog.getChosenType());
+        foreach (SCgObject* object, objectList)
+            changeType(object, typeDialog.getChosenType());
 }
 
-void SCgView::changeType(const QString& newType)
+void SCgView::changeType(SCgObject* object, const QString& newType)
 {
-    Q_ASSERT(mContextObject);
-
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newType);
+    if (object)
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(object, newType);
 }
 
 void SCgView::changeContent()

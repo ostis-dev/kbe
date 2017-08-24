@@ -26,14 +26,17 @@ public:
     explicit SCgObject(QGraphicsItem *parent = 0);
     virtual ~SCgObject();
 
+    typedef QList<SCgObject*> SCgObjectList;
+
     //! Check if type is an scg-object type
     static bool isSCgObjectType(int type);
 
     //! Check if type is an scg-pointObject type
     static bool isSCgPointObjectType(int type);
 
+    static bool areObjectsOfEqualType(const SCgObjectList& objectList);
+
 public:
-    typedef QList<SCgObject*> SCgObjectList;
 
     //! Add connected object
     void addConnectedObject(SCgObject *object);

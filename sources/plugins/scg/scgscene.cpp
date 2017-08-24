@@ -121,6 +121,18 @@ SCgObject* SCgScene::objectAt(const QPointF &point) const
     return 0;
 }
 
+SCgObject::SCgObjectList SCgScene::getSelectedObjects() const
+{
+    QList<QGraphicsItem*> itemList = selectedItems();
+    SCgObject::SCgObjectList objectList;
+
+    foreach (QGraphicsItem* item, itemList)
+        if (SCgObject::isSCgObjectType(item->type()))
+            objectList.append(static_cast<SCgObject*>(item));
+
+    return objectList;
+}
+
 void SCgScene::renderToImage(QPainter *painter, const QRectF &target, const QRectF &source, Qt::AspectRatioMode aspectRatioMode)
 {
     QBrush brush = backgroundBrush();

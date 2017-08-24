@@ -127,7 +127,7 @@ private slots:
     void showTypeDialog();
 
     //! Change type of context element.
-    void changeType(const QString& newType);
+    void changeType(SCgObject* object, const QString& newType);
 
     //! Starts content change dialog
     void changeContent();

@@ -57,6 +57,18 @@ bool SCgObject::isSCgPointObjectType(int type)
     return (type > (int)SCgNode::Type && type <= (int)SCgContour::Type);
 }
 
+bool SCgObject::areObjectsOfEqualType(const SCgObject::SCgObjectList& objectList)
+{
+    if (objectList.isEmpty())
+        return false;
+
+    foreach (SCgObject* object, objectList)
+        if (!object || (object->type() != objectList[0]->type()))
+            return false;
+
+    return true;
+}
+
 void SCgObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(widget);
