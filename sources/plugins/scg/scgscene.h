@@ -179,6 +179,10 @@ public:
                                             const QString &type,
                                             SCgBaseCommand* parentCmd = 0,
                                             bool addToStack = true);
+    SCgBaseCommand* changeObjectTypeCommand(const SCgObject::SCgObjectList& objList,
+                                             const QString& type,
+                                             SCgBaseCommand* parentCmd = 0,
+                                             bool addToStack = true);
 
     /*! Create undo/redo command to delete contour without child objects
      * @param contour Pointer of contour tp delete

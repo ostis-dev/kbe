@@ -433,6 +433,20 @@ SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QStri
     return cmd;
 }
 
+SCgBaseCommand* SCgScene::changeObjectTypeCommand(const SCgObject::SCgObjectList& objList, const QString& type, SCgBaseCommand* parentCmd, bool addToStack)
+{
+    SCgBaseCommand* cmd = new SCgBaseCommand(this, 0, parentCmd);
+    cmd->setText(tr("Change type of multiple objects"));
+
+    foreach (SCgObject* object, objList)
+        new SCgCommandObjectTypeChange(this, object, type, cmd);
+
+    if (addToStack)
+        mUndoStack->push(cmd);
+
+    return cmd;
+}
+
 
 SCgBaseCommand* SCgScene::deleteContourCommand(SCgContour *contour, SCgBaseCommand* parentCmd, bool addToStack)
 {

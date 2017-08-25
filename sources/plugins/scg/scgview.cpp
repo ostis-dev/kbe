@@ -449,7 +449,7 @@ void SCgView::showTypeDialog()
 
     SCgObject::SCgObjectList objectList = static_cast<SCgScene*>(scene())->getSelectedObjects();
     if (!objectList.isEmpty() && SCgObject::areObjectsOfEqualType(objectList))
-        type = objectList[0]->type();
+        type = objectList.first()->type();
 
     if ((type != SCgNode::Type) && (type != SCgPair::Type))
         return;
@@ -457,14 +457,24 @@ void SCgView::showTypeDialog()
     SCgTypeSelectionDialog typeDialog(type);
 
     if (typeDialog.exec() == QDialog::Accepted)
-        foreach (SCgObject* object, objectList)
-            changeType(object, typeDialog.getChosenType());
+    {
+        if (objectList.length() == 1)
+            changeType(objectList.first(), typeDialog.getChosenType());
+        else
+            changeType(objectList, typeDialog.getChosenType());
+    }
 }
 
 void SCgView::changeType(SCgObject* object, const QString& newType)
 {
     if (object)
         static_cast<SCgScene*>(scene())->changeObjectTypeCommand(object, newType);
+}
+
+void SCgView::changeType(const SCgObject::SCgObjectList& objectList, const QString& newType)
+{
+    if (!objectList.isEmpty())
+        static_cast<SCgScene*>(scene())->changeObjectTypeCommand(objectList, newType);
 }
 
 void SCgView::changeContent()

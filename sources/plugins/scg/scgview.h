@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include "scgobject.h"
+
 #include <QGraphicsView>
 
 class SCgWindow;
-class SCgObject;
 class SCgScene;
 class QContextMenuEvent;
 class QMenu;
@@ -128,6 +129,7 @@ private slots:
 
     //! Change type of context element.
     void changeType(SCgObject* object, const QString& newType);
+    void changeType(const SCgObject::SCgObjectList& objectList, const QString& newType);
 
     //! Starts content change dialog
     void changeContent();
