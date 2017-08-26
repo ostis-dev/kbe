@@ -75,7 +75,7 @@ void SCgView::createActions()
     mActionChangeType = new QAction(tr("Select type"), mWindow);
     mActionChangeType->setShortcut(QKeySequence( tr("T") ));
     mWindow->addAction(mActionChangeType);
-    connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(showTypeDialog()));
+    connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(chooseTypeForSelectedObjects()));
 
     mActionChangeContent = new QAction(mWindow->findIcon("edit-content-change.png"),tr("Set content"),mWindow);
     mActionChangeContent->setShortcut(QKeySequence( tr("C") ));
@@ -233,13 +233,15 @@ void SCgView::updateActionsState(int idx)
     mActionContourDelete->setEnabled(contourType);
     mActionContourDelete->setVisible(contourType);
 
-    bool isAnySelected = !scene()->selectedItems().isEmpty();
+    bool isAnySelected = !items.isEmpty();
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
 
-    mActionChangeType->setEnabled(isAnySelected);
-    mActionChangeType->setVisible(isAnySelected);
+    bool const canChangeType = typeCanBeChanged();
+
+    mActionChangeType->setEnabled(canChangeType);
+    mActionChangeType->setVisible(canChangeType);
 
     //check for showed/hidden contents
     items = scene()->items();
@@ -300,6 +302,20 @@ void SCgView::selectAllCommand() const
     QList<QGraphicsItem*>::iterator it = list.begin();
     for(; it != list.end(); ++it)
         (*it)->setSelected(true);
+}
+
+bool SCgView::typeCanBeChanged() const
+{
+    SCgObject::SCgObjectList objectList = static_cast<SCgScene*>(scene())->getSelectedObjects();
+
+    if (objectList.isEmpty() || !SCgObject::areObjectsOfEqualType(objectList))
+        return false;
+
+    int const type = objectList.first()->type();
+    if ((type != SCgNode::Type) && (type != SCgPair::Type))
+        return false;
+
+    return true;
 }
 
 void SCgView::keyPressEvent(QKeyEvent *event)
@@ -443,18 +459,11 @@ void SCgView::changeIdentifier()
     }
 }
 
-void SCgView::showTypeDialog()
+void SCgView::chooseTypeForSelectedObjects()
 {
-    int type = 0;
-
     SCgObject::SCgObjectList objectList = static_cast<SCgScene*>(scene())->getSelectedObjects();
-    if (!objectList.isEmpty() && SCgObject::areObjectsOfEqualType(objectList))
-        type = objectList.first()->type();
 
-    if ((type != SCgNode::Type) && (type != SCgPair::Type))
-        return;
-
-    SCgTypeSelectionDialog typeDialog(type);
+    SCgTypeSelectionDialog typeDialog(objectList.first()->type());
 
     if (typeDialog.exec() == QDialog::Accepted)
     {

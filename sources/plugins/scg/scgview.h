@@ -85,6 +85,8 @@ private slots:
     /**@}*/
 
 private:
+    bool typeCanBeChanged() const;
+
     //! Previous mouse position for scrolling by mid mouse button click.
     QPoint mPrevMousePos;
     //! Pointer to context menu
@@ -125,7 +127,7 @@ private slots:
     //! Start dialog for sc.g-element identifier changing
     void changeIdentifier();
 
-    void showTypeDialog();
+    void chooseTypeForSelectedObjects();
 
     //! Change type of context element.
     void changeType(SCgObject* object, const QString& newType);
