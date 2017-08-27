@@ -25,6 +25,9 @@ public:
     explicit SCgView(QWidget *parent, SCgWindow *window);
     virtual ~SCgView();
 
+    //! Pointer to SCgScene, that is being visualized by this SCgView
+    SCgScene* getSCgScene() const;
+
     //! Actions, provided by this view.
     QList<QAction*> actions() const;
 
@@ -85,6 +88,8 @@ private slots:
     /**@}*/
 
 private:
+    //! Check if all requirements for changing type of currently selected objects are fulfilled
+    //! Should be checked out before calling SCgView::changeType()
     bool typeCanBeChanged() const;
 
     //! Previous mouse position for scrolling by mid mouse button click.
@@ -127,9 +132,11 @@ private slots:
     //! Start dialog for sc.g-element identifier changing
     void changeIdentifier();
 
+    //! Show dialog with available types for currently selected objects
+    //! and initiate type changing
     void chooseTypeForSelectedObjects();
 
-    //! Change type of context element.
+    //! Change type of passed object(s) to newType.
     void changeType(SCgObject* object, const QString& newType);
     void changeType(const SCgObject::SCgObjectList& objectList, const QString& newType);
 

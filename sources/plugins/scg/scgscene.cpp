@@ -423,8 +423,6 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
 
 SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QString &type, SCgBaseCommand* parentCmd, bool addToStack)
 {
-    QString oldType = object->typeAlias();
-
     SCgBaseCommand* cmd = new SCgCommandObjectTypeChange(this, object, type, parentCmd);
 
     if (addToStack)
@@ -436,7 +434,7 @@ SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QStri
 SCgBaseCommand* SCgScene::changeObjectTypeCommand(const SCgObject::SCgObjectList& objList, const QString& type, SCgBaseCommand* parentCmd, bool addToStack)
 {
     SCgBaseCommand* cmd = new SCgBaseCommand(this, 0, parentCmd);
-    cmd->setText(tr("Change type of multiple objects"));
+    cmd->setText(QObject::tr("Change type of multiple objects"));
 
     foreach (SCgObject* object, objList)
         new SCgCommandObjectTypeChange(this, object, type, cmd);

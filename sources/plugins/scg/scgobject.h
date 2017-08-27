@@ -34,6 +34,7 @@ public:
     //! Check if type is an scg-pointObject type
     static bool isSCgPointObjectType(int type);
 
+    //! Check if all objects in objectList are of equal type
     static bool areObjectsOfEqualType(const SCgObjectList& objectList);
 
 public:
