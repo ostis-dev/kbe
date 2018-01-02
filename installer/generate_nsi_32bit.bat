@@ -1,1 +1,0 @@
-generate_nsi.py install_script.nsi_ install.nsi 32 0.3.1

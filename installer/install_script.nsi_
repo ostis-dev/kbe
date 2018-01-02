@@ -22,7 +22,7 @@ RequestExecutionLevel admin
 ;--------------------------------
 ;Pages
 
-  !insertmacro MUI_PAGE_LICENSE "sources\COPYING"
+  !insertmacro MUI_PAGE_LICENSE "sources\COPYING.MIT"
   !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   
@@ -40,7 +40,6 @@ RequestExecutionLevel admin
 ;Languages
  
 	!insertmacro MUI_LANGUAGE "English"
-	!insertmacro MUI_LANGUAGE "Russian"
 
 ;--------------------------------
 
@@ -82,9 +81,7 @@ Delete "$INSTDIR\Uninstall.exe"
   Delete "$INSTDIR\plugins\scg\scg.dll"
   RMDir "$INSTDIR\plugins\scg"
 
-  Delete "$INSTDIR\plugins\scs\scs.dll"
-  RMDir "$INSTDIR\plugins\scs"
-  
+ 
   RMDir "$INSTDIR\plugins"
   
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
@@ -98,7 +95,6 @@ Delete "$INSTDIR\Uninstall.exe"
   DeleteRegKey /ifempty HKCU "Software\KBE"
   
   ${unregisterExtension} ".gwf" "GWF File"
-  ${unregisterExtension} ".scs" "SCs File"
 SectionEnd
 
 Section "Examples" example
@@ -118,14 +114,6 @@ SectionGroup "Plugins" plugins
 		${registerExtension} "$INSTDIR\kbe.exe" ".gwf" "GWF File"
 	SectionEnd
 
-	Section "SCs" scs
-		SectionIn 1
-		SetOutPath "$INSTDIR\plugins\scs"
-		File "sources\plugins\scs.dll"
-		
-		${registerExtension} "$INSTDIR\kbe.exe" ".scs" "SCs File"
-	SectionEnd
-	
 SectionGroupEnd
 
 Function .onInit
@@ -133,19 +121,12 @@ Function .onInit
 FunctionEnd
 
 LangString DESC_Section1 ${LANG_ENGLISH} "Contains some samples written in SCg"
-LangString DESC_Section1 ${LANG_RUSSIAN} "Содержит несколько примеров, записанных на SCg"
 LangString DESC_Section2 ${LANG_ENGLISH} "Standard editor's components"
-LangString DESC_Section2 ${LANG_RUSSIAN} "Стандартные компоненты"
 LangString DESC_Section3 ${LANG_ENGLISH} "Component for SCg-text edit"
-LangString DESC_Section3 ${LANG_RUSSIAN} "Компонент редактирования SCg-текстов"
-LangString DESC_Section4 ${LANG_ENGLISH} "Component for SCs-text edit"
-LangString DESC_Section4 ${LANG_RUSSIAN} "Компонент редактирования SCs-текстов"
-
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${example} $(DESC_Section1)
   !insertmacro MUI_DESCRIPTION_TEXT ${plugins} $(DESC_Section2)
   !insertmacro MUI_DESCRIPTION_TEXT ${scg} $(DESC_Section3)
-  !insertmacro MUI_DESCRIPTION_TEXT ${scs} $(DESC_Section4)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
