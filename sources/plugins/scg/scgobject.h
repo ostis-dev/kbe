@@ -156,12 +156,12 @@ public:
     /*!
      * @return unique identifier of this object in current environment.
      */
-    long id() const
+    uint64_t id() const
     {
-        return reinterpret_cast<long>(this);
+        return reinterpret_cast<uint64_t>(this);
     }
 
-    long parentId() const
+    uint64_t parentId() const
     {
         return ((SCgObject*)parentItem())->id();
     }

@@ -9,7 +9,7 @@ ex_uninst = ""
 if __name__ == "__main__":
 
 	if len(sys.argv) < 3:
-		print "Usage setcions.py <template nsi file> <output_nsi_file> <32|64>"
+		print ("Usage setcions.py <template nsi file> <output_nsi_file> <32|64>")
 		sys.exit(0)
 	
 	for (root, dirs, files) in os.walk('sources', False):
