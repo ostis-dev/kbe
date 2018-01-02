@@ -197,8 +197,6 @@ private slots:
     //! Slot to set zoom factor value.
     void onViewScaleChanged(qreal newScaleValue);
 
-    void onChangeType();
-
     //! Handle find next button pressed event
     void findNext();
 
