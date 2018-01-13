@@ -236,9 +236,13 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation>Удалить точки излома дуги </translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="437"/>
         <source>Change type of multiple objects</source>
-        <translation>Изменение типа группы sc.g-элементов</translation>
+        <translation type="vanished">Изменение типа группы sc.g-элементов</translation>
+    </message>
+    <message>
+        <location filename="../../scgscene.cpp" line="426"/>
+        <source>Change type of object(s)</source>
+        <translation>Изменение типа sc.g-элемента(ов)</translation>
     </message>
 </context>
 <context>
@@ -393,17 +397,17 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgScene</name>
     <message>
-        <location filename="../../scgscene.cpp" line="942"/>
+        <location filename="../../scgscene.cpp" line="931"/>
         <source>File opening error</source>
         <translation>Ошибка при открытии файла</translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="948"/>
+        <location filename="../../scgscene.cpp" line="937"/>
         <source>Unsupported extention</source>
         <translation>Расширение не поддерживается</translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="949"/>
+        <location filename="../../scgscene.cpp" line="938"/>
         <source>Current file&apos;s extention doesn&apos;t supported</source>
         <translation>Расширения указанных файлов не поддерживаются</translation>
     </message>
@@ -441,22 +445,22 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgTypeSelectionDialog</name>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="23"/>
+        <location filename="../../scgtypedialog.cpp" line="24"/>
         <source>Select type</source>
         <translation>Выберите тип</translation>
     </message>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="38"/>
+        <location filename="../../scgtypedialog.cpp" line="39"/>
         <source>Constants</source>
         <translation>Константы</translation>
     </message>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="46"/>
+        <location filename="../../scgtypedialog.cpp" line="47"/>
         <source>Variables</source>
         <translation>Переменные</translation>
     </message>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="54"/>
+        <location filename="../../scgtypedialog.cpp" line="55"/>
         <source>Constancy unknown</source>
         <translation>Константность неизвестна</translation>
     </message>
@@ -485,104 +489,104 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgView</name>
     <message>
-        <location filename="../../scgview.cpp" line="86"/>
-        <location filename="../../scgview.cpp" line="211"/>
+        <location filename="../../scgview.cpp" line="85"/>
+        <location filename="../../scgview.cpp" line="210"/>
         <source>Set content</source>
         <translation>Установка содержимого</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="87"/>
+        <location filename="../../scgview.cpp" line="86"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="91"/>
+        <location filename="../../scgview.cpp" line="90"/>
         <source>Show content</source>
         <translation>Показать содержимое</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="93"/>
+        <location filename="../../scgview.cpp" line="92"/>
         <source>H</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="97"/>
+        <location filename="../../scgview.cpp" line="96"/>
         <source>Show all content</source>
         <translation>Показать все содержимое</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="100"/>
+        <location filename="../../scgview.cpp" line="99"/>
         <source>Hide all content</source>
         <translation>Скрыть все содержимое</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="103"/>
+        <location filename="../../scgview.cpp" line="102"/>
         <source>Delete content</source>
         <translation>Удалить содержимое</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="104"/>
+        <location filename="../../scgview.cpp" line="103"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="108"/>
-        <location filename="../../scgview.cpp" line="433"/>
+        <location filename="../../scgview.cpp" line="107"/>
+        <location filename="../../scgview.cpp" line="430"/>
         <source>Change identifier</source>
         <translation>Изменить идентификатор</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="109"/>
+        <location filename="../../scgview.cpp" line="108"/>
         <source>I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="113"/>
+        <location filename="../../scgview.cpp" line="112"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="118"/>
+        <location filename="../../scgview.cpp" line="117"/>
         <source>Delete contour</source>
         <translation>Удалить контур</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="119"/>
+        <location filename="../../scgview.cpp" line="118"/>
         <source>Backspace</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="123"/>
+        <location filename="../../scgview.cpp" line="122"/>
         <source>Swap orientation</source>
         <translation>Изменить направление sc.g-пары (дуги)</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="124"/>
+        <location filename="../../scgview.cpp" line="123"/>
         <source>S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="128"/>
+        <location filename="../../scgview.cpp" line="127"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="133"/>
+        <location filename="../../scgview.cpp" line="132"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="138"/>
+        <location filename="../../scgview.cpp" line="137"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="143"/>
+        <location filename="../../scgview.cpp" line="142"/>
         <source>Select All</source>
         <translation>Выделить все</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="206"/>
+        <location filename="../../scgview.cpp" line="205"/>
         <source>Change content</source>
         <translation>Изменить содержимое</translation>
     </message>
@@ -591,12 +595,12 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation type="vanished">Изменить тип</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="82"/>
+        <location filename="../../scgview.cpp" line="81"/>
         <source>T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="81"/>
+        <location filename="../../scgview.cpp" line="80"/>
         <source>Select type</source>
         <translation>Выбрать тип</translation>
     </message>
@@ -609,7 +613,7 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation type="vanished">sc.g-переменные</translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="435"/>
+        <location filename="../../scgview.cpp" line="432"/>
         <source>New identifier:</source>
         <translation>Новый идентификатор:</translation>
     </message>
