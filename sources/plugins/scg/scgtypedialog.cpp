@@ -134,10 +134,9 @@ void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& tex
     buttonLayout->addRow(QString::number(hotkey) + ".", button);
 
     QBoxLayout* parentLayout = static_cast<QBoxLayout*>(parent->layout());
-    if (parentLayout)
-        parentLayout->addLayout(buttonLayout);
-    else
-        return;
+    Q_ASSERT(parentLayout);
+
+    parentLayout->addLayout(buttonLayout);
 
     QShortcut* shortcut = new QShortcut(parent);
     shortcut->setKey(QString::number(hotkey));

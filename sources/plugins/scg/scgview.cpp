@@ -68,8 +68,7 @@ SCgView::~SCgView()
 
 SCgScene* SCgView::getSCgScene() const
 {
-    QGraphicsScene* scene = QGraphicsView::scene();
-    return static_cast<SCgScene*>(scene);
+    return static_cast<SCgScene*>(QGraphicsView::scene());
 }
 
 void SCgView::createActions()
@@ -245,7 +244,7 @@ void SCgView::updateActionsState(int idx)
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
 
-    bool const canChangeType = typeCanBeChanged();
+    bool const canChangeType = canChangeTypesOfObjects(getSCgScene()->getSelectedObjects());
 
     mActionChangeType->setEnabled(canChangeType);
     mActionChangeType->setVisible(canChangeType);
@@ -311,10 +310,8 @@ void SCgView::selectAllCommand() const
         (*it)->setSelected(true);
 }
 
-bool SCgView::typeCanBeChanged() const
+bool SCgView::canChangeTypesOfObjects(const SCgObject::SCgObjectList& objectList) const
 {
-    SCgObject::SCgObjectList objectList = getSCgScene()->getSelectedObjects();
-
     if (objectList.isEmpty() || !SCgObject::areObjectsOfEqualType(objectList))
         return false;
 
@@ -468,23 +465,13 @@ void SCgView::changeIdentifier()
 
 void SCgView::chooseTypeForSelectedObjects()
 {
-    SCgObject::SCgObjectList objectList = getSCgScene()->getSelectedObjects();
+    SCgObject::SCgObjectList const objectList = getSCgScene()->getSelectedObjects();
+    Q_ASSERT(canChangeTypesOfObjects(objectList));
 
     SCgTypeSelectionDialog typeDialog(objectList.first()->type());
 
     if (typeDialog.exec() == QDialog::Accepted)
-    {
-        if (objectList.length() == 1)
-            changeType(objectList.first(), typeDialog.getChosenType());
-        else
-            changeType(objectList, typeDialog.getChosenType());
-    }
-}
-
-void SCgView::changeType(SCgObject* object, const QString& newType)
-{
-    if (object)
-        getSCgScene()->changeObjectTypeCommand(object, newType);
+        changeType(objectList, typeDialog.getChosenType());
 }
 
 void SCgView::changeType(const SCgObject::SCgObjectList& objectList, const QString& newType)

@@ -88,9 +88,9 @@ private slots:
     /**@}*/
 
 private:
-    //! Check if all requirements for changing type of currently selected objects are fulfilled
+    //! Check if all requirements for changing type of passed objects are fulfilled
     //! Should be checked out before calling SCgView::changeType()
-    bool typeCanBeChanged() const;
+    bool canChangeTypesOfObjects(const SCgObject::SCgObjectList& objectList) const;
 
     //! Previous mouse position for scrolling by mid mouse button click.
     QPoint mPrevMousePos;
@@ -136,8 +136,7 @@ private slots:
     //! and initiate type changing
     void chooseTypeForSelectedObjects();
 
-    //! Change type of passed object(s) to newType.
-    void changeType(SCgObject* object, const QString& newType);
+    //! Change type of passed objects to newType.
     void changeType(const SCgObject::SCgObjectList& objectList, const QString& newType);
 
     //! Starts content change dialog

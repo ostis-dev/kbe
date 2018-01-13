@@ -126,7 +126,7 @@ SCgObject::SCgObjectList SCgScene::getSelectedObjects() const
     QList<QGraphicsItem*> itemList = selectedItems();
     SCgObject::SCgObjectList objectList;
 
-    foreach (QGraphicsItem* item, itemList)
+    for (QGraphicsItem* item : itemList)
         if (SCgObject::isSCgObjectType(item->type()))
             objectList.append(static_cast<SCgObject*>(item));
 
@@ -410,20 +410,9 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
             for (int i = 0; i < splittedAlias.size(); ++i)
                 newType.append(splittedAlias.at(i) + "/");
 
-            changeObjectTypeCommand(object, newType.mid(0, newType.size() - 1), cmd, false);
+            changeObjectTypeCommand({object}, newType.mid(0, newType.size() - 1), cmd, false);
         }
     }
-
-    if (addToStack)
-        mUndoStack->push(cmd);
-
-    return cmd;
-}
-
-
-SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QString &type, SCgBaseCommand* parentCmd, bool addToStack)
-{
-    SCgBaseCommand* cmd = new SCgCommandObjectTypeChange(this, object, type, parentCmd);
 
     if (addToStack)
         mUndoStack->push(cmd);
@@ -434,9 +423,9 @@ SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QStri
 SCgBaseCommand* SCgScene::changeObjectTypeCommand(const SCgObject::SCgObjectList& objList, const QString& type, SCgBaseCommand* parentCmd, bool addToStack)
 {
     SCgBaseCommand* cmd = new SCgBaseCommand(this, 0, parentCmd);
-    cmd->setText(QObject::tr("Change type of multiple objects"));
+    cmd->setText(QObject::tr("Change type of object(s)"));
 
-    foreach (SCgObject* object, objList)
+    for (SCgObject* object : objList)
         new SCgCommandObjectTypeChange(this, object, type, cmd);
 
     if (addToStack)

@@ -59,12 +59,12 @@ bool SCgObject::isSCgPointObjectType(int type)
 
 bool SCgObject::areObjectsOfEqualType(const SCgObject::SCgObjectList& objectList)
 {
-    Q_ASSERT_X(!objectList.isEmpty(), "SCgObject::areObjectsOfEqualType",
-               "Ambiguous case: could not determine type equality for empty list of objects");
-
-    foreach (SCgObject* object, objectList)
-        if (!object || (object->type() != objectList[0]->type()))
+    for (SCgObject const * object : objectList)
+    {
+        Q_ASSERT(object);
+        if (object->type() != objectList.first()->type())
             return false;
+    }
 
     return true;
 }
