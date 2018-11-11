@@ -32,7 +32,17 @@ int main(int argc, char *argv[])
     a.setApplicationName("KBE");
 
     a.setAttribute(Qt::AA_DontShowIconsInMenus, false);
-    QDir root_dir = a.applicationDirPath();
+
+    QDir binPath(QCoreApplication::applicationDirPath());
+
+    /* Set working directory */
+#ifdef Q_OS_MAC
+    binPath.cdUp();    /* Fix this on Mac because of the .app folder, */
+    binPath.cdUp();    /* which means that the actual executable is   */
+    binPath.cdUp();    /* three levels deep. Grrr.                    */
+#endif
+
+    QDir root_dir = binPath;
 
     //#if KBE_DEBUG_MODE
     //    root_dir.cdUp();
@@ -47,6 +57,7 @@ int main(int argc, char *argv[])
     //a.processEvents();
 
     //splash.showMessage("Load Translation", Qt::AlignBottom | Qt::AlignHCenter);
+
 
     QTranslator myappTranslator;
     myappTranslator.load(":/media/translations/lang_" + QLocale::system().name() + ".qm");
