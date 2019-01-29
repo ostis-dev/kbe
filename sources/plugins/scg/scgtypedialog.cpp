@@ -10,6 +10,7 @@
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QFormLayout>
 #include <QPushButton>
 #include <QGroupBox>
 #include <QDialogButtonBox>
@@ -22,7 +23,7 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
 {
     setWindowTitle(tr("Select type"));
     setStyleSheet("QGroupBox QPushButton"
-                  "{ padding: 3px 3px 3px 3px;"
+                  "{ padding: 3px 8px 3px 3px;"
                   "  text-align: left; }"
                   "QGroupBox QPushButton:focus"
                   "{ outline: none;"
@@ -129,10 +130,13 @@ void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& tex
     button->setToolTip(QString::number(hotkey));
     connect(button, SIGNAL(clicked(bool)), this, SLOT(onChooseType()));
 
-    if (parent->layout())
-        parent->layout()->addWidget(button);
-    else
-        return;
+    QFormLayout* buttonLayout = new QFormLayout();
+    buttonLayout->addRow(QString::number(hotkey) + ".", button);
+
+    QBoxLayout* parentLayout = static_cast<QBoxLayout*>(parent->layout());
+    Q_ASSERT(parentLayout);
+
+    parentLayout->addLayout(buttonLayout);
 
     QShortcut* shortcut = new QShortcut(parent);
     shortcut->setKey(QString::number(hotkey));

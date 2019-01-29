@@ -6,10 +6,11 @@
 
 #pragma once
 
+#include "scgobject.h"
+
 #include <QGraphicsView>
 
 class SCgWindow;
-class SCgObject;
 class SCgScene;
 class QContextMenuEvent;
 class QMenu;
@@ -23,6 +24,9 @@ public:
 
     explicit SCgView(QWidget *parent, SCgWindow *window);
     virtual ~SCgView();
+
+    //! Pointer to SCgScene, that is being visualized by this SCgView
+    SCgScene* getSCgScene() const;
 
     //! Actions, provided by this view.
     QList<QAction*> actions() const;
@@ -84,6 +88,10 @@ private slots:
     /**@}*/
 
 private:
+    //! Check if all requirements for changing type of passed objects are fulfilled
+    //! Should be checked out before calling SCgView::changeType()
+    bool canChangeTypesOfObjects(const SCgObject::SCgObjectList& objectList) const;
+
     //! Previous mouse position for scrolling by mid mouse button click.
     QPoint mPrevMousePos;
     //! Pointer to context menu
@@ -124,10 +132,12 @@ private slots:
     //! Start dialog for sc.g-element identifier changing
     void changeIdentifier();
 
-    void showTypeDialog();
+    //! Show dialog with available types for currently selected objects
+    //! and initiate type changing
+    void chooseTypeForSelectedObjects();
 
-    //! Change type of context element.
-    void changeType(const QString& newType);
+    //! Change type of passed objects to newType.
+    void changeType(const SCgObject::SCgObjectList& objectList, const QString& newType);
 
     //! Starts content change dialog
     void changeContent();

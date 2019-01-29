@@ -235,6 +235,11 @@ Just 1.6 and 2.0 versions supported.</source>
         <source>Remove pair&apos;s break points</source>
         <translation></translation>
     </message>
+    <message>
+        <location filename="../../scgscene.cpp" line="426"/>
+        <source>Change type of object(s)</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>SCgBusMode</name>
@@ -337,17 +342,17 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgScene</name>
     <message>
-        <location filename="../../scgscene.cpp" line="918"/>
+        <location filename="../../scgscene.cpp" line="931"/>
         <source>File opening error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="924"/>
+        <location filename="../../scgscene.cpp" line="937"/>
         <source>Unsupported extention</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgscene.cpp" line="925"/>
+        <location filename="../../scgscene.cpp" line="938"/>
         <source>Current file&apos;s extention doesn&apos;t supported</source>
         <translation></translation>
     </message>
@@ -378,22 +383,22 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgTypeSelectionDialog</name>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="12"/>
+        <location filename="../../scgtypedialog.cpp" line="24"/>
         <source>Select type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="21"/>
+        <location filename="../../scgtypedialog.cpp" line="39"/>
         <source>Constants</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="23"/>
+        <location filename="../../scgtypedialog.cpp" line="47"/>
         <source>Variables</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgtypedialog.cpp" line="25"/>
+        <location filename="../../scgtypedialog.cpp" line="55"/>
         <source>Constancy unknown</source>
         <translation></translation>
     </message>
@@ -422,134 +427,119 @@ Just 1.6 and 2.0 versions supported.</source>
 <context>
     <name>SCgView</name>
     <message>
-        <location filename="../../scgview.cpp" line="80"/>
-        <location filename="../../scgview.cpp" line="205"/>
+        <location filename="../../scgview.cpp" line="85"/>
+        <location filename="../../scgview.cpp" line="210"/>
         <source>Set content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="81"/>
+        <location filename="../../scgview.cpp" line="86"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="85"/>
+        <location filename="../../scgview.cpp" line="90"/>
         <source>Show content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="87"/>
+        <location filename="../../scgview.cpp" line="92"/>
         <source>H</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="91"/>
+        <location filename="../../scgview.cpp" line="96"/>
         <source>Show all content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="94"/>
+        <location filename="../../scgview.cpp" line="99"/>
         <source>Hide all content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="97"/>
+        <location filename="../../scgview.cpp" line="102"/>
         <source>Delete content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="98"/>
+        <location filename="../../scgview.cpp" line="103"/>
         <source>D</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="102"/>
-        <location filename="../../scgview.cpp" line="448"/>
+        <location filename="../../scgview.cpp" line="107"/>
+        <location filename="../../scgview.cpp" line="430"/>
         <source>Change identifier</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="103"/>
+        <location filename="../../scgview.cpp" line="108"/>
         <source>I</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="107"/>
+        <location filename="../../scgview.cpp" line="112"/>
         <source>Delete</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="112"/>
+        <location filename="../../scgview.cpp" line="117"/>
         <source>Delete contour</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="113"/>
+        <location filename="../../scgview.cpp" line="118"/>
         <source>Backspace</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="117"/>
+        <location filename="../../scgview.cpp" line="122"/>
         <source>Swap orientation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="118"/>
+        <location filename="../../scgview.cpp" line="123"/>
         <source>S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="122"/>
+        <location filename="../../scgview.cpp" line="127"/>
         <source>Copy</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="127"/>
+        <location filename="../../scgview.cpp" line="132"/>
         <source>Cut</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="132"/>
+        <location filename="../../scgview.cpp" line="137"/>
         <source>Paste</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="137"/>
+        <location filename="../../scgview.cpp" line="142"/>
         <source>Select All</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="200"/>
+        <location filename="../../scgview.cpp" line="205"/>
         <source>Change content</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="299"/>
-        <source>Change type</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../scgview.cpp" line="76"/>
+        <location filename="../../scgview.cpp" line="81"/>
         <source>T</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="75"/>
+        <location filename="../../scgview.cpp" line="80"/>
         <source>Select type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgview.cpp" line="303"/>
-        <source>Const</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../scgview.cpp" line="304"/>
-        <source>Var</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../scgview.cpp" line="450"/>
+        <location filename="../../scgview.cpp" line="432"/>
         <source>New identifier:</source>
         <translation></translation>
     </message>

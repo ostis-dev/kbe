@@ -66,6 +66,11 @@ SCgView::~SCgView()
     mContextObject = 0;
 }
 
+SCgScene* SCgView::getSCgScene() const
+{
+    return static_cast<SCgScene*>(QGraphicsView::scene());
+}
+
 void SCgView::createActions()
 {
     QAction* sep = new QAction(this);
@@ -75,7 +80,7 @@ void SCgView::createActions()
     mActionChangeType = new QAction(tr("Select type"), mWindow);
     mActionChangeType->setShortcut(QKeySequence( tr("T") ));
     mWindow->addAction(mActionChangeType);
-    connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(showTypeDialog()));
+    connect(mActionChangeType, SIGNAL(triggered(bool)), this, SLOT(chooseTypeForSelectedObjects()));
 
     mActionChangeContent = new QAction(mWindow->findIcon("edit-content-change.png"),tr("Set content"),mWindow);
     mActionChangeContent->setShortcut(QKeySequence( tr("C") ));
@@ -210,7 +215,8 @@ void SCgView::updateActionsState(int idx)
         mActionShowContent->setEnabled(isContentData);
         mActionShowContent->setVisible(isContentData);
 
-    }else
+    }
+    else
     {
         mActionChangeContent->setEnabled(false);
         mActionChangeContent->setVisible(false);
@@ -225,9 +231,6 @@ void SCgView::updateActionsState(int idx)
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
 
-    mActionChangeType->setEnabled(nodeType || pairType);
-    mActionChangeType->setVisible(nodeType || pairType);
-
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
@@ -236,10 +239,15 @@ void SCgView::updateActionsState(int idx)
     mActionContourDelete->setEnabled(contourType);
     mActionContourDelete->setVisible(contourType);
 
-    bool isAnySelected = !scene()->selectedItems().isEmpty();
+    bool isAnySelected = !items.isEmpty();
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
+
+    bool const canChangeType = canChangeTypesOfObjects(getSCgScene()->getSelectedObjects());
+
+    mActionChangeType->setEnabled(canChangeType);
+    mActionChangeType->setVisible(canChangeType);
 
     //check for showed/hidden contents
     items = scene()->items();
@@ -271,7 +279,7 @@ void SCgView::contextMenuEvent(QContextMenuEvent *event)
                                 QPointF(horizontalScrollBar()->value(), verticalScrollBar()->value()) -
                                 scene()->sceneRect().topLeft();*/
 
-    SCgObject *object = static_cast<SCgScene*>(scene())->objectAt(mousePos);
+    SCgObject *object = getSCgScene()->objectAt(mousePos);
 
     // create context menu
     if (mContextMenu)
@@ -300,6 +308,18 @@ void SCgView::selectAllCommand() const
     QList<QGraphicsItem*>::iterator it = list.begin();
     for(; it != list.end(); ++it)
         (*it)->setSelected(true);
+}
+
+bool SCgView::canChangeTypesOfObjects(const SCgObject::SCgObjectList& objectList) const
+{
+    if (objectList.isEmpty() || !SCgObject::areObjectsOfEqualType(objectList))
+        return false;
+
+    int const type = objectList.first()->type();
+    if ((type != SCgNode::Type) && (type != SCgPair::Type))
+        return false;
+
+    return true;
 }
 
 void SCgView::keyPressEvent(QKeyEvent *event)
@@ -383,7 +403,7 @@ void SCgView::wheelEvent(QWheelEvent *event)
 
 void SCgView::deleteSelected()
 {
-    static_cast<SCgScene*>(scene())->deleteSelObjectsCommand();
+    getSCgScene()->deleteSelObjectsCommand();
 }
 
 void SCgView::deleteJustContour()
@@ -391,7 +411,7 @@ void SCgView::deleteJustContour()
     Q_ASSERT(mContextObject && mContextObject->type() == SCgContour::Type);
 
     SCgContour *contour = static_cast<SCgContour*>(mContextObject);
-    static_cast<SCgScene*>(scene())->deleteContourCommand(contour);
+    getSCgScene()->deleteContourCommand(contour);
 }
 
 void SCgView::swapPairOrient()
@@ -399,7 +419,7 @@ void SCgView::swapPairOrient()
     Q_ASSERT(mContextObject && mContextObject->type() == SCgPair::Type);
 
     SCgPair *pair = static_cast<SCgPair*>(mContextObject);
-    static_cast<SCgScene*>(scene())->swapPairOrientCommand(pair);
+    getSCgScene()->swapPairOrientCommand(pair);
 }
 
 void SCgView::changeIdentifier()
@@ -424,7 +444,7 @@ void SCgView::changeIdentifier()
     layout->addWidget(lineEdit);
     layout->addWidget(buttonBox);
 
-    QCompleter *completer = new QCompleter(static_cast<SCgScene*>(scene())->idtfList(), &dialog);
+    QCompleter *completer = new QCompleter(getSCgScene()->idtfList(), &dialog);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     lineEdit->setCompleter(completer);
     QString oldIdtf = mContextObject->idtfValue();
@@ -439,26 +459,25 @@ void SCgView::changeIdentifier()
     {
         QString newIdtf = lineEdit->text();
         if(oldIdtf != newIdtf)
-            static_cast<SCgScene*>(scene())->changeIdtfCommand(mContextObject, newIdtf);
+            getSCgScene()->changeIdtfCommand(mContextObject, newIdtf);
     }
 }
 
-void SCgView::showTypeDialog()
+void SCgView::chooseTypeForSelectedObjects()
 {
-    if (!mContextObject)
-        return;
+    SCgObject::SCgObjectList const objectList = getSCgScene()->getSelectedObjects();
+    Q_ASSERT(canChangeTypesOfObjects(objectList));
 
-    SCgTypeSelectionDialog typeDialog(mContextObject->type());
+    SCgTypeSelectionDialog typeDialog(objectList.first()->type());
 
     if (typeDialog.exec() == QDialog::Accepted)
-        changeType(typeDialog.getChosenType());
+        changeType(objectList, typeDialog.getChosenType());
 }
 
-void SCgView::changeType(const QString& newType)
+void SCgView::changeType(const SCgObject::SCgObjectList& objectList, const QString& newType)
 {
-    Q_ASSERT(mContextObject);
-
-    static_cast<SCgScene*>(scene())->changeObjectTypeCommand(mContextObject, newType);
+    if (!objectList.isEmpty())
+        getSCgScene()->changeObjectTypeCommand(objectList, newType);
 }
 
 void SCgView::changeContent()
@@ -472,7 +491,7 @@ void SCgView::changeContent()
         SCgContent::ContInfo info;
         dlg.contentInfo(info);
         if (node->contentType() != SCgContent::Empty || info.type != SCgContent::Empty)
-            static_cast<SCgScene*>(scene())->changeContentDataCommand(node, info);
+            getSCgScene()->changeContentDataCommand(node, info);
     }
 }
 
@@ -486,15 +505,15 @@ void SCgView::setContentVisible(bool visibility)
         SCgNode *node = static_cast<SCgNode*>(mContextObject);
 
         if(visibility != node->isContentVisible())
-            static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(node, visibility);
+            getSCgScene()->changeContentVisibilityCommand(node, visibility);
     }
     else if (_sender == mActionShowAllContent)
     {
-        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(0, true, true);
+        getSCgScene()->changeContentVisibilityCommand(0, true, true);
     }
     else if(_sender == mActionHideAllContent)
     {
-        static_cast<SCgScene*>(scene())->changeContentVisibilityCommand(0, false, true);
+        getSCgScene()->changeContentVisibilityCommand(0, false, true);
     }
 }
 
@@ -504,7 +523,7 @@ void SCgView::deleteContent()
 
     SCgNode* node = static_cast<SCgNode*> (mContextObject);
     SCgContent::ContInfo empty;
-    static_cast<SCgScene*>(scene())->changeContentDataCommand(node, empty);
+    getSCgScene()->changeContentDataCommand(node, empty);
 }
 
 void SCgView::setScale(const QString& sc)

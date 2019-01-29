@@ -228,7 +228,7 @@ void SCgSelectMode::mouseRelease(QGraphicsSceneMouseEvent *event)
         {
             SCgObject *obj = static_cast<SCgObject*>(pItem);
             if (obj && obj->typeAlias() != mCloningType)
-                mScene->changeObjectTypeCommand(obj, mCloningType);
+                mScene->changeObjectTypeCommand({obj}, mCloningType);
         }
         mIsTypeClonning = false;
         mObjectType = 0;

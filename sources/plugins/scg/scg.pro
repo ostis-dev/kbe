@@ -7,7 +7,7 @@ INCLUDEPATH  += ../../kbe \
 
 DESTDIR = ../../bin/plugins
 
-CONFIG       += plugin
+CONFIG       += plugin c++11
 
 OBJECTS_DIR = obj
 MOC_DIR = moc

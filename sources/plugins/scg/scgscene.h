@@ -83,6 +83,9 @@ public:
       */
     SCgObject* objectAt(const QPointF &point) const;
 
+    //! Get all of currently selected SCgObjects, ignoring non-SCg QGraphicsItems
+    SCgObject::SCgObjectList getSelectedObjects() const;
+
     /*! Render scene to image
       */
     void renderToImage(QPainter *painter, const QRectF &target, const QRectF &source, Qt::AspectRatioMode aspectRatioMode = Qt::KeepAspectRatio);
@@ -167,14 +170,14 @@ public:
                                       SCgBaseCommand* parentCmd = 0,
                                       bool addToStack = true);
 
-    /*! Create undo/redo command to change object type
-      * @param object Pointer of sc.g-object to change type
+    /*! Create undo/redo command to change objects' types
+      * @param objList List of sc.g-objects to change type
       * @param type String that contains new type alias
       * @param parentCmd Pointer to parend undo/redo command
       * @param addToStack Flag to add created command into stack
       */
-    SCgBaseCommand* changeObjectTypeCommand(SCgObject *object,
-                                            const QString &type,
+    SCgBaseCommand* changeObjectTypeCommand(const SCgObject::SCgObjectList& objList,
+                                            const QString& type,
                                             SCgBaseCommand* parentCmd = 0,
                                             bool addToStack = true);
 
