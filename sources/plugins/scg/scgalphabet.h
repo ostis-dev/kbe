@@ -35,6 +35,7 @@ public:
     {
         Const   = 0,
         Var,
+        Meta,
         ConstUnknown
     } SCgConstType;
 

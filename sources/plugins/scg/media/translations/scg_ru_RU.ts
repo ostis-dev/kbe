@@ -452,6 +452,11 @@ Just 1.6 and 2.0 versions supported.</source>
     </message>
     <message>
         <location filename="../../scgtypedialog.cpp" line="25"/>
+        <source>Meta</source>
+        <translation>Метапеременные</translation>
+    </message>
+    <message>
+        <location filename="../../scgtypedialog.cpp" line="27"/>
         <source>Constancy unknown</source>
         <translation>Константность неизвестна</translation>
     </message>

@@ -33,6 +33,7 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
 
     QVBoxLayout* constLayout = new QVBoxLayout();
     QVBoxLayout* varLayout = new QVBoxLayout();
+    QVBoxLayout* metaLayout = new QVBoxLayout();
     QHBoxLayout* unknownLayout = new QHBoxLayout();
 
     mConstGroup = new QGroupBox(tr("Constants") + " (C)");
@@ -51,6 +52,14 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     addAction(focusVarAction);
     connect(focusVarAction, SIGNAL(triggered(bool)), mVarGroup, SLOT(setFocus()));
 
+    mMetaGroup = new QGroupBox(tr("Meta") + " (M)");
+    mMetaGroup->setLayout(metaLayout);
+
+    QAction* focusMetaAction = new QAction(this);
+    focusMetaAction->setShortcut(QKeySequence("M"));
+    addAction(focusMetaAction);
+    connect(focusMetaAction, SIGNAL(triggered(bool)), mMetaGroup, SLOT(setFocus()));
+
     mUnknownGroup = new QGroupBox(tr("Constancy unknown") + " (X)");
     mUnknownGroup->setLayout(unknownLayout);
 
@@ -61,6 +70,7 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
 
     topLayout->addWidget(mConstGroup, 1);
     topLayout->addWidget(mVarGroup, 1);
+    topLayout->addWidget(mMetaGroup, 1);
     mainLayout->addLayout(topLayout);
     mainLayout->addWidget(mUnknownGroup);
 
@@ -91,6 +101,7 @@ void SCgTypeSelectionDialog::displayTypes()
     SCgAlphabet& alphabet = SCgAlphabet::getInstance();
     SCgAlphabet::SCgObjectTypesMap constTypes;
     SCgAlphabet::SCgObjectTypesMap varTypes;
+    SCgAlphabet::SCgObjectTypesMap metaTypes;
     SCgAlphabet::SCgObjectTypesMap unknownTypes;
 
     switch (mObjectType)
@@ -98,6 +109,7 @@ void SCgTypeSelectionDialog::displayTypes()
     case SCgNode::Type:
         alphabet.getNodeTypes(SCgAlphabet::Const, constTypes);
         alphabet.getNodeTypes(SCgAlphabet::Var, varTypes);
+        alphabet.getNodeTypes(SCgAlphabet::Meta, metaTypes);
         alphabet.getNodeTypes(SCgAlphabet::ConstUnknown, unknownTypes);
         break;
     case SCgPair::Type:
@@ -117,6 +129,8 @@ void SCgTypeSelectionDialog::displayTypes()
     hotkey = 1;
     for (it = varTypes.cbegin(); it != varTypes.cend(); ++it)
         addTypeButton(it.value(), it.key(), hotkey++, mVarGroup);
+    for (it = metaTypes.cbegin(); it != metaTypes.cend(); ++it)
+        addTypeButton(it.value(), it.key(), hotkey++, mMetaGroup);
     hotkey = 1;
     for (it = unknownTypes.cbegin(); it != unknownTypes.cend(); ++it)
         addTypeButton(it.value(), it.key(), hotkey++, mUnknownGroup);

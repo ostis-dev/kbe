@@ -113,6 +113,14 @@ QPainterPath SCgNode::shape() const
         case SCgAlphabet::Var:
             path.addRect(boundRect);
             break;
+        case SCgAlphabet::Meta:
+            path.moveTo(boundRect.center().x(), boundRect.top());
+            path.lineTo(boundRect.right(), boundRect.center().y());
+            path.lineTo(boundRect.center().x(), boundRect.bottom());
+            path.lineTo(boundRect.left(), boundRect.center().y());
+            path.lineTo(boundRect.center().x(), boundRect.top());
+            break;
+
 
         default:
             break;

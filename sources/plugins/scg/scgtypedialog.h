@@ -44,5 +44,6 @@ private:
 
     QGroupBox* mConstGroup;
     QGroupBox* mVarGroup;
+    QGroupBox* mMetaGroup;
     QGroupBox* mUnknownGroup;
 };

@@ -50,12 +50,15 @@ void SCgAlphabet::initialize()
 {
     mConstTypes["const"] = Const;
     mConstTypes["var"] = Var;
+    mConstTypes["meta"] = Meta;
 
     mConstAliases[Const] = "const";
     mConstAliases[Var] = "var";
+    mConstAliases[Meta] = "meta";
 
     mAlias2ConstType.push_back("const");
     mAlias2ConstType.push_back("var");
+    mAlias2ConstType.push_back("meta");
     mAlias2ConstType.push_back("-");
 
     mPosTypes["pos"] = Positive;
@@ -122,6 +125,7 @@ void SCgAlphabet::initialize()
 
     mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, StructType_NotDefine);
 
+    //const
     mObjectTypes["node/const/general"] = createNodeIcon(size, Const, StructType_General);
     mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, StructType_Abstract);
     mObjectTypes["node/const/material"] = createNodeIcon(size, Const, StructType_Material);
@@ -132,6 +136,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/const/relation"] = createNodeIcon(size, Const, StructType_Relation);
     mObjectTypes["node/const/group"] = createNodeIcon(size, Const, StructType_Group);
 
+    //var
     //mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
     mObjectTypes["node/var/general"] = createNodeIcon(size, Var, StructType_General);
     mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, StructType_Abstract);
@@ -142,6 +147,17 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/var/role"] = createNodeIcon(size, Var, StructType_Role);
     mObjectTypes["node/var/relation"] = createNodeIcon(size, Var, StructType_Relation);
     mObjectTypes["node/var/group"] = createNodeIcon(size, Var, StructType_Group);
+
+    //meta
+    mObjectTypes["node/meta/general"] = createNodeIcon(size, Meta, StructType_General);
+    mObjectTypes["node/meta/abstract"] = createNodeIcon(size, Meta, StructType_Abstract);
+    mObjectTypes["node/meta/material"] = createNodeIcon(size, Meta, StructType_Material);
+    mObjectTypes["node/meta/struct"] = createNodeIcon(size, Meta, StructType_Struct);
+    mObjectTypes["node/meta/tuple"] = createNodeIcon(size, Meta, StructType_Tuple);
+    //mObjectTypes["node/meta/asymmetry"] = createNodeIcon(size, Meta, Tuple);
+    mObjectTypes["node/meta/role"] = createNodeIcon(size, Meta, StructType_Role);
+    mObjectTypes["node/meta/relation"] = createNodeIcon(size, Meta, StructType_Relation);
+    mObjectTypes["node/meta/group"] = createNodeIcon(size, Meta, StructType_Group);
 
 
     QSize pairSize(24, 24);
@@ -346,7 +362,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
 
 
     // drawing of border
-    QPen pen = QPen(QBrush(color, Qt::SolidPattern), 4, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+    QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
     QBrush brush = QBrush(brush_color, Qt::SolidPattern);
     painter->setPen(pen);
     painter->setBrush(brush);
@@ -359,28 +375,40 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
         return;
     }
 
-    if (type == Const)
-    {
+    QPainterPath clipPath;
+    switch (type) {
+    case Const:
         painter->drawEllipse(bound);
 
-        QPainterPath clipPath;
         clipPath.addEllipse(bound.adjusted(1,1,-1,-1));
         painter->setClipPath(clipPath, Qt::IntersectClip);
 
         paintStruct(painter, color, bound, type_struct);
-    }else
-    {
-        if (type == Var)
-        {
-            painter->scale(0.9f, 0.9f);
-            painter->drawRect(bound);
+        break;
+    case Var:
+        painter->scale(0.9f, 0.9f);
+        painter->drawRect(bound);
 
-            QPainterPath clipPath;
-            clipPath.addRect(bound);
-            painter->setClipPath(clipPath, Qt::IntersectClip);
-            paintStruct(painter, color, bound, type_struct);
-        }
+        clipPath.addRect(bound);
+        painter->setClipPath(clipPath, Qt::IntersectClip);
+        paintStruct(painter, color, bound, type_struct);
+        break;
+    case Meta:
+        QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+        painter->setPen(pen);
+        painter->scale(0.9f, 0.9f);
+        QPainterPath path;
+        path.moveTo(bound.center().x(), bound.top());
+        path.lineTo(bound.right(), bound.center().y());
+        path.lineTo(bound.center().x(), bound.bottom());
+        path.lineTo(bound.left(), bound.center().y());
+        path.lineTo(bound.center().x(), bound.top());
 
+        painter -> drawPath(path);
+        clipPath.addPath(path);
+        painter->setClipPath(clipPath, Qt::IntersectClip);
+        paintStruct(painter, color, bound, type_struct);
+        break;
     }
 }
 
@@ -464,9 +492,9 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         break;
 
     case StructType_Group:
-        painter->drawLine(boundRect.topLeft(), boundRect.bottomRight());
-        painter->drawLine(boundRect.topRight(), boundRect.bottomLeft());
-        painter->drawLine(boundRect.left(), boundRect.center().y(), boundRect.right(), boundRect.center().y());
+        d = QPointF(0.f, boundRect.height() / 2.0);
+        painter->drawLine(boundRect.bottomLeft(), boundRect.center()-d);
+        painter->drawLine(boundRect.center()-d, boundRect.bottomRight());
         break;
 
     default:
