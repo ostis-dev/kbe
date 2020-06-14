@@ -44,8 +44,7 @@ public:
     {
         StructType_NotDefine = 0,
         StructType_General,
-        StructType_Abstract,
-        StructType_Material,
+        StructType_Terminal,
         StructType_Struct,
         StructType_Tuple,
         StructType_Role,
@@ -81,7 +80,7 @@ public:
     static SCgAlphabet& getInstance();
 
     void initialize();
-    void paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect, const SCgConstType &type, const SCgNodeStructType &type_struct);
+    void paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect, const SCgConstType &type, const SCgPermType &type_perm, const SCgNodeStructType &type_struct);
     void paintStruct(QPainter *painter, const QColor &color, const QRectF &boundRect, const SCgNodeStructType &type);
 
     //! Method for pair painting
@@ -91,10 +90,12 @@ public:
     //! Method for contour painting
     static void paintContour(QPainter *painter, SCgContour *contour);
 
-    void getNodeTypes(const SCgConstType type, SCgObjectTypesMap &res);
+    void getNodeTypes(const SCgConstType type_const, SCgObjectTypesMap &res);
+    void getNodeTypes(const SCgConstType type_const, SCgPermType type_perm, SCgObjectTypesMap &res);
     void getPairTypes(const SCgConstType type, SCgObjectTypesMap &res);
 
     void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgObjectTypesMap &res);
+    void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgPermType type_perm, SCgObjectTypesMap &res);
 
     /*! Converts constant type string alias into code
       * @param alias String representation of const type alias
@@ -132,9 +133,8 @@ public:
      * @param code Permanency type code to convert
      */
     QString aliasFromPermanencyCode(SCgPermType code) const;
-
 protected:
-    QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgNodeStructType &type_struct);
+    QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgPermType &type_perm, const SCgNodeStructType &type_struct);
     QIcon createPairIcon(const QSize &size, QString type);
 
 private:
@@ -184,6 +184,8 @@ private:
     static QVector<qreal> msTempConstAccesDashPattern;
     //! Pattern that used to draw temporary, variable, accessory pairs
     static QVector<qreal> msTempVarAccesDashPattern;
+    //! Pattern that used to draw dotter elements
+    static QVector<qreal> dottedDashPattern;
     //! Pattern that used to draw common accessory marks
     static QVector<qreal> msCommonAccessoryDashPattern;
 

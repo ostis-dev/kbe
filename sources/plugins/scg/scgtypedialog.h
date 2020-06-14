@@ -42,8 +42,11 @@ private:
     //! mChosenType will contain chosen type.
     QString mChosenType;
 
-    QGroupBox* mConstGroup;
-    QGroupBox* mVarGroup;
-    QGroupBox* mMetaGroup;
+    QGroupBox* mConstPermGroup;
+    QGroupBox* mVarPermGroup;
+    QGroupBox* mMetaPermGroup;
+    QGroupBox* mConstTempGroup;
+    QGroupBox* mVarTempGroup;
+    QGroupBox* mMetaTempGroup;
     QGroupBox* mUnknownGroup;
 };

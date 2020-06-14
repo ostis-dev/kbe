@@ -224,7 +224,7 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     SCgNode *node = new SCgNode;
 
     node->setPos(pos);
-    node->setTypeAlias("node/const/general");
+    node->setTypeAlias("node/const/perm/general");
 
     addItem(node);
     return node;

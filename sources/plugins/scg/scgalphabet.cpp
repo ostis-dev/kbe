@@ -27,6 +27,7 @@ QVector<qreal> SCgAlphabet::msPermVarNoAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempConstAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempVarAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msCommonAccessoryDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::dottedDashPattern = QVector<qreal>();
 
 
 SCgAlphabet::SCgAlphabet(QObject *parent) :
@@ -79,8 +80,7 @@ void SCgAlphabet::initialize()
 
     mStructTypes["not_define"] = StructType_NotDefine;
     mStructTypes["general"] = StructType_General;
-    mStructTypes["abstract"] = StructType_Abstract;
-    mStructTypes["material"] = StructType_Material;
+    mStructTypes["terminal"] = StructType_Terminal;
     mStructTypes["struct"] = StructType_Struct;
     mStructTypes["tuple"] = StructType_Tuple;
     mStructTypes["role"] = StructType_Role;
@@ -90,8 +90,7 @@ void SCgAlphabet::initialize()
 
     mStructAliases[StructType_NotDefine] = "not_define";
     mStructAliases[StructType_General] = "general";
-    mStructAliases[StructType_Abstract] = "abstract";
-    mStructAliases[StructType_Material] = "material";
+    mStructAliases[StructType_Terminal] = "terminal";
     mStructAliases[StructType_Struct] = "struct";
     mStructAliases[StructType_Tuple] = "tuple";
     mStructAliases[StructType_Role] = "role";
@@ -118,47 +117,69 @@ void SCgAlphabet::initialize()
                               << temp_dash
                               << temp_dash
                               << 7 * temp_dash;
+    temp_dash = 0.5 / LINE_THIN_WIDTH;
+    dottedDashPattern << temp_dash
+                      << temp_dash;
 
     msCommonAccessoryDashPattern << 4.f / LINE_COM_ACCESS_MARK_WIDTH << 10.f / LINE_COM_ACCESS_MARK_WIDTH;
 
     QSize size(24, 24);
 
-    mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, StructType_NotDefine);
+    mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, Permanent, StructType_NotDefine);
 
-    //const
-    mObjectTypes["node/const/general"] = createNodeIcon(size, Const, StructType_General);
-    mObjectTypes["node/const/abstract"] = createNodeIcon(size, Const, StructType_Abstract);
-    mObjectTypes["node/const/material"] = createNodeIcon(size, Const, StructType_Material);
-    mObjectTypes["node/const/struct"] = createNodeIcon(size, Const, StructType_Struct);
-    mObjectTypes["node/const/tuple"] = createNodeIcon(size, Const, StructType_Tuple);
-    //mObjectTypes["node/const/asymmetry"] = createNodeIcon(size, Const, Tuple);
-    mObjectTypes["node/const/role"] = createNodeIcon(size, Const, StructType_Role);
-    mObjectTypes["node/const/relation"] = createNodeIcon(size, Const, StructType_Relation);
-    mObjectTypes["node/const/group"] = createNodeIcon(size, Const, StructType_Group);
+    //const perm
+    mObjectTypes["node/const/perm/general"] = createNodeIcon(size, Const, Permanent, StructType_General);
+    mObjectTypes["node/const/perm/terminal"] = createNodeIcon(size, Const, Permanent, StructType_Terminal);
+    mObjectTypes["node/const/perm/struct"] = createNodeIcon(size, Const, Permanent, StructType_Struct);
+    mObjectTypes["node/const/perm/tuple"] = createNodeIcon(size, Const, Permanent, StructType_Tuple);
+    mObjectTypes["node/const/perm/role"] = createNodeIcon(size, Const, Permanent, StructType_Role);
+    mObjectTypes["node/const/perm/relation"] = createNodeIcon(size, Const, Permanent, StructType_Relation);
+    mObjectTypes["node/const/perm/group"] = createNodeIcon(size, Const, Permanent, StructType_Group);
 
-    //var
-    //mObjectTypes["node/var/not_define"] = createNodeIcon(size, Var, NotDefine);
-    mObjectTypes["node/var/general"] = createNodeIcon(size, Var, StructType_General);
-    mObjectTypes["node/var/abstract"] = createNodeIcon(size, Var, StructType_Abstract);
-    mObjectTypes["node/var/material"] = createNodeIcon(size, Var, StructType_Material);
-    mObjectTypes["node/var/struct"] = createNodeIcon(size, Var, StructType_Struct);
-    mObjectTypes["node/var/tuple"] = createNodeIcon(size, Var, StructType_Tuple);
-    //mObjectTypes["node/var/asymmetry"] = createNodeIcon(size, Var, Tuple);
-    mObjectTypes["node/var/role"] = createNodeIcon(size, Var, StructType_Role);
-    mObjectTypes["node/var/relation"] = createNodeIcon(size, Var, StructType_Relation);
-    mObjectTypes["node/var/group"] = createNodeIcon(size, Var, StructType_Group);
+    //var perm
+    mObjectTypes["node/var/perm/general"] = createNodeIcon(size, Var, Permanent, StructType_General);
+    mObjectTypes["node/var/perm/terminal"] = createNodeIcon(size, Var, Permanent, StructType_Terminal);
+    mObjectTypes["node/var/perm/struct"] = createNodeIcon(size, Var, Permanent, StructType_Struct);
+    mObjectTypes["node/var/perm/tuple"] = createNodeIcon(size, Var, Permanent, StructType_Tuple);
+    mObjectTypes["node/var/perm/role"] = createNodeIcon(size, Var, Permanent, StructType_Role);
+    mObjectTypes["node/var/perm/relation"] = createNodeIcon(size, Var, Permanent, StructType_Relation);
+    mObjectTypes["node/var/perm/group"] = createNodeIcon(size, Var, Permanent, StructType_Group);
 
-    //meta
-    mObjectTypes["node/meta/general"] = createNodeIcon(size, Meta, StructType_General);
-    mObjectTypes["node/meta/abstract"] = createNodeIcon(size, Meta, StructType_Abstract);
-    mObjectTypes["node/meta/material"] = createNodeIcon(size, Meta, StructType_Material);
-    mObjectTypes["node/meta/struct"] = createNodeIcon(size, Meta, StructType_Struct);
-    mObjectTypes["node/meta/tuple"] = createNodeIcon(size, Meta, StructType_Tuple);
-    //mObjectTypes["node/meta/asymmetry"] = createNodeIcon(size, Meta, Tuple);
-    mObjectTypes["node/meta/role"] = createNodeIcon(size, Meta, StructType_Role);
-    mObjectTypes["node/meta/relation"] = createNodeIcon(size, Meta, StructType_Relation);
-    mObjectTypes["node/meta/group"] = createNodeIcon(size, Meta, StructType_Group);
+    //meta perm
+    mObjectTypes["node/meta/perm/general"] = createNodeIcon(size, Meta, Permanent, StructType_General);
+    mObjectTypes["node/meta/perm/terminal"] = createNodeIcon(size, Meta, Permanent, StructType_Terminal);
+    mObjectTypes["node/meta/perm/struct"] = createNodeIcon(size, Meta, Permanent, StructType_Struct);
+    mObjectTypes["node/meta/perm/tuple"] = createNodeIcon(size, Meta, Permanent, StructType_Tuple);
+    mObjectTypes["node/meta/perm/role"] = createNodeIcon(size, Meta, Permanent, StructType_Role);
+    mObjectTypes["node/meta/perm/relation"] = createNodeIcon(size, Meta, Permanent, StructType_Relation);
+    mObjectTypes["node/meta/perm/group"] = createNodeIcon(size, Meta, Permanent, StructType_Group);
 
+    //const temp
+    mObjectTypes["node/const/temp/general"] = createNodeIcon(size, Const, Temporary, StructType_General);
+    mObjectTypes["node/const/temp/terminal"] = createNodeIcon(size, Const, Temporary, StructType_Terminal);
+    mObjectTypes["node/const/temp/struct"] = createNodeIcon(size, Const, Temporary, StructType_Struct);
+    mObjectTypes["node/const/temp/tuple"] = createNodeIcon(size, Const, Temporary, StructType_Tuple);
+    mObjectTypes["node/const/temp/role"] = createNodeIcon(size, Const, Temporary, StructType_Role);
+    mObjectTypes["node/const/temp/relation"] = createNodeIcon(size, Const, Temporary, StructType_Relation);
+    mObjectTypes["node/const/temp/group"] = createNodeIcon(size, Const, Temporary, StructType_Group);
+
+    //var temp
+    mObjectTypes["node/var/temp/general"] = createNodeIcon(size, Var, Temporary, StructType_General);
+    mObjectTypes["node/var/temp/terminal"] = createNodeIcon(size, Var, Temporary, StructType_Terminal);
+    mObjectTypes["node/var/temp/struct"] = createNodeIcon(size, Var, Temporary, StructType_Struct);
+    mObjectTypes["node/var/temp/tuple"] = createNodeIcon(size, Var, Temporary, StructType_Tuple);
+    mObjectTypes["node/var/temp/role"] = createNodeIcon(size, Var, Temporary, StructType_Role);
+    mObjectTypes["node/var/temp/relation"] = createNodeIcon(size, Var, Temporary, StructType_Relation);
+    mObjectTypes["node/var/temp/group"] = createNodeIcon(size, Var, Temporary, StructType_Group);
+
+    //meta temp
+    mObjectTypes["node/meta/temp/general"] = createNodeIcon(size, Meta, Temporary, StructType_General);
+    mObjectTypes["node/meta/temp/terminal"] = createNodeIcon(size, Meta, Temporary, StructType_Terminal);
+    mObjectTypes["node/meta/temp/struct"] = createNodeIcon(size, Meta, Temporary, StructType_Struct);
+    mObjectTypes["node/meta/temp/tuple"] = createNodeIcon(size, Meta, Temporary, StructType_Tuple);
+    mObjectTypes["node/meta/temp/role"] = createNodeIcon(size, Meta, Temporary, StructType_Role);
+    mObjectTypes["node/meta/temp/relation"] = createNodeIcon(size, Meta, Temporary, StructType_Relation);
+    mObjectTypes["node/meta/temp/group"] = createNodeIcon(size, Meta, Temporary, StructType_Group);
 
     QSize pairSize(24, 24);
 
@@ -189,6 +210,7 @@ void SCgAlphabet::initialize()
 }
 
 QIcon SCgAlphabet::createNodeIcon(const QSize &size, const SCgConstType &type_const,
+                                   const SCgPermType &type_perm,
                                    const SCgNodeStructType &type_struct)
 {
     QIcon icon;
@@ -210,7 +232,7 @@ QIcon SCgAlphabet::createNodeIcon(const QSize &size, const SCgConstType &type_co
 
             paintNode(&painter, QColor(0, 0, 0, 255),//(state == QIcon::On) ? 255 : 128),
                       QRectF(-size.width() / 2.f, - size.height() / 2.f, size.width(), size.height()),
-                      type_const, type_struct);
+                      type_const, type_perm, type_struct);
             painter.end();
 
             for (int mode = QIcon::Normal; mode <= QIcon::Selected; mode++)
@@ -260,9 +282,14 @@ QIcon SCgAlphabet::createPairIcon(const QSize &size, QString type)
     return icon;
 }
 
-void SCgAlphabet::getNodeTypes(SCgConstType type, SCgAlphabet::SCgObjectTypesMap &res)
+void SCgAlphabet::getNodeTypes(const SCgConstType type_const, SCgAlphabet::SCgObjectTypesMap &res)
 {
-    getObjectTypes("node", type, res);
+    getObjectTypes("node", type_const, res);
+}
+
+void SCgAlphabet::getNodeTypes(const SCgConstType type_const, SCgPermType type_perm, SCgAlphabet::SCgObjectTypesMap &res)
+{
+    getObjectTypes("node", type_const, type_perm, res);
 }
 
 void SCgAlphabet::getPairTypes(SCgConstType type, SCgAlphabet::SCgObjectTypesMap &res)
@@ -279,6 +306,19 @@ void SCgAlphabet::getObjectTypes(const QString &object_name, const SCgConstType 
 
         QStringList sl = it.key().split("/");
         if (mAlias2ConstType[const_type] == sl[1])
+            res[it.key()] = it.value();
+    }
+}
+
+void SCgAlphabet::getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgPermType type_perm,  SCgObjectTypesMap &res)
+{
+    SCgObjectTypesMap::iterator it;
+    for (it = mObjectTypes.begin(); it != mObjectTypes.end(); ++it)
+    {
+        if (!it.key().startsWith(object_name)) continue;
+
+        QStringList sl = it.key().split("/");
+        if ((mAlias2ConstType[const_type] == sl[1]) && (mPermanencyAliases[type_perm] == sl[2]))
             res[it.key()] = it.value();
     }
 }
@@ -348,7 +388,7 @@ QString SCgAlphabet::aliasFromPermanencyCode(SCgAlphabet::SCgPermType code) cons
 }
 
 void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect,
-                            const SCgConstType &type, const SCgNodeStructType &type_struct)
+                            const SCgConstType &type, const SCgPermType &type_perm, const SCgNodeStructType &type_struct)
 {
 
     QColor brush_color =  QColor(255, 255, 255, 224);
@@ -364,6 +404,11 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     // drawing of border
     QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
     QBrush brush = QBrush(brush_color, Qt::SolidPattern);
+    switch (type_perm) {
+    case Temporary:
+        pen.setDashPattern(dottedDashPattern);
+        break;
+    }
     painter->setPen(pen);
     painter->setBrush(brush);
 
@@ -379,22 +424,19 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     switch (type) {
     case Const:
         painter->drawEllipse(bound);
-
         clipPath.addEllipse(bound.adjusted(1,1,-1,-1));
-        painter->setClipPath(clipPath, Qt::IntersectClip);
-
-        paintStruct(painter, color, bound, type_struct);
         break;
     case Var:
         painter->scale(0.9f, 0.9f);
         painter->drawRect(bound);
 
         clipPath.addRect(bound);
-        painter->setClipPath(clipPath, Qt::IntersectClip);
-        paintStruct(painter, color, bound, type_struct);
         break;
     case Meta:
         QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
+        if (type_perm == Temporary) {
+            pen.setDashPattern(dottedDashPattern);
+        }
         painter->setPen(pen);
         painter->scale(0.9f, 0.9f);
         QPainterPath path;
@@ -406,10 +448,10 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
 
         painter -> drawPath(path);
         clipPath.addPath(path);
-        painter->setClipPath(clipPath, Qt::IntersectClip);
-        paintStruct(painter, color, bound, type_struct);
         break;
     }
+    painter->setClipPath(clipPath, Qt::IntersectClip);
+    paintStruct(painter, color, bound, type_struct);
 }
 
 void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
@@ -431,24 +473,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         painter->setBrush(QBrush(Qt::NoBrush));
         break;
 
-    case StructType_Abstract:
-    {
-        QPen p = painter->pen();
-        p.setWidthF(0);
-        painter->setPen(p);
-        qreal x1, x2, top, bottom;
-        top = boundRect.top();
-        bottom = boundRect.bottom();
-        x1 = boundRect.left();
-        x2 = boundRect.right();
-
-        for (qreal y = top; y < bottom; y += 3)
-            painter->drawLine(QLineF(x1, y, x2, y));
-
-        break;
-    }
-
-    case StructType_Material:
+    case StructType_Terminal:
     {
         QPen p = painter->pen();
         p.setWidthF(0);
@@ -642,20 +667,25 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         }
     }else // draw binary pairs
     {
-        pen.setWidthF(LINE_FAT_WIDTH);
-        painter->setPen(pen);
-        painter->drawPolyline(&(points[0]), points.size());
-
         if (constType == Var)
         {
-            pen.setWidthF(LINE_FATIN_WIDTH);
-            pen.setDashPattern(msPermVarNoAccesDashPattern);
-            pen.setDashOffset(20);
-            pen.setColor(QColor(255, 255, 255));
+            pen.setWidthF(LINE_FAT_WIDTH);
+            //pen.setDashPattern(msTempConstAccesDashPattern);
+            pen.setDashPattern(dottedDashPattern);
             painter->setPen(pen);
+            painter->drawPolyline(&(points[0]), points.size());
+            QPen pen2(pair->color());
+            pen2.setCapStyle(Qt::FlatCap);
+            pen2.setJoinStyle(Qt::RoundJoin);
+            pen2.setWidthF(LINE_FATIN_WIDTH);
+            pen2.setColor(Qt::white);
+            painter->setPen(pen2);
             painter->drawPolyline(&(points[0]), points.size());
         }else
         {
+            pen.setWidthF(LINE_FAT_WIDTH);
+            painter->setPen(pen);
+            painter->drawPolyline(&(points[0]), points.size());
             pen.setWidthF(LINE_FATIN_WIDTH);
             pen.setColor(Qt::white);
             painter->setPen(pen);

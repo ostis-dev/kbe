@@ -17,6 +17,7 @@
 #include <QVector2D>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QDebug>
 
 #define DEFAULT_IDTF_POS BottomRight
 
@@ -64,12 +65,14 @@ SCgAlphabet::SCgNodeStructType SCgNode::structType() const
 void SCgNode::updateType()
 {    
     /* updating information based on type alias */
+    qDebug() << mTypeAlias;
     QStringList sl = mTypeAlias.split("/");
 
     Q_ASSERT(sl.size() > 1);
 
     mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
-    mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[2]);
+    mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);
+    mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[3]);
 }
 
 QRectF SCgNode::boundingRect() const
@@ -120,8 +123,6 @@ QPainterPath SCgNode::shape() const
             path.lineTo(boundRect.left(), boundRect.center().y());
             path.lineTo(boundRect.center().x(), boundRect.top());
             break;
-
-
         default:
             break;
         }
@@ -229,7 +230,7 @@ void SCgNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     if (!mIsContentVisible)
     {
         painter->save();
-        SCgAlphabet::getInstance().paintNode(painter, mColor, boundRect, mConstType, mStructType);
+        SCgAlphabet::getInstance().paintNode(painter, mColor, boundRect, mConstType, mPermType,  mStructType);
         painter->restore();
 
         if (isContentData())
