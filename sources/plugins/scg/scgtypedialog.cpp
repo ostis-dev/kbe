@@ -151,6 +151,7 @@ void SCgTypeSelectionDialog::displayTypes()
     case SCgPair::Type:
         alphabet.getPairTypes(SCgAlphabet::Const, constPermTypes);
         alphabet.getPairTypes(SCgAlphabet::Var, varPermTypes);
+        alphabet.getPairTypes(SCgAlphabet::Meta, metaPermTypes);
         alphabet.getPairTypes(SCgAlphabet::ConstUnknown, unknownTypes);
         break;
     default:

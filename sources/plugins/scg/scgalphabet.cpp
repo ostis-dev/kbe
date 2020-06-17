@@ -188,24 +188,35 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/-/-/-/noorient"] = createPairIcon(pairSize, "pair/-/-/-/noorient");
     mObjectTypes["pair/-/-/-/orient"] = createPairIcon(pairSize, "pair/-/-/-/orient");
 
-    // scg extencion pairs
+    // const
+    mObjectTypes["pair/const/-/-/noorien"] = createPairIcon(pairSize, "pair/const/-/-/noorien");
+    mObjectTypes["pair/const/-/-/orient"] = createPairIcon(pairSize, "pair/const/-/-/orient");
     mObjectTypes["pair/const/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/pos/perm/orient/accessory");
     mObjectTypes["pair/const/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/accessory");
     mObjectTypes["pair/const/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/accessory");
     mObjectTypes["pair/const/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/pos/temp/orient/accessory");
     mObjectTypes["pair/const/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/neg/temp/orient/accessory");
     mObjectTypes["pair/const/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient/accessory");
-    mObjectTypes["pair/const/-/-/noorien"] = createPairIcon(pairSize, "pair/const/-/-/noorien");
-    mObjectTypes["pair/const/-/-/orient"] = createPairIcon(pairSize, "pair/const/-/-/orient");
 
+    // var
+    mObjectTypes["pair/var/-/-/noorien"] = createPairIcon(pairSize, "pair/var/-/-/noorien");
+    mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
     mObjectTypes["pair/var/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/pos/perm/orient/accessory");
     mObjectTypes["pair/var/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/accessory");
     mObjectTypes["pair/var/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/accessory");
     mObjectTypes["pair/var/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/pos/temp/orient/accessory");
     mObjectTypes["pair/var/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/neg/temp/orient/accessory");
     mObjectTypes["pair/var/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient/accessory");
-    mObjectTypes["pair/var/-/-/noorien"] = createPairIcon(pairSize, "pair/var/-/-/noorien");
-    mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
+
+    // meta
+    mObjectTypes["pair/meta/-/-/noorien"] = createPairIcon(pairSize, "pair/meta/-/-/noorien");
+    mObjectTypes["pair/meta/-/-/orient"] = createPairIcon(pairSize, "pair/meta/-/-/orient");
+    mObjectTypes["pair/meta/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/meta/pos/perm/orient/accessory");
+    mObjectTypes["pair/meta/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/meta/neg/perm/orient/accessory");
+    mObjectTypes["pair/meta/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/accessory");
+    mObjectTypes["pair/meta/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/meta/pos/temp/orient/accessory");
+    mObjectTypes["pair/meta/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/meta/neg/temp/orient/accessory");
+    mObjectTypes["pair/meta/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/meta/fuz/temp/orient/accessory");
 
 }
 
@@ -599,10 +610,10 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
             if (permType == Temporary)
             {
-                if (constType == Const)
-                    pen.setDashPattern(msTempConstAccesDashPattern);
-                else
-                    pen.setDashPattern(msTempVarAccesDashPattern);
+                if (constType == Const) pen.setDashPattern(msTempConstAccesDashPattern);
+                //if (constType == Var) pen.setDashPattern(msTempVarAccesDashPattern);
+                if (constType == Var) pen.setDashPattern(msTempVarAccesDashPattern);
+                if (constType == Meta) pen.setDashPattern(msTempVarAccesDashPattern);
             }
 
             painter->setPen(pen);
@@ -667,10 +678,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         }
     }else // draw binary pairs
     {
-        if (constType == Var)
-        {
+        if (constType == Var) {
             pen.setWidthF(LINE_FAT_WIDTH);
-            //pen.setDashPattern(msTempConstAccesDashPattern);
             pen.setDashPattern(dottedDashPattern);
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
@@ -681,8 +690,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             pen2.setColor(Qt::white);
             painter->setPen(pen2);
             painter->drawPolyline(&(points[0]), points.size());
-        }else
-        {
+        }
+        if (constType == Const) {
             pen.setWidthF(LINE_FAT_WIDTH);
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
@@ -690,16 +699,28 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             pen.setColor(Qt::white);
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
+        }
+        if (constType == ConstUnknown)
+        {
+            pen.setWidthF(LINE_THIN_WIDTH);
+            pen.setDashPattern(msPermVarAccesDashPattern);
+            pen.setColor(pair->color());
 
-            if (constType == ConstUnknown)
-            {
-                pen.setWidthF(LINE_THIN_WIDTH);
-                pen.setDashPattern(msPermVarAccesDashPattern);
-                pen.setColor(pair->color());
-
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
-            }
+            painter->setPen(pen);
+            painter->drawPolyline(&(points[0]), points.size());
+        }
+        if (constType == Meta) {
+            pen.setWidthF(LINE_FAT_WIDTH);
+            pen.setDashPattern(msTempConstAccesDashPattern);
+            painter->setPen(pen);
+            painter->drawPolyline(&(points[0]), points.size());
+            QPen pen2(pair->color());
+            pen2.setCapStyle(Qt::FlatCap);
+            pen2.setJoinStyle(Qt::RoundJoin);
+            pen2.setWidthF(LINE_FATIN_WIDTH);
+            pen2.setColor(Qt::white);
+            painter->setPen(pen2);
+            painter->drawPolyline(&(points[0]), points.size());
         }
     }
 }

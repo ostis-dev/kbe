@@ -34,9 +34,9 @@ public:
     typedef enum
     {
         Const   = 0,
-        Var,
-        Meta,
-        ConstUnknown
+        Var     = 1,
+        Meta    = 2,
+        ConstUnknown = 3
     } SCgConstType;
 
     /* Structural types fo nodes */
