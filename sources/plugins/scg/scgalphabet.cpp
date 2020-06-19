@@ -28,6 +28,7 @@ QVector<qreal> SCgAlphabet::msTempConstAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempVarAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msCommonAccessoryDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::dottedDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::metaPermDashPattern = QVector<qreal>();
 
 
 SCgAlphabet::SCgAlphabet(QObject *parent) :
@@ -99,9 +100,9 @@ void SCgAlphabet::initialize()
 
     // initiliaze patterns
     msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH
-                              << 12 / LINE_THIN_WIDTH;
+                              << 16 / LINE_THIN_WIDTH;
 
-    msPermVarNoAccesDashPattern << 12 / LINE_FATIN_WIDTH
+    msPermVarNoAccesDashPattern << 16 / LINE_FATIN_WIDTH
                                 << 16 / LINE_FATIN_WIDTH;
 
     qreal temp_dash = 2 / LINE_THIN_WIDTH;
@@ -116,7 +117,11 @@ void SCgAlphabet::initialize()
                               << temp_dash
                               << temp_dash
                               << temp_dash
-                              << 7 * temp_dash;
+                              << 9 * temp_dash;
+    metaPermDashPattern << 0
+                    << 9 / LINE_THIN_WIDTH
+                    << 2 / LINE_THIN_WIDTH
+                    << 1.165; //todo calculate this cofficient
     temp_dash = 0.5 / LINE_THIN_WIDTH;
     dottedDashPattern << temp_dash
                       << temp_dash;
@@ -125,7 +130,7 @@ void SCgAlphabet::initialize()
 
     QSize size(24, 24);
 
-    mObjectTypes["node/-/not_define"] = createNodeIcon(size, Const, Permanent, StructType_NotDefine);
+    mObjectTypes["node/-/-/not_define"] = createNodeIcon(size, Const, Permanent, StructType_NotDefine);
 
     //const perm
     mObjectTypes["node/const/perm/general"] = createNodeIcon(size, Const, Permanent, StructType_General);
@@ -427,6 +432,8 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
 
     if (type_struct == StructType_NotDefine)
     {
+        pen.setWidth(LINE_FAT_WIDTH * 2);
+        painter->setPen(pen);
         painter->drawEllipse(bound);
         return;
     }
@@ -591,6 +598,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     {       
         pen.setWidthF(LINE_THIN_WIDTH);
         QPen markPen = pen;
+        QPen metaPen = pen;
 
         if (constType == ConstUnknown && posType == PosUnknown)
         {
@@ -602,38 +610,52 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
             painter->setPen(markPen);
             painter->drawPolyline(&(points[0]), points.size());
-        }else
-        {
-
-            if (permType == Permanent && constType == Var)
-                pen.setDashPattern(msPermVarAccesDashPattern);
-
-            if (permType == Temporary)
-            {
-                if (constType == Const) pen.setDashPattern(msTempConstAccesDashPattern);
-                //if (constType == Var) pen.setDashPattern(msTempVarAccesDashPattern);
-                if (constType == Var) pen.setDashPattern(msTempVarAccesDashPattern);
-                if (constType == Meta) pen.setDashPattern(msTempVarAccesDashPattern);
+        } else {
+            if (constType == Const) {
+                if (permType == Temporary) {
+                    pen.setDashPattern(msTempConstAccesDashPattern);
+                }
             }
-
+            if (constType == Var) {
+                if (permType == Permanent) {
+                    pen.setDashPattern(msPermVarAccesDashPattern);
+                }
+                if (permType == Temporary) {
+                    pen.setDashPattern(msTempVarAccesDashPattern);
+                }
+            }
+            if (constType == Meta) {
+                if (permType == Permanent) {
+                    metaPen.setDashPattern(msPermVarAccesDashPattern);
+                    pen.setCapStyle(Qt::RoundCap);
+                    pen.setWidthF(LINE_FATIN_WIDTH);
+                    pen.setDashPattern(metaPermDashPattern);
+                }
+                if (permType == Temporary) {
+                    metaPen.setDashPattern(msTempVarAccesDashPattern);
+                    pen.setCapStyle(Qt::RoundCap);
+                    pen.setWidthF(LINE_FATIN_WIDTH);
+                    pen.setDashPattern(metaPermDashPattern);
+                }
+                painter->setPen(metaPen);
+                painter->drawPolyline(&(points[0]), points.size());
+                //pen.setColor(Qt::green);
+            }
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
-
             // draw negative lines
-            if (posType == Negative)
-            {
+            if (posType == Negative) {
                 painter->setPen(markPen);
 
                 QPainterPath path = pair->shapeNormal();
                 float length = path.length() - arrowLength - 3;
                 int i = 0;
 
-                qreal mult = 28.f;
-                qreal offset = 22.f;
+                qreal mult = 32.f;
+                qreal offset = 24.f;
                 qreal l = offset;
 
-                while (l < length)
-                {
+                while (l < length) {
                     qreal perc = path.percentAtLength(l);
 
                     painter->save();
@@ -644,37 +666,31 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
                     l = (++i) * mult + offset;
                 }
+            }
+            // draw fuzzy lines
+            if (posType == Fuzzy) {
+                painter->setPen(markPen);
 
-            }else   // draw fuzzy lines
-                if (posType == Fuzzy)
-                {
-                    painter->setPen(markPen);
+                QPainterPath path = pair->shapeNormal();
+                float length = path.length() - arrowLength - 3;
+                int i = 0;
 
-                    QPainterPath path = pair->shapeNormal();
-                    float length = path.length() - arrowLength - 3;
-                    int i = 0;
+                qreal mult = 32.f;
+                qreal offset = 24.f;
+                qreal l = offset;
 
-                    qreal mult = 28.f;
-                    qreal offset = 22.f;
-                    qreal l = offset;
+                while (l < length) {
+                    qreal perc = path.percentAtLength(l);
+                    painter->save();
+                    painter->translate(path.pointAtPercent(perc));
+                    painter->rotate(-path.angleAtPercent(perc));
+                    if (i % 2 == 0) painter->drawLine(0.f, -LINE_MARK_FUZ_LENGTH, 0.f, 0.f);
+                    else painter->drawLine(0.f, LINE_MARK_FUZ_LENGTH, 0.f, 0.f);
+                    painter->restore();
 
-                    while (l < length)
-                    {
-                        qreal perc = path.percentAtLength(l);
-
-                        painter->save();
-                        painter->translate(path.pointAtPercent(perc));
-                        painter->rotate(-path.angleAtPercent(perc));
-
-                        if (i % 2 == 0)
-                            painter->drawLine(0.f, -LINE_MARK_FUZ_LENGTH, 0.f, 0.f);
-                        else
-                            painter->drawLine(0.f, LINE_MARK_FUZ_LENGTH, 0.f, 0.f);
-                        painter->restore();
-
-                        l = (++i) * mult + offset;
-                    }
+                    l = (++i) * mult + offset;
                 }
+            }
         }
     }else // draw binary pairs
     {

@@ -186,6 +186,8 @@ private:
     static QVector<qreal> msTempVarAccesDashPattern;
     //! Pattern that used to draw dotter elements
     static QVector<qreal> dottedDashPattern;
+    //! Pattern that used to draw dotter elements
+    static QVector<qreal> metaPermDashPattern;
     //! Pattern that used to draw common accessory marks
     static QVector<qreal> msCommonAccessoryDashPattern;
 
