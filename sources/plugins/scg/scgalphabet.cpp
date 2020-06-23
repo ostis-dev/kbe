@@ -12,7 +12,7 @@
 #include <math.h>
 
 #define LINE_THIN_WIDTH 2.f
-#define LINE_FAT_WIDTH 8.f
+#define LINE_FAT_WIDTH 3.5f
 #define LINE_FATIN_WIDTH (LINE_FAT_WIDTH * 0.6f)
 #define LINE_COM_ACCESS_MARK_WIDTH 4.f
 
@@ -26,7 +26,7 @@ QVector<qreal> SCgAlphabet::msPermVarAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msPermVarNoAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempConstAccesDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempVarAccesDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::msCommonAccessoryDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msCommonMembershipDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::dottedDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::metaPermDashPattern = QVector<qreal>();
 
@@ -126,7 +126,7 @@ void SCgAlphabet::initialize()
     dottedDashPattern << temp_dash
                       << temp_dash;
 
-    msCommonAccessoryDashPattern << 4.f / LINE_COM_ACCESS_MARK_WIDTH << 10.f / LINE_COM_ACCESS_MARK_WIDTH;
+    msCommonMembershipDashPattern << 4.f / LINE_COM_ACCESS_MARK_WIDTH << 10.f / LINE_COM_ACCESS_MARK_WIDTH;
 
     QSize size(24, 24);
 
@@ -189,39 +189,38 @@ void SCgAlphabet::initialize()
     QSize pairSize(24, 24);
 
     // scg core pairs
-    mObjectTypes["pair/-/-/-/orient/accessory"] = createPairIcon(pairSize, "pair/-/-/-/orient/accessory");
     mObjectTypes["pair/-/-/-/noorient"] = createPairIcon(pairSize, "pair/-/-/-/noorient");
     mObjectTypes["pair/-/-/-/orient"] = createPairIcon(pairSize, "pair/-/-/-/orient");
 
     // const
     mObjectTypes["pair/const/-/-/noorien"] = createPairIcon(pairSize, "pair/const/-/-/noorien");
     mObjectTypes["pair/const/-/-/orient"] = createPairIcon(pairSize, "pair/const/-/-/orient");
-    mObjectTypes["pair/const/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/pos/perm/orient/accessory");
-    mObjectTypes["pair/const/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/accessory");
-    mObjectTypes["pair/const/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/accessory");
-    mObjectTypes["pair/const/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/pos/temp/orient/accessory");
-    mObjectTypes["pair/const/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/neg/temp/orient/accessory");
-    mObjectTypes["pair/const/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient/accessory");
+    mObjectTypes["pair/const/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/pos/perm/orient/membership");
+    mObjectTypes["pair/const/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/membership");
+    mObjectTypes["pair/const/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/membership");
+    mObjectTypes["pair/const/pos/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/pos/temp/orient/membership");
+    mObjectTypes["pair/const/neg/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/neg/temp/orient/membership");
+    mObjectTypes["pair/const/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient/membership");
 
     // var
     mObjectTypes["pair/var/-/-/noorien"] = createPairIcon(pairSize, "pair/var/-/-/noorien");
     mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
-    mObjectTypes["pair/var/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/pos/perm/orient/accessory");
-    mObjectTypes["pair/var/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/accessory");
-    mObjectTypes["pair/var/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/accessory");
-    mObjectTypes["pair/var/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/pos/temp/orient/accessory");
-    mObjectTypes["pair/var/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/neg/temp/orient/accessory");
-    mObjectTypes["pair/var/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient/accessory");
+    mObjectTypes["pair/var/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/pos/perm/orient/membership");
+    mObjectTypes["pair/var/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/membership");
+    mObjectTypes["pair/var/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/membership");
+    mObjectTypes["pair/var/pos/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/pos/temp/orient/membership");
+    mObjectTypes["pair/var/neg/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/neg/temp/orient/membership");
+    mObjectTypes["pair/var/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient/membership");
 
     // meta
     mObjectTypes["pair/meta/-/-/noorien"] = createPairIcon(pairSize, "pair/meta/-/-/noorien");
     mObjectTypes["pair/meta/-/-/orient"] = createPairIcon(pairSize, "pair/meta/-/-/orient");
-    mObjectTypes["pair/meta/pos/perm/orient/accessory"] = createPairIcon(pairSize, "pair/meta/pos/perm/orient/accessory");
-    mObjectTypes["pair/meta/neg/perm/orient/accessory"] = createPairIcon(pairSize, "pair/meta/neg/perm/orient/accessory");
-    mObjectTypes["pair/meta/fuz/perm/orient/accessory"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/accessory");
-    mObjectTypes["pair/meta/pos/temp/orient/accessory"] = createPairIcon(pairSize, "pair/meta/pos/temp/orient/accessory");
-    mObjectTypes["pair/meta/neg/temp/orient/accessory"] = createPairIcon(pairSize, "pair/meta/neg/temp/orient/accessory");
-    mObjectTypes["pair/meta/fuz/temp/orient/accessory"] = createPairIcon(pairSize, "pair/meta/fuz/temp/orient/accessory");
+    mObjectTypes["pair/meta/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/pos/perm/orient/membership");
+    mObjectTypes["pair/meta/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/neg/perm/orient/membership");
+    mObjectTypes["pair/meta/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/membership");
+    mObjectTypes["pair/meta/pos/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/pos/temp/orient/membership");
+    mObjectTypes["pair/meta/neg/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/neg/temp/orient/membership");
+    mObjectTypes["pair/meta/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/temp/orient/membership");
 
 }
 
@@ -422,7 +421,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     QBrush brush = QBrush(brush_color, Qt::SolidPattern);
     switch (type_perm) {
     case Temporary:
-        pen.setDashPattern(dottedDashPattern);
+        pen.setDashPattern(msTempConstAccesDashPattern);
         break;
     }
     painter->setPen(pen);
@@ -453,7 +452,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     case Meta:
         QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
         if (type_perm == Temporary) {
-            pen.setDashPattern(dottedDashPattern);
+            pen.setDashPattern(msTempConstAccesDashPattern);
         }
         painter->setPen(pen);
         painter->scale(0.9f, 0.9f);
@@ -536,8 +535,9 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
 
     case StructType_Group:
         d = QPointF(0.f, boundRect.height() / 2.0);
-        painter->drawLine(boundRect.bottomLeft(), boundRect.center()-d);
-        painter->drawLine(boundRect.center()-d, boundRect.bottomRight());
+        painter->drawLine(boundRect.bottomLeft(), boundRect.center()-d/2);
+        painter->drawLine(boundRect.center()-d/2, boundRect.bottomRight());
+        painter->drawPoint(boundRect.center()-d/2);
         break;
 
     default:
@@ -554,7 +554,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     Q_ASSERT(points.size() > 1);
 
     static float arrowLength = 10.f;
-    static float arrowWidth = LINE_FAT_WIDTH;
+    static float arrowWidth = 8.f;
 
     if (pair->isOrient())
     {
@@ -594,7 +594,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     pen.setJoinStyle(Qt::RoundJoin);
 
     // draw all cases
-    if (pair->isAccessory())
+    if (pair->isMempership())
     {       
         pen.setWidthF(LINE_THIN_WIDTH);
         QPen markPen = pen;
@@ -606,7 +606,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             painter->drawPolyline(&(points[0]), points.size());
 
             markPen.setWidthF(LINE_COM_ACCESS_MARK_WIDTH);
-            markPen.setDashPattern(msCommonAccessoryDashPattern);
+            markPen.setDashPattern(msCommonMembershipDashPattern);
 
             painter->setPen(markPen);
             painter->drawPolyline(&(points[0]), points.size());
@@ -718,6 +718,13 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         }
         if (constType == ConstUnknown)
         {
+            pen.setWidthF(LINE_FAT_WIDTH);
+            painter->setPen(pen);
+            painter->drawPolyline(&(points[0]), points.size());
+            pen.setWidthF(LINE_FATIN_WIDTH);
+            pen.setColor(Qt::white);
+            painter->setPen(pen);
+            painter->drawPolyline(&(points[0]), points.size());
             pen.setWidthF(LINE_THIN_WIDTH);
             pen.setDashPattern(msPermVarAccesDashPattern);
             pen.setColor(pair->color());

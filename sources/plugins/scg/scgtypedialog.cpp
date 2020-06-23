@@ -95,12 +95,27 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     addAction(focusUnknownAction);
     connect(focusUnknownAction, SIGNAL(triggered(bool)), mUnknownGroup, SLOT(setFocus()));
 
-    topLayout->addWidget(mConstPermGroup, 1);
-    topLayout->addWidget(mVarPermGroup, 1);
-    topLayout->addWidget(mMetaPermGroup, 1);
-    topLayout->addWidget(mConstTempGroup, 1);
-    topLayout->addWidget(mVarTempGroup, 1);
-    topLayout->addWidget(mMetaTempGroup, 1);
+    switch (mObjectType)
+    {
+    case SCgNode::Type:
+        topLayout->addWidget(mConstPermGroup, 1);
+        topLayout->addWidget(mVarPermGroup, 1);
+        topLayout->addWidget(mMetaPermGroup, 1);
+        topLayout->addWidget(mConstTempGroup, 1);
+        topLayout->addWidget(mVarTempGroup, 1);
+        topLayout->addWidget(mMetaTempGroup, 1);
+        mainLayout->addLayout(topLayout);
+        mainLayout->addWidget(mUnknownGroup);
+        break;
+    case SCgPair::Type:
+        topLayout->addWidget(mConstPermGroup, 1);
+        topLayout->addWidget(mVarPermGroup, 1);
+        topLayout->addWidget(mMetaPermGroup, 1);
+        break;
+    default:
+        break;
+    }
+
     mainLayout->addLayout(topLayout);
     mainLayout->addWidget(mUnknownGroup);
 

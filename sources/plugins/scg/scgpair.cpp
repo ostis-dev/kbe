@@ -20,7 +20,7 @@ SCgPair::SCgPair() :
     mEndArrow(false),
     mPosType(SCgAlphabet::PosUnknown),
     mPermType(SCgAlphabet::PermUnknown),
-    mIsAccessory(false),
+    mIsMembership(false),
     mIsOrient(false),
     mIsParentChangeInProcess(false)
 {
@@ -412,7 +412,7 @@ void SCgPair::updateType()
     mConstType = SCgAlphabet::ConstUnknown;
     mPosType = SCgAlphabet::PosUnknown;
     mPermType = SCgAlphabet::PermUnknown;
-    mIsOrient = mIsAccessory = false;
+    mIsOrient = mIsMembership = false;
 
     /* updating information based on type alias */
     QStringList sl = mTypeAlias.split("/");
@@ -422,5 +422,5 @@ void SCgPair::updateType()
     mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[3]);
     mIsOrient = (sl[4] == "orient");
     if (sl.size() == 6)
-        mIsAccessory = (sl[5] == "accessory");
+        mIsMembership = (sl[5] == "membership");
 }

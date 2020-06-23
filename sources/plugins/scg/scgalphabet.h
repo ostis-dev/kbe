@@ -176,20 +176,20 @@ private:
     typedef QMap<SCgPermType, QString> SCgPermanencyType2AliasMap;
     SCgPermanencyType2AliasMap mPermanencyAliases;
 
-    //! Pattern that used to draw permanent, variable, accessory pairs
+    //! Pattern that used to draw permanent, variable, membership pairs
     static QVector<qreal> msPermVarAccesDashPattern;
-    //! Pattern that used to draw permanent, variable, not accessory pairs
+    //! Pattern that used to draw permanent, variable, not membership pairs
     static QVector<qreal> msPermVarNoAccesDashPattern;
-    //! Pattern that used to draw temporary, constant, accessory pairs
+    //! Pattern that used to draw temporary, constant, membership pairs
     static QVector<qreal> msTempConstAccesDashPattern;
-    //! Pattern that used to draw temporary, variable, accessory pairs
+    //! Pattern that used to draw temporary, variable, membership pairs
     static QVector<qreal> msTempVarAccesDashPattern;
     //! Pattern that used to draw dotter elements
     static QVector<qreal> dottedDashPattern;
     //! Pattern that used to draw dotter elements
     static QVector<qreal> metaPermDashPattern;
-    //! Pattern that used to draw common accessory marks
-    static QVector<qreal> msCommonAccessoryDashPattern;
+    //! Pattern that used to draw common membership marks
+    static QVector<qreal> msCommonMembershipDashPattern;
 
 signals:
 
