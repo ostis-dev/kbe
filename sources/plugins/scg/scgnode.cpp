@@ -65,14 +65,21 @@ SCgAlphabet::SCgNodeStructType SCgNode::structType() const
 void SCgNode::updateType()
 {    
     /* updating information based on type alias */
-    qDebug() << mTypeAlias;
     QStringList sl = mTypeAlias.split("/");
 
     Q_ASSERT(sl.size() > 1);
 
-    mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
-    mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);
-    mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[3]);
+    qDebug() << sl.size();
+    if (sl.size() > 3) {
+        mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+        mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);
+        mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[3]);
+    }
+    else {
+        mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+        mPermType = SCgAlphabet::Permanent;
+        mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[2]);
+    }
 }
 
 QRectF SCgNode::boundingRect() const

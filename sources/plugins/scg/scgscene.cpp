@@ -379,14 +379,14 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
             // role relation
             if (idtf.endsWith('\''))
             {
-                splittedAlias[2] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Role);
+                splittedAlias[3] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Role);
                 typeChanged = true;
             }
 
             // binary relation
             if (idtf.endsWith('*'))
             {
-                splittedAlias[2] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Relation);
+                splittedAlias[3] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Relation);
                 typeChanged = true;
             }
         }
@@ -502,6 +502,7 @@ void SCgScene::cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
     Q_ASSERT(mMode->mode() == Mode_Clone);
 
+    //todo here fix ctrl + V
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)
         objList.append(static_cast<SCgObject*>(item));
