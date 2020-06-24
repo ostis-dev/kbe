@@ -177,17 +177,19 @@ private:
     SCgPermanencyType2AliasMap mPermanencyAliases;
 
     //! Pattern that used to draw permanent, variable, membership pairs
-    static QVector<qreal> msPermVarAccesDashPattern;
+    static QVector<qreal> msPermVarMembershipDashPattern;
     //! Pattern that used to draw permanent, variable, not membership pairs
-    static QVector<qreal> msPermVarNoAccesDashPattern;
+    static QVector<qreal> msPermVarCommonDashPattern;
     //! Pattern that used to draw temporary, constant, membership pairs
-    static QVector<qreal> msTempConstAccesDashPattern;
+    static QVector<qreal> msTempConstMembershipDashPattern;
     //! Pattern that used to draw temporary, variable, membership pairs
-    static QVector<qreal> msTempVarAccesDashPattern;
+    static QVector<qreal> msTempVarMembershipDashPattern;
+    //! Pattern that used to draw temporary, variable, common pairs
+    static QVector<qreal> msTempVarCommonDashPattern;
     //! Pattern that used to draw dotter elements
     static QVector<qreal> dottedDashPattern;
-    //! Pattern that used to draw dotter elements
-    static QVector<qreal> metaPermDashPattern;
+    //! Pattern that used to draw meta elements
+    static QVector<qreal> metaMembershipDashPattern;
     //! Pattern that used to draw common membership marks
     static QVector<qreal> msCommonMembershipDashPattern;
 

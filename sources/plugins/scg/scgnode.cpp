@@ -68,8 +68,6 @@ void SCgNode::updateType()
     QStringList sl = mTypeAlias.split("/");
 
     Q_ASSERT(sl.size() > 1);
-
-    qDebug() << sl.size();
     if (sl.size() > 3) {
         mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
         mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);

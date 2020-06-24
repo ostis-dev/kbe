@@ -12,8 +12,8 @@
 #include <math.h>
 
 #define LINE_THIN_WIDTH 2.f
-#define LINE_FAT_WIDTH 3.5f
-#define LINE_FATIN_WIDTH (LINE_FAT_WIDTH * 0.6f)
+#define LINE_FAT_WIDTH 3.6f
+#define LINE_FATIN_WIDTH (LINE_FAT_WIDTH * 0.6f) //2.1
 #define LINE_COM_ACCESS_MARK_WIDTH 4.f
 
 #define LINE_MARK_NEG_LENGTH  4.f
@@ -22,13 +22,14 @@
 SCgAlphabet* SCgAlphabet::msInstance = 0;
 QString SCgAlphabet::msEmptyTypeAlias = "-";
 
-QVector<qreal> SCgAlphabet::msPermVarAccesDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::msPermVarNoAccesDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::msTempConstAccesDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::msTempVarAccesDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msPermVarMembershipDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msPermVarCommonDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempConstMembershipDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempVarMembershipDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempVarCommonDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msCommonMembershipDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::dottedDashPattern = QVector<qreal>();
-QVector<qreal> SCgAlphabet::metaPermDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::metaMembershipDashPattern = QVector<qreal>();
 
 
 SCgAlphabet::SCgAlphabet(QObject *parent) :
@@ -99,18 +100,18 @@ void SCgAlphabet::initialize()
     mStructAliases[StructType_Group] = "group";
 
     // initiliaze patterns
-    msPermVarAccesDashPattern << 16 / LINE_THIN_WIDTH
+    msPermVarMembershipDashPattern << 16 / LINE_THIN_WIDTH
                               << 16 / LINE_THIN_WIDTH;
 
-    msPermVarNoAccesDashPattern << 16 / LINE_FATIN_WIDTH
-                                << 16 / LINE_FATIN_WIDTH;
+    msPermVarCommonDashPattern << 16 / 1.8 / LINE_THIN_WIDTH
+                                << 16 / 1.8 / LINE_THIN_WIDTH;
 
     qreal temp_dash = 2 / LINE_THIN_WIDTH;
-    msTempConstAccesDashPattern << temp_dash
+    msTempConstMembershipDashPattern << temp_dash
                                 << temp_dash
                                 << temp_dash
                                 << temp_dash;
-    msTempVarAccesDashPattern << temp_dash
+    msTempVarMembershipDashPattern << temp_dash
                               << temp_dash
                               << temp_dash
                               << temp_dash
@@ -118,13 +119,23 @@ void SCgAlphabet::initialize()
                               << temp_dash
                               << temp_dash
                               << 9 * temp_dash;
-    metaPermDashPattern << 0
-                    << 9 / LINE_THIN_WIDTH
-                    << 2 / LINE_THIN_WIDTH
-                    << 1.165; //todo calculate this cofficient
-    temp_dash = 0.5 / LINE_THIN_WIDTH;
+    metaMembershipDashPattern << 0
+                    << 11.8 / LINE_THIN_WIDTH
+                    << 0.5 / LINE_THIN_WIDTH
+                    << 1.85; //todo calculate this cofficient
+    temp_dash = 2 / 1.8 / LINE_THIN_WIDTH;
+
     dottedDashPattern << temp_dash
                       << temp_dash;
+
+    msTempVarCommonDashPattern << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << temp_dash
+                              << 9 * temp_dash;
 
     msCommonMembershipDashPattern << 4.f / LINE_COM_ACCESS_MARK_WIDTH << 10.f / LINE_COM_ACCESS_MARK_WIDTH;
 
@@ -193,8 +204,10 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/-/-/-/orient"] = createPairIcon(pairSize, "pair/-/-/-/orient");
 
     // const
-    mObjectTypes["pair/const/-/-/noorien"] = createPairIcon(pairSize, "pair/const/-/-/noorien");
-    mObjectTypes["pair/const/-/-/orient"] = createPairIcon(pairSize, "pair/const/-/-/orient");
+    mObjectTypes["pair/const/-/perm/noorien"] = createPairIcon(pairSize, "pair/const/-/perm/noorien");
+    mObjectTypes["pair/const/-/perm/orient"] = createPairIcon(pairSize, "pair/const/-/perm/orient");
+    mObjectTypes["pair/const/-/temp/noorien"] = createPairIcon(pairSize, "pair/const/-/temp/noorien");
+    mObjectTypes["pair/const/-/temp/orient"] = createPairIcon(pairSize, "pair/const/-/temp/orient");
     mObjectTypes["pair/const/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/pos/perm/orient/membership");
     mObjectTypes["pair/const/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/membership");
     mObjectTypes["pair/const/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/membership");
@@ -203,8 +216,10 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/const/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient/membership");
 
     // var
-    mObjectTypes["pair/var/-/-/noorien"] = createPairIcon(pairSize, "pair/var/-/-/noorien");
-    mObjectTypes["pair/var/-/-/orient"] = createPairIcon(pairSize, "pair/var/-/-/orient");
+    mObjectTypes["pair/var/-/perm/noorien"] = createPairIcon(pairSize, "pair/var/-/perm/noorien");
+    mObjectTypes["pair/var/-/perm/orient"] = createPairIcon(pairSize, "pair/var/-/perm/orient");
+    mObjectTypes["pair/var/-/temp/noorien"] = createPairIcon(pairSize, "pair/var/-/temp/noorien");
+    mObjectTypes["pair/var/-/temp/orient"] = createPairIcon(pairSize, "pair/var/-/temp/orient");
     mObjectTypes["pair/var/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/pos/perm/orient/membership");
     mObjectTypes["pair/var/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/membership");
     mObjectTypes["pair/var/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/membership");
@@ -213,8 +228,10 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/var/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient/membership");
 
     // meta
-    mObjectTypes["pair/meta/-/-/noorien"] = createPairIcon(pairSize, "pair/meta/-/-/noorien");
-    mObjectTypes["pair/meta/-/-/orient"] = createPairIcon(pairSize, "pair/meta/-/-/orient");
+    mObjectTypes["pair/meta/-/perm/noorien"] = createPairIcon(pairSize, "pair/meta/-/perm/noorien");
+    mObjectTypes["pair/meta/-/perm/orient"] = createPairIcon(pairSize, "pair/meta/-/perm/orient");
+    mObjectTypes["pair/meta/-/temp/noorien"] = createPairIcon(pairSize, "pair/meta/-/temp/noorien");
+    mObjectTypes["pair/meta/-/temp/orient"] = createPairIcon(pairSize, "pair/meta/-/temp/orient");
     mObjectTypes["pair/meta/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/pos/perm/orient/membership");
     mObjectTypes["pair/meta/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/neg/perm/orient/membership");
     mObjectTypes["pair/meta/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/membership");
@@ -230,7 +247,7 @@ QIcon SCgAlphabet::createNodeIcon(const QSize &size, const SCgConstType &type_co
 {
     QIcon icon;
 //    for (int mode = QIcon::Normal; mode <= QIcon::Selected; mode++)
- //       for (int state = QIcon::On; state <= QIcon::Off; state++)
+//       for (int state = QIcon::On; state <= QIcon::Off; state++)
         {
             QPixmap pixmap(size);
             QPainter painter;
@@ -421,7 +438,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     QBrush brush = QBrush(brush_color, Qt::SolidPattern);
     switch (type_perm) {
     case Temporary:
-        pen.setDashPattern(msTempConstAccesDashPattern);
+        pen.setDashPattern(msTempConstMembershipDashPattern);
         break;
     }
     painter->setPen(pen);
@@ -452,7 +469,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     case Meta:
         QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
         if (type_perm == Temporary) {
-            pen.setDashPattern(msTempConstAccesDashPattern);
+            pen.setDashPattern(msTempConstMembershipDashPattern);
         }
         painter->setPen(pen);
         painter->scale(0.9f, 0.9f);
@@ -553,8 +570,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
     Q_ASSERT(points.size() > 1);
 
-    static float arrowLength = 10.f;
-    static float arrowWidth = 8.f;
+    static float arrowLength = 6.f;
+    static float arrowWidth = 4.f;
 
     if (pair->isOrient())
     {
@@ -613,33 +630,32 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         } else {
             if (constType == Const) {
                 if (permType == Temporary) {
-                    pen.setDashPattern(msTempConstAccesDashPattern);
+                    pen.setDashPattern(msTempConstMembershipDashPattern);
                 }
             }
             if (constType == Var) {
                 if (permType == Permanent) {
-                    pen.setDashPattern(msPermVarAccesDashPattern);
+                    pen.setDashPattern(msPermVarMembershipDashPattern);
                 }
                 if (permType == Temporary) {
-                    pen.setDashPattern(msTempVarAccesDashPattern);
+                    pen.setDashPattern(msTempVarMembershipDashPattern);
                 }
             }
             if (constType == Meta) {
                 if (permType == Permanent) {
-                    metaPen.setDashPattern(msPermVarAccesDashPattern);
+                    metaPen.setDashPattern(msPermVarMembershipDashPattern);
                     pen.setCapStyle(Qt::RoundCap);
-                    pen.setWidthF(LINE_FATIN_WIDTH);
-                    pen.setDashPattern(metaPermDashPattern);
+                    pen.setWidthF(4.f);
+                    pen.setDashPattern(metaMembershipDashPattern);
                 }
                 if (permType == Temporary) {
-                    metaPen.setDashPattern(msTempVarAccesDashPattern);
+                    metaPen.setDashPattern(msTempVarMembershipDashPattern);
                     pen.setCapStyle(Qt::RoundCap);
-                    pen.setWidthF(LINE_FATIN_WIDTH);
-                    pen.setDashPattern(metaPermDashPattern);
+                    pen.setWidthF(4.f);
+                    pen.setDashPattern(metaMembershipDashPattern);
                 }
                 painter->setPen(metaPen);
                 painter->drawPolyline(&(points[0]), points.size());
-                //pen.setColor(Qt::green);
             }
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
@@ -694,28 +710,6 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         }
     }else // draw binary pairs
     {
-        if (constType == Var) {
-            pen.setWidthF(LINE_FAT_WIDTH);
-            pen.setDashPattern(dottedDashPattern);
-            painter->setPen(pen);
-            painter->drawPolyline(&(points[0]), points.size());
-            QPen pen2(pair->color());
-            pen2.setCapStyle(Qt::FlatCap);
-            pen2.setJoinStyle(Qt::RoundJoin);
-            pen2.setWidthF(LINE_FATIN_WIDTH);
-            pen2.setColor(Qt::white);
-            painter->setPen(pen2);
-            painter->drawPolyline(&(points[0]), points.size());
-        }
-        if (constType == Const) {
-            pen.setWidthF(LINE_FAT_WIDTH);
-            painter->setPen(pen);
-            painter->drawPolyline(&(points[0]), points.size());
-            pen.setWidthF(LINE_FATIN_WIDTH);
-            pen.setColor(Qt::white);
-            painter->setPen(pen);
-            painter->drawPolyline(&(points[0]), points.size());
-        }
         if (constType == ConstUnknown)
         {
             pen.setWidthF(LINE_FAT_WIDTH);
@@ -726,22 +720,63 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
             pen.setWidthF(LINE_THIN_WIDTH);
-            pen.setDashPattern(msPermVarAccesDashPattern);
+            pen.setDashPattern(msPermVarMembershipDashPattern);
             pen.setColor(pair->color());
-
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
+            return;
         }
-        if (constType == Meta) {
-            pen.setWidthF(LINE_FAT_WIDTH);
-            pen.setDashPattern(msTempConstAccesDashPattern);
-            painter->setPen(pen);
-            painter->drawPolyline(&(points[0]), points.size());
+        if (permType == Permanent) {
+            if (constType == Const) {
+                pen.setWidthF(LINE_FAT_WIDTH);
+                painter->setPen(pen);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
+            if (constType == Var) {
+                pen.setWidthF(LINE_FAT_WIDTH);
+                pen.setDashPattern(msPermVarCommonDashPattern);
+                painter->setPen(pen);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
+            if (constType == Meta) {
+                pen.setWidthF(LINE_FAT_WIDTH);
+                pen.setDashPattern(msPermVarCommonDashPattern);
+                painter->setPen(pen);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
+        }
+        if (permType == Temporary) {
+            if (constType == Const) {
+                pen.setWidthF(LINE_FAT_WIDTH);
+                pen.setDashPattern(dottedDashPattern);
+                painter->setPen(pen);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
+            if (constType == Var) {
+                pen.setWidthF(LINE_FAT_WIDTH);
+                pen.setDashPattern(msTempVarCommonDashPattern);
+                painter->setPen(pen);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
+            if (constType == Meta) {
+                pen.setWidthF(LINE_FAT_WIDTH);
+                pen.setDashPattern(msTempVarCommonDashPattern);
+                painter->setPen(pen);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
+        }
+        QPen pen2(pair->color());
+        pen2.setCapStyle(Qt::FlatCap);
+        pen2.setJoinStyle(Qt::RoundJoin);
+        pen2.setWidthF(LINE_FATIN_WIDTH);
+        pen2.setColor(Qt::white);
+        painter->setPen(pen2);
+        painter->drawPolyline(&(points[0]), points.size());
+        if (constType = Meta) {
             QPen pen2(pair->color());
-            pen2.setCapStyle(Qt::FlatCap);
-            pen2.setJoinStyle(Qt::RoundJoin);
-            pen2.setWidthF(LINE_FATIN_WIDTH);
-            pen2.setColor(Qt::white);
+            pen2.setCapStyle(Qt::RoundCap);
+            pen2.setWidthF(4.f);
+            pen2.setDashPattern(metaMembershipDashPattern);
             painter->setPen(pen2);
             painter->drawPolyline(&(points[0]), points.size());
         }
@@ -765,7 +800,7 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
     pen.setWidthF(LINE_THIN_WIDTH);
 
     if (contour->constType() == SCgAlphabet::Var)
-        pen.setDashPattern(msPermVarAccesDashPattern);
+        pen.setDashPattern(msPermVarMembershipDashPattern);
 
     QBrush brush(contour->colorBack(), Qt::SolidPattern);
 
