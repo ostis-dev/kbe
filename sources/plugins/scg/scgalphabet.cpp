@@ -772,7 +772,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
         pen2.setColor(Qt::white);
         painter->setPen(pen2);
         painter->drawPolyline(&(points[0]), points.size());
-        if (constType = Meta) {
+        if (constType == Meta) {
             QPen pen2(pair->color());
             pen2.setCapStyle(Qt::RoundCap);
             pen2.setWidthF(4.f);
