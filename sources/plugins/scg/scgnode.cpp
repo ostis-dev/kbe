@@ -17,7 +17,6 @@
 #include <QVector2D>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include <QDebug>
 
 #define DEFAULT_IDTF_POS BottomRight
 

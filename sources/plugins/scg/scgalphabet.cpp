@@ -88,6 +88,7 @@ void SCgAlphabet::initialize()
     mStructTypes["role"] = StructType_Role;
     mStructTypes["relation"] = StructType_Relation;
     mStructTypes["group"] = StructType_Group;
+    mStructTypes["super_group"] = StructType_Super_Group;
 
 
     mStructAliases[StructType_NotDefine] = "not_define";
@@ -98,6 +99,7 @@ void SCgAlphabet::initialize()
     mStructAliases[StructType_Role] = "role";
     mStructAliases[StructType_Relation] = "relation";
     mStructAliases[StructType_Group] = "group";
+    mStructAliases[StructType_Super_Group] = "super_group";
 
     // initiliaze patterns
     msPermVarMembershipDashPattern << 16 / LINE_THIN_WIDTH
@@ -151,6 +153,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/const/perm/role"] = createNodeIcon(size, Const, Permanent, StructType_Role);
     mObjectTypes["node/const/perm/relation"] = createNodeIcon(size, Const, Permanent, StructType_Relation);
     mObjectTypes["node/const/perm/group"] = createNodeIcon(size, Const, Permanent, StructType_Group);
+    mObjectTypes["node/const/perm/super_group"] = createNodeIcon(size, Const, Permanent, StructType_Super_Group);
 
     //var perm
     mObjectTypes["node/var/perm/general"] = createNodeIcon(size, Var, Permanent, StructType_General);
@@ -160,6 +163,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/var/perm/role"] = createNodeIcon(size, Var, Permanent, StructType_Role);
     mObjectTypes["node/var/perm/relation"] = createNodeIcon(size, Var, Permanent, StructType_Relation);
     mObjectTypes["node/var/perm/group"] = createNodeIcon(size, Var, Permanent, StructType_Group);
+    mObjectTypes["node/var/perm/super_group"] = createNodeIcon(size, Var, Permanent, StructType_Super_Group);
 
     //meta perm
     mObjectTypes["node/meta/perm/general"] = createNodeIcon(size, Meta, Permanent, StructType_General);
@@ -169,6 +173,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/meta/perm/role"] = createNodeIcon(size, Meta, Permanent, StructType_Role);
     mObjectTypes["node/meta/perm/relation"] = createNodeIcon(size, Meta, Permanent, StructType_Relation);
     mObjectTypes["node/meta/perm/group"] = createNodeIcon(size, Meta, Permanent, StructType_Group);
+    mObjectTypes["node/meta/perm/super_group"] = createNodeIcon(size, Meta, Permanent, StructType_Super_Group);
 
     //const temp
     mObjectTypes["node/const/temp/general"] = createNodeIcon(size, Const, Temporary, StructType_General);
@@ -178,6 +183,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/const/temp/role"] = createNodeIcon(size, Const, Temporary, StructType_Role);
     mObjectTypes["node/const/temp/relation"] = createNodeIcon(size, Const, Temporary, StructType_Relation);
     mObjectTypes["node/const/temp/group"] = createNodeIcon(size, Const, Temporary, StructType_Group);
+    mObjectTypes["node/const/temp/super_group"] = createNodeIcon(size, Const, Temporary, StructType_Super_Group);
 
     //var temp
     mObjectTypes["node/var/temp/general"] = createNodeIcon(size, Var, Temporary, StructType_General);
@@ -187,6 +193,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/var/temp/role"] = createNodeIcon(size, Var, Temporary, StructType_Role);
     mObjectTypes["node/var/temp/relation"] = createNodeIcon(size, Var, Temporary, StructType_Relation);
     mObjectTypes["node/var/temp/group"] = createNodeIcon(size, Var, Temporary, StructType_Group);
+    mObjectTypes["node/var/temp/super_group"] = createNodeIcon(size, Var, Temporary, StructType_Super_Group);
 
     //meta temp
     mObjectTypes["node/meta/temp/general"] = createNodeIcon(size, Meta, Temporary, StructType_General);
@@ -196,6 +203,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/meta/temp/role"] = createNodeIcon(size, Meta, Temporary, StructType_Role);
     mObjectTypes["node/meta/temp/relation"] = createNodeIcon(size, Meta, Temporary, StructType_Relation);
     mObjectTypes["node/meta/temp/group"] = createNodeIcon(size, Meta, Temporary, StructType_Group);
+    mObjectTypes["node/meta/temp/super_group"] = createNodeIcon(size, Meta, Temporary, StructType_Super_Group);
 
     QSize pairSize(24, 24);
 
@@ -495,7 +503,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
     painter->setPen(pen);
 
     // structure types
-    QPointF c, d;
+    QPointF c, d, d2;
     switch (type)
     {
     case StructType_Struct:
@@ -510,7 +518,7 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
     case StructType_Terminal:
     {
         QPen p = painter->pen();
-        p.setWidthF(0);
+        p.setWidthF(1);
         painter->setPen(p);
         qreal y1, y2, left, right;
         left = boundRect.left();
@@ -522,12 +530,11 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         y1 = boundRect.top();
         y2 = boundRect.bottom();
 
-        for (qreal d = 0; d <= dist; d += 4.2)
+        for (qreal d = 0; d <= dist; d += dist / 3.5)
         {
             painter->drawLine(QLineF(left + d, y1, left, y1 + d));
             painter->drawLine(QLineF(right - d, y2, right, y2 - d));
         }
-
         break;
     }
 
@@ -551,12 +558,24 @@ void SCgAlphabet::paintStruct(QPainter *painter, const QColor &color,
         break;
 
     case StructType_Group:
-        d = QPointF(0.f, boundRect.height() / 2.0);
-        painter->drawLine(boundRect.bottomLeft(), boundRect.center()-d/2);
-        painter->drawLine(boundRect.center()-d/2, boundRect.bottomRight());
-        painter->drawPoint(boundRect.center()-d/2);
+    {
+        QPen p = painter->pen();
+        p.setWidthF(1);
+        painter->setPen(p);
+        d2 = QPointF(0.f, boundRect.width() / 3.0);
+        d = QPointF(boundRect.height() / 3.0, 0.f);
+        painter->drawLine(boundRect.bottomLeft()-d2, boundRect.bottomRight()-d2);
+        painter->drawLine(boundRect.topLeft()+d2, boundRect.topRight()+d2);
+        painter->drawLine(boundRect.topRight()-d, boundRect.bottomRight()-d);
+        painter->drawLine(boundRect.topLeft()+d, boundRect.bottomLeft()+d);
         break;
-
+    }
+    case StructType_Super_Group:
+        d = QPointF(0.f, boundRect.height() / 4.0);
+        painter->drawLine(boundRect.bottomLeft(), boundRect.center()-d);
+        painter->drawLine(boundRect.center()-d, boundRect.bottomRight());
+        painter->drawPoint(boundRect.center()-d);
+        break;
     default:
         break;
     }
@@ -570,33 +589,16 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
     Q_ASSERT(points.size() > 1);
 
-    static float arrowLength = 6.f;
-    static float arrowWidth = 4.f;
+    static float arrowLength = 7.f;
+    static float arrowWidth = 7.f;
+    double angle = 0;
 
     if (pair->isOrient())
     {
-
-        static const QPointF arrowPoints[3] = {QPointF(-arrowWidth / 2.f, 0.f),
-                                               QPointF(arrowWidth / 2.f, 0.f),
-                                               QPointF(0.f, arrowLength)};
-
-        // draw arrow for orient pairs
         QLineF line(points[points.size() - 2], points.last());
-        double angle = ::atan2(line.dx(), line.dy());
-
-        painter->save();
-        painter->translate(line.p2());
-        painter->rotate(-angle * 180.f / M_PI);
-        painter->translate(0.f, -arrowLength);
-
-        painter->setBrush(QBrush(pair->color(), Qt::SolidPattern));
-        painter->setPen(Qt::NoPen);
-        painter->drawConvexPolygon(arrowPoints, 3);
-
-        painter->restore();
-
+        angle = ::atan2(line.dx(), line.dy());
         // correct last point
-        points.last() -= QPointF((arrowLength) * ::sin(angle), (arrowLength) * ::cos(angle));
+        points.last() -= QPointF((arrowLength/2) * ::sin(angle), (arrowLength/2) * ::cos(angle));
     }
 
     // get type data
@@ -726,7 +728,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             painter->drawPolyline(&(points[0]), points.size());
             return;
         }
-        if (permType == Permanent) {
+        if ((permType == Permanent) | (permType == PermUnknown)) {
             if (constType == Const) {
                 pen.setWidthF(LINE_FAT_WIDTH);
                 painter->setPen(pen);
@@ -780,6 +782,28 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             painter->setPen(pen2);
             painter->drawPolyline(&(points[0]), points.size());
         }
+    }
+    if (pair->isOrient())
+    {
+        static const QPointF arrowPoints[4] = {QPointF(-arrowWidth / 2.f, 0.f),
+                                               QPointF(0.f, arrowLength / 2),
+                                               QPointF(arrowWidth / 2.f, 0.f),
+                                               QPointF(0.f, arrowLength)};
+
+        points.last() += QPointF((arrowLength/2) * ::sin(angle), (arrowLength/2) * ::cos(angle));
+        // draw arrow for orient pairs
+        QLineF line(points[points.size() - 2], points.last());
+
+        painter->save();
+        painter->translate(line.p2());
+        painter->rotate(-angle * 180.f / M_PI);
+        painter->translate(0.f, -arrowLength);
+
+        painter->setBrush(QBrush(pair->color(), Qt::SolidPattern));
+        painter->setPen(Qt::NoPen);
+        painter->drawConvexPolygon(arrowPoints, 4);
+
+        painter->restore();
     }
 }
 

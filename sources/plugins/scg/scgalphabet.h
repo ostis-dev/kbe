@@ -50,6 +50,7 @@ public:
         StructType_Role,
         StructType_Relation,
         StructType_Group,
+        StructType_Super_Group,
         StructUnknown
     } SCgNodeStructType;
 
