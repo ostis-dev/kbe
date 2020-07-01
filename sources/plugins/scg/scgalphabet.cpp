@@ -25,6 +25,8 @@ QString SCgAlphabet::msEmptyTypeAlias = "-";
 QVector<qreal> SCgAlphabet::msPermVarMembershipDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msPermVarCommonDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempConstMembershipDashPattern = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempRectContour = QVector<qreal>();
+QVector<qreal> SCgAlphabet::msTempRhombusContour = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempVarMembershipDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msTempVarCommonDashPattern = QVector<qreal>();
 QVector<qreal> SCgAlphabet::msCommonMembershipDashPattern = QVector<qreal>();
@@ -138,6 +140,15 @@ void SCgAlphabet::initialize()
                               << temp_dash
                               << temp_dash
                               << 9 * temp_dash;
+    temp_dash = 1.15f;
+    msTempRectContour << temp_dash
+                      << temp_dash
+                      << temp_dash
+                      << temp_dash;
+    msTempRhombusContour << temp_dash
+                         << temp_dash
+                         << temp_dash
+                         << temp_dash;
 
     msCommonMembershipDashPattern << 4.f / LINE_COM_ACCESS_MARK_WIDTH << 10.f / LINE_COM_ACCESS_MARK_WIDTH;
 
@@ -446,7 +457,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     QBrush brush = QBrush(brush_color, Qt::SolidPattern);
     switch (type_perm) {
     case Temporary:
-        pen.setDashPattern(msTempConstMembershipDashPattern);
+        pen.setDashPattern(msTempRectContour);
         break;
     }
     painter->setPen(pen);
@@ -477,7 +488,7 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
     case Meta:
         QPen pen = QPen(QBrush(color, Qt::SolidPattern), 2, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin);
         if (type_perm == Temporary) {
-            pen.setDashPattern(msTempConstMembershipDashPattern);
+            pen.setDashPattern(msTempRhombusContour);
         }
         painter->setPen(pen);
         painter->scale(0.9f, 0.9f);

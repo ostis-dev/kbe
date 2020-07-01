@@ -183,6 +183,8 @@ private:
     static QVector<qreal> msPermVarCommonDashPattern;
     //! Pattern that used to draw temporary, constant, membership pairs
     static QVector<qreal> msTempConstMembershipDashPattern;
+    static QVector<qreal> msTempRectContour;
+    static QVector<qreal> msTempRhombusContour;
     //! Pattern that used to draw temporary, variable, membership pairs
     static QVector<qreal> msTempVarMembershipDashPattern;
     //! Pattern that used to draw temporary, variable, common pairs
