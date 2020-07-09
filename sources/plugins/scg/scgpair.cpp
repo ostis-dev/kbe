@@ -417,6 +417,8 @@ void SCgPair::updateType()
     /* updating information based on type alias */
     QStringList sl = mTypeAlias.split("/");
 
+    //qDebug() <
+
     mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
     mPosType = SCgAlphabet::getInstance().aliasToPositiveCode(sl[2]);
     mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[3]);

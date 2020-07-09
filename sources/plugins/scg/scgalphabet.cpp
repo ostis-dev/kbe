@@ -8,6 +8,8 @@
 #include "scgpair.h"
 #include "scgbus.h"
 #include "scgcontour.h"
+#include <QDebug>
+#include <QtCore/qmath.h>
 
 #include <math.h>
 
@@ -140,15 +142,19 @@ void SCgAlphabet::initialize()
                               << temp_dash
                               << temp_dash
                               << 9 * temp_dash;
-    temp_dash = 1.15f;
+    temp_dash = 1.08f;
     msTempRectContour << temp_dash
                       << temp_dash
                       << temp_dash
                       << temp_dash;
-    msTempRhombusContour << temp_dash
+    temp_dash = 1.035f;
+    msTempRhombusContour << temp_dash - 0.25f
                          << temp_dash
                          << temp_dash
-                         << temp_dash;
+                         << temp_dash
+                         << temp_dash
+                         << temp_dash
+                         << temp_dash + 0.25f;
 
     msCommonMembershipDashPattern << 4.f / LINE_COM_ACCESS_MARK_WIDTH << 10.f / LINE_COM_ACCESS_MARK_WIDTH;
 
@@ -481,7 +487,17 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
         break;
     case Var:
         painter->scale(0.9f, 0.9f);
-        painter->drawRect(bound);
+        //painter->drawRect(bound);
+        painter->drawLine(bound.topLeft(), bound.topRight());
+        painter->drawLine(bound.topLeft(), bound.bottomLeft());
+        painter->drawLine(bound.bottomRight(), bound.bottomLeft());
+        painter->drawLine(bound.bottomRight(), bound.topRight());
+        pen.setCapStyle(Qt::MPenCapStyle);
+        painter->setPen(pen);
+        painter->drawPoint(bound.topLeft());
+        painter->drawPoint(bound.topRight());
+        painter->drawPoint(bound.bottomLeft());
+        painter->drawPoint(bound.bottomRight());
 
         clipPath.addRect(bound);
         break;
@@ -492,14 +508,25 @@ void SCgAlphabet::paintNode(QPainter *painter, const QColor &color, const QRectF
         }
         painter->setPen(pen);
         painter->scale(0.9f, 0.9f);
+        QPointF c = boundRect.center();
+        QPointF d = QPointF(boundRect.width() / 2.0, 0.f);
+        QPointF d2 = QPointF(0.f, boundRect.height() / 2.0);
+        painter->drawLine(c - d, c - d2);
+        painter->drawLine(c + d2, c - d);
+        painter->drawLine(c - d2, c + d);
+        painter->drawLine(c + d, c + d2);
+        pen.setCapStyle(Qt::MPenCapStyle);
+        painter->setPen(pen);
+        painter->drawPoint(c - d);
+        painter->drawPoint(c - d2);
+        painter->drawPoint(c + d);
+        painter->drawPoint(c + d2);
         QPainterPath path;
         path.moveTo(bound.center().x(), bound.top());
         path.lineTo(bound.right(), bound.center().y());
         path.lineTo(bound.center().x(), bound.bottom());
         path.lineTo(bound.left(), bound.center().y());
         path.lineTo(bound.center().x(), bound.top());
-
-        painter -> drawPath(path);
         clipPath.addPath(path);
         break;
     }
