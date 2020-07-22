@@ -627,8 +627,8 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
 
     Q_ASSERT(points.size() > 1);
 
-    static float arrowLength = 7.f;
-    static float arrowWidth = 7.f;
+    static float arrowLength = 16.f;
+    static float arrowWidth = 9.f;
     double angle = 0;
 
     if (pair->isOrient())
@@ -824,7 +824,7 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
     if (pair->isOrient())
     {
         static const QPointF arrowPoints[4] = {QPointF(-arrowWidth / 2.f, 0.f),
-                                               QPointF(0.f, arrowLength / 2),
+                                               QPointF(0.f, arrowLength / 3),
                                                QPointF(arrowWidth / 2.f, 0.f),
                                                QPointF(0.f, arrowLength)};
 
