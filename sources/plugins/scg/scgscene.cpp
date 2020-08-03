@@ -57,6 +57,7 @@
 #include <QGraphicsProxyWidget>
 #include <QCursor>
 #include <QMimeData>
+#include <QDebug>
 
 SCgScene::SCgScene(QUndoStack *undoStack, QObject *parent) :
     QGraphicsScene(parent),
@@ -488,6 +489,7 @@ SCgBaseCommand* SCgScene::changeContentDataCommand(SCgNode *node, const SCgConte
 
 void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
+    qDebug() << "paste command";
     Q_ASSERT(mMode->mode() == Mode_InsertTemplate);
 
     QList<SCgObject*> objList;
@@ -500,6 +502,7 @@ void SCgScene::pasteCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 
 void SCgScene::cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
+    qDebug() << "copy command";
     Q_ASSERT(mMode->mode() == Mode_Clone);
 
     //todo here fix ctrl + V
@@ -626,6 +629,7 @@ SCgBaseCommand* SCgScene::createNodeCommand(const QPointF& pos,
 {
     SCgBaseCommand* cmd = new SCgCommandCreateNode(this, pos, parent, parentCmd);
 
+    qDebug() << "create Node command";
     if(addToStack)
         mUndoStack->push(cmd);
 
