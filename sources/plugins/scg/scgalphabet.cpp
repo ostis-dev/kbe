@@ -764,61 +764,61 @@ void SCgAlphabet::paintPair(QPainter *painter, SCgPair *pair)
             pen.setColor(pair->color());
             painter->setPen(pen);
             painter->drawPolyline(&(points[0]), points.size());
-            return;
-        }
-        if ((permType == Permanent) | (permType == PermUnknown)) {
-            if (constType == Const) {
-                pen.setWidthF(LINE_FAT_WIDTH);
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
+        } else {
+            if ((permType == Permanent) | (permType == PermUnknown)) {
+                if (constType == Const) {
+                    pen.setWidthF(LINE_FAT_WIDTH);
+                    painter->setPen(pen);
+                    painter->drawPolyline(&(points[0]), points.size());
+                }
+                if (constType == Var) {
+                    pen.setWidthF(LINE_FAT_WIDTH);
+                    pen.setDashPattern(msPermVarCommonDashPattern);
+                    painter->setPen(pen);
+                    painter->drawPolyline(&(points[0]), points.size());
+                }
+                if (constType == Meta) {
+                    pen.setWidthF(LINE_FAT_WIDTH);
+                    pen.setDashPattern(msPermVarCommonDashPattern);
+                    painter->setPen(pen);
+                    painter->drawPolyline(&(points[0]), points.size());
+                }
             }
-            if (constType == Var) {
-                pen.setWidthF(LINE_FAT_WIDTH);
-                pen.setDashPattern(msPermVarCommonDashPattern);
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
+            if (permType == Temporary) {
+                if (constType == Const) {
+                    pen.setWidthF(LINE_FAT_WIDTH);
+                    pen.setDashPattern(dottedDashPattern);
+                    painter->setPen(pen);
+                    painter->drawPolyline(&(points[0]), points.size());
+                }
+                if (constType == Var) {
+                    pen.setWidthF(LINE_FAT_WIDTH);
+                    pen.setDashPattern(msTempVarCommonDashPattern);
+                    painter->setPen(pen);
+                    painter->drawPolyline(&(points[0]), points.size());
+                }
+                if (constType == Meta) {
+                    pen.setWidthF(LINE_FAT_WIDTH);
+                    pen.setDashPattern(msTempVarCommonDashPattern);
+                    painter->setPen(pen);
+                    painter->drawPolyline(&(points[0]), points.size());
+                }
             }
-            if (constType == Meta) {
-                pen.setWidthF(LINE_FAT_WIDTH);
-                pen.setDashPattern(msPermVarCommonDashPattern);
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
-            }
-        }
-        if (permType == Temporary) {
-            if (constType == Const) {
-                pen.setWidthF(LINE_FAT_WIDTH);
-                pen.setDashPattern(dottedDashPattern);
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
-            }
-            if (constType == Var) {
-                pen.setWidthF(LINE_FAT_WIDTH);
-                pen.setDashPattern(msTempVarCommonDashPattern);
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
-            }
-            if (constType == Meta) {
-                pen.setWidthF(LINE_FAT_WIDTH);
-                pen.setDashPattern(msTempVarCommonDashPattern);
-                painter->setPen(pen);
-                painter->drawPolyline(&(points[0]), points.size());
-            }
-        }
-        QPen pen2(pair->color());
-        pen2.setCapStyle(Qt::FlatCap);
-        pen2.setJoinStyle(Qt::RoundJoin);
-        pen2.setWidthF(LINE_FATIN_WIDTH);
-        pen2.setColor(Qt::white);
-        painter->setPen(pen2);
-        painter->drawPolyline(&(points[0]), points.size());
-        if (constType == Meta) {
             QPen pen2(pair->color());
-            pen2.setCapStyle(Qt::RoundCap);
-            pen2.setWidthF(4.f);
-            pen2.setDashPattern(metaMembershipDashPattern);
+            pen2.setCapStyle(Qt::FlatCap);
+            pen2.setJoinStyle(Qt::RoundJoin);
+            pen2.setWidthF(LINE_FATIN_WIDTH);
+            pen2.setColor(Qt::white);
             painter->setPen(pen2);
             painter->drawPolyline(&(points[0]), points.size());
+            if (constType == Meta) {
+                QPen pen2(pair->color());
+                pen2.setCapStyle(Qt::RoundCap);
+                pen2.setWidthF(4.f);
+                pen2.setDashPattern(metaMembershipDashPattern);
+                painter->setPen(pen2);
+                painter->drawPolyline(&(points[0]), points.size());
+            }
         }
     }
     if (pair->isOrient())
