@@ -52,6 +52,21 @@ void GwfObjectInfoReader::createTypesMap()
 {
     // initialize types mapping
 
+    mGWFType2TypeAlias["node/-/not_define"] = "node/-/not_define";
+    mGWFType2TypeAlias["node/const/not_define"] = "node/-/not_define";
+    mGWFType2TypeAlias["node/const/general_node"] = "node/const/general";
+    mGWFType2TypeAlias["node/const/predmet"] = "node/const/abstract";
+    mGWFType2TypeAlias["node/const/terminal"] = "node/const/terminal";
+    mGWFType2TypeAlias["node/const/nopredmet"] = "node/const/struct";
+    mGWFType2TypeAlias["node/const/symmetry"] = "node/const/tuple";
+    mGWFType2TypeAlias["node/const/asymmetry"] = "node/const/tuple";
+    mGWFType2TypeAlias["node/const/attribute"] = "node/const/role";
+    mGWFType2TypeAlias["node/const/relation"] = "node/const/relation";
+    mGWFType2TypeAlias["node/const/atom"] = "node/const/group";
+    mGWFType2TypeAlias["node/const/group"] = "node/const/group";
+
+
+    //deprecated. For supporting old format.
     // nodes
     mGWFType2TypeAlias["node/-/not_define"] = "node/-/not_define";
     mGWFType2TypeAlias["node/const/not_define"] = "node/-/not_define";
