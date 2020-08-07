@@ -234,10 +234,10 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/const/-/temp/noorien"] = createPairIcon(pairSize, "pair/const/-/temp/noorien");
     mObjectTypes["pair/const/-/temp/orient"] = createPairIcon(pairSize, "pair/const/-/temp/orient");
     mObjectTypes["pair/const/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/pos/perm/orient/membership");
-    mObjectTypes["pair/const/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/membership");
-    mObjectTypes["pair/const/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/membership");
     mObjectTypes["pair/const/pos/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/pos/temp/orient/membership");
+    mObjectTypes["pair/const/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/neg/perm/orient/membership");
     mObjectTypes["pair/const/neg/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/neg/temp/orient/membership");
+    mObjectTypes["pair/const/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/perm/orient/membership");
     mObjectTypes["pair/const/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/const/fuz/temp/orient/membership");
 
     // var
@@ -246,10 +246,10 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/var/-/temp/noorien"] = createPairIcon(pairSize, "pair/var/-/temp/noorien");
     mObjectTypes["pair/var/-/temp/orient"] = createPairIcon(pairSize, "pair/var/-/temp/orient");
     mObjectTypes["pair/var/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/pos/perm/orient/membership");
-    mObjectTypes["pair/var/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/membership");
-    mObjectTypes["pair/var/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/membership");
     mObjectTypes["pair/var/pos/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/pos/temp/orient/membership");
+    mObjectTypes["pair/var/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/neg/perm/orient/membership");
     mObjectTypes["pair/var/neg/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/neg/temp/orient/membership");
+    mObjectTypes["pair/var/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/perm/orient/membership");
     mObjectTypes["pair/var/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/var/fuz/temp/orient/membership");
 
     // meta
@@ -258,10 +258,10 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/meta/-/temp/noorien"] = createPairIcon(pairSize, "pair/meta/-/temp/noorien");
     mObjectTypes["pair/meta/-/temp/orient"] = createPairIcon(pairSize, "pair/meta/-/temp/orient");
     mObjectTypes["pair/meta/pos/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/pos/perm/orient/membership");
-    mObjectTypes["pair/meta/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/neg/perm/orient/membership");
-    mObjectTypes["pair/meta/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/membership");
     mObjectTypes["pair/meta/pos/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/pos/temp/orient/membership");
+    mObjectTypes["pair/meta/neg/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/neg/perm/orient/membership");
     mObjectTypes["pair/meta/neg/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/neg/temp/orient/membership");
+    mObjectTypes["pair/meta/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/membership");
     mObjectTypes["pair/meta/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/temp/orient/membership");
 
 }

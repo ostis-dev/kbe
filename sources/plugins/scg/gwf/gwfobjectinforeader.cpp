@@ -329,8 +329,12 @@ bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo*
             {
                 errorUnknownElementType(element.tagName(), type);
                 return false;
-            }else
+            }else {
                 type = mGWFType2TypeAlias[type];
+                if (type == "") {
+                    int x=1;
+                }
+            }
         }
         else
             return false;
