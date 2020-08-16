@@ -860,6 +860,7 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
 {
     QPen pen(contour->color());
     pen.setWidthF(LINE_THIN_WIDTH);
+    contour->setTypeAlias("var/");
 
     if (contour->constType() == SCgAlphabet::Var)
         pen.setDashPattern(msPermVarMembershipDashPattern);
