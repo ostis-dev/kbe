@@ -264,6 +264,13 @@ void SCgAlphabet::initialize()
     mObjectTypes["pair/meta/fuz/perm/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/perm/orient/membership");
     mObjectTypes["pair/meta/fuz/temp/orient/membership"] = createPairIcon(pairSize, "pair/meta/fuz/temp/orient/membership");
 
+    // scg core contours
+    // we use pair icon for contour, cause are the same
+    mObjectTypes["contour/const/perm"] = createPairIcon(pairSize, "pair/const/pos/perm/noorient/membership");
+    mObjectTypes["contour/var/perm"] = createPairIcon(pairSize, "pair/var/pos/perm/noorient/membership");
+    mObjectTypes["contour/const/temp"] = createPairIcon(pairSize, "pair/const/pos/temp/noorient/membership");
+    mObjectTypes["contour/var/temp"] = createPairIcon(pairSize, "pair/var/pos/temp/noorient/membership");
+
 }
 
 QIcon SCgAlphabet::createNodeIcon(const QSize &size, const SCgConstType &type_const,
@@ -352,6 +359,11 @@ void SCgAlphabet::getNodeTypes(const SCgConstType type_const, SCgPermType type_p
 void SCgAlphabet::getPairTypes(SCgConstType type, SCgAlphabet::SCgObjectTypesMap &res)
 {
     getObjectTypes("pair", type, res);
+}
+
+void SCgAlphabet::getContourTypes(SCgConstType type, SCgAlphabet::SCgObjectTypesMap &res)
+{
+    getObjectTypes("contour", type, res);
 }
 
 void SCgAlphabet::getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgObjectTypesMap &res)
@@ -860,12 +872,29 @@ void SCgAlphabet::paintContour(QPainter *painter, SCgContour *contour)
 {
     QPen pen(contour->color());
     pen.setWidthF(LINE_THIN_WIDTH);
-    contour->setTypeAlias("var/");
+    pen.setCapStyle(Qt::FlatCap);
+    pen.setJoinStyle(Qt::RoundJoin);
 
-    if (contour->constType() == SCgAlphabet::Var)
-        pen.setDashPattern(msPermVarMembershipDashPattern);
 
-    QBrush brush(contour->colorBack(), Qt::SolidPattern);
+
+    if (contour->constType() == SCgAlphabet::Var) {
+        if (contour->permType() == SCgAlphabet::Permanent) {
+            pen.setDashPattern(msPermVarMembershipDashPattern);
+        }
+        else {
+            pen.setDashPattern(msTempVarMembershipDashPattern);
+        }
+    }
+    else {
+        if (contour->permType() == SCgAlphabet::Permanent) {
+            //leave standart pattern
+        }
+        else {
+            pen.setDashPattern(msTempConstMembershipDashPattern);
+        }
+    }
+
+    QBrush brush(contour->colorBack(), Qt::NoBrush);
 
     painter->setPen(pen);
     painter->setBrush(brush);

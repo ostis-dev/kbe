@@ -155,6 +155,12 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["pair/meta/neg/temp/orient/membership"] = "pair/meta/neg/temp/orient/membership";
     mGWFType2TypeAlias["pair/meta/fuz/temp/orient/membership"] = "pair/meta/fuz/temp/orient/membership";
 
+    // contour
+    mGWFType2TypeAlias["contour/const/perm"] = "contour/const/perm";
+    mGWFType2TypeAlias["contour/var/perm"] = "contour/var/perm";
+    mGWFType2TypeAlias["contour/const/temp"] = "contour/const/temp";
+    mGWFType2TypeAlias["contour/var/temp"] = "contour/var/temp";
+
     //deprecated. For supporting old format.
     // nodes
     mGWFType2TypeAlias["node/-/not_define"] = "node/-/-/not_define";
@@ -320,20 +326,21 @@ bool GwfObjectInfoReader::read(const QDomDocument& document)
 
 bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo* info)
 {
-    if(info->objectType() == SCgPair::Type || info->objectType() == SCgNode::Type)
+    if(info->objectType() == SCgPair::Type || info->objectType() == SCgNode::Type || info->objectType() == SCgContour::Type)
     {
         QString& type = info->typeAliasRef();
         if (getAttributeString(element, "type", type))
         {
+            //this condition is necessary for compatibility with old formats
+            if (type == "" && info->objectType() == SCgContour::Type) {
+                type = "contour/const/perm";
+            }
             if (!mGWFType2TypeAlias.contains(type))
             {
                 errorUnknownElementType(element.tagName(), type);
                 return false;
             }else {
                 type = mGWFType2TypeAlias[type];
-                if (type == "") {
-                    int x=1;
-                }
             }
         }
         else

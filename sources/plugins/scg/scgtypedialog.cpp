@@ -7,6 +7,7 @@
 #include "scgtypedialog.h"
 #include "scgnode.h"
 #include "scgpair.h"
+#include "scgcontour.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -104,20 +105,22 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
         topLayout->addWidget(mConstTempGroup, 1);
         topLayout->addWidget(mVarTempGroup, 1);
         topLayout->addWidget(mMetaTempGroup, 1);
-        mainLayout->addLayout(topLayout);
         mainLayout->addWidget(mUnknownGroup);
         break;
     case SCgPair::Type:
         topLayout->addWidget(mConstPermGroup, 1);
         topLayout->addWidget(mVarPermGroup, 1);
         topLayout->addWidget(mMetaPermGroup, 1);
+        mainLayout->addWidget(mUnknownGroup);
         break;
+    case SCgContour::Type:
+        topLayout->addWidget(mConstPermGroup, 1);
+        topLayout->addWidget(mVarPermGroup, 1);
     default:
         break;
     }
 
     mainLayout->addLayout(topLayout);
-    mainLayout->addWidget(mUnknownGroup);
 
     QDialogButtonBox* box = new QDialogButtonBox(QDialogButtonBox::Cancel);
     box->button(QDialogButtonBox::Cancel)->setDefault(true);
@@ -168,6 +171,10 @@ void SCgTypeSelectionDialog::displayTypes()
         alphabet.getPairTypes(SCgAlphabet::Var, varPermTypes);
         alphabet.getPairTypes(SCgAlphabet::Meta, metaPermTypes);
         alphabet.getPairTypes(SCgAlphabet::ConstUnknown, unknownTypes);
+        break;
+    case SCgContour::Type:
+        alphabet.getContourTypes(SCgAlphabet::Const, constPermTypes);
+        alphabet.getContourTypes(SCgAlphabet::Var, varPermTypes);
         break;
     default:
         break;

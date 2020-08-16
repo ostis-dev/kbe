@@ -27,7 +27,6 @@ SCgContour::SCgContour() :
     setToolTip(QObject::tr("sc.g-contour"));
     mDefaultZValue = 7;
     setZValue(mDefaultZValue);
-    this->setTypeAlias("var/");
 }
 
 SCgContour::~SCgContour()
@@ -306,11 +305,14 @@ void SCgContour::setTypeAlias(const QString &type_alias)
 
 void SCgContour::updateType()
 {
-    mConstType = SCgAlphabet::ConstUnknown;
-    mPermType = SCgAlphabet::PermUnknown;
+    mConstType = SCgAlphabet::Const;
+    mPermType = SCgAlphabet::Permanent;
 
     /* updating information based on type alias */
     QStringList sl = mTypeAlias.split("/");
 
-    mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+    if (sl.size() > 2) {
+        mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+        mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);
+    }
 }
