@@ -19,6 +19,9 @@ public:
     explicit SCgContour();
     virtual ~SCgContour();
 
+    void setTypeAlias(const QString &typeAlias);
+    void updateType();
+
     /*! Set background color
       @param color BAckground color
       */

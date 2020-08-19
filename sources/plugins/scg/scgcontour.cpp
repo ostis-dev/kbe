@@ -297,3 +297,22 @@ void SCgContour::changePointPosition(int pointIndex, const QPointF& newPos)
     positionChanged();
 }
 
+void SCgContour::setTypeAlias(const QString &type_alias)
+{
+    SCgObject::setTypeAlias(type_alias);
+    updateType();
+}
+
+void SCgContour::updateType()
+{
+    mConstType = SCgAlphabet::Const;
+    mPermType = SCgAlphabet::Permanent;
+
+    /* updating information based on type alias */
+    QStringList sl = mTypeAlias.split("/");
+
+    if (sl.size() > 2) {
+        mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+        mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);
+    }
+}

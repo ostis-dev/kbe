@@ -268,6 +268,8 @@ SCgContour* SCgScene::createSCgContour(const QVector<QPointF> &points)
 {
     SCgContour *contour = new SCgContour;
 
+    contour->setTypeAlias("contour/const/perm");
+
     SCgPointObject::PointFVector v = points;
     QPolygonF polygon(v);
 

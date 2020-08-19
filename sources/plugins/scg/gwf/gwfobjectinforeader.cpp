@@ -53,41 +53,152 @@ void GwfObjectInfoReader::createTypesMap()
     // initialize types mapping
 
     // nodes
-    mGWFType2TypeAlias["node/-/not_define"] = "node/-/not_define";
-    mGWFType2TypeAlias["node/const/not_define"] = "node/-/not_define";
-    mGWFType2TypeAlias["node/const/general_node"] = "node/const/general";
-    mGWFType2TypeAlias["node/const/predmet"] = "node/const/abstract";
-    mGWFType2TypeAlias["node/const/terminal"] = "node/const/terminal";
-    mGWFType2TypeAlias["node/const/nopredmet"] = "node/const/struct";
-    mGWFType2TypeAlias["node/const/symmetry"] = "node/const/tuple";
-    mGWFType2TypeAlias["node/const/asymmetry"] = "node/const/tuple";
-    mGWFType2TypeAlias["node/const/attribute"] = "node/const/role";
-    mGWFType2TypeAlias["node/const/relation"] = "node/const/relation";
-    mGWFType2TypeAlias["node/const/atom"] = "node/const/group";
-    mGWFType2TypeAlias["node/const/group"] = "node/const/group";
+    mGWFType2TypeAlias["node/-/-/not_define"] = "node/-/-/not_define";
 
-    mGWFType2TypeAlias["node/var/not_define"] = "node/var/general";
-    mGWFType2TypeAlias["node/var/general_node"] = "node/var/general";
-    mGWFType2TypeAlias["node/var/predmet"] = "node/var/abstract";
-    mGWFType2TypeAlias["node/var/terminal"] = "node/var/terminal";
-    mGWFType2TypeAlias["node/var/nopredmet"] = "node/var/struct";
-    mGWFType2TypeAlias["node/var/symmetry"] = "node/var/tuple";
-    mGWFType2TypeAlias["node/var/asymmetry"] = "node/var/tuple";
-    mGWFType2TypeAlias["node/var/attribute"] = "node/var/role";
-    mGWFType2TypeAlias["node/var/relation"] = "node/var/relation";
-    mGWFType2TypeAlias["node/var/atom"] = "node/var/group";
-    mGWFType2TypeAlias["node/var/group"] = "node/var/group";
+    //const perm
+    mGWFType2TypeAlias["node/const/perm/general"] = "node/const/perm/general";
+    mGWFType2TypeAlias["node/const/perm/terminal"] = "node/const/perm/terminal";
+    mGWFType2TypeAlias["node/const/perm/struct"] = "node/const/perm/struct";
+    mGWFType2TypeAlias["node/const/perm/tuple"] = "node/const/perm/tuple";
+    mGWFType2TypeAlias["node/const/perm/role"] = "node/const/perm/role";
+    mGWFType2TypeAlias["node/const/perm/relation"] = "node/const/perm/relation";
+    mGWFType2TypeAlias["node/const/perm/group"] = "node/const/perm/group";
+    mGWFType2TypeAlias["node/const/perm/super_group"] = "node/const/perm/super_group";
 
-    mGWFType2TypeAlias["node/meta/not_define"] = "node/-/not_define";
-    mGWFType2TypeAlias["node/meta/general_node"] = "node/var/general";
-    mGWFType2TypeAlias["node/meta/predmet"] = "node/var/abstract";
-    mGWFType2TypeAlias["node/meta/nopredmet"] = "node/var/struct";
-    mGWFType2TypeAlias["node/meta/symmetry"] = "node/var/tuple";
-    mGWFType2TypeAlias["node/meta/asymmetry"] = "node/var/tuple";
-    mGWFType2TypeAlias["node/meta/attribute"] = "node/var/role";
-    mGWFType2TypeAlias["node/meta/relation"] = "node/var/relation";
-    mGWFType2TypeAlias["node/meta/atom"] = "node/var/group";
-    mGWFType2TypeAlias["node/meta/group"] = "node/var/group";
+    //var perm
+    mGWFType2TypeAlias["node/var/perm/general"] = "node/var/perm/general";
+    mGWFType2TypeAlias["node/var/perm/terminal"] = "node/var/perm/terminal";
+    mGWFType2TypeAlias["node/var/perm/struct"] = "node/var/perm/struct";
+    mGWFType2TypeAlias["node/var/perm/tuple"] = "node/var/perm/tuple";
+    mGWFType2TypeAlias["node/var/perm/role"] = "node/var/perm/role";
+    mGWFType2TypeAlias["node/var/perm/relation"] = "node/var/perm/relation";
+    mGWFType2TypeAlias["node/var/perm/group"] = "node/var/perm/group";
+    mGWFType2TypeAlias["node/var/perm/super_group"] = "node/var/perm/super_group";
+
+    //meta perm
+    mGWFType2TypeAlias["node/meta/perm/general"] = "node/meta/perm/general";
+    mGWFType2TypeAlias["node/meta/perm/terminal"] = "node/meta/perm/terminal";
+    mGWFType2TypeAlias["node/meta/perm/struct"] = "node/meta/perm/struct";
+    mGWFType2TypeAlias["node/meta/perm/tuple"] = "node/meta/perm/tuple";
+    mGWFType2TypeAlias["node/meta/perm/role"] = "node/meta/perm/role";
+    mGWFType2TypeAlias["node/meta/perm/relation"] = "node/meta/perm/relation";
+    mGWFType2TypeAlias["node/meta/perm/group"] = "node/meta/perm/group";
+    mGWFType2TypeAlias["node/meta/perm/super_group"] = "node/meta/perm/super_group";
+
+    //const temp
+    mGWFType2TypeAlias["node/const/temp/general"] = "node/const/temp/general";
+    mGWFType2TypeAlias["node/const/temp/terminal"] = "node/const/temp/terminal";
+    mGWFType2TypeAlias["node/const/temp/struct"] = "node/const/temp/struct";
+    mGWFType2TypeAlias["node/const/temp/tuple"] = "node/const/temp/tuple";
+    mGWFType2TypeAlias["node/const/temp/role"] = "node/const/temp/role";
+    mGWFType2TypeAlias["node/const/temp/relation"] = "node/const/temp/relation";
+    mGWFType2TypeAlias["node/const/temp/group"] = "node/const/temp/group";
+    mGWFType2TypeAlias["node/const/temp/super_group"] = "node/const/temp/super_group";
+
+    //var temp
+    mGWFType2TypeAlias["node/var/temp/general"] = "node/var/temp/general";
+    mGWFType2TypeAlias["node/var/temp/terminal"] = "node/var/temp/terminal";
+    mGWFType2TypeAlias["node/var/temp/struct"] = "node/var/temp/struct";
+    mGWFType2TypeAlias["node/var/temp/tuple"] = "node/var/temp/tuple";
+    mGWFType2TypeAlias["node/var/temp/role"] = "node/var/temp/role";
+    mGWFType2TypeAlias["node/var/temp/relation"] = "node/var/temp/relation";
+    mGWFType2TypeAlias["node/var/temp/group"] = "node/var/temp/group";
+    mGWFType2TypeAlias["node/var/temp/super_group"] = "node/var/temp/super_group";
+
+    //meta temp
+    mGWFType2TypeAlias["node/meta/temp/general"] = "node/meta/temp/general";
+    mGWFType2TypeAlias["node/meta/temp/terminal"] = "node/meta/temp/terminal";
+    mGWFType2TypeAlias["node/meta/temp/struct"] = "node/meta/temp/struct";
+    mGWFType2TypeAlias["node/meta/temp/tuple"] = "node/meta/temp/tuple";
+    mGWFType2TypeAlias["node/meta/temp/role"] = "node/meta/temp/role";
+    mGWFType2TypeAlias["node/meta/temp/relation"] = "node/meta/temp/relation";
+    mGWFType2TypeAlias["node/meta/temp/group"] = "node/meta/temp/group";
+    mGWFType2TypeAlias["node/meta/temp/super_group"] = "node/meta/temp/super_group";
+
+    // pairs
+    mGWFType2TypeAlias["pair/-/-/-/noorient"] = "pair/-/-/-/noorient";
+    mGWFType2TypeAlias["pair/-/-/-/orient"] = "pair/-/-/-/orient";
+
+    //const
+    mGWFType2TypeAlias["pair/const/-/perm/noorien"] = "pair/const/-/perm/noorien";
+    mGWFType2TypeAlias["pair/const/-/perm/orient"] = "pair/const/-/perm/orient";
+    mGWFType2TypeAlias["pair/const/-/temp/noorien"] = "pair/const/-/temp/noorien";
+    mGWFType2TypeAlias["pair/const/-/temp/orient"] = "pair/const/-/temp/orient";
+    mGWFType2TypeAlias["pair/const/pos/perm/orient/membership"] = "pair/const/pos/perm/orient/membership";
+    mGWFType2TypeAlias["pair/const/neg/perm/orient/membership"] = "pair/const/neg/perm/orient/membership";
+    mGWFType2TypeAlias["pair/const/fuz/perm/orient/membership"] = "pair/const/fuz/perm/orient/membership";
+    mGWFType2TypeAlias["pair/const/pos/temp/orient/membership"] = "pair/const/pos/temp/orient/membership";
+    mGWFType2TypeAlias["pair/const/neg/temp/orient/membership"] = "pair/const/neg/temp/orient/membership";
+    mGWFType2TypeAlias["pair/const/fuz/temp/orient/membership"] = "pair/const/fuz/temp/orient/membership";
+
+    //var
+    mGWFType2TypeAlias["pair/var/-/perm/noorien"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/var/-/perm/orient"] = "pair/var/-/perm/orient";
+    mGWFType2TypeAlias["pair/var/-/temp/noorien"] = "pair/var/-/temp/noorien";
+    mGWFType2TypeAlias["pair/var/-/temp/orient"] = "pair/var/-/temp/orient";
+    mGWFType2TypeAlias["pair/var/pos/perm/orient/membership"] = "pair/var/pos/perm/orient/membership";
+    mGWFType2TypeAlias["pair/var/neg/perm/orient/membership"] = "pair/var/neg/perm/orient/membership";
+    mGWFType2TypeAlias["pair/var/fuz/perm/orient/membership"] = "pair/var/fuz/perm/orient/membership";
+    mGWFType2TypeAlias["pair/var/pos/temp/orient/membership"] = "pair/var/pos/temp/orient/membership";
+    mGWFType2TypeAlias["pair/var/neg/temp/orient/membership"] = "pair/var/neg/temp/orient/membership";
+    mGWFType2TypeAlias["pair/var/fuz/temp/orient/membership"] = "pair/var/fuz/temp/orient/membership";
+
+    //meta
+    mGWFType2TypeAlias["pair/meta/-/perm/noorien"] = "pair/meta/-/perm/noorien";
+    mGWFType2TypeAlias["pair/meta/-/perm/orient"] = "pair/meta/-/perm/orient";
+    mGWFType2TypeAlias["pair/meta/-/temp/noorien"] = "pair/meta/-/temp/noorien";
+    mGWFType2TypeAlias["pair/meta/-/temp/orient"] = "pair/meta/-/temp/orient";
+    mGWFType2TypeAlias["pair/meta/pos/perm/orient/membership"] = "pair/meta/pos/perm/orient/membership";
+    mGWFType2TypeAlias["pair/meta/neg/perm/orient/membership"] = "pair/meta/neg/perm/orient/membership";
+    mGWFType2TypeAlias["pair/meta/fuz/perm/orient/membership"] = "pair/meta/fuz/perm/orient/membership";
+    mGWFType2TypeAlias["pair/meta/pos/temp/orient/membership"] = "pair/meta/pos/temp/orient/membership";
+    mGWFType2TypeAlias["pair/meta/neg/temp/orient/membership"] = "pair/meta/neg/temp/orient/membership";
+    mGWFType2TypeAlias["pair/meta/fuz/temp/orient/membership"] = "pair/meta/fuz/temp/orient/membership";
+
+    // contour
+    mGWFType2TypeAlias["contour/const/perm"] = "contour/const/perm";
+    mGWFType2TypeAlias["contour/var/perm"] = "contour/var/perm";
+    mGWFType2TypeAlias["contour/const/temp"] = "contour/const/temp";
+    mGWFType2TypeAlias["contour/var/temp"] = "contour/var/temp";
+
+    //deprecated. For supporting old format.
+    // nodes
+    mGWFType2TypeAlias["node/-/not_define"] = "node/-/-/not_define";
+
+    mGWFType2TypeAlias["node/const/not_define"] = "node/-/-/not_define";
+    mGWFType2TypeAlias["node/const/general_node"] = "node/const/perm/general";
+    mGWFType2TypeAlias["node/const/predmet"] = "node/const/perm/general";
+    mGWFType2TypeAlias["node/const/terminal"] = "node/const/perm/terminal";
+    mGWFType2TypeAlias["node/const/nopredmet"] = "node/const/perm/struct";
+    mGWFType2TypeAlias["node/const/symmetry"] = "node/const/perm/tuple";
+    mGWFType2TypeAlias["node/const/asymmetry"] = "node/const/perm/tuple";
+    mGWFType2TypeAlias["node/const/attribute"] = "node/const/perm/role";
+    mGWFType2TypeAlias["node/const/relation"] = "node/const/perm/relation";
+    mGWFType2TypeAlias["node/const/atom"] = "node/const/perm/group";
+    mGWFType2TypeAlias["node/const/group"] = "node/const/perm/group";
+
+    mGWFType2TypeAlias["node/var/not_define"] = "node/-/-/not_define";
+    mGWFType2TypeAlias["node/var/general_node"] = "node/var/perm/general";
+    mGWFType2TypeAlias["node/var/predmet"] = "node/var/perm/general";
+    mGWFType2TypeAlias["node/var/terminal"] = "node/var/perm/terminal";
+    mGWFType2TypeAlias["node/var/nopredmet"] = "node/var/perm/struct";
+    mGWFType2TypeAlias["node/var/symmetry"] = "node/var/perm/tuple";
+    mGWFType2TypeAlias["node/var/asymmetry"] = "node/var/perm/tuple";
+    mGWFType2TypeAlias["node/var/attribute"] = "node/var/perm/role";
+    mGWFType2TypeAlias["node/var/relation"] = "node/var/perm/relation";
+    mGWFType2TypeAlias["node/var/atom"] = "node/var/perm/group";
+    mGWFType2TypeAlias["node/var/group"] = "node/var/perm/group";
+
+    mGWFType2TypeAlias["node/meta/not_define"] = "node/-/-/not_define";
+    mGWFType2TypeAlias["node/meta/general_node"] = "node/var/perm/general";
+    mGWFType2TypeAlias["node/meta/predmet"] = "node/var/perm/abstract";
+    mGWFType2TypeAlias["node/meta/nopredmet"] = "node/var/perm/struct";
+    mGWFType2TypeAlias["node/meta/symmetry"] = "node/var/perm/tuple";
+    mGWFType2TypeAlias["node/meta/asymmetry"] = "node/var/perm/tuple";
+    mGWFType2TypeAlias["node/meta/attribute"] = "node/var/perm/role";
+    mGWFType2TypeAlias["node/meta/relation"] = "node/var/perm/relation";
+    mGWFType2TypeAlias["node/meta/atom"] = "node/var/perm/group";
+    mGWFType2TypeAlias["node/meta/group"] = "node/var/perm/group";
 
     // pairs
     mGWFType2TypeAlias["arc/-/-"] = "pair/-/-/-/orient/membership";
@@ -126,7 +237,6 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["pair/var/orient"] = "pair/var/-/-/orient";
     mGWFType2TypeAlias["pair/meta/orient"] = "pair/var/-/-/orient";
 
-    //deprecated. For supporting old format.
     mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/-/noorien";
     mGWFType2TypeAlias["pair/rail/orient"] = "pair/var/-/-/orient";
     mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/var/-/-/noorien";
@@ -216,17 +326,22 @@ bool GwfObjectInfoReader::read(const QDomDocument& document)
 
 bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo* info)
 {
-    if(info->objectType() == SCgPair::Type || info->objectType() == SCgNode::Type)
+    if(info->objectType() == SCgPair::Type || info->objectType() == SCgNode::Type || info->objectType() == SCgContour::Type)
     {
         QString& type = info->typeAliasRef();
         if (getAttributeString(element, "type", type))
         {
+            //this condition is necessary for compatibility with old formats
+            if (type == "" && info->objectType() == SCgContour::Type) {
+                type = "contour/const/perm";
+            }
             if (!mGWFType2TypeAlias.contains(type))
             {
                 errorUnknownElementType(element.tagName(), type);
                 return false;
-            }else
+            }else {
                 type = mGWFType2TypeAlias[type];
+            }
         }
         else
             return false;

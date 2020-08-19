@@ -96,10 +96,6 @@ private:
       */
     void writeContent(SCgNode *node);
 
-    typedef QMap<QString, QString> GWFType2TypeAliasMap;
-    //! Map for mapping gwf types to types alias
-    GWFType2TypeAliasMap mTypeAlias2GWFType;
-
     void createTypesMap();
 };
 

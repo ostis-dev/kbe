@@ -63,17 +63,21 @@ SCgNode::IdentifierPosition SCgNodeTextItem::posToIdtfPos(const QPointF &point) 
 
     if (x > 0)
     {
-        if (y > 0)
+        if (y > 8)
             idtfPos = SCgNode::BottomRight;
-        else
+        if (y < -8)
             idtfPos = SCgNode::TopRight;
+        if (y >= -8 && y <= 8)
+            idtfPos = SCgNode::Right;
     }
     else
     {
-        if (y > 0)
+        if (y > 8)
             idtfPos = SCgNode::BottomLeft;
-        else
+        if (y < -8)
             idtfPos = SCgNode::TopLeft;
+        if (y >= -8 && y <= 8)
+            idtfPos = SCgNode::Left;
     }
 
     return idtfPos;
@@ -96,6 +100,14 @@ void SCgNodeTextItem::updateTextPos(SCgNode::IdentifierPosition pos)
         newPos.setY(parentRect.top() - rect.height() + 8);
     else
         newPos.setY(parentRect.bottom() - 8);
+    if (pos == SCgNode::Right) {
+        newPos.setX(parentRect.right() - 4);
+        newPos.setY(parentRect.bottom() - 24);
+    }
+    if (pos == SCgNode::Left) {
+        newPos.setX(parentRect.left() - rect.width() + 4);
+        newPos.setY(parentRect.bottom() - 24);
+    }
 
     setPos(newPos);
     mParentItem->setSelected(true);
@@ -109,7 +121,7 @@ SCgNode::IdentifierPosition SCgNodeTextItem::nodeTextPos() const
 
 void SCgNodeTextItem::setTextPos(const QPointF &pos)
 {
-    setNodeTextPos(posToIdtfPos(pos));
+    setPos(pos);
 }
 
 void SCgNodeTextItem::setPlainText(const QString &text)

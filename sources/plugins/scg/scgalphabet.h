@@ -91,9 +91,11 @@ public:
     //! Method for contour painting
     static void paintContour(QPainter *painter, SCgContour *contour);
 
+    //this method was saved for compatibility with old formats
     void getNodeTypes(const SCgConstType type_const, SCgObjectTypesMap &res);
     void getNodeTypes(const SCgConstType type_const, SCgPermType type_perm, SCgObjectTypesMap &res);
     void getPairTypes(const SCgConstType type, SCgObjectTypesMap &res);
+    void getContourTypes(const SCgConstType type, SCgObjectTypesMap &res);
 
     void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgObjectTypesMap &res);
     void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgPermType type_perm, SCgObjectTypesMap &res);
