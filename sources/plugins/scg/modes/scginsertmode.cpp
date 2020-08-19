@@ -37,7 +37,6 @@ void SCgInsertMode::mousePress(QGraphicsSceneMouseEvent *event)
         SCgContour* parent = 0;
         if (underMouseObj && underMouseObj->type() == SCgContour::Type)
             parent = static_cast<SCgContour*>(underMouseObj);
-        qDebug() << "paste command clicked";
         mScene->pasteCommand(mInsertedObjectGroup->childItems(), parent);
     }
     else
@@ -54,7 +53,6 @@ void SCgInsertMode::mouseMove(QGraphicsSceneMouseEvent *event)
 
 void SCgInsertMode::keyPress(QKeyEvent *event)
 {
-    qDebug() << "insert command key pressed";
     SCgMode::keyPress(event);
     if(event->key() == Qt::Key_Escape)
     {
@@ -66,7 +64,6 @@ void SCgInsertMode::keyPress(QKeyEvent *event)
 
 void SCgInsertMode::clean()
 {
-    qDebug() << "insert command clean";
     SCgMode::clean();
     if (mInsertedObjectGroup)
     {
@@ -77,7 +74,6 @@ void SCgInsertMode::clean()
 
 void SCgInsertMode::activate()
 {
-    qDebug() << "insert command activated";
     if (mInsertedObjectGroup)
     {
         delete mInsertedObjectGroup;

@@ -346,6 +346,21 @@ QIcon SCgAlphabet::createPairIcon(const QSize &size, QString type)
     return icon;
 }
 
+QVector<qreal> SCgAlphabet::getMsTempConstMembershipDashPattern()
+{
+    return msTempConstMembershipDashPattern;
+}
+
+QVector<qreal> SCgAlphabet::getMsTempVarMembershipDashPattern()
+{
+    return msTempVarMembershipDashPattern;
+}
+
+QVector<qreal> SCgAlphabet::getMsPermVarMembershipDashPattern()
+{
+    return msPermVarMembershipDashPattern;
+}
+
 void SCgAlphabet::getNodeTypes(const SCgConstType type_const, SCgAlphabet::SCgObjectTypesMap &res)
 {
     getObjectTypes("node", type_const, res);

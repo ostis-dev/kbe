@@ -27,11 +27,9 @@ SCgCloneMode::~SCgCloneMode()
 void SCgCloneMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
     SCgMode::mousePress(event);
-    qDebug() << "copy command 1";
 
     if (!mInsertedObjectGroup)
     {
-        qDebug() << "copy command any went wrong";
         mScene->setEditMode(mScene->previousMode());
         return;
     }
@@ -42,7 +40,6 @@ void SCgCloneMode::mousePress(QGraphicsSceneMouseEvent *event)
     if (underMouseObj && underMouseObj->type() == SCgContour::Type)
         parent = static_cast<SCgContour*>(underMouseObj);
 
-    qDebug() << "copy command";
     mScene->cloneCommand(mInsertedObjectGroup->childItems(), parent);
 
     clean();
@@ -50,7 +47,6 @@ void SCgCloneMode::mousePress(QGraphicsSceneMouseEvent *event)
 
 void SCgCloneMode::activate()
 {
-    qDebug() << "copy command activated";
     clean();
 
     QList<QGraphicsItem*> list = mScene->selectedItems();

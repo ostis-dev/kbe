@@ -136,6 +136,12 @@ public:
      * @param code Permanency type code to convert
      */
     QString aliasFromPermanencyCode(SCgPermType code) const;
+    static QVector<qreal> getMsPermVarMembershipDashPattern();
+
+    static QVector<qreal> getMsTempVarMembershipDashPattern();
+
+    static QVector<qreal> getMsTempConstMembershipDashPattern();
+
 protected:
     QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgPermType &type_perm, const SCgNodeStructType &type_struct);
     QIcon createPairIcon(const QSize &size, QString type);

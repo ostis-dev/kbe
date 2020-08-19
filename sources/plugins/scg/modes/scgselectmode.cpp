@@ -99,7 +99,6 @@ void SCgSelectMode::mouseMove(QGraphicsSceneMouseEvent *event)
 
 void SCgSelectMode::mousePress(QGraphicsSceneMouseEvent *event)
 {
-    qDebug() << "select command pressed";
     if (event->modifiers() == Qt::ControlModifier && event->button() == Qt::LeftButton)
     {
         QGraphicsItem *pItem = mScene->itemAt(event->scenePos());

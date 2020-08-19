@@ -246,8 +246,28 @@ void SCgNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
         }
     }else
     {
+        //here add pattern
         QPen pen(mColor);
         pen.setWidthF(3.f);
+        pen.setCapStyle(Qt::FlatCap);
+        pen.setJoinStyle(Qt::RoundJoin);
+        if (mConstType == SCgAlphabet::Var) {
+                if (mPermType == SCgAlphabet::Permanent) {
+                    pen.setDashPattern(SCgAlphabet::getMsPermVarMembershipDashPattern());
+                }
+                else {
+                    pen.setDashPattern(SCgAlphabet::getMsTempVarMembershipDashPattern());
+                }
+            }
+            else {
+                if (mPermType == SCgAlphabet::Permanent) {
+                    //leave standart pattern
+                }
+                else {
+                    pen.setDashPattern(SCgAlphabet::getMsTempConstMembershipDashPattern());
+                }
+            }
+
         painter->setPen(pen);
         painter->drawRect(boundRect.adjusted(2, 2, -2, -2));
     }
