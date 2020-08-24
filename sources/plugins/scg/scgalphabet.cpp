@@ -222,7 +222,7 @@ void SCgAlphabet::initialize()
     mObjectTypes["node/meta/temp/group"] = createNodeIcon(size, Meta, Temporary, StructType_Group);
     mObjectTypes["node/meta/temp/super_group"] = createNodeIcon(size, Meta, Temporary, StructType_Super_Group);
 
-    QSize pairSize(24, 24);
+    QSize pairSize(72, 24);
 
     // scg core pairs
     mObjectTypes["pair/-/-/-/noorient"] = createPairIcon(pairSize, "pair/-/-/-/noorient");

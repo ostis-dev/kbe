@@ -64,27 +64,27 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     addAction(focusMetaPermAction);
     connect(focusMetaPermAction, SIGNAL(triggered(bool)), mMetaPermGroup, SLOT(setFocus()));
 
-    mConstTempGroup = new QGroupBox(tr("Constants") + " (C)");
+    mConstTempGroup = new QGroupBox(tr("Constants") + " (Q)");
     mConstTempGroup->setLayout(constTempLayout);
 
     QAction* focusConstTempAction = new QAction(this);
-    focusConstTempAction->setShortcut(QKeySequence("C"));
+    focusConstTempAction->setShortcut(QKeySequence("Q"));
     addAction(focusConstTempAction);
     connect(focusConstTempAction, SIGNAL(triggered(bool)), mConstTempGroup, SLOT(setFocus()));
 
-    mVarTempGroup = new QGroupBox(tr("Variables") + " (V)");
+    mVarTempGroup = new QGroupBox(tr("Variables") + " (W)");
     mVarTempGroup->setLayout(varTempLayout);
 
     QAction* focusVarTempAction = new QAction(this);
-    focusVarTempAction->setShortcut(QKeySequence("V"));
+    focusVarTempAction->setShortcut(QKeySequence("W"));
     addAction(focusVarTempAction);
     connect(focusVarTempAction, SIGNAL(triggered(bool)), mVarTempGroup, SLOT(setFocus()));
 
-    mMetaTempGroup = new QGroupBox(tr("Meta") + " (M)");
+    mMetaTempGroup = new QGroupBox(tr("Meta") + " (N)");
     mMetaTempGroup->setLayout(metaTempLayout);
 
     QAction* focusMetaTempAction = new QAction(this);
-    focusMetaTempAction->setShortcut(QKeySequence("M"));
+    focusMetaTempAction->setShortcut(QKeySequence("N"));
     addAction(focusMetaTempAction);
     connect(focusMetaTempAction, SIGNAL(triggered(bool)), mMetaTempGroup, SLOT(setFocus()));
 
@@ -105,13 +105,11 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
         topLayout->addWidget(mConstTempGroup, 1);
         topLayout->addWidget(mVarTempGroup, 1);
         topLayout->addWidget(mMetaTempGroup, 1);
-        mainLayout->addWidget(mUnknownGroup);
         break;
     case SCgPair::Type:
         topLayout->addWidget(mConstPermGroup, 1);
         topLayout->addWidget(mVarPermGroup, 1);
         topLayout->addWidget(mMetaPermGroup, 1);
-        mainLayout->addWidget(mUnknownGroup);
         break;
     case SCgContour::Type:
         topLayout->addWidget(mConstPermGroup, 1);
@@ -121,6 +119,7 @@ SCgTypeSelectionDialog::SCgTypeSelectionDialog(int objectType, QWidget* parent)
     }
 
     mainLayout->addLayout(topLayout);
+    mainLayout->addWidget(mUnknownGroup, 1);
 
     QDialogButtonBox* box = new QDialogButtonBox(QDialogButtonBox::Cancel);
     box->button(QDialogButtonBox::Cancel)->setDefault(true);
@@ -208,7 +207,7 @@ void SCgTypeSelectionDialog::displayTypes()
 void SCgTypeSelectionDialog::addTypeButton(const QIcon& icon, const QString& text, int hotkey, QWidget* parent)
 {
     QPushButton* button = new QPushButton(icon, text);
-    button->setIconSize(QSize(24, 24));
+    button->setIconSize(QSize(72, 24));
     button->setToolTip(QString::number(hotkey));
     connect(button, SIGNAL(clicked(bool)), this, SLOT(onChooseType()));
 
