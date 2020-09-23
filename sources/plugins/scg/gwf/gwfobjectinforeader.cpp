@@ -229,18 +229,18 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["arc/var/fuz/temp"] = "pair/var/fuz/temp/orient/membership";
     mGWFType2TypeAlias["arc/meta/fuz/temp"] = "pair/var/fuz/temp/orient/membership";
 
-    mGWFType2TypeAlias["pair/const/synonym"] = "pair/const/-/-/noorien";
-    mGWFType2TypeAlias["pair/var/noorient"] = "pair/var/-/-/noorien";
-    mGWFType2TypeAlias["pair/meta/noorient"] = "pair/var/-/-/noorien";
+    mGWFType2TypeAlias["pair/const/synonym"] = "pair/const/-/perm/noorien";
+    mGWFType2TypeAlias["pair/var/noorient"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/meta/noorient"] = "pair/var/-/perm/noorien";
 
-    mGWFType2TypeAlias["pair/const/orient"] = "pair/const/-/-/orient";
-    mGWFType2TypeAlias["pair/var/orient"] = "pair/var/-/-/orient";
-    mGWFType2TypeAlias["pair/meta/orient"] = "pair/var/-/-/orient";
+    mGWFType2TypeAlias["pair/const/orient"] = "pair/const/-/perm/orient";
+    mGWFType2TypeAlias["pair/var/orient"] = "pair/var/-/perm/orient";
+    mGWFType2TypeAlias["pair/meta/orient"] = "pair/var/-/perm/orient";
 
-    mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/-/noorien";
-    mGWFType2TypeAlias["pair/rail/orient"] = "pair/var/-/-/orient";
-    mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/var/-/-/noorien";
-    mGWFType2TypeAlias["pair/rail2/orient"] = "pair/var/-/-/orient";
+    mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/rail/orient"] = "pair/var/-/perm/orient";
+    mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/rail2/orient"] = "pair/var/-/perm/orient";
 }
 
 bool GwfObjectInfoReader::read(const QDomDocument& document)
