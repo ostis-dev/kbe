@@ -12,7 +12,6 @@
 
 #include <QDomDocument>
 #include <QGraphicsView>
-#include <QDebug>
 
 SCgCloneMode::SCgCloneMode(SCgScene *scene) :
     SCgInsertMode(scene)

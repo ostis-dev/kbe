@@ -504,7 +504,6 @@ void SCgScene::cloneCommand(QList<QGraphicsItem*> itemList, SCgContour* parent)
 {
     Q_ASSERT(mMode->mode() == Mode_Clone);
 
-    //todo here fix ctrl + V
     QList<SCgObject*> objList;
     foreach (QGraphicsItem* item, itemList)
         objList.append(static_cast<SCgObject*>(item));

@@ -15,7 +15,6 @@
 #include <QApplication>
 #include <QClipboard>
 #include <QMimeData>
-#include <QDebug>
 
 SCgInsertMode::SCgInsertMode(SCgScene* parent):
     SCgMode(parent),

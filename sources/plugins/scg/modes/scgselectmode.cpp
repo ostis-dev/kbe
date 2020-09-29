@@ -19,7 +19,6 @@
 #include <QDomDocument>
 #include <QGraphicsView>
 #include <QBitmap>
-#include <QDebug>
 
 SCgSelectMode::SCgSelectMode(SCgScene* parent):SCgMode(parent),
     mIsItemsMoved(false),
