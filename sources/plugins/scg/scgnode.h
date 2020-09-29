@@ -25,7 +25,9 @@ public:
         BottomRight = 0,
         BottomLeft,
         TopLeft,
-        TopRight
+        TopRight,
+        Left,
+        Right
     } IdentifierPosition;
 
     /*! Type for qgraphicsitem_cast

@@ -16,102 +16,21 @@
 GwfStreamWriter::GwfStreamWriter(): QXmlStreamWriter(),
                                     isWritingStarted(false)
 {
-    createTypesMap();
 }
 
 GwfStreamWriter::GwfStreamWriter(QIODevice* device):QXmlStreamWriter(device),
                                                     isWritingStarted(false)
 {
-    createTypesMap();
 }
 
 GwfStreamWriter::GwfStreamWriter(QByteArray* array):QXmlStreamWriter(array),
                                                     isWritingStarted(false)
 {
-    createTypesMap();
 }
 
 GwfStreamWriter::~GwfStreamWriter()
 {
 
-}
-
-void GwfStreamWriter::createTypesMap()
-{
-    // nodes
-    mTypeAlias2GWFType["node/-/not_define"] = "node/-/not_define";
-
-    mTypeAlias2GWFType["node/const/general"] = "node/const/general_node";
-    mTypeAlias2GWFType["node/const/abstract"] = "node/const/predmet";
-    mTypeAlias2GWFType["node/const/material"] = "node/const/material";
-    mTypeAlias2GWFType["node/const/struct"] = "node/const/nopredmet";
-    mTypeAlias2GWFType["node/const/symmetry"] = "node/const/symmetry";
-    mTypeAlias2GWFType["node/const/tuple"] = "node/const/asymmetry";
-    mTypeAlias2GWFType["node/const/role"] = "node/const/attribute";
-    mTypeAlias2GWFType["node/const/relation"] = "node/const/relation";
-    mTypeAlias2GWFType["node/const/atom"] = "node/const/atom";
-    mTypeAlias2GWFType["node/const/group"] = "node/const/group";
-
-    mTypeAlias2GWFType["node/var/not_define"] = "node/var/not_define";
-    mTypeAlias2GWFType["node/var/general"] = "node/var/general_node";
-    mTypeAlias2GWFType["node/var/abstract"] = "node/var/predmet";
-    mTypeAlias2GWFType["node/var/material"] = "node/var/material";
-    mTypeAlias2GWFType["node/var/struct"] = "node/var/nopredmet";
-    mTypeAlias2GWFType["node/var/tuple"] = "node/var/symmetry";
-    mTypeAlias2GWFType["node/var/asymmetry"] = "node/var/asymmetry";
-    mTypeAlias2GWFType["node/var/role"] = "node/var/attribute";
-    mTypeAlias2GWFType["node/var/relation"] = "node/var/relation";
-    mTypeAlias2GWFType["node/var/atom"] = "node/var/atom";
-    mTypeAlias2GWFType["node/var/group"] = "node/var/group";
-
-    mTypeAlias2GWFType["node/meta/not_define"] = "node/meta/not_define";
-    mTypeAlias2GWFType["node/meta/general"] = "node/meta/general_node";
-    mTypeAlias2GWFType["node/meta/abstract"] = "node/meta/predmet";
-    mTypeAlias2GWFType["node/meta/nopredmet"] = "node/meta/nopredmet";
-    mTypeAlias2GWFType["node/meta/tuple"] = "node/meta/symmetry";
-    mTypeAlias2GWFType["node/meta/asymmetry"] = "node/meta/asymmetry";
-    mTypeAlias2GWFType["node/meta/role"] = "node/meta/attribute";
-    mTypeAlias2GWFType["node/meta/relation"] = "node/meta/relation";
-    mTypeAlias2GWFType["node/meta/atom"] = "node/meta/atom";
-    mTypeAlias2GWFType["node/meta/group"] = "node/meta/group";
-
-    // pairs
-    mTypeAlias2GWFType["pair/-/-/-/orient/accessory"] = "arc/-/-";
-    mTypeAlias2GWFType["pair/-/-/-/noorient"] = "pair/noorient";
-    mTypeAlias2GWFType["pair/-/-/-/orient"] = "pair/orient";
-
-    mTypeAlias2GWFType["pair/const/pos/perm/orient/accessory"] = "arc/const/pos";
-    mTypeAlias2GWFType["pair/var/pos/perm/orient/accessory"] = "arc/var/pos";
-    mTypeAlias2GWFType["pair/meta/pos/perm/orient/accessory"] = "arc/meta/pos";
-
-    mTypeAlias2GWFType["pair/const/neg/perm/orient/accessory"] = "arc/const/neg";
-    mTypeAlias2GWFType["pair/var/neg/perm/orient/accessory"] = "arc/var/neg";
-    mTypeAlias2GWFType["pair/meta/neg/perm/orient/accessory"] = "arc/meta/neg";
-
-    mTypeAlias2GWFType["pair/const/fuz/perm/orient/accessory"] = "arc/const/fuz" ;
-    mTypeAlias2GWFType["pair/var/fuz/perm/orient/accessory"] = "arc/var/fuz";
-    mTypeAlias2GWFType["pair/meta/fuz/perm/orient/accessory"] = "arc/meta/fuz";
-
-    mTypeAlias2GWFType["pair/const/pos/temp/orient/accessory"] = "arc/const/pos/temp";
-    mTypeAlias2GWFType["pair/var/pos/temp/orient/accessory"] = "arc/var/pos/temp";
-    mTypeAlias2GWFType["pair/meta/pos/temp/orient/accessory"] = "arc/meta/pos/temp";
-
-    mTypeAlias2GWFType["pair/const/neg/temp/orient/accessory"] = "arc/const/neg/temp";
-    mTypeAlias2GWFType["pair/var/neg/temp/orient/accessory"] = "arc/var/neg/temp";
-    mTypeAlias2GWFType["pair/meta/neg/temp/orient/accessory"] = "arc/meta/neg/temp";
-
-    mTypeAlias2GWFType["pair/const/fuz/temp/orient/accessory"] = "arc/const/fuz/temp";
-    mTypeAlias2GWFType["pair/var/fuz/temp/orient/accessory"] = "arc/var/fuz/temp";
-    mTypeAlias2GWFType["pair/meta/fuz/temp/orient/accessory"] = "arc/meta/fuz/temp";
-
-
-    mTypeAlias2GWFType["pair/const/-/-/noorien"] = "pair/const/synonym";
-    mTypeAlias2GWFType["pair/var/-/-/noorien"] = "pair/var/noorient";
-    mTypeAlias2GWFType["pair/meta/-/-/noorien"] = "pair/meta/noorient";
-
-    mTypeAlias2GWFType["pair/const/-/-/orient"] = "pair/const/orient";
-    mTypeAlias2GWFType["pair/var/-/-/orient"] = "pair/var/orient";
-    mTypeAlias2GWFType["pair/meta/-/-/orient"] = "pair/meta/orient";
 }
 
 void GwfStreamWriter::setDevice(QIODevice* device)
@@ -163,7 +82,7 @@ void GwfStreamWriter::writeObject(SCgObject *object)
 
 void GwfStreamWriter::writeObjectAttributes(SCgObject *obj)
 {
-    writeAttribute("type", mTypeAlias2GWFType[obj->typeAlias()]);
+    writeAttribute("type", obj->typeAlias());
     writeAttribute("idtf", obj->idtfValue());
     writeAttribute("shapeColor", QString::number(obj->color().value()));
     writeAttribute("id", QString::number( obj->id() ));
@@ -221,7 +140,7 @@ void GwfStreamWriter::writeContent(SCgNode *node)
 
 void GwfStreamWriter::writePair(SCgObject *obj)
 {
-    QString type = mTypeAlias2GWFType[obj->typeAlias()].mid(0,3);
+    QString type = obj->typeAlias().mid(0,3);
     if(type=="arc")
         writeStartElement(type);
     else

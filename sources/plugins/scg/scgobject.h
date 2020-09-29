@@ -105,10 +105,17 @@ public:
     {
         return mConstType;
     }
+    // Perm type
+    SCgAlphabet::SCgPermType permType() const
+    {
+        return mPermType;
+    }
+
 
 protected:
     QString mTypeAlias;
     SCgAlphabet::SCgConstType mConstType;
+    SCgAlphabet::SCgPermType mPermType;
 ////////////////////////
 
 protected:

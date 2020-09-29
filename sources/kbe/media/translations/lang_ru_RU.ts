@@ -283,7 +283,7 @@ Unsupported file format &quot;%1&quot;</source>
     <message>
         <location filename="../../mainwindow.cpp" line="540"/>
         <source>Contributors</source>
-        <translation></translation>
+        <translation>Соавторы</translation>
     </message>
     <message>
         <location filename="../../mainwindow.cpp" line="553"/>

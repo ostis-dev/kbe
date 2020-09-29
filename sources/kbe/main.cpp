@@ -19,7 +19,6 @@
 #include <QFile>
 #include <QSplashScreen>
 #include <QMessageBox>
-#include <QDebug>
 #include <QSettings>
 
 

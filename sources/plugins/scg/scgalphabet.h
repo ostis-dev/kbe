@@ -34,8 +34,9 @@ public:
     typedef enum
     {
         Const   = 0,
-        Var,
-        ConstUnknown
+        Var     = 1,
+        Meta    = 2,
+        ConstUnknown = 3
     } SCgConstType;
 
     /* Structural types fo nodes */
@@ -43,13 +44,13 @@ public:
     {
         StructType_NotDefine = 0,
         StructType_General,
-        StructType_Abstract,
-        StructType_Material,
+        StructType_Terminal,
         StructType_Struct,
         StructType_Tuple,
         StructType_Role,
         StructType_Relation,
         StructType_Group,
+        StructType_Super_Group,
         StructUnknown
     } SCgNodeStructType;
 
@@ -80,7 +81,7 @@ public:
     static SCgAlphabet& getInstance();
 
     void initialize();
-    void paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect, const SCgConstType &type, const SCgNodeStructType &type_struct);
+    void paintNode(QPainter *painter, const QColor &color, const QRectF &boundRect, const SCgConstType &type, const SCgPermType &type_perm, const SCgNodeStructType &type_struct);
     void paintStruct(QPainter *painter, const QColor &color, const QRectF &boundRect, const SCgNodeStructType &type);
 
     //! Method for pair painting
@@ -90,10 +91,14 @@ public:
     //! Method for contour painting
     static void paintContour(QPainter *painter, SCgContour *contour);
 
-    void getNodeTypes(const SCgConstType type, SCgObjectTypesMap &res);
+    //this method was saved for compatibility with old formats
+    void getNodeTypes(const SCgConstType type_const, SCgObjectTypesMap &res);
+    void getNodeTypes(const SCgConstType type_const, SCgPermType type_perm, SCgObjectTypesMap &res);
     void getPairTypes(const SCgConstType type, SCgObjectTypesMap &res);
+    void getContourTypes(const SCgConstType type, SCgObjectTypesMap &res);
 
     void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgObjectTypesMap &res);
+    void getObjectTypes(const QString &object_name, const SCgConstType const_type, SCgPermType type_perm, SCgObjectTypesMap &res);
 
     /*! Converts constant type string alias into code
       * @param alias String representation of const type alias
@@ -131,9 +136,14 @@ public:
      * @param code Permanency type code to convert
      */
     QString aliasFromPermanencyCode(SCgPermType code) const;
+    static QVector<qreal> getMsPermVarMembershipDashPattern();
+
+    static QVector<qreal> getMsTempVarMembershipDashPattern();
+
+    static QVector<qreal> getMsTempConstMembershipDashPattern();
 
 protected:
-    QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgNodeStructType &type_struct);
+    QIcon createNodeIcon(const QSize &size, const SCgConstType &type_const, const SCgPermType &type_perm, const SCgNodeStructType &type_struct);
     QIcon createPairIcon(const QSize &size, QString type);
 
 private:
@@ -175,16 +185,24 @@ private:
     typedef QMap<SCgPermType, QString> SCgPermanencyType2AliasMap;
     SCgPermanencyType2AliasMap mPermanencyAliases;
 
-    //! Pattern that used to draw permanent, variable, accessory pairs
-    static QVector<qreal> msPermVarAccesDashPattern;
-    //! Pattern that used to draw permanent, variable, not accessory pairs
-    static QVector<qreal> msPermVarNoAccesDashPattern;
-    //! Pattern that used to draw temporary, constant, accessory pairs
-    static QVector<qreal> msTempConstAccesDashPattern;
-    //! Pattern that used to draw temporary, variable, accessory pairs
-    static QVector<qreal> msTempVarAccesDashPattern;
-    //! Pattern that used to draw common accessory marks
-    static QVector<qreal> msCommonAccessoryDashPattern;
+    //! Pattern that used to draw permanent, variable, membership pairs
+    static QVector<qreal> msPermVarMembershipDashPattern;
+    //! Pattern that used to draw permanent, variable, not membership pairs
+    static QVector<qreal> msPermVarCommonDashPattern;
+    //! Pattern that used to draw temporary, constant, membership pairs
+    static QVector<qreal> msTempConstMembershipDashPattern;
+    static QVector<qreal> msTempRectContour;
+    static QVector<qreal> msTempRhombusContour;
+    //! Pattern that used to draw temporary, variable, membership pairs
+    static QVector<qreal> msTempVarMembershipDashPattern;
+    //! Pattern that used to draw temporary, variable, common pairs
+    static QVector<qreal> msTempVarCommonDashPattern;
+    //! Pattern that used to draw dotter elements
+    static QVector<qreal> dottedDashPattern;
+    //! Pattern that used to draw meta elements
+    static QVector<qreal> metaMembershipDashPattern;
+    //! Pattern that used to draw common membership marks
+    static QVector<qreal> msCommonMembershipDashPattern;
 
 signals:
 

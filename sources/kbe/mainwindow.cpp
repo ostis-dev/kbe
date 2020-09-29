@@ -520,16 +520,17 @@ void MainWindow::onHelpAbout()
                           "<li>Gumbar Ilya (zooner)</li>"
                           "<li>Harkunov Evgeny (filosov)</li>"
                           "</ul>%6:<ul>"
+                          "<li>Alexander Yurkov (zioba)</li>"
                           "<li>Witkowsky Dmitry (wagos)</li>"
                           "<li>Aliaksei Palkanau (lifus)</li>"
                           "<li>Nikita Grishko (Gr1N)</li>"
                           "<li>Denis Klimenko</li>"
+                          "<li>Dmitry Kolb (skif-sarmat)</li>"
                           "<li>Konstantin Savon (Konstantsin)</li>"
                           "<li>Sergei Yakimchik (Gudini)</li>"
                           "<li>Lapitsky Artem</li>"
                           "<li>Eugen Zakharich</li>"
                           "<li>Pavel Karpan (pioneer)</li>"
-                          "<li>Dmitry Kolb (skif-sarmat)</li>"
                           "</ul>"
                           "</td></tr></table>")
                        .arg(QString(":/media/icons/help-about-logo.png"))
@@ -548,13 +549,13 @@ void MainWindow::onHelpAboutQt()
 void MainWindow::onFeedback()
 {
     QMessageBox::about(this, tr("Feedback"),
-                       QString("%1 <a href=\"http://forum.ostis.net/viewtopic.php?f=7&t=3\">%2</a>."
+                       QString("%1 <a href=\"https://sem.systems\">%2</a>."
                                "<br/>%3 <a href=\"%4\">%5</a>.")
-                       .arg(tr("Founded errors and new ideas you can write in"))
-                       .arg(tr("forum"))
+                       .arg(tr("Founded errors and new ideas you can send to developers on"))
+                       .arg(tr("site"))
                        .arg(tr("Also you can find our contact information on "))
-                       .arg("http://www.ostis.net/feedback.html")
-                       .arg(tr("site")));
+                       .arg("https://sem.systems/#contacts")
+                       .arg(tr("here")));
 }
 
 void MainWindow::onGuide()
