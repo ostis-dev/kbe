@@ -224,7 +224,7 @@ SCgNode* SCgScene::createSCgNode(const QPointF &pos)
     SCgNode *node = new SCgNode;
 
     node->setPos(pos);
-    node->setTypeAlias("node/const/general");
+    node->setTypeAlias("node/const/perm/general");
 
     addItem(node);
     return node;
@@ -237,7 +237,7 @@ SCgPair* SCgScene::createSCgPair(SCgObject *begObj, SCgObject *endObj, const QVe
                "Begin or end object is null");
     SCgPair *pair = new SCgPair;
 
-    pair->setTypeAlias("pair/const/pos/perm/orient/accessory");
+    pair->setTypeAlias("pair/const/pos/perm/orient/membership");
 
     pair->setBeginObject(begObj);
     pair->setEndObject(endObj);
@@ -266,6 +266,8 @@ SCgBus* SCgScene::createSCgBus(const QVector<QPointF>& points, SCgNode *owner)
 SCgContour* SCgScene::createSCgContour(const QVector<QPointF> &points)
 {
     SCgContour *contour = new SCgContour;
+
+    contour->setTypeAlias("contour/const/perm");
 
     SCgPointObject::PointFVector v = points;
     QPolygonF polygon(v);
@@ -379,14 +381,14 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
             // role relation
             if (idtf.endsWith('\''))
             {
-                splittedAlias[2] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Role);
+                splittedAlias[3] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Role);
                 typeChanged = true;
             }
 
             // binary relation
             if (idtf.endsWith('*'))
             {
-                splittedAlias[2] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Relation);
+                splittedAlias[3] = alphabet.aliasFromStructCode(SCgAlphabet::StructType_Relation);
                 typeChanged = true;
             }
         }

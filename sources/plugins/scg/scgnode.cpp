@@ -67,9 +67,16 @@ void SCgNode::updateType()
     QStringList sl = mTypeAlias.split("/");
 
     Q_ASSERT(sl.size() > 1);
-
-    mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
-    mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[2]);
+    if (sl.size() > 3) {
+        mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+        mPermType = SCgAlphabet::getInstance().aliasToPermanencyCode(sl[2]);
+        mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[3]);
+    }
+    else {
+        mConstType = SCgAlphabet::getInstance().aliasToConstCode(sl[1]);
+        mPermType = SCgAlphabet::Permanent;
+        mStructType = SCgAlphabet::getInstance().aliasToStructCode(sl[2]);
+    }
 }
 
 QRectF SCgNode::boundingRect() const
@@ -113,7 +120,13 @@ QPainterPath SCgNode::shape() const
         case SCgAlphabet::Var:
             path.addRect(boundRect);
             break;
-
+        case SCgAlphabet::Meta:
+            path.moveTo(boundRect.center().x(), boundRect.top());
+            path.lineTo(boundRect.right(), boundRect.center().y());
+            path.lineTo(boundRect.center().x(), boundRect.bottom());
+            path.lineTo(boundRect.left(), boundRect.center().y());
+            path.lineTo(boundRect.center().x(), boundRect.top());
+            break;
         default:
             break;
         }
@@ -221,7 +234,7 @@ void SCgNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     if (!mIsContentVisible)
     {
         painter->save();
-        SCgAlphabet::getInstance().paintNode(painter, mColor, boundRect, mConstType, mStructType);
+        SCgAlphabet::getInstance().paintNode(painter, mColor, boundRect, mConstType, mPermType,  mStructType);
         painter->restore();
 
         if (isContentData())
@@ -233,8 +246,28 @@ void SCgNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
         }
     }else
     {
+        //here add pattern
         QPen pen(mColor);
         pen.setWidthF(3.f);
+        pen.setCapStyle(Qt::FlatCap);
+        pen.setJoinStyle(Qt::RoundJoin);
+        if (mConstType == SCgAlphabet::Var) {
+                if (mPermType == SCgAlphabet::Permanent) {
+                    pen.setDashPattern(SCgAlphabet::getMsPermVarMembershipDashPattern());
+                }
+                else {
+                    pen.setDashPattern(SCgAlphabet::getMsTempVarMembershipDashPattern());
+                }
+            }
+            else {
+                if (mPermType == SCgAlphabet::Permanent) {
+                    //leave standart pattern
+                }
+                else {
+                    pen.setDashPattern(SCgAlphabet::getMsTempConstMembershipDashPattern());
+                }
+            }
+
         painter->setPen(pen);
         painter->drawRect(boundRect.adjusted(2, 2, -2, -2));
     }

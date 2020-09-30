@@ -225,13 +225,13 @@ void SCgView::updateActionsState(int idx)
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
 
-    mActionChangeType->setEnabled(nodeType || pairType);
-    mActionChangeType->setVisible(nodeType || pairType);
-
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
     bool const contourType = (mContextObject) && (mContextObject->type() == SCgContour::Type);
+
+    mActionChangeType->setEnabled(nodeType || pairType || contourType);
+    mActionChangeType->setVisible(nodeType || pairType || contourType);
 
     mActionContourDelete->setEnabled(contourType);
     mActionContourDelete->setVisible(contourType);

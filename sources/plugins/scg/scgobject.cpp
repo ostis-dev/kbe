@@ -24,6 +24,7 @@
 SCgObject::SCgObject(QGraphicsItem *parent)
     : QGraphicsItem(parent)
     , mConstType(SCgAlphabet::ConstUnknown)
+    , mPermType(SCgAlphabet::PermUnknown)
     , mIsBoundingBoxVisible(false)
     , mTextItem(0)
     , mIsDead(false)
