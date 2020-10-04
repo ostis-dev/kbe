@@ -487,12 +487,12 @@ bool GwfObjectInfoReader::parseContour(const QDomElement &element)
     if (!getElementPoints(element, contourInfo->pointsRef()))
         return false;
 
-    //    qreal& idtfPosX = contourInfo->posRef().rx();
-    //    qreal& idtfPosY = contourInfo->posRef().ry();
-    //    if (!getAttributeDouble(element, "idtf_pos_x", idtfPosX))
-    //        idtfPosX = 0;
-    //    if (!getAttributeDouble(element, "idtf_pos_y", idtfPosY))
-    //        idtfPosY = 0;
+        qreal& idtfPosX = contourInfo->posRef().rx();
+        qreal& idtfPosY = contourInfo->posRef().ry();
+        if (!getAttributeDouble(element, "idtf_pos_x", idtfPosX))
+            idtfPosX = 0;
+        if (!getAttributeDouble(element, "idtf_pos_y", idtfPosY))
+            idtfPosY = 0;
 
     mObjectsInfo[SCgContour::Type].append(contourInfo.release());
     return true;

@@ -105,13 +105,13 @@ SCgPairInfoData::~SCgPairInfoData()
 
 //____________________________________________________
 
-SCgContourInfoData::SCgContourInfoData(const SCgContour* obj): mPoints(obj->points())/*, mPos(obj->scenePos())*/
+SCgContourInfoData::SCgContourInfoData(const SCgContour* obj): mPoints(obj->points()), mPos(obj->scenePos())
 {
 
 }
 
 SCgContourInfoData::SCgContourInfoData(const SCgContourInfoData &other): QSharedData(other),
-                                        mPoints(other.mPoints)/*, mPos(other.mPos)*/
+                                        mPoints(other.mPoints), mPos(other.mPos)
 {
 
 }

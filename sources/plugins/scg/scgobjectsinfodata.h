@@ -110,6 +110,7 @@ public:
     SCgContourInfoData();
     virtual ~SCgContourInfoData();
 private:
+    QPointF mPos;
     QVector<QPointF> mPoints;
 };
 
