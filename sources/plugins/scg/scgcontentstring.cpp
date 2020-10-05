@@ -38,7 +38,7 @@ void SCgContentStringViewer::setData(const QVariant &data)
     mTextLabel->setText(data.toString());
     mTextLabel->setWordWrap(true);
     mTextLabel->setIndent(5);
-    mTextLabel->setFixedSize(mTextLabel->sizeHint()+QSize(13, 10));
+    mTextLabel->setFixedSize(mTextLabel->sizeHint()+QSize(13, 13));
     setWidget(mTextLabel);
     updateGeometry();
 }
