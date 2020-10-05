@@ -194,8 +194,10 @@ void GwfStreamWriter::writeContour(SCgObject *obj)
 
 
     QVector<QPointF> points(contour->scenePoints());
-    writeAttribute("idtf_pos_x", QString::number((int)contour->idtfPos().x()));
-    writeAttribute("idtf_pos_y", QString::number((int)contour->idtfPos().y()));
+    if (contour->idtfValue() != NULL) {
+        writeAttribute("idtf_pos_x", QString::number((int)contour->idtfPos().x()));
+        writeAttribute("idtf_pos_y", QString::number((int)contour->idtfPos().y()));
+    }
     writePoints(points);
 
     writeEndElement();
