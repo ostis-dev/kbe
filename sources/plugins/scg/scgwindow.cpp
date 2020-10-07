@@ -66,9 +66,11 @@ SCgWindow::SCgWindow(const QString& _windowTitle, QWidget *parent)
     , mToolBar(0)
     , mUndoStack(0)
     , mEditMenu(0)
+    , mViewMenu(0)
     , mActionUndo(0)
     , mActionRedo(0)
     , mActionFind(0)
+    , mActionMinMap(0)
 {
     Q_UNUSED(_windowTitle);
 
@@ -139,12 +141,10 @@ void SCgWindow::createActions()
     this->addAction(mActionRedo);
     mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
 
-//    mActionMinMap = new QAction(tr("Minimap"), this);
-//    mActionMinMap->setCheckable(true);
-//    mActionMinMap->setShortcuts();
-//    fi.setFile();
-//    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
-//    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
+    mActionMinMap = new QAction(tr("Minimap"), this);
+    mActionMinMap->setCheckable(true);
+    this->addAction(mActionMinMap);
+    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(showVisibleMinMap()));
 }
 
 void SCgWindow::createWidgetsForDocks()
@@ -153,6 +153,7 @@ void SCgWindow::createWidgetsForDocks()
     mMinimap = new SCgMinimap(mView, mView->viewport());
     mMinimap->setWindowTitle(tr("Mini map"));
     mMinimap->setObjectName("Mini map");
+
 
     mUndoView = new SCgUndoView(this);
     mUndoView->setStack(mUndoStack);
@@ -537,6 +538,11 @@ void SCgWindow::showTextSearch()
     mFindWidget->show();
 }
 
+void SCgWindow::showVisibleMinMap()
+{
+    mMinimap->show();
+}
+
 void SCgWindow::findNext()
 {
     find(mFindWidget->text(), true);
@@ -607,6 +613,7 @@ void SCgWindow::activate(QMainWindow *window)
     createMenu();
     QList<QAction*> allMenus = window->menuBar()->actions();
     window->menuBar()->insertMenu(allMenus.at(1), mEditMenu);
+    window->menuBar()->insertMenu(allMenus.at(2), mViewMenu);
 
     QToolBar *tool_bar = toolBar();
     if (tool_bar != 0)
@@ -656,6 +663,7 @@ QStringList SCgWindow::supportedFormatsExt() const
 void SCgWindow::createMenu()
 {
     Q_ASSERT(!mEditMenu);
+    Q_ASSERT(!mViewMenu);
 
     mEditMenu = new QMenu(tr("Edit"), this);
     mEditMenu->addAction(mActionUndo);
@@ -665,19 +673,18 @@ void SCgWindow::createMenu()
 
     mEditMenu->addActions(mView->actions());
 
-
-//
-//    mViewMenu = new QMenu(tr("View"), this);
-//    mViewMenu ->addAction(mActionMinMap);
+    mViewMenu = new QMenu(tr("View"), this);
+    mViewMenu ->addAction(mActionMinMap);
 }
 
 void SCgWindow::deleteMenu()
 {
     Q_ASSERT(mEditMenu);
+    Q_ASSERT(mViewMenu);
     delete mEditMenu;
-//    delete mViewMenu;
-//    mViewMenu = 0;
+    delete mViewMenu;
     mEditMenu = 0;
+    mViewMenu = 0;
 }
 
 void SCgWindow::stackCleanStateChanged(bool value)

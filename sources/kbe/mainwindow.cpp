@@ -151,7 +151,7 @@ void MainWindow::createActions()
     connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(onFileSaveAll()));
     connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(onFileExportToImage()));
 
-    connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()) );
+    connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()));
     connect(ui->actionClose, SIGNAL(triggered()), mTabWidget, SLOT(close()));
     connect(ui->actionClose_Others, SIGNAL(triggered()), mTabWidget, SLOT(closeOtherDocuments()));
     connect(ui->actionClose, SIGNAL(triggered()), this, SLOT(onUpdateMenu()));
@@ -600,31 +600,16 @@ void MainWindow::updateDockWidgets(bool visible)
         }
     }else
     {
-        if(!mStates.contains(windowClassName))
-        {
-            // Read window state from settings.
-            QSettings settings;
-            mStates[windowClassName] = settings.value(getSettingKeyValueForWindow(windowClassName)).toByteArray();
-        }
-
-        QByteArray b = mStates[windowClassName];
-
         foreach(QWidget* w, mLastActiveWindow->widgetsForDocks())
         {
             if(!mDockWidgets.contains(w->objectName()))
             {
                 QDockWidget* d = new QDockWidget(w->windowTitle(), this);
                 mDockWidgets[w->objectName()] = d;
-                d->setObjectName(w->objectName());
             }
             mDockWidgets[w->objectName()]->setWidget(w);
-
-            if(b.isEmpty())
                 addDockWidget(Qt::RightDockWidgetArea, mDockWidgets[w->objectName()]);
         }
-
-        if(!b.isEmpty())
-            restoreState(b);
     }
 }
 

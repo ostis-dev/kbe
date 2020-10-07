@@ -139,8 +139,8 @@ private:
      * \defgroup menu Menu
      * @{
      */
-//    //! View menu
-//    QMenu* mViewMenu;
+    //! View menu
+    QMenu* mViewMenu;
     //!Edit menu
     QMenu* mEditMenu;
     //! undo action
@@ -150,8 +150,8 @@ private:
     //! Find by identifier action;
     QAction* mActionFind;
 
-//    //! Show/hide minmap;
-//    QAction* mActionMinMap;
+    //! Show/hide minmap;
+    QAction* mActionMinMap;
 
     /*! Creates all actions, handled by this window.
      * @see createMenu() for adding actions in menu.
@@ -208,6 +208,8 @@ private slots:
 
     //! Shows find widget
     void showTextSearch();
+    //! Shows mini map widget
+    void showVisibleMinMap();
 
     /*!
      *Provides handling Cut menu event.
