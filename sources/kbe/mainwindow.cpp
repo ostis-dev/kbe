@@ -606,6 +606,7 @@ void MainWindow::updateDockWidgets(bool visible)
             {
                 QDockWidget* d = new QDockWidget(w->windowTitle(), this);
                 mDockWidgets[w->objectName()] = d;
+                d->setObjectName(w->objectName());
             }
             mDockWidgets[w->objectName()]->setWidget(w);
                 addDockWidget(Qt::RightDockWidgetArea, mDockWidgets[w->objectName()]);
