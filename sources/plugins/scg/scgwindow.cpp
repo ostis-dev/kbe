@@ -138,13 +138,6 @@ void SCgWindow::createActions()
     mActionRedo->setShortcut(QKeySequence::Redo);
     this->addAction(mActionRedo);
     mActionRedo->setIcon(QIcon::fromTheme("edit-redo", findIcon("edit-redo.png")));
-
-//    mActionMinMap = new QAction(tr("Minimap"), this);
-//    mActionMinMap->setCheckable(true);
-//    mActionMinMap->setShortcuts();
-//    fi.setFile();
-//    mActionMinMap->setIcon(QIcon(fi.absoluteFilePath()));
-//    connect(mActionMinMap, SIGNAL(triggered(bool)), this, SLOT(setVisibleMinMap(bool)));
 }
 
 void SCgWindow::createWidgetsForDocks()
@@ -664,19 +657,13 @@ void SCgWindow::createMenu()
     mEditMenu->addAction(mActionFind);
 
     mEditMenu->addActions(mView->actions());
-
-
-//
-//    mViewMenu = new QMenu(tr("View"), this);
-//    mViewMenu ->addAction(mActionMinMap);
 }
 
 void SCgWindow::deleteMenu()
 {
     Q_ASSERT(mEditMenu);
+
     delete mEditMenu;
-//    delete mViewMenu;
-//    mViewMenu = 0;
     mEditMenu = 0;
 }
 

@@ -139,8 +139,6 @@ private:
      * \defgroup menu Menu
      * @{
      */
-//    //! View menu
-//    QMenu* mViewMenu;
     //!Edit menu
     QMenu* mEditMenu;
     //! undo action
@@ -149,9 +147,6 @@ private:
     QAction* mActionRedo;
     //! Find by identifier action;
     QAction* mActionFind;
-
-//    //! Show/hide minmap;
-//    QAction* mActionMinMap;
 
     /*! Creates all actions, handled by this window.
      * @see createMenu() for adding actions in menu.

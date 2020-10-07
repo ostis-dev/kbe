@@ -1,2 +1,6 @@
 Please read readme.html in the docs folder.
 
+Knowledge Base Editor (KBE) - specialized tool for knowledge base creation.
+
+to correctly use KBE at linux run scripts/prepare.sh before the first start
+

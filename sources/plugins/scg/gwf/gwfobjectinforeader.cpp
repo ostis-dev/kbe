@@ -363,7 +363,7 @@ bool GwfObjectInfoReader::parseNode(const QDomElement &element)
 {
     std::auto_ptr<SCgNodeInfo> nodeInfo(new SCgNodeInfo());
 
-    if(!parseObject(element,nodeInfo.get()))
+    if(!parseObject(element, nodeInfo.get()))
         return false;
 
     qreal& x = nodeInfo->posRef().rx();
@@ -481,11 +481,18 @@ bool GwfObjectInfoReader::parseContour(const QDomElement &element)
 {
     std::auto_ptr<SCgContourInfo> contourInfo(new SCgContourInfo());
 
-    if(!parseObject(element,contourInfo.get()))
+    if(!parseObject(element, contourInfo.get()))
         return false;
 
     if (!getElementPoints(element, contourInfo->pointsRef()))
         return false;
+
+        qreal& idtfPosX = contourInfo->posRef().rx();
+        qreal& idtfPosY = contourInfo->posRef().ry();
+        if (!getAttributeDouble(element, "idtf_pos_x", idtfPosX))
+            idtfPosX = 0;
+        if (!getAttributeDouble(element, "idtf_pos_y", idtfPosY))
+            idtfPosY = 0;
 
     mObjectsInfo[SCgContour::Type].append(contourInfo.release());
     return true;

@@ -286,6 +286,11 @@ SCgContourInfo::SCgContourInfo(const SCgContour* obj)
     d = new SCgContourInfoData (obj);
 }
 
+QPointF SCgContourInfo::pos() const
+{
+    return d->mPos;
+}
+
 SCgContourInfo::SCgContourInfo(const SCgContourInfo &other): SCgObjectInfo(other)
 {
 
@@ -309,6 +314,11 @@ int SCgContourInfo::objectType() const
 const QVector<QPointF>& SCgContourInfo::points() const
 {
     return d->mPoints;
+}
+
+QPointF& SCgContourInfo::posRef()
+{
+    return d->mPos;
 }
 
 QVector<QPointF>& SCgContourInfo::pointsRef()

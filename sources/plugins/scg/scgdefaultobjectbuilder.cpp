@@ -204,6 +204,10 @@ void DefaultSCgObjectBuilder::buildContour(SCgContourInfo* info)
 
             contour->setPos(QPolygonF(info->points()).boundingRect().center());
             contour->setPoints(info->points());
+            if ((info->pos().x()!= 0) | (info->pos().y()!= 0)) {
+                contour->setIdtfValue(info->idtfValue());
+                contour->setIdtfPos(info->pos());
+            }
 
             setObjectInfo(contour, info);
         }

@@ -173,6 +173,7 @@ public:
      */
     virtual int objectType() const;
 
+    QPointF pos() const;
     const QVector<QPointF>& points() const;
     /**@}*/
 
@@ -182,6 +183,7 @@ public:
      * @{
      */
     QVector<QPointF>& pointsRef();
+    QPointF& posRef();
     /**@}*/
 
 private:
