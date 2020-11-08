@@ -38,7 +38,7 @@ void SCgContentStringViewer::setData(const QVariant &data)
     mTextLabel->setText(data.toString());
     mTextLabel->setWordWrap(true);
     mTextLabel->setIndent(5);
-    QFont font("Times New Roman [Arial]", 10, 10, false);
+    QFont font("Times New Roman", 10, 10, false);
     mTextLabel->setFont(font);
     mTextLabel->setFixedSize(mTextLabel->sizeHint()+QSize(10, 10));
     setWidget(mTextLabel);

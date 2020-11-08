@@ -21,7 +21,7 @@ void SCgContentViewer::setWidget(QWidget* w)
     QGraphicsProxyWidget::setWidget(w);
     if(w)
         setPos( -w->width()/2, -w->height()/2);
-    QFont font("Times New Roman [Arial]", 10, 10, false);
+    QFont font("Times New Roman", 10, 10, false);
     w->setFont(font);
     hide();
 }
