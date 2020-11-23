@@ -185,6 +185,8 @@ private slots:
     void onSelectSubgraph();
     //! Slot to hanlde an export image action
     void onExportImage();
+    //! Slot to hanlde an export all images action
+    void onExportAllImages();
     //! Slot to handle a zoom in action
     void onZoomIn();
     //! Slot to handle a zoom out action
