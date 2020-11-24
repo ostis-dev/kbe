@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>600</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -43,6 +43,7 @@
     <addaction name="actionSave_all"/>
     <addaction name="separator"/>
     <addaction name="menuExport"/>
+    <addaction name="actionExportAll"/>
     <addaction name="actionImport"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
@@ -214,6 +215,11 @@
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionExportAll">
+   <property name="text">
+    <string>ExportAll</string>
    </property>
   </action>
  </widget>

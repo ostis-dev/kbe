@@ -104,6 +104,10 @@ public:
      */
     virtual void activate(QMainWindow *window) { Q_UNUSED(window); mIsActivated = true; }
 
+    /*! Window export to png
+     */
+    virtual void exportToPng(int index) = 0;
+
     /*! Window deactivation.
      @brief    Calls whne window made inactive (selected other window in main window tab)
      @param    window  Pointer to main window

@@ -172,6 +172,7 @@ public slots:
     void onFileSaveAs(QWidget* window = 0);
     void onFileSaveAll();
     void onFileExportToImage();
+    void onExportAllFilesToImages();
     void onFileExit();
 
     void onViewSettings();

@@ -706,17 +706,6 @@ Just 1.6 and 2.0 versions supported.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../scgwindow.cpp" line="276"/>
-        <source>Export all images</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../scgwindow.cpp" line="278"/>
-        <source>0</source>
-        <comment>Export all images</comment>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../../scgwindow.cpp" line="282"/>
         <source>Zoom in</source>
         <translation></translation>

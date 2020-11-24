@@ -138,6 +138,7 @@ void MainWindow::createActions()
     ui->actionSave->setIcon(QIcon::fromTheme("document-save", getIcon("document-save.png")));
     ui->actionSave_as->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
     ui->actionSave_Project->setIcon(QIcon::fromTheme("document-save", getIcon("document-save-as.png")));
+    ui->actionExportAll->setIcon(QIcon::fromTheme("document-save-as", getIcon("document-save-as.png")));
     ui->actionClose->setIcon(QIcon::fromTheme("window-close", getIcon("window-close.png")));
     ui->actionExit->setIcon(QIcon::fromTheme("application-exit", getIcon("application-exit.png")));
 
@@ -150,6 +151,7 @@ void MainWindow::createActions()
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(onFileSaveAs()));
     connect(ui->actionSave_all, SIGNAL(triggered()), this, SLOT(onFileSaveAll()));
     connect(ui->actionTo_image, SIGNAL(triggered()), this, SLOT(onFileExportToImage()));
+    connect(ui->actionExportAll, SIGNAL(triggered()), this, SLOT(onExportAllFilesToImages()));
 
     connect(ui->actionClose_All, SIGNAL(triggered()), mTabWidget, SLOT(closeAllDocuments()));
     connect(ui->actionClose, SIGNAL(triggered()), mTabWidget, SLOT(close()));
@@ -491,7 +493,25 @@ void MainWindow::onFileSaveAll()
 void MainWindow::onFileExportToImage()
 {
 
+}
 
+void MainWindow::onExportAllFilesToImages()
+{
+    int index = 0;
+    foreach(QWidget* w, mTabWidget->subWindowList()) {
+        if (w)
+        {
+            Q_ASSERT(mWidget2EditorInterface.contains(w));
+
+            EditorInterface* currWindow = mWidget2EditorInterface[w];
+
+            Q_ASSERT(currWindow);
+            currWindow->exportToPng(index);
+
+            updateDockWidgets(true);
+            index++;
+        }
+    }
 }
 
 void MainWindow::onFileExit()
