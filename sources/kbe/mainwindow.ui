@@ -216,6 +216,11 @@
     <string>Settings</string>
    </property>
   </action>
+  <action name="actionExportAll">
+   <property name="text">
+    <string>ExportAll</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

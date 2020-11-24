@@ -21,6 +21,7 @@
 #include <QMenu>
 #include <QToolButton>
 #include <QFileDialog>
+#include <QDebug>
 
 #include "scglayoutmanager.h"
 #include "arrangers/scgarrangervertical.h"
@@ -157,7 +158,6 @@ void SCgWindow::createWidgetsForDocks()
     mWidgetsForDocks.push_back(mMinimap);
 }
 
-
 void SCgWindow::createToolBar()
 {
     mToolBar = new QToolBar(this);
@@ -268,11 +268,13 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     connect(action, SIGNAL(triggered()), this, SLOT(onExportImage()));
 
-    action = new QAction(findIcon("tool-export-image.png"), tr("Export all images"), mToolBar);
+    mToolBar->addSeparator();
+
+    action = new QAction(findIcon("tool-export-image.png"), tr("Convert All gwf to png"), mToolBar);
     action->setCheckable(false);
-    action->setShortcut(QKeySequence(tr("0", "Export all images")));
+    action->setShortcut(QKeySequence(tr("9", "Convert All gwf to png")));
     mToolBar->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onExportAllImages()));
+    connect(action, SIGNAL(triggered()), this, SLOT(exportToPng()));
 
     //
     mToolBar->addSeparator();
@@ -462,50 +464,54 @@ void SCgWindow::onExportImage()
     }
 }
 
-void SCgWindow::onExportAllImages()
+void SCgWindow::exportToPng()
 {
 
+    SCgExportImage exportImage;
     QFileDialog::Options options;
     options |= QFileDialog::DontUseNativeDialog;
-    QMap<QString, QString> filtersMap;
+    SCgView *exportView;
+    SCgScene *exportScene;
 
-    SCgExportImage exportImage;
-    QString selectedFilter;
-    QString formatsStr, fmt;
+    exportView = new SCgView(0, this);
+    exportScene = new SCgScene(mUndoStack, exportView);
+    exportView->setScene(exportScene);
+    exportView->setSceneRect(0, 0, 1000, 1000);
 
-    QStringList formats = exportImage.supportedFormats();
-    foreach(fmt, formats)
-    {
-        QString filter = tr("%1 image (*.%1)").arg(fmt);
-        formatsStr += filter + ";;";
-        filtersMap[filter] = fmt;
+    QDir directoryName = QFileDialog::getExistingDirectory(this,
+                                                              tr("Convert files to png"),
+                                                              QCoreApplication::applicationDirPath(),
+                                                              options);
+
+    qDebug() << directoryName.absolutePath();
+
+    if (!QDir(directoryName.absolutePath()+"/"+"pngExport").exists()) {
+        QDir().mkdir(directoryName.absolutePath()+"/"+"pngExport");
     }
-    formatsStr = formatsStr.left(formatsStr.length() - 2);
 
-    QString fileName = QCoreApplication::applicationDirPath() + "/" + currentFileName();
-    fileName = QFileDialog::getSaveFileName(this,
-                                           tr("Export file to ..."),
-                                           fileName,
-                                           formatsStr,
-                                           &selectedFilter,
-                                           options);
-    QWidget *widget = 0;
-    //foreach(widget, mWidgetsForDocks) {
-        //mScene = widget->sc
-    //}
-    if (fileName.length() > 0)
-    {
-        QFileInfo info(fileName);
+    QStringList gwfFileNameList = directoryName.entryList(QStringList() << "*.gwf", QDir::Files);
+    foreach(QString fileName, gwfFileNameList) {
+        GWFFileLoader loader;
 
-        if (info.suffix().isEmpty())
-            fileName += "." + filtersMap[selectedFilter];
-        else
+        exportScene->clear();
+        if (loader.load(directoryName.absolutePath()+"/"+fileName, exportView->scene()))
         {
-            // replace suffix if it not in selected filter
-            if (info.suffix() != filtersMap[selectedFilter])
-                fileName = fileName.left(fileName.size() - info.suffix().size()) + filtersMap[selectedFilter];
+            QString imageName = directoryName.absolutePath()+"/"+"pngExport/" +fileName;
+            if (imageName.length() > 0)
+            {
+                QFileInfo info(imageName);
+
+                if (info.suffix().isEmpty()) {
+                    imageName += ".png";
+                }
+                else {
+                    // replace suffix if it not in selected filter
+                    if (info.suffix() != "png")
+                        imageName = imageName.left(imageName.size() - info.suffix().size()) + "png";
+                }
+                exportImage.doExport(exportScene, imageName);
+            }
         }
-        exportImage.doExport(mScene, fileName);
     }
 }
 
