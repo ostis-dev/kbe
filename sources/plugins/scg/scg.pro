@@ -1,9 +1,15 @@
 QT += xml widgets concurrent
 
+
+ANTLR_LIB_PATH = "../../../thirdparty/sc-machine/thirdparty/antlr"
+SC_MEMORY_PATH = "../../../thirdparty/sc-machine/sc-memory"
+
 TARGET        = $$qtLibraryTarget(scg)
 TEMPLATE      = lib
 INCLUDEPATH  += ../../kbe \
-                ./
+                ./ \
+                "$$SC_MEMORY_PATH" \
+                "$$ANTLR_LIB_PATH"/runtime/src
 
 DESTDIR = ../../bin/plugins
 
@@ -19,6 +25,177 @@ win32 {
 }
 
 HEADERS += \
+    "$$SC_MEMORY_PATH"/sc-memory/sc_debug.hpp \
+    "$$SC_MEMORY_PATH"/sc-memory/sc_type.hpp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs.g4 \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scsLexer.h \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scsParser.h \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs_parser.hpp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs_types.hpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRErrorListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRErrorStrategy.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRFileStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRInputStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/BailErrorStrategy.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/BaseErrorListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/BufferedTokenStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/CharStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/CommonToken.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/CommonTokenFactory.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/CommonTokenStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ConsoleErrorListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/DefaultErrorStrategy.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/DiagnosticErrorListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/Exceptions.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/FailedPredicateException.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/InputMismatchException.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/IntStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/InterpreterRuleContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/Lexer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/LexerInterpreter.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/LexerNoViableAltException.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ListTokenSource.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/NoViableAltException.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/Parser.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ParserInterpreter.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ParserRuleContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/ProxyErrorListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/RecognitionException.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/Recognizer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/RuleContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/RuleContextWithAltNum.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/RuntimeMetaData.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/Token.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenFactory.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenSource.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenStreamRewriter.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/UnbufferedCharStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/UnbufferedTokenStream.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/Vocabulary.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/WritableToken.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/antlr4-common.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/antlr4-runtime.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATN.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNConfig.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNConfigSet.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNDeserializationOptions.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNDeserializer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNSerializer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNSimulator.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNType.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/AbstractPredicateTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ActionTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/AmbiguityInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ArrayPredictionContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/AtomTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BasicBlockStartState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BasicState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BlockEndState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BlockStartState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ContextSensitivityInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/DecisionEventInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/DecisionInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/DecisionState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/EmptyPredictionContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/EpsilonTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ErrorInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LL1Analyzer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerATNConfig.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerATNSimulator.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerActionExecutor.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerActionType.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerChannelAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerCustomAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerIndexedCustomAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerModeAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerMoreAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerPopModeAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerPushModeAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerSkipAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerTypeAction.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LookaheadEventInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LoopEndState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/NotSetTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/OrderedATNConfigSet.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ParseInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ParserATNSimulator.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PlusBlockStartState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PlusLoopbackState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PrecedencePredicateTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredicateEvalInfo.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredicateTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredictionContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredictionMode.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ProfilingATNSimulator.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RangeTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RuleStartState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RuleStopState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RuleTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/SemanticContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/SetTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/SingletonPredictionContext.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/StarBlockStartState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/StarLoopEntryState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/StarLoopbackState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/TokensStartState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/Transition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/WildcardTransition.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/DFA.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/DFASerializer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/DFAState.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/LexerDFASerializer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/InterpreterDataReader.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/Interval.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/IntervalSet.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/MurmurHash.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/Predicate.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/Any.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/Arrays.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/BitSet.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/CPPUtils.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/Declarations.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/StringUtils.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/guid.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/AbstractParseTreeVisitor.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ErrorNode.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ErrorNodeImpl.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/IterativeParseTreeWalker.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTree.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeProperty.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeVisitor.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeWalker.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/TerminalNode.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/TerminalNodeImpl.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/Trees.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/Chunk.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/ParseTreeMatch.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/ParseTreePattern.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/ParseTreePatternMatcher.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/RuleTagToken.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/TagChunk.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/TextChunk.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/TokenTagToken.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPath.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathElement.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathLexer.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathLexerErrorListener.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathRuleAnywhereElement.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathRuleElement.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathTokenAnywhereElement.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathTokenElement.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathWildcardAnywhereElement.h \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathWildcardElement.h \
+    scs/scgconsts.h \
+    scs/scgfileloader.h \
+    scs/scgfilewriter.h \
+    scs/scgobjectinforeader.h \
+    scs/scgstreamwriter.h \
+    fileloader.h \
+    filewriter.h \
     scgwindow.h \
     scgview.h \
     scgtemplateobjectbuilder.h \
@@ -81,6 +258,10 @@ HEADERS += \
     arrangers/scgarrangerhorizontal.h \
     arrangers/scgarrangergrid.h \
     arrangers/scgarranger.h \
+    scs/scgfileloader.h \
+    scs/scgfilewriter.h \
+    scs/scgobjectinforeader.h \
+    scs/scgstreamwriter.h \
     select/scgselectinputoutput.h \
     select/scgselect.h \
     select/scgselectsubgraph.h \
@@ -98,6 +279,165 @@ HEADERS += \
     scgtypedialog.h
 
 SOURCES += \
+    "$$SC_MEMORY_PATH"/sc-memory/sc_debug.cpp \
+    "$$SC_MEMORY_PATH"/sc-memory/sc_type.cpp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scsLexer.cpp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scsParser.cpp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs_parser.cpp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs_types.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRErrorListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRErrorStrategy.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRFileStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ANTLRInputStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/BailErrorStrategy.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/BaseErrorListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/BufferedTokenStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/CharStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/CommonToken.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/CommonTokenFactory.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/CommonTokenStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ConsoleErrorListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/DefaultErrorStrategy.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/DiagnosticErrorListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/Exceptions.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/FailedPredicateException.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/InputMismatchException.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/IntStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/InterpreterRuleContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/Lexer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/LexerInterpreter.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/LexerNoViableAltException.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ListTokenSource.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/NoViableAltException.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/Parser.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ParserInterpreter.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ParserRuleContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/ProxyErrorListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/RecognitionException.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/Recognizer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/RuleContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/RuleContextWithAltNum.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/RuntimeMetaData.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/Token.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenSource.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/TokenStreamRewriter.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/UnbufferedCharStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/UnbufferedTokenStream.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/Vocabulary.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/WritableToken.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATN.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNConfig.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNConfigSet.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNDeserializationOptions.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNDeserializer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNSerializer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNSimulator.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ATNState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/AbstractPredicateTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ActionTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/AmbiguityInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ArrayPredictionContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/AtomTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BasicBlockStartState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BasicState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BlockEndState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/BlockStartState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ContextSensitivityInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/DecisionEventInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/DecisionInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/DecisionState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/EmptyPredictionContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/EpsilonTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ErrorInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LL1Analyzer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerATNConfig.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerATNSimulator.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerActionExecutor.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerChannelAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerCustomAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerIndexedCustomAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerModeAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerMoreAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerPopModeAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerPushModeAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerSkipAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LexerTypeAction.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LookaheadEventInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/LoopEndState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/NotSetTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/OrderedATNConfigSet.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ParseInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ParserATNSimulator.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PlusBlockStartState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PlusLoopbackState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PrecedencePredicateTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredicateEvalInfo.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredicateTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredictionContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/PredictionMode.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/ProfilingATNSimulator.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RangeTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RuleStartState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RuleStopState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/RuleTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/SemanticContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/SetTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/SingletonPredictionContext.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/StarBlockStartState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/StarLoopEntryState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/StarLoopbackState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/TokensStartState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/Transition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/atn/WildcardTransition.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/DFA.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/DFASerializer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/DFAState.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/dfa/LexerDFASerializer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/InterpreterDataReader.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/Interval.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/IntervalSet.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/MurmurHash.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/misc/Predicate.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/Any.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/Arrays.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/CPPUtils.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/StringUtils.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/support/guid.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ErrorNode.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ErrorNodeImpl.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/IterativeParseTreeWalker.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTree.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeVisitor.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/ParseTreeWalker.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/TerminalNode.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/TerminalNodeImpl.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/Trees.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/Chunk.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/ParseTreeMatch.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/ParseTreePattern.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/ParseTreePatternMatcher.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/RuleTagToken.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/TagChunk.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/TextChunk.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/pattern/TokenTagToken.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPath.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathElement.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathLexer.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathLexerErrorListener.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathRuleAnywhereElement.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathRuleElement.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathTokenAnywhereElement.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathTokenElement.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathWildcardAnywhereElement.cpp \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathWildcardElement.cpp \
+    scs/scgconsts.cpp \
+    scs/scgfileloader.cpp \
+    scs/scgfilewriter.cpp \
+    scs/scgobjectinforeader.cpp \
+    scs/scgstreamwriter.cpp \
     scgwindow.cpp \
     scgview.cpp \
     scgtemplateobjectbuilder.cpp \
@@ -179,11 +519,23 @@ SOURCES += \
 TRANSLATIONS += media/translations/scg_en_EN.ts \
                 media/translations/scg_ru_RU.ts
 
+JAVA_PATH = "/usr/bin/java"
+ANTLR_COMMAND = "$$JAVA_PATH -jar \"$$ANTLR_LIB_PATH/antlr-4.7.1-complete.jar\" \"$$SC_MEMORY_PATH/sc-memory/scs/scs.g4\" -no-listener -package scs"
+
 lrelease.input         = TRANSLATIONS
 lrelease.output        = ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
-lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm
+lrelease.commands      = $$[QT_INSTALL_BINS]/lrelease ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_IN_PATH}/${QMAKE_FILE_IN_BASE}.qm;
+                         system($$ANTLR_COMMAND)
 lrelease.CONFIG       += no_link target_predeps
 QMAKE_EXTRA_COMPILERS += lrelease
 
 OTHER_FILES += \
     scgplugin.json
+
+DISTFILES += \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs.interp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scs.tokens \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scsLexer.interp \
+    "$$SC_MEMORY_PATH"/sc-memory/scs/scsLexer.tokens \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathLexer.g4 \
+    "$$ANTLR_LIB_PATH"/runtime/src/tree/xpath/XPathLexer.tokens \
