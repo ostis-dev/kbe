@@ -20,3 +20,4 @@ find_package (Qt4 COMPONENTS QtCore QtGui QtMain QtXml REQUIRED)
 
 add_subdirectory(kbe)
 add_subdirectory(plugins)
+add_subdirectory(thirdparty/antlr4)
