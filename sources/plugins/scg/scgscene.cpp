@@ -350,7 +350,7 @@ SCgBaseCommand* SCgScene::deleteSelObjectsCommand(SCgBaseCommand* parentCmd, boo
     return cmd;
 }
 
-SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &idtf, SCgBaseCommand* parentCmd, bool addToStack)
+SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &idtf, SCgBaseCommand* parentCmd, bool addToStack, bool isInitial)
 {
     Q_ASSERT_X(object != 0,
                "void SCgScene::changeIdtf(SCgObject *object, const QString &idtf)",
@@ -359,17 +359,28 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
     SCgBaseCommand* cmd = new SCgCommandObjectIdtfChange(this, object, idtf, parentCmd);
 
     // check if need to change object type
-    if (!idtf.isEmpty())
+    if (isInitial && !idtf.isEmpty())
     {
         SCgAlphabet &alphabet = SCgAlphabet::getInstance();
         bool typeChanged = false;
         QStringList splittedAlias = object->typeAlias().split("/");
         if (object->type() == SCgNode::Type || object->type() == SCgPair::Type)
         {
-            if (idtf.startsWith('_') && splittedAlias.at(1) != alphabet.aliasFromConstCode(SCgAlphabet::Var))
+            bool isVar = splittedAlias.at(1) == alphabet.aliasFromConstCode(SCgAlphabet::Var);
+            bool shouldBeVar = idtf.startsWith('_');
+            if (idtf.length() != 0)
             {
-                splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Var);
-                typeChanged = true;
+                if (shouldBeVar && !isVar)
+                {
+                    splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Var);
+                    typeChanged = true;
+                }
+
+                if (!shouldBeVar && isVar)
+                {
+                    splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Const);
+                    typeChanged = true;
+                }
             }
         }
 
@@ -398,7 +409,7 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
             for (int i = 0; i < splittedAlias.size(); ++i)
                 newType.append(splittedAlias.at(i) + "/");
 
-            changeObjectTypeCommand(object, newType.mid(0, newType.size() - 1), cmd, false);
+            changeObjectTypeCommand(object, newType.mid(0, newType.size() - 1), cmd, false, false);
         }
     }
 
@@ -409,11 +420,29 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
 }
 
 
-SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QString &type, SCgBaseCommand* parentCmd, bool addToStack)
+SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QString &type, SCgBaseCommand* parentCmd, bool addToStack, bool isInitial)
 {
     QString oldType = object->typeAlias();
 
     SCgBaseCommand* cmd = new SCgCommandObjectTypeChange(this, object, type, parentCmd);
+
+    QString oldIdtf = object->idtfValue();
+    if (isInitial && !oldIdtf.isEmpty()) {
+        QStringList splittedAlias = type.split("/");
+        SCgAlphabet &alphabet = SCgAlphabet::getInstance();
+        bool isTypeVar = splittedAlias.at(1) == alphabet.aliasFromConstCode(SCgAlphabet::Var);
+        bool isNameVar = oldIdtf.startsWith('_');
+        if (!oldIdtf.isEmpty())
+        {
+            if (isTypeVar && !isNameVar) changeIdtfCommand(object, oldIdtf.insert(0, '_'), cmd, false);
+            if (!isTypeVar && isNameVar)
+            {
+                int i = 0;
+                while (oldIdtf[i] == '_') ++i;
+                changeIdtfCommand(object, oldIdtf.remove(0, i), cmd, false, false);
+            }
+        }
+    }
 
     if (addToStack)
         mUndoStack->push(cmd);

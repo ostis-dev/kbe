@@ -165,7 +165,7 @@ public:
     SCgBaseCommand* changeIdtfCommand(SCgObject *object,
                                       const QString &idtf,
                                       SCgBaseCommand* parentCmd = 0,
-                                      bool addToStack = true);
+                                      bool addToStack = true, bool isInitial = true);
 
     /*! Create undo/redo command to change object type
       * @param object Pointer of sc.g-object to change type
@@ -176,7 +176,7 @@ public:
     SCgBaseCommand* changeObjectTypeCommand(SCgObject *object,
                                             const QString &type,
                                             SCgBaseCommand* parentCmd = 0,
-                                            bool addToStack = true);
+                                            bool addToStack = true, bool isInitial = true);
 
     /*! Create undo/redo command to delete contour without child objects
      * @param contour Pointer of contour tp delete
