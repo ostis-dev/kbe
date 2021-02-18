@@ -368,19 +368,16 @@ SCgBaseCommand* SCgScene::changeIdtfCommand(SCgObject *object, const QString &id
         {
             bool isVar = splittedAlias.at(1) == alphabet.aliasFromConstCode(SCgAlphabet::Var);
             bool shouldBeVar = idtf.startsWith('_');
-            if (idtf.length() != 0)
+            if (shouldBeVar && !isVar)
             {
-                if (shouldBeVar && !isVar)
-                {
-                    splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Var);
-                    typeChanged = true;
-                }
+                splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Var);
+                typeChanged = true;
+            }
 
-                if (!shouldBeVar && isVar)
-                {
-                    splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Const);
-                    typeChanged = true;
-                }
+            if (!shouldBeVar && isVar)
+            {
+                splittedAlias[1] = alphabet.aliasFromConstCode(SCgAlphabet::Const);
+                typeChanged = true;
             }
         }
 
@@ -427,20 +424,18 @@ SCgBaseCommand* SCgScene::changeObjectTypeCommand(SCgObject *object, const QStri
     SCgBaseCommand* cmd = new SCgCommandObjectTypeChange(this, object, type, parentCmd);
 
     QString oldIdtf = object->idtfValue();
-    if (isInitial && !oldIdtf.isEmpty()) {
+    if (isInitial && !oldIdtf.isEmpty())
+    {
         QStringList splittedAlias = type.split("/");
         SCgAlphabet &alphabet = SCgAlphabet::getInstance();
         bool isTypeVar = splittedAlias.at(1) == alphabet.aliasFromConstCode(SCgAlphabet::Var);
         bool isNameVar = oldIdtf.startsWith('_');
-        if (!oldIdtf.isEmpty())
+        if (isTypeVar && !isNameVar) changeIdtfCommand(object, oldIdtf.insert(0, '_'), cmd, false);
+        if (!isTypeVar && isNameVar)
         {
-            if (isTypeVar && !isNameVar) changeIdtfCommand(object, oldIdtf.insert(0, '_'), cmd, false);
-            if (!isTypeVar && isNameVar)
-            {
-                int i = 0;
-                while (oldIdtf[i] == '_') ++i;
-                changeIdtfCommand(object, oldIdtf.remove(0, i), cmd, false, false);
-            }
+            int i = 0;
+            while (oldIdtf[i] == '_') ++i;
+            changeIdtfCommand(object, oldIdtf.remove(0, i), cmd, false, false);
         }
     }
 
