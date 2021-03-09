@@ -26,7 +26,8 @@ public:
     void finishNodes(QVector<SCgObject *> const & vec);
 
 private:
-    class StreamWriter {
+    class StreamWriter
+    {
     public:
         QString indent;
         StreamWriter();

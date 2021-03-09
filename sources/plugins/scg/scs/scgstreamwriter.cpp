@@ -35,7 +35,8 @@ void SCgStreamWriter::preprocess(QVector<SCgObject *> const & vec)
             children[parId].push_back(obj);
     }
 
-    for (auto obj : vec) {
+    for (auto obj : vec)
+    {
         if (obj->type() == SCgPair::Type)
         {
             SCgPair *pair = static_cast<SCgPair *>(obj);
@@ -92,7 +93,7 @@ void SCgStreamWriter::writeObjectWithDeps(SCgObject *obj)
 
     if (dfsStatus[obj] == STATUS_WRITTEN) return;
 
-    // DFS
+    //! DFS
     QStack<SCgObject *> stack;
     stack.push_front(obj);
     dfsStatus[obj] = STATUS_QUEUED;
@@ -149,7 +150,7 @@ void SCgStreamWriter::writeNode(SCgObject *obj)
     QString idtf = getIdtf(obj);
     QString scgIdtf = getSCgIdtf(obj);
 
-    // scs
+    //! scs
     if (node->contentType() != 0)
     {
         QString content;
@@ -160,7 +161,7 @@ void SCgStreamWriter::writeNode(SCgObject *obj)
         scs.write(idtf + " = " + linkWrap(content) + END_SENT);
     }
 
-    // scg
+    //! scg
     RelationValueVector values;
     values.push_back({ SCgConsts::NREL_SCG_REPRESENTATION, scgIdtf });
     writeSCgProperties(idtf, values);
@@ -199,7 +200,7 @@ void SCgStreamWriter::writePair(SCgObject *obj)
          convertType(obj->typeAlias()) << " " << getIdtf(end) << ")" << END_SENT;
     scs.write(s.readAll());
 
-    //scg
+    //! scg
     begin = pair->beginObject();
     end = pair->endObject();
     buf = QString();
@@ -231,7 +232,7 @@ void SCgStreamWriter::writeBus(SCgObject *obj)
     QString buf;
     QTextStream s(&buf);
 
-    // scg
+    //! scg
     s << idtf + END_LINE;
     s << TAB + "<- " + SCgConsts::CONCEPT_SCG_BUS + END_PART_SENT;
     s << TAB + "=> " + SCgConsts::NREL_OWNER + ": " + getSCgIdtf(bus->owner()) + END_SENT;
@@ -295,9 +296,9 @@ void SCgStreamWriter::writePoints(QString const & idtf, QVector<QPointF> const &
 
     int size = points.size();
     QVector<QString> names(size);
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < size; i++)
         names[i] = getTemp("point");
-    }
+
     s << idtf + " => " + SCgConsts::NREL_DECOMPOSITION + ": {" + END_LINE;
     for (int i = 0; i < size; i++)
     {
@@ -341,7 +342,7 @@ QString SCgStreamWriter::convertType(QString const & type)
 {
     static const QHash<QString, QString> types =
     {
-        //const perm
+        //! const perm
         { "node/const/perm/general", "sc_node" },
         { "node/const/perm/terminal", "sc_node_abstract" },
         { "node/const/perm/struct", "sc_node_struct" },
@@ -351,7 +352,7 @@ QString SCgStreamWriter::convertType(QString const & type)
         { "node/const/perm/group", "sc_node_class" },
         { "node/const/perm/super_group", "sc_node" }, //not supported
 
-        //var perm
+        //! var perm
         { "node/var/perm/general", "sc_node" },
         { "node/var/perm/terminal", "sc_node_abstract" },
         { "node/var/perm/struct", "sc_node_struct" },
@@ -416,61 +417,68 @@ QString SCgStreamWriter::getIdtf(QString const & base)
     return base + QString::number(count[base]++);
 }
 
-QString SCgStreamWriter::makeAlias(QString const & base) {
+QString SCgStreamWriter::makeAlias(QString const & base)
+{
     return "@" + base;
 }
 
-QString SCgStreamWriter::makeTemp(QString const & base) {
+QString SCgStreamWriter::makeTemp(QString const & base)
+{
     return ".." + base;
 }
 
 QString SCgStreamWriter::getIdtf(SCgObject *obj)
 {
-    // Check if idtf is already defined.
+    //! Check if idtf is already defined.
     uint64_t id = obj->id();
     if (names.find(id) != names.end()) return names[id];
 
-    // Check if idtf is user-defined
+    //! Check if idtf is user-defined
     QString name = obj->idtfValue();
-    if (!name.isEmpty()) {
-        if (obj->type() == SCgPair::Type || obj->type() == SCgContour::Type) {
+    if (!name.isEmpty())
+    {
+        if (obj->type() == SCgPair::Type || obj->type() == SCgContour::Type)
             name = makeAlias(name);
-        }
         names[id] = name;
         return names[id];
     }
 
-    // Define idtf when it is not user-defined
-    if (obj->type() == SCgNode::Type) {
+    //! Define idtf when it is not user-defined
+    if (obj->type() == SCgNode::Type)
+    {
         SCgNode *node = static_cast<SCgNode*>(obj);
-        if (node->contentType() != 0) {
+        if (node->contentType() != 0)
+        {
             name = getAlias("link");
             names[id] = name;
-        } else {
+        }
+        else {
             SCgAlphabet &alphabet = SCgAlphabet::getInstance();
             QStringList splittedAlias = obj->typeAlias().split("/");
             bool isVar = splittedAlias.at(1) == alphabet.aliasFromConstCode(SCgAlphabet::Var);
-            if (isVar) {
+            if (isVar)
                 names[id] = getTemp("_node");
-            } else {
+            else
                 names[id] = getTemp("node");
-            }
         }
-    } else if (obj->type() == SCgPair::Type) {
-        names[id] = getAlias("pair");
-    } else if (obj->type() == SCgBus::Type) {
-        names[id] = getTemp("bus");
-    } else if (obj->type() == SCgContour::Type) {
-        names[id] = getAlias("contour");
     }
+    else if (obj->type() == SCgPair::Type)
+        names[id] = getAlias("pair");
+    else if (obj->type() == SCgBus::Type)
+        names[id] = getTemp("bus");
+    else if (obj->type() == SCgContour::Type)
+        names[id] = getAlias("contour");
     return names[id];
 }
 
-QString SCgStreamWriter::getSCgIdtf(SCgObject *obj) {
-    if (obj->type() != SCgNode::Type && obj->type() != SCgPair::Type) return getIdtf(obj);
+QString SCgStreamWriter::getSCgIdtf(SCgObject *obj)
+{
+    if (obj->type() != SCgNode::Type && obj->type() != SCgPair::Type)
+        return getIdtf(obj);
 
     uint64_t id = obj->id();
-    if (scgNames.find(id) == scgNames.end()) {
+    if (scgNames.find(id) == scgNames.end())
+    {
         if (obj->type() == SCgNode::Type) scgNames[id] = getTemp("scgNode");
         if (obj->type() == SCgPair::Type) scgNames[id] = getAlias("scgPair");
     }

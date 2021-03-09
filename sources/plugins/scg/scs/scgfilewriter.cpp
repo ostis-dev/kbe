@@ -10,9 +10,13 @@
 #include <QApplication>
 #include <QFileInfo>
 
-SCgFileWriter::SCgFileWriter() {}
+SCgFileWriter::SCgFileWriter()
+{
+}
 
-SCgFileWriter::~SCgFileWriter() {}
+SCgFileWriter::~SCgFileWriter()
+{
+}
 
 bool SCgFileWriter::save(QString file_name, QObject *input)
 {
@@ -30,7 +34,8 @@ bool SCgFileWriter::save(QString file_name, QObject *input)
 
     QVector<SCgObject *> objs;
     QVector<SCgObject *> surfaceObjs;
-    foreach (item, items) {
+    foreach (item, items)
+    {
         if (SCgObject::isSCgObjectType(item->type()))
         {
             SCgObject *obj = static_cast<SCgObject*>(item);
@@ -58,7 +63,8 @@ QString SCgFileWriter::getLayoutFileName(QString name)
 
 bool SCgFileWriter::openFile(QFile &file)
 {
-    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+    if (!file.open(QFile::WriteOnly | QFile::Text))
+    {
         QMessageBox::warning(0, qAppName(),
                               QObject::tr("File saving error.\nCannot write file %1:\n%2.")
                               .arg(file.fileName())

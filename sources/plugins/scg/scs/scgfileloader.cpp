@@ -16,21 +16,17 @@
 
 SCgFileLoader::SCgFileLoader()
 {
-
 }
 
 SCgFileLoader::~SCgFileLoader()
 {
-
 }
 
 bool SCgFileLoader::load(QString file_name, QObject *output)
 {
     SCgScene *scene = qobject_cast<SCgScene*>(output);
 
-    // read data from file
-    QString errorStr;
-
+    //! Read data from file
     mFileName = file_name;
     QString layoutFileName = file_name.replace(file_name.size() - 3, 3, "layout.scs");
     QFile file(mFileName);
@@ -38,20 +34,15 @@ bool SCgFileLoader::load(QString file_name, QObject *output)
     QFile layoutFile(layoutFileName);
     layoutFile.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    /////////////////////////////////////////////
-    // Read document
+    //! Read files
     SCgObjectInfoReader reader;
     reader.read(&file, &layoutFile);
     file.close();
     layoutFile.close();
 
-    /////////////////////////////////////////////
-    /////////////////////////////////////////////
-    //Place objects to scene
+    //! Place objects to the scene
     DefaultSCgObjectBuilder objectBuilder(scene);
     objectBuilder.buildObjects(reader.objectsInfo());
-
-    /////////////////////////////////////////////
 
     return true;
 }
