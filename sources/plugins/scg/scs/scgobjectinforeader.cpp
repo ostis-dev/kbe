@@ -59,22 +59,23 @@ bool SCgObjectInfoReader::read(QIODevice *dev, QIODevice *layoutDev)
 
     scs::Parser::TripleVector triples = parser.GetParsedTriples();
     QList<scs::ElementHandle> contours;
-    // Walk through all of the triples
+    //! Walk through all of the triples
     for (auto const & t : triples)
     {
         auto const & src = parser.GetParsedElement(t.m_source);
-        if (src.GetIdtf() == SCgConsts::CONCEPT_SCG_CONTOUR.toStdString()) contours.append(t.m_target);
+        if (src.GetIdtf() == SCgConsts::CONCEPT_SCG_CONTOUR.toStdString())
+            contours.append(t.m_target);
 
         addEdge(t.m_edge, t.m_source, t.m_target);
     }
-    // Set parents
+    //! Set parents
     for (auto const & contour : contours)
     {
         auto set = findRelValueByIdtf(contour, SCgConsts::NREL_INCLUDING);
         for (auto member : getOut(set))
             parents[member.second] = contour;
     }
-    // Parse elements
+    //! Parse elements
     for (auto const & t : triples)
     {
         auto const & srcIdtf = parser.GetParsedElement(t.m_source).GetIdtf();
@@ -300,12 +301,14 @@ scs::ElementHandle SCgObjectInfoReader::findRelValueByIdtf(const scs::ElementHan
     return scs::ElementHandle();
 }
 
-QString SCgObjectInfoReader::getId(QString idtf) {
+QString SCgObjectInfoReader::getId(QString idtf)
+{
     if (ids.find(idtf) == ids.end()) ids[idtf] = ++cnt;
     return QString::number(ids[idtf]);
 }
 
-QString SCgObjectInfoReader::getParentId(scs::ElementHandle const &el) {
+QString SCgObjectInfoReader::getParentId(scs::ElementHandle const &el)
+{
     if (parents.find(el) != parents.end())
     {
         QString idtf = QString::fromStdString(parser.GetParsedElement(parents[el]).GetIdtf());
