@@ -57,36 +57,6 @@ void SCgStreamWriter::writeOrdered(QVector<SCgObject *> const & vec)
         writeObjectWithDeps(obj);
 }
 
-void SCgStreamWriter::finishNodes(QVector<SCgObject *> const & vec)
-{
-    QSet<SCgObject *> pairAdjacent;
-    for (auto obj : vec)
-    {
-        if (obj->type() == SCgPair::Type)
-        {
-            SCgPair *pair = static_cast<SCgPair*>(obj);
-            if (pair->beginObject()->type() == SCgNode::Type)
-                pairAdjacent.insert(pair->beginObject());
-            if (pair->endObject()->type() == SCgNode::Type)
-                pairAdjacent.insert(pair->endObject());
-        }
-    }
-    for (auto obj : vec)
-    {
-        if (obj->type() == SCgNode::Type)
-        {
-            SCgNode *node = static_cast<SCgNode*>(obj);
-            QString idtf = getIdtf(node);
-            scs.write(idtf + " <- " + (node->contentType() == 0 ? convertType(node->typeAlias()) : "sc_link") + END_SENT);
-            if (pairAdjacent.find(node) == pairAdjacent.end() && node->parentId() != 0)
-            {
-                SCgObject *parent = static_cast<SCgObject *>(node->parentItem());
-                scs.write(getIdtf(parent) + " -> " + idtf + END_SENT);
-            }
-        }
-    }
-}
-
 void SCgStreamWriter::writeObjectWithDeps(SCgObject *obj)
 {
     enum {STATUS_NOT_QUEUED, STATUS_QUEUED, STATUS_PROCESSED, STATUS_WRITTEN};
@@ -141,6 +111,7 @@ void SCgStreamWriter::writeObject(SCgObject *obj)
     default:
         break;
     }
+    scs.write(getIdtf(obj) + " => nrel_system_identifier: " + linkWrap(obj->idtfValue()) + END_SENT);
 }
 
 void SCgStreamWriter::writeNode(SCgObject *obj)
@@ -433,17 +404,8 @@ QString SCgStreamWriter::getIdtf(SCgObject *obj)
     uint64_t id = obj->id();
     if (names.find(id) != names.end()) return names[id];
 
-    //! Check if idtf is user-defined
-    QString name = obj->idtfValue();
-    if (!name.isEmpty())
-    {
-        if (obj->type() == SCgPair::Type || obj->type() == SCgContour::Type)
-            name = makeAlias(name);
-        names[id] = name;
-        return names[id];
-    }
-
-    //! Define idtf when it is not user-defined
+    //! Define idtf when it is not defined
+    QString name;
     if (obj->type() == SCgNode::Type)
     {
         SCgNode *node = static_cast<SCgNode*>(obj);

@@ -46,7 +46,6 @@ bool SCgFileWriter::save(QString file_name, QObject *input)
     }
     stream.preprocess(objs);
     stream.writeOrdered(surfaceObjs);
-    stream.finishNodes(objs);
 
     fileOut.close();
     layoutFileOut.close();

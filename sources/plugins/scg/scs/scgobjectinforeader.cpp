@@ -3,7 +3,6 @@
 #include <QRegularExpression>
 #include <QTextStream>
 #include <memory>
-#include <QDebug>
 #include <QMap>
 
 #include "scgobjectsinfo.h"
@@ -100,15 +99,15 @@ bool SCgObjectInfoReader::read(QIODevice *dev, QIODevice *layoutDev)
 void SCgObjectInfoReader::parseNode(const scs::ElementHandle &node, const scs::ElementHandle &scgNode)
 {
     ScType type = parser.GetParsedElement(node).GetType();
-    QString idtf = QString::fromStdString(parser.GetParsedElement(node).GetIdtf());
     QString scgIdtf = QString::fromStdString(parser.GetParsedElement(scgNode).GetIdtf());
+    QString systemIdtf = getSystemIdtf(node);
     auto values = getRelValues(scgNode);
 
     std::unique_ptr<SCgNodeInfo> nodeInfo(new SCgNodeInfo());
 
     nodeInfo->posRef() = QPointF(values[SCgConsts::NREL_X].toDouble(), values[SCgConsts::NREL_Y].toDouble());
     nodeInfo->idtfPosRef() = values[SCgConsts::NREL_IDTF_POS].toDouble();
-    nodeInfo->idtfValueRef() = idtf.startsWith('.') ? "" : idtf;
+    nodeInfo->idtfValueRef() = systemIdtf;
     nodeInfo->idRef() = getId(scgIdtf);
     nodeInfo->parentIdRef() = getParentId(scgNode);
     nodeInfo->typeAliasRef() = convertType(type);
@@ -142,12 +141,13 @@ void SCgObjectInfoReader::parseNode(const scs::ElementHandle &node, const scs::E
 void SCgObjectInfoReader::parsePair(const scs::ElementHandle &pair, const scs::ElementHandle &scgPair)
 {
     ScType type = parser.GetParsedElement(pair).GetType();
+    QString systemIdtf = getSystemIdtf(pair);
     QString scgIdtf = QString::fromStdString(parser.GetParsedElement(scgPair).GetIdtf());
     auto values = getRelValues(scgPair);
 
     std::unique_ptr<SCgPairInfo> pairInfo(new SCgPairInfo());
 
-    pairInfo->idtfValueRef() = "";
+    pairInfo->idtfValueRef() = systemIdtf;
     pairInfo->idRef() = getId(scgIdtf);
     pairInfo->beginDotRef() = values[SCgConsts::NREL_START_RATIO].toDouble();
     pairInfo->endDotRef() = values[SCgConsts::NREL_END_RATIO].toDouble();
@@ -174,10 +174,11 @@ void SCgObjectInfoReader::parseBus(const scs::ElementHandle &bus)
 {
     std::unique_ptr<SCgBusInfo> busInfo(new SCgBusInfo());
     QString idtf = QString::fromStdString(parser.GetParsedElement(bus).GetIdtf());
+    QString systemIdtf = getSystemIdtf(bus);
 
     auto values = getRelValues(bus);
 
-    busInfo->idtfValueRef() = "";
+    busInfo->idtfValueRef() = systemIdtf;
     busInfo->typeAliasRef() = "bus";
     busInfo->idRef() = getId(idtf);
     auto ownerIdtf = parser.GetParsedElement(findRelValueByIdtf(bus, SCgConsts::NREL_OWNER)).GetIdtf();
@@ -196,11 +197,12 @@ void SCgObjectInfoReader::parseContour(const scs::ElementHandle &contour)
 {
     std::unique_ptr<SCgContourInfo> contourInfo(new SCgContourInfo());
     QString idtf = QString::fromStdString(parser.GetParsedElement(contour).GetIdtf());
+    QString systemIdtf = getSystemIdtf(contour);
 
     auto values = getRelValues(contour);
 
     contourInfo->idRef() = getId(idtf);
-    contourInfo->idtfValueRef() = "";
+    contourInfo->idtfValueRef() = systemIdtf;
     contourInfo->parentIdRef() = getParentId(contour);
 
     auto set = findRelValueByIdtf(contour, SCgConsts::NREL_DECOMPOSITION);
@@ -316,6 +318,14 @@ QString SCgObjectInfoReader::getParentId(scs::ElementHandle const &el)
     }
     else
         return "0";
+}
+
+QString SCgObjectInfoReader::getSystemIdtf(scs::ElementHandle const &el)
+{
+    auto link = parser.GetParsedElement(findRelValueByIdtf(el, "nrel_system_identifier"));
+    if (!link.GetType().IsLink()) return QString();
+    QString systemIdtf = QString::fromStdString(link.GetValue());
+    return systemIdtf;
 }
 
 QString SCgObjectInfoReader::convertType(ScType type)
