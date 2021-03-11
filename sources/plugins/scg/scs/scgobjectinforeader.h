@@ -63,6 +63,7 @@ private:
 
     QString getId(QString idtf);
     QString getParentId(const scs::ElementHandle &el);
+    QString getSystemIdtf(const scs::ElementHandle &el);
 
     static QString convertType(ScType type);
 

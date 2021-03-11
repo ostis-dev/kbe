@@ -23,7 +23,6 @@ public:
 
     void preprocess(QVector<SCgObject *> const & vec);
     void writeOrdered(QVector<SCgObject *> const & vec);
-    void finishNodes(QVector<SCgObject *> const & vec);
 
 private:
     class StreamWriter
