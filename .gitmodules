@@ -1,0 +1,3 @@
+[submodule "thirdparty/sc-machine"]
+	path = thirdparty/sc-machine
+	url = https://github.com/ostis-dev/sc-machine.git

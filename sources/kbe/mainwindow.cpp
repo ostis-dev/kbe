@@ -480,7 +480,6 @@ void MainWindow::onFileSaveAs(QWidget* window)
     }
 
     mBlurEffect->setEnabled(false);
-
 }
 
 void MainWindow::onFileSaveAll()

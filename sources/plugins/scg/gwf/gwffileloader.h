@@ -13,11 +13,12 @@
 #include <QPointF>
 #include <QObject>
 
+#include <fileloader.h>
+
 class SCgScene;
 class SCgObject;
 
-class GWFFileLoader
-
+class GWFFileLoader : public FileLoader
 {
 public:
     GWFFileLoader();

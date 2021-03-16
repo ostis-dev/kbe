@@ -44,6 +44,10 @@
 #include "config.h"
 #include "scgundoview.h"
 
+#include "scs/scgfileloader.h"
+#include "scs/scgfilewriter.h"
+#include "fileloader.h"
+
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
 
@@ -316,23 +320,33 @@ QIcon SCgWindow::icon() const
 
 bool SCgWindow::loadFromFile(const QString &fileName)
 {
-    GWFFileLoader loader;
+    std::unique_ptr<FileLoader> loader;
+    if (fileName.endsWith(".scs"))
+        loader = std::make_unique<SCgFileLoader>();
+    else if (fileName.endsWith(".gwf"))
+        loader = std::make_unique<GWFFileLoader>();
+    else return false;
 
-    if (loader.load(fileName, mView->scene()))
+    if (loader->load(fileName, mView->scene()))
     {
         mFileName = fileName;
         setWindowTitle(mFileName);
         emitEvent(EditorObserverInterface::ContentLoaded);
         return true;
-    }else
-        return false;
+    }
+    return false;
 }
 
 bool SCgWindow::saveToFile(const QString &fileName)
 {
-    GWFFileWriter writer;
+    std::unique_ptr<FileWriter> writer;
+    if (fileName.endsWith(".scs"))
+        writer = std::make_unique<SCgFileWriter>();
+    else if (fileName.endsWith(".gwf"))
+        writer = std::make_unique<GWFFileWriter>();
+    else return false;
 
-    if (writer.save(fileName, mView->scene()))
+    if (writer->save(fileName, mView->scene()))
     {
         mFileName = fileName;
         setWindowTitle(mFileName);
@@ -340,7 +354,7 @@ bool SCgWindow::saveToFile(const QString &fileName)
         emitEvent(EditorObserverInterface::ContentSaved);
 
         return true;
-    }else
+    } else
         return false;
 }
 
@@ -642,7 +656,8 @@ bool SCgWindow::isSaved() const
 QStringList SCgWindow::supportedFormatsExt() const
 {
     QStringList res;
-    res << "gwf";
+    res.append("gwf");
+    res.append("scs");
     return res;
 }
 
@@ -699,7 +714,8 @@ EditorInterface* SCgWindowFactory::createInstance()
 QStringList SCgWindowFactory::supportedFormatsExt()
 {
     QStringList res;
-    res << "gwf";
+    res.append("gwf");
+    res.append("scs");
     return res;
 }
 
