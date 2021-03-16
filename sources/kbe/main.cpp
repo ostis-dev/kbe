@@ -26,6 +26,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    // Disable text scaling https://www.charlesodale.com/setting-qt-to-ignore-windows-dpi-text-size-personalization/
+    QApplication::setAttribute(Qt::AA_Use96Dpi);
+
     a.setOrganizationName("OSTIS");
     a.setOrganizationDomain("ostis.net");
     a.setApplicationName("KBE");

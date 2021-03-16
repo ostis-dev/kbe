@@ -392,7 +392,7 @@ void SCgNode::setIdtfValue(const QString &idtf)
         {
             mTextItem = new SCgNodeTextItem(idtf,this);
 
-            QFont font("Times New Roman [Arial]", 10, 10, false);
+            QFont font("Times New Roman", 10, 10, false);
             font.setBold(true);
             font.setItalic(true);
 

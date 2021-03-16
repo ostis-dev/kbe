@@ -491,7 +491,6 @@ void MainWindow::onFileSaveAll()
 void MainWindow::onFileExportToImage()
 {
 
-
 }
 
 void MainWindow::onFileExit()

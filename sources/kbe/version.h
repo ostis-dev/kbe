@@ -53,7 +53,7 @@ protected:
 
 #define MAJOR   0
 #define MINOR   4
-#define PATCH   0
+#define PATCH   1
 #define REVISION    0
 #define RC      ""
 #define CODENAME    "integrator"
