@@ -132,6 +132,8 @@ void SCgStreamWriter::writeNode(SCgObject *obj)
         scs.write(idtf + " = " + linkWrap(content) + END_SENT);
     }
 
+    scg.write(idtf + " <- " + convertType(obj->typeAlias()) + END_SENT);
+
     //! scg
     RelationValueVector values;
     values.push_back({ SCgConsts::NREL_SCG_REPRESENTATION, scgIdtf });
@@ -247,7 +249,7 @@ void SCgStreamWriter::writeContour(SCgObject *obj)
 void SCgStreamWriter::writeSCgProperties(QString const & idtf, RelationValueVector const & relations)
 {
     int size = relations.size();
-    assert(size != 0);
+    //assert(size != 0);
     QString buf;
     QTextStream s(&buf);
     s << idtf << END_LINE;
@@ -313,6 +315,9 @@ QString SCgStreamWriter::convertType(QString const & type)
 {
     static const QHash<QString, QString> types =
     {
+        //! not define
+        { "node/-/-/not_define", "sc_node" }, //not supported
+
         //! const perm
         { "node/const/perm/general", "sc_node" },
         { "node/const/perm/terminal", "sc_node_abstract" },
@@ -332,6 +337,47 @@ QString SCgStreamWriter::convertType(QString const & type)
         { "node/var/perm/relation", "sc_node_norole_relation" },
         { "node/var/perm/group", "sc_node_class" },
         { "node/var/perm/super_group", "sc_node" }, //not supported
+
+        //! meta perm
+        { "node/meta/perm/general", "sc_node" }, //not supported
+        { "node/meta/perm/terminal", "sc_node" }, //not supported
+        { "node/meta/perm/struct", "sc_node" }, //not supported
+        { "node/meta/perm/tuple", "sc_node" }, //not supported
+        { "node/meta/perm/role", "sc_node" }, //not supported
+        { "node/meta/perm/relation", "sc_node" }, //not supported
+        { "node/meta/perm/group", "sc_node" }, //not supported
+        { "node/meta/perm/super_group", "sc_node" }, //not supported
+
+        //! const temp
+        { "node/const/temp/general", "sc_node" }, //not supported
+        { "node/const/temp/terminal", "sc_node" }, //not supported
+        { "node/const/temp/struct", "sc_node" }, //not supported
+        { "node/const/temp/tuple", "sc_node" }, //not supported
+        { "node/const/temp/role", "sc_node" }, //not supported
+        { "node/const/temp/relation", "sc_node" }, //not supported
+        { "node/const/temp/group", "sc_node" }, //not supported
+        { "node/const/temp/super_group", "sc_node" }, //not supported
+
+        //! var temp
+        { "node/var/temp/general", "sc_node" }, //not supported
+        { "node/var/temp/terminal", "sc_node" }, //not supported
+        { "node/var/temp/struct", "sc_node" }, //not supported
+        { "node/var/temp/tuple", "sc_node" }, //not supported
+        { "node/var/temp/role", "sc_node" }, //not supported
+        { "node/var/temp/relation", "sc_node" }, //not supported
+        { "node/var/temp/group", "sc_node" }, //not supported
+        { "node/var/temp/super_group", "sc_node" }, //not supported
+
+        //! meta temp
+        { "node/meta/temp/general", "sc_node" }, //not supported
+        { "node/meta/temp/terminal", "sc_node" }, //not supported
+        { "node/meta/temp/struct", "sc_node" }, //not supported
+        { "node/meta/temp/tuple", "sc_node" }, //not supported
+        { "node/meta/temp/role", "sc_node" }, //not supported
+        { "node/meta/temp/relation", "sc_node" }, //not supported
+        { "node/meta/temp/group", "sc_node" }, //not supported
+        { "node/meta/temp/super_group", "sc_node" }, //not supported
+
 
         { "pair/const/-/perm/noorien", "<=>" },
         { "pair/const/-/perm/orient", "=>"},
@@ -381,7 +427,6 @@ void SCgStreamWriter::StreamWriter::setDevice(QIODevice *device)
 {
     stream.setDevice(device);
 }
-
 
 QString SCgStreamWriter::getIdtf(QString const & base)
 {
