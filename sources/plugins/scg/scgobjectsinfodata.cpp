@@ -57,7 +57,8 @@ SCgNodeInfoData::SCgNodeInfoData(const SCgNodeInfoData &other): QSharedData(othe
                                     mContentVisible(other.mContentVisible),
                                     mContentFilename(other.mContentFilename),
                                     mContentData(other.mContentData),
-                                    mIdtfPos(other.mIdtfPos)
+                                    mIdtfPos(other.mIdtfPos),
+                                    scsId(other.scsId)
 {
 
 }

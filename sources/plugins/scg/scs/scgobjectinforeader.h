@@ -49,6 +49,7 @@ private:
     QTextStream scgStream;
 
     void parseNode(const scs::ElementHandle &node, const scs::ElementHandle &scgNode);
+    void parseNode2(const scs::ElementHandle &node, const scs::ElementHandle &scgNode, QString const & typev);
     void parsePair(const scs::ElementHandle &pair, const scs::ElementHandle &scsPair);
     void parseBus(const scs::ElementHandle &bus);
     void parseContour(const scs::ElementHandle &contour);
@@ -66,6 +67,8 @@ private:
     QString getSystemIdtf(const scs::ElementHandle &el);
 
     static QString convertType(ScType type);
+    bool isTypeExtended(QString type);
+    static QString convertExtendedType(QString const & type);
 
     //! Deletes all read info.
     void del();

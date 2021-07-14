@@ -71,6 +71,7 @@ private:
     QString mContentFilename;
     QVariant mContentData;
     int mIdtfPos;
+    QString scsId;
 };
 
 

@@ -132,8 +132,6 @@ void SCgStreamWriter::writeNode(SCgObject *obj)
         scs.write(idtf + " = " + linkWrap(content) + END_SENT);
     }
 
-    scg.write(idtf + " <- " + convertType(obj->typeAlias()) + END_SENT);
-
     //! scg
     RelationValueVector values;
     values.push_back({ SCgConsts::NREL_SCG_REPRESENTATION, scgIdtf });
@@ -152,6 +150,7 @@ void SCgStreamWriter::writeNode(SCgObject *obj)
         values.push_back({ SCgConsts::NREL_CONTENT_FILENAME, linkWrap(node->contentFileName()) });
     }
     writeSCgProperties(scgIdtf, values);
+    scg.write(idtf + " <- " + convertType(obj->typeAlias()) + END_SENT);
 }
 
 void SCgStreamWriter::writePair(SCgObject *obj)
@@ -316,7 +315,7 @@ QString SCgStreamWriter::convertType(QString const & type)
     static const QHash<QString, QString> types =
     {
         //! not define
-        { "node/-/-/not_define", "sc_node" }, //not supported
+        { "node/-/-/not_define", "sc_node_not_define" }, //not supported
 
         //! const perm
         { "node/const/perm/general", "sc_node" },
@@ -326,7 +325,7 @@ QString SCgStreamWriter::convertType(QString const & type)
         { "node/const/perm/role", "sc_node_role_relation" },
         { "node/const/perm/relation", "sc_node_norole_relation" },
         { "node/const/perm/group", "sc_node_class" },
-        { "node/const/perm/super_group", "sc_node" }, //not supported
+        { "node/const/perm/super_group", "sc_node_super_group" }, //not supported
 
         //! var perm
         { "node/var/perm/general", "sc_node" },
@@ -336,47 +335,47 @@ QString SCgStreamWriter::convertType(QString const & type)
         { "node/var/perm/role", "sc_node_role_relation" },
         { "node/var/perm/relation", "sc_node_norole_relation" },
         { "node/var/perm/group", "sc_node_class" },
-        { "node/var/perm/super_group", "sc_node" }, //not supported
+        { "node/var/perm/super_group", "sc_node_super_group_var" }, //not supported
 
         //! meta perm
-        { "node/meta/perm/general", "sc_node" }, //not supported
-        { "node/meta/perm/terminal", "sc_node" }, //not supported
-        { "node/meta/perm/struct", "sc_node" }, //not supported
-        { "node/meta/perm/tuple", "sc_node" }, //not supported
-        { "node/meta/perm/role", "sc_node" }, //not supported
-        { "node/meta/perm/relation", "sc_node" }, //not supported
-        { "node/meta/perm/group", "sc_node" }, //not supported
-        { "node/meta/perm/super_group", "sc_node" }, //not supported
+        { "node/meta/perm/general", "sc_node_meta" }, //not supported
+        { "node/meta/perm/terminal", "sc_node_abstract_meta" }, //not supported
+        { "node/meta/perm/struct", "sc_node_struct_meta" }, //not supported
+        { "node/meta/perm/tuple", "sc_node_tuple_meta" }, //not supported
+        { "node/meta/perm/role", "sc_node_role_relation_meta" }, //not supported
+        { "node/meta/perm/relation", "sc_node_norole_relation_meta" }, //not supported
+        { "node/meta/perm/group", "sc_node_class_meta" }, //not supported
+        { "node/meta/perm/super_group", "sc_node_super_group_meta" }, //not supported
 
         //! const temp
-        { "node/const/temp/general", "sc_node" }, //not supported
-        { "node/const/temp/terminal", "sc_node" }, //not supported
-        { "node/const/temp/struct", "sc_node" }, //not supported
-        { "node/const/temp/tuple", "sc_node" }, //not supported
-        { "node/const/temp/role", "sc_node" }, //not supported
-        { "node/const/temp/relation", "sc_node" }, //not supported
-        { "node/const/temp/group", "sc_node" }, //not supported
-        { "node/const/temp/super_group", "sc_node" }, //not supported
+        { "node/const/temp/general", "sc_node_temp" }, //not supported
+        { "node/const/temp/terminal", "sc_node_abstract_temp" }, //not supported
+        { "node/const/temp/struct", "sc_node_struct_temp" }, //not supported
+        { "node/const/temp/tuple", "sc_node_tuple_temp" }, //not supported
+        { "node/const/temp/role", "sc_node_role_relation_temp" }, //not supported
+        { "node/const/temp/relation", "sc_node_norole_relation_temp" }, //not supported
+        { "node/const/temp/group", "sc_node_class_temp" }, //not supported
+        { "node/const/temp/super_group", "sc_node_super_group_temp" }, //not supported
 
         //! var temp
-        { "node/var/temp/general", "sc_node" }, //not supported
-        { "node/var/temp/terminal", "sc_node" }, //not supported
-        { "node/var/temp/struct", "sc_node" }, //not supported
-        { "node/var/temp/tuple", "sc_node" }, //not supported
-        { "node/var/temp/role", "sc_node" }, //not supported
-        { "node/var/temp/relation", "sc_node" }, //not supported
-        { "node/var/temp/group", "sc_node" }, //not supported
-        { "node/var/temp/super_group", "sc_node" }, //not supported
+        { "node/var/temp/general", "sc_node_var_temp" }, //not supported
+        { "node/var/temp/terminal", "sc_node_abstract_var_temp" }, //not supported
+        { "node/var/temp/struct", "sc_node_struct_var_temp" }, //not supported
+        { "node/var/temp/tuple", "sc_node_tuple_var_temp" }, //not supported
+        { "node/var/temp/role", "sc_node_role_relation_var_temp" }, //not supported
+        { "node/var/temp/relation", "sc_node_norole_relation_var_temp" }, //not supported
+        { "node/var/temp/group", "sc_node_class_var_temp" }, //not supported
+        { "node/var/temp/super_group", "sc_node_super_group_var_temp" }, //not supported
 
         //! meta temp
-        { "node/meta/temp/general", "sc_node" }, //not supported
-        { "node/meta/temp/terminal", "sc_node" }, //not supported
-        { "node/meta/temp/struct", "sc_node" }, //not supported
-        { "node/meta/temp/tuple", "sc_node" }, //not supported
-        { "node/meta/temp/role", "sc_node" }, //not supported
-        { "node/meta/temp/relation", "sc_node" }, //not supported
-        { "node/meta/temp/group", "sc_node" }, //not supported
-        { "node/meta/temp/super_group", "sc_node" }, //not supported
+        { "node/meta/temp/general", "sc_node_meta_temp" }, //not supported
+        { "node/meta/temp/terminal", "sc_node_abstract_meta_temp" }, //not supported
+        { "node/meta/temp/struct", "sc_node_struct_meta_temp" }, //not supported
+        { "node/meta/temp/tuple", "sc_node_tuple_meta_temp" }, //not supported
+        { "node/meta/temp/role", "sc_node_role_relation_meta_temp" }, //not supported
+        { "node/meta/temp/relation", "sc_node_norole_relation_meta_temp" }, //not supported
+        { "node/meta/temp/group", "sc_node_class_meta_temp" }, //not supported
+        { "node/meta/temp/super_group", "sc_node_super_group_meta_temp" }, //not supported
 
 
         { "pair/const/-/perm/noorien", "<=>" },
@@ -400,6 +399,17 @@ QString SCgStreamWriter::convertType(QString const & type)
         { "pair/var/pos/temp/orient/membership", "_~>" },
         { "pair/var/-/temp/noorien", "_<=>" }, //not supported
         { "pair/var/-/temp/orient", "_=>"}, //not supported
+
+        { "pair/meta/-/perm/noorien", "->" }, //not supported
+        { "pair/meta/-/perm/orient", "->"}, //not supported
+        { "pair/meta/-/temp/noorien", "->"}, //not supported
+        { "pair/meta/-/temp/orient", "->"}, //not supported
+        { "pair/meta/pos/perm/orient/membership", "->"}, //not supported
+        { "pair/meta/pos/temp/orient/membership", "->" }, //not supported
+        { "pair/meta/neg/perm/orient/membership", "->" }, //not supported
+        { "pair/meta/neg/temp/orient/membership", "->" }, //not supported
+        { "pair/meta/fuz/perm/orient/membership", "->" }, //not supported
+        { "pair/meta/fuz/temp/orient/membership", "->"}, //not supported
 
         { "pair/-/-/-/orient", ">" },
         { "pair/-/-/-/noorient", "<>" },

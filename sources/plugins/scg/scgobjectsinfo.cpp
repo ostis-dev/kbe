@@ -136,6 +136,11 @@ int SCgNodeInfo::idtfPos() const
     return d->mIdtfPos;
 }
 
+QString SCgNodeInfo::scsId() const
+{
+    return d->scsId;
+}
+
 QPointF& SCgNodeInfo::posRef()
 {
     return d->mPos;
@@ -169,6 +174,11 @@ QVariant& SCgNodeInfo::contentDataRef()
 int& SCgNodeInfo::idtfPosRef()
 {
     return d->mIdtfPos;
+}
+
+QString& SCgNodeInfo::scsIdRef()
+{
+    return d->scsId;
 }
 
 //________________________________________________

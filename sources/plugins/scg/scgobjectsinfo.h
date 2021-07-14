@@ -92,6 +92,7 @@ public:
     const QString& contentFilename() const;
     const QVariant& contentData() const;
     int idtfPos() const;
+    QString scsId() const;
     /**@}*/
 
     /**
@@ -107,6 +108,7 @@ public:
     QString& contentFilenameRef();
     QVariant& contentDataRef();
     int& idtfPosRef();
+    QString& scsIdRef();
     /**@}*/
 
 private:

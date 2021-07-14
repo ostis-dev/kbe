@@ -11,6 +11,7 @@
 #include "scgcontour.h"
 #include "scgpair.h"
 #include "scgconsts.h"
+#include <qdebug.h>
 
 #include <sc-memory/scs/scs_parser.hpp>
 
@@ -92,6 +93,18 @@ bool SCgObjectInfoReader::read(QIODevice *dev, QIODevice *layoutDev)
             parseBus(t.m_target);
         else if (srcIdtf == SCgConsts::CONCEPT_SCG_CONTOUR.toStdString())
             parseContour(t.m_target);
+        else if (isTypeExtended(QString::fromStdString(srcIdtf)))
+        {
+            for (int i = 0; i < mObjectsInfo[SCgNode::Type].size(); i++)
+            {
+                QString systemIdtf = QString::fromStdString(parser.GetParsedElement(t.m_target).GetIdtf());
+                SCgNodeInfo* nodeInfo = static_cast<SCgNodeInfo*>(mObjectsInfo[SCgNode::Type][i]);
+                qDebug() << systemIdtf;
+                if (nodeInfo->scsId() == systemIdtf)
+                    mObjectsInfo[SCgNode::Type][i]->typeAliasRef() = convertExtendedType(QString::fromStdString(srcIdtf));
+                delete nodeInfo;
+            }
+        }
     }
     return true;
 }
@@ -111,6 +124,7 @@ void SCgObjectInfoReader::parseNode(const scs::ElementHandle &node, const scs::E
     nodeInfo->idRef() = getId(scgIdtf);
     nodeInfo->parentIdRef() = getParentId(scgNode);
     nodeInfo->typeAliasRef() = convertType(type);
+    nodeInfo->scsIdRef() = QString::fromStdString(parser.GetParsedElement(node).GetIdtf());
 
     if (type.IsNode())
     {
@@ -374,4 +388,104 @@ QString SCgObjectInfoReader::convertType(ScType type)
     };
 
     return myTypes[type];
+}
+
+bool SCgObjectInfoReader::isTypeExtended(QString type)
+{
+    static const QSet<QString> exendedTypes =
+    {
+        SCgConsts::SC_NODE_NOT_DEFINE,
+        SCgConsts::SC_NODE_SUPER_GROUP,
+        SCgConsts::SC_NODE_SUPER_GROUP_VAR,
+        SCgConsts::SC_NODE_META,
+        SCgConsts::SC_NODE_ABSTRACT_META,
+        SCgConsts::SC_NODE_STRUCT_META,
+        SCgConsts::SC_NODE_TUPLE_META,
+        SCgConsts::SC_NODE_ROLE_RELATION_META,
+        SCgConsts::SC_NODE_NOROLE_RELATION_META,
+        SCgConsts::SC_NODE_CLASS_META,
+        SCgConsts::SC_NODE_SUPER_GROUP_META,
+        SCgConsts::SC_NODE_TEMP,
+        SCgConsts::SC_NODE_ABSTRACT_TEMP,
+        SCgConsts::SC_NODE_STRUCT_TEMP,
+        SCgConsts::SC_NODE_TUPLE_TEMP,
+        SCgConsts::SC_NODE_ROLE_RELATION_TEMP,
+        SCgConsts::SC_NODE_NOROLE_RELATION_TEMP,
+        SCgConsts::SC_NODE_CLASS_TEMP,
+        SCgConsts::SC_NODE_SUPER_GROUP_TEMP,
+        SCgConsts::SC_NODE_VAR_TEMP,
+        SCgConsts::SC_NODE_ABSTRACT_VAR_TEMP,
+        SCgConsts::SC_NODE_STRUCT_VAR_TEMP,
+        SCgConsts::SC_NODE_TUPLE_VAR_TEMP,
+        SCgConsts::SC_NODE_ROLE_RELATION_VAR_TEMP,
+        SCgConsts::SC_NODE_NOROLE_RELATION_VAR_TEMP,
+        SCgConsts::SC_NODE_CLASS_VAR_TEMP,
+        SCgConsts::SC_NODE_SUPER_GROUP_VAR_TEMP,
+        SCgConsts::SC_NODE_META_TEMP,
+        SCgConsts::SC_NODE_ABSTRACT_META_TEMP,
+        SCgConsts::SC_NODE_STRUCT_META_TEMP,
+        SCgConsts::SC_NODE_TUPLE_META_TEMP,
+        SCgConsts::SC_NODE_ROLE_RELATION_META_TEMP,
+        SCgConsts::SC_NODE_NOROLE_RELATION_META_TEMP,
+        SCgConsts::SC_NODE_CLASS_META_TEMP,
+        SCgConsts::SC_NODE_SUPER_GROUP_META_TEMP
+    };
+
+    return exendedTypes.contains(type);
+}
+
+QString SCgObjectInfoReader::convertExtendedType(QString const & type) {
+    static const QHash<QString, QString> exendedTypes =
+    {
+        //! not define
+        { "sc_node_not_define", "node/-/-/not_define" },
+
+        //! const perm
+        { "sc_node_super_group", "node/const/perm/super_group" },
+
+        //! var perm
+        { "sc_node_super_group_var", "node/var/perm/super_group" },
+
+        //! meta perm
+        { "sc_node_meta", "node/meta/perm/general" },
+        { "sc_node_abstract_meta", "node/meta/perm/terminal" },
+        { "sc_node_struct_meta", "node/meta/perm/struct" },
+        { "sc_node_tuple_meta", "node/meta/perm/tuple" },
+        { "sc_node_role_relation_meta", "node/meta/perm/role" },
+        { "sc_node_norole_relation_meta", "node/meta/perm/relation" },
+        { "sc_node_class_meta", "node/meta/perm/group" },
+        { "sc_node_super_group_meta", "node/meta/perm/super_group" },
+
+        //! const temp
+        { "node/const/temp/general", "sc_node_temp" }, //not supported
+        { "node/const/temp/terminal", "sc_node_abstract_temp" }, //not supported
+        { "node/const/temp/struct", "sc_node_struct_temp" }, //not supported
+        { "node/const/temp/tuple", "sc_node_tuple_temp" }, //not supported
+        { "node/const/temp/role", "sc_node_role_relation_temp" }, //not supported
+        { "node/const/temp/relation", "sc_node_norole_relation_temp" }, //not supported
+        { "node/const/temp/group", "sc_node_class_temp" }, //not supported
+        { "node/const/temp/super_group", "sc_node_super_group_temp" }, //not supported
+
+        //! var temp
+        { "node/var/temp/general", "sc_node_var_temp" }, //not supported
+        { "node/var/temp/terminal", "sc_node_abstract_var_temp" }, //not supported
+        { "node/var/temp/struct", "sc_node_struct_var_temp" }, //not supported
+        { "node/var/temp/tuple", "sc_node_tuple_var_temp" }, //not supported
+        { "node/var/temp/role", "sc_node_role_relation_var_temp" }, //not supported
+        { "node/var/temp/relation", "sc_node_norole_relation_var_temp" }, //not supported
+        { "node/var/temp/group", "sc_node_class_var_temp" }, //not supported
+        { "node/var/temp/super_group", "sc_node_super_group_var_temp" }, //not supported
+
+        //! meta temp
+        { "node/meta/temp/general", "sc_node_meta_temp" }, //not supported
+        { "node/meta/temp/terminal", "sc_node_abstract_meta_temp" }, //not supported
+        { "node/meta/temp/struct", "sc_node_struct_meta_temp" }, //not supported
+        { "node/meta/temp/tuple", "sc_node_tuple_meta_temp" }, //not supported
+        { "node/meta/temp/role", "sc_node_role_relation_meta_temp" }, //not supported
+        { "node/meta/temp/relation", "sc_node_norole_relation_meta_temp" }, //not supported
+        { "node/meta/temp/group", "sc_node_class_meta_temp" }, //not supported
+        { "node/meta/temp/super_group", "sc_node_super_group_meta_temp" }, //not supported
+    };
+    return exendedTypes[type];
+
 }
