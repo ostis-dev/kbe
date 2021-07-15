@@ -3,8 +3,6 @@
 #include <memory>
 #include <QString>
 
-#include <sc-memory/scs/scs_parser.hpp>
-
 class SCgConsts
 {
 public:
