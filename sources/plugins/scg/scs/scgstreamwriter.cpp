@@ -397,19 +397,19 @@ QString SCgStreamWriter::convertType(QString const & type)
         { "pair/var/fuz/temp/orient/membership", "_~/>" },
         { "pair/var/neg/temp/orient/membership", "_~|>" },
         { "pair/var/pos/temp/orient/membership", "_~>" },
-        { "pair/var/-/temp/noorien", "_<=>" }, //not supported
-        { "pair/var/-/temp/orient", "_=>"}, //not supported
+        { "pair/var/-/temp/noorien", ">" }, //not supported
+        { "pair/var/-/temp/orient", ">"}, //not supported
 
-        { "pair/meta/-/perm/noorien", "->" }, //not supported
-        { "pair/meta/-/perm/orient", "->"}, //not supported
-        { "pair/meta/-/temp/noorien", "->"}, //not supported
-        { "pair/meta/-/temp/orient", "->"}, //not supported
-        { "pair/meta/pos/perm/orient/membership", "->"}, //not supported
-        { "pair/meta/pos/temp/orient/membership", "->" }, //not supported
-        { "pair/meta/neg/perm/orient/membership", "->" }, //not supported
-        { "pair/meta/neg/temp/orient/membership", "->" }, //not supported
-        { "pair/meta/fuz/perm/orient/membership", "->" }, //not supported
-        { "pair/meta/fuz/temp/orient/membership", "->"}, //not supported
+        { "pair/meta/-/perm/noorien", ">" }, //not supported
+        { "pair/meta/-/perm/orient", ">"}, //not supported
+        { "pair/meta/-/temp/noorien", ">"}, //not supported
+        { "pair/meta/-/temp/orient", ">"}, //not supported
+        { "pair/meta/pos/perm/orient/membership", ">"}, //not supported
+        { "pair/meta/pos/temp/orient/membership", ">" }, //not supported
+        { "pair/meta/neg/perm/orient/membership", ">" }, //not supported
+        { "pair/meta/neg/temp/orient/membership", ">" }, //not supported
+        { "pair/meta/fuz/perm/orient/membership", ">" }, //not supported
+        { "pair/meta/fuz/temp/orient/membership", ">"}, //not supported
 
         { "pair/-/-/-/orient", ">" },
         { "pair/-/-/-/noorient", "<>" },
