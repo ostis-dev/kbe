@@ -345,7 +345,7 @@ QString SCgObjectInfoReader::convertType(ScType type)
 {
     static const QMap<ScType, QString> myTypes =
     {
-        { ScType::EdgeUCommonConst, "pair/const/-/perm/noorien" },
+        { ScType::EdgeUCommonConst, "pair/const/-/perm/noorient" },
         { ScType::EdgeDCommonConst, "pair/const/-/perm/orient" },
         { ScType::EdgeAccessConstFuzPerm, "pair/const/fuz/perm/orient/membership" },
         { ScType::EdgeAccessConstNegPerm, "pair/const/neg/perm/orient/membership" },
@@ -354,7 +354,7 @@ QString SCgObjectInfoReader::convertType(ScType type)
         { ScType::EdgeAccessConstNegTemp, "pair/const/neg/temp/orient/membership" },
         { ScType::EdgeAccessConstPosTemp, "pair/const/pos/temp/orient/membership" },
 
-        { ScType::EdgeUCommonVar, "pair/var/-/perm/noorien" },
+        { ScType::EdgeUCommonVar, "pair/var/-/perm/noorient" },
         { ScType::EdgeDCommonVar, "pair/var/-/perm/orient" },
         { ScType::EdgeAccessVarFuzPerm, "pair/var/fuz/perm/orient/membership" },
         { ScType::EdgeAccessVarNegPerm, "pair/var/neg/perm/orient/membership" },
@@ -476,14 +476,31 @@ QString SCgObjectInfoReader::convertExtendedType(QString const & type) {
         { "sc_node_super_group_var_temp", "node/var/temp/super_group" },
 
         //! meta temp
-        { "sc_node_meta_temp", "node/meta/temp/general" },
-        { "sc_node_abstract_meta_temp", "node/meta/temp/terminal" },
-        { "sc_node_struct_meta_temp", "node/meta/temp/struct" },
-        { "sc_node_tuple_meta_temp", "node/meta/temp/tuple" },
-        { "sc_node_role_relation_meta_temp", "node/meta/temp/role" },
-        { "sc_node_norole_relation_meta_temp", "node/meta/temp/relation" },
-        { "sc_node_class_meta_temp", "node/meta/temp/group" },
-        { "sc_node_super_group_meta_temp", "node/meta/temp/super_group" },
+        { SCgConsts::SC_NODE_TUPLE_META_TEMP, "node/meta/temp/general" },
+        { SCgConsts::SC_NODE_ABSTRACT_META_TEMP, "node/meta/temp/terminal" },
+        { SCgConsts::SC_NODE_STRUCT_META_TEMP, "node/meta/temp/struct" },
+        { SCgConsts::SC_NODE_TUPLE_META_TEMP, "node/meta/temp/tuple" },
+        { SCgConsts::SC_NODE_ROLE_RELATION_META_TEMP, "node/meta/temp/role" },
+        { SCgConsts::SC_NODE_NOROLE_RELATION_META_TEMP, "node/meta/temp/relation" },
+        { SCgConsts::SC_NODE_CLASS_META_TEMP, "node/meta/temp/group" },
+        { SCgConsts::SC_NODE_SUPER_GROUP_META_TEMP, "node/meta/temp/super_group" },
+
+        //! pairs
+        { SCgConsts::SC_PAIR_CONST_TEMP_NOORIENT, "pair/const/-/temp/noorient" },
+        { SCgConsts::SC_PAIR_CONST_TEMP_ORIENT, "pair/const/-/temp/orient" },
+        { SCgConsts::SC_PAIR_VAR_TEMP_NOORIENT, "pair/var/-/temp/noorient" },
+        { SCgConsts::SC_PAIR_VAR_TEMP_ORIENT, "pair/var/-/temp/orient" },
+
+        { SCgConsts::SC_PAIR_META_PERM_NOORIENT, "pair/meta/-/perm/noorient" },
+        { SCgConsts::SC_PAIR_META_PERM_ORIENT, "pair/meta/-/perm/orient" },
+        { SCgConsts::SC_PAIR_META_TEMP_NOORIENT, "pair/meta/-/temp/noorient" },
+        { SCgConsts::SC_PAIR_META_TEMP_ORIENT, "pair/meta/-/temp/orient" },
+        { SCgConsts::SC_PAIR_META_POS_PERM_MEMBERSHIP, "pair/meta/pos/perm/orient/membership" },
+        { SCgConsts::SC_PAIR_META_POS_TEMP_MEMBERSHIP, "pair/meta/pos/temp/orient/membership" },
+        { SCgConsts::SC_PAIR_META_NEG_PERM_MEMBERSHIP, "pair/meta/neg/perm/orient/membership" },
+        { SCgConsts::SC_PAIR_META_NEG_TEMP_MEMBERSHIP, "pair/meta/neg/temp/orient/membership" },
+        { SCgConsts::SC_PAIR_META_FUZ_PERM_MEMBERSHIP, "pair/meta/fuz/perm/orient/membership" },
+        { SCgConsts::SC_PAIR_META_FUZ_TEMP_MEMBERSHIP, "pair/meta/fuz/temp/orient/membership" },
     };
     return exendedTypes[type];
 

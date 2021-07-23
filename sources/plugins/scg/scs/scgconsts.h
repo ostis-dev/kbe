@@ -24,6 +24,7 @@ public:
     static const QString NREL_BASIC_SEQUENCE;
 
     //extended types
+    //nodes
     static const QString SC_NODE_NOT_DEFINE;
     static const QString SC_NODE_SUPER_GROUP;
     static const QString SC_NODE_SUPER_GROUP_VAR;
@@ -59,4 +60,20 @@ public:
     static const QString SC_NODE_NOROLE_RELATION_META_TEMP;
     static const QString SC_NODE_CLASS_META_TEMP;
     static const QString SC_NODE_SUPER_GROUP_META_TEMP;
+
+    //pairs
+    static const QString SC_PAIR_CONST_TEMP_NOORIENT;
+    static const QString SC_PAIR_CONST_TEMP_ORIENT;
+    static const QString SC_PAIR_VAR_TEMP_NOORIENT;
+    static const QString SC_PAIR_VAR_TEMP_ORIENT;
+    static const QString SC_PAIR_META_PERM_NOORIENT;
+    static const QString SC_PAIR_META_PERM_ORIENT;
+    static const QString SC_PAIR_META_TEMP_NOORIENT;
+    static const QString SC_PAIR_META_TEMP_ORIENT;
+    static const QString SC_PAIR_META_POS_PERM_MEMBERSHIP;
+    static const QString SC_PAIR_META_POS_TEMP_MEMBERSHIP;
+    static const QString SC_PAIR_META_NEG_PERM_MEMBERSHIP;
+    static const QString SC_PAIR_META_NEG_TEMP_MEMBERSHIP;
+    static const QString SC_PAIR_META_FUZ_PERM_MEMBERSHIP;
+    static const QString SC_PAIR_META_FUZ_TEMP_MEMBERSHIP;
 };

@@ -60,9 +60,10 @@ private:
     QString getSCgIdtf(SCgObject *obj);
     QString getAlias(QString const & base);
     QString getTemp(QString const & base);
-    static QString makeAlias(QString const & base);
-    static QString makeTemp(QString const & base);
-    static QString convertType(QString const & type);
+    QString makeAlias(QString const & base);
+    QString makeTemp(QString const & base);
+    QString convertType(QString const & type);
+    QString convertExtendedType(QString const & type);
 
     StreamWriter scg;
     StreamWriter scs;
