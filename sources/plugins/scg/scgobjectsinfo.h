@@ -138,6 +138,7 @@ public:
     const QString& endObjectId() const;
     double beginDot() const;
     double endDot() const;
+    QString scsId() const;
     /**@}*/
 
     /**
@@ -150,6 +151,7 @@ public:
     QString& endObjectIdRef();
     double& beginDotRef();
     double& endDotRef();
+    QString& scsIdRef();
     /**@}*/
 
 private:

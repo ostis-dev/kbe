@@ -95,6 +95,7 @@ private:
     QString mEndObjectId;
     double mBeginDot;
     double mEndDot;
+    QString scsId;
 };
 
 

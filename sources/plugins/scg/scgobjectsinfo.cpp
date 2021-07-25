@@ -211,41 +211,60 @@ const QVector<QPointF>& SCgPairInfo::points() const
 {
     return d->mPoints;
 }
+
 const QString& SCgPairInfo::beginObjectId() const
 {
     return d->mBeginObjectId;
 }
+
 const QString& SCgPairInfo::endObjectId() const
 {
     return d->mEndObjectId;
 }
+
 double SCgPairInfo::beginDot() const
 {
     return d->mBeginDot;
 }
+
 double SCgPairInfo::endDot() const
 {
     return d->mEndDot;
 }
+
+QString SCgPairInfo::scsId() const
+{
+    return d->scsId;
+}
+
 QVector<QPointF>& SCgPairInfo::pointsRef()
 {
     return d->mPoints;
 }
+
 QString& SCgPairInfo::beginObjectIdRef()
 {
     return d->mBeginObjectId;
 }
+
 QString& SCgPairInfo::endObjectIdRef()
 {
     return d->mEndObjectId;
 }
+
 double& SCgPairInfo::beginDotRef()
 {
     return d->mBeginDot;
 }
+
 double& SCgPairInfo::endDotRef()
 {
     return d->mEndDot;
+}
+
+QString& SCgPairInfo::scsIdRef()
+{
+    return d->scsId;
 }
 //________________________________________________
 SCgBusInfo::SCgBusInfo(const SCgBus* obj)

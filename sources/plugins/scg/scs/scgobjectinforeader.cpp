@@ -101,6 +101,13 @@ bool SCgObjectInfoReader::read(QIODevice *dev, QIODevice *layoutDev)
                 if (nodeInfo->scsId() == systemIdtf)
                     mObjectsInfo[SCgNode::Type][i]->typeAliasRef() = convertExtendedType(QString::fromStdString(srcIdtf));
             }
+            for (int i = 0; i < mObjectsInfo[SCgPair::Type].size(); i++)
+            {
+                QString systemIdtf = QString::fromStdString(parser.GetParsedElement(t.m_target).GetIdtf());
+                SCgPairInfo* pairInfo = static_cast<SCgPairInfo*>(mObjectsInfo[SCgPair::Type][i]);
+                if (pairInfo->scsId() == systemIdtf)
+                    mObjectsInfo[SCgPair::Type][i]->typeAliasRef() = convertExtendedType(QString::fromStdString(srcIdtf));
+            }
         }
     }
     return true;
@@ -173,6 +180,7 @@ void SCgObjectInfoReader::parsePair(const scs::ElementHandle &pair, const scs::E
 
     pairInfo->typeAliasRef() = convertType(type);
     pairInfo->parentIdRef() = getParentId(scgPair);
+    pairInfo->scsIdRef() = QString::fromStdString(parser.GetParsedElement(pair).GetIdtf());
 
     auto set = findRelValueByIdtf(scgPair, SCgConsts::NREL_DECOMPOSITION);
     pairInfo->pointsRef().push_back(QPointF());
@@ -427,7 +435,21 @@ bool SCgObjectInfoReader::isTypeExtended(QString type)
         SCgConsts::SC_NODE_ROLE_RELATION_META_TEMP,
         SCgConsts::SC_NODE_NOROLE_RELATION_META_TEMP,
         SCgConsts::SC_NODE_CLASS_META_TEMP,
-        SCgConsts::SC_NODE_SUPER_GROUP_META_TEMP
+        SCgConsts::SC_NODE_SUPER_GROUP_META_TEMP,
+        SCgConsts::SC_PAIR_CONST_TEMP_NOORIENT,
+        SCgConsts::SC_PAIR_CONST_TEMP_ORIENT,
+        SCgConsts::SC_PAIR_VAR_TEMP_NOORIENT,
+        SCgConsts::SC_PAIR_VAR_TEMP_ORIENT,
+        SCgConsts::SC_PAIR_META_PERM_NOORIENT,
+        SCgConsts::SC_PAIR_META_PERM_ORIENT,
+        SCgConsts::SC_PAIR_META_TEMP_NOORIENT,
+        SCgConsts::SC_PAIR_META_TEMP_ORIENT,
+        SCgConsts::SC_PAIR_META_POS_PERM_MEMBERSHIP,
+        SCgConsts::SC_PAIR_META_POS_TEMP_MEMBERSHIP,
+        SCgConsts::SC_PAIR_META_NEG_PERM_MEMBERSHIP,
+        SCgConsts::SC_PAIR_META_NEG_TEMP_MEMBERSHIP,
+        SCgConsts::SC_PAIR_META_FUZ_PERM_MEMBERSHIP,
+        SCgConsts::SC_PAIR_META_FUZ_TEMP_MEMBERSHIP
     };
 
     return exendedTypes.contains(type);
@@ -437,43 +459,43 @@ QString SCgObjectInfoReader::convertExtendedType(QString const & type) {
     static const QHash<QString, QString> exendedTypes =
     {
         //! not define
-        { "sc_node_not_define", "node/-/-/not_define" },
+        { SCgConsts::SC_NODE_NOT_DEFINE, "node/-/-/not_define" },
 
         //! const perm
-        { "sc_node_super_group", "node/const/perm/super_group" },
+        { SCgConsts::SC_NODE_SUPER_GROUP, "node/const/perm/super_group" },
 
         //! var perm
-        { "sc_node_super_group_var", "node/var/perm/super_group" },
+        { SCgConsts::SC_NODE_SUPER_GROUP_VAR, "node/var/perm/super_group" },
 
         //! meta perm
-        { "sc_node_meta", "node/meta/perm/general" },
-        { "sc_node_abstract_meta", "node/meta/perm/terminal" },
-        { "sc_node_struct_meta", "node/meta/perm/struct" },
-        { "sc_node_tuple_meta", "node/meta/perm/tuple" },
-        { "sc_node_role_relation_meta", "node/meta/perm/role" },
-        { "sc_node_norole_relation_meta", "node/meta/perm/relation" },
-        { "sc_node_class_meta", "node/meta/perm/group" },
-        { "sc_node_super_group_meta", "node/meta/perm/super_group" },
+        { SCgConsts::SC_NODE_META, "node/meta/perm/general" },
+        { SCgConsts::SC_NODE_ABSTRACT_META, "node/meta/perm/terminal" },
+        { SCgConsts::SC_NODE_STRUCT_META, "node/meta/perm/struct" },
+        { SCgConsts::SC_NODE_TUPLE_META, "node/meta/perm/tuple" },
+        { SCgConsts::SC_NODE_ROLE_RELATION_META, "node/meta/perm/role" },
+        { SCgConsts::SC_NODE_NOROLE_RELATION_META, "node/meta/perm/relation" },
+        { SCgConsts::SC_NODE_CLASS_META, "node/meta/perm/group" },
+        { SCgConsts::SC_NODE_SUPER_GROUP_META, "node/meta/perm/super_group" },
 
         //! const temp
-        { "sc_node_temp", "node/const/temp/general" },
-        { "sc_node_abstract_temp", "node/const/temp/terminal" },
-        { "sc_node_struct_temp", "node/const/temp/struct" },
-        { "sc_node_tuple_temp", "node/const/temp/tuple" },
-        { "sc_node_role_relation_temp", "node/const/temp/role" },
-        { "sc_node_norole_relation_temp", "node/const/temp/relation" },
-        { "sc_node_class_temp", "node/const/temp/group" },
-        { "sc_node_super_group_temp", "node/const/temp/super_group" },
+        { SCgConsts::SC_NODE_TEMP, "node/const/temp/general" },
+        { SCgConsts::SC_NODE_ABSTRACT_TEMP, "node/const/temp/terminal" },
+        { SCgConsts::SC_NODE_STRUCT_TEMP, "node/const/temp/struct" },
+        { SCgConsts::SC_NODE_TUPLE_TEMP, "node/const/temp/tuple" },
+        { SCgConsts::SC_NODE_ROLE_RELATION_TEMP, "node/const/temp/role" },
+        { SCgConsts::SC_NODE_NOROLE_RELATION_TEMP, "node/const/temp/relation" },
+        { SCgConsts::SC_NODE_CLASS_TEMP, "node/const/temp/group" },
+        { SCgConsts::SC_NODE_SUPER_GROUP_TEMP, "node/const/temp/super_group" },
 
         //! var temp
-        { "sc_node_var_temp", "node/var/temp/general" },
-        { "sc_node_abstract_var_temp", "node/var/temp/terminal" },
-        { "sc_node_struct_var_temp", "node/var/temp/struct" },
-        { "sc_node_tuple_var_temp", "node/var/temp/tuple" },
-        { "sc_node_role_relation_var_temp", "node/var/temp/role" },
-        { "sc_node_norole_relation_var_temp", "node/var/temp/relation" },
-        { "sc_node_class_var_temp", "node/var/temp/group" },
-        { "sc_node_super_group_var_temp", "node/var/temp/super_group" },
+        { SCgConsts::SC_NODE_VAR_TEMP, "node/var/temp/general" },
+        { SCgConsts::SC_NODE_ABSTRACT_VAR_TEMP, "node/var/temp/terminal" },
+        { SCgConsts::SC_NODE_STRUCT_VAR_TEMP, "node/var/temp/struct" },
+        { SCgConsts::SC_NODE_TUPLE_VAR_TEMP, "node/var/temp/tuple" },
+        { SCgConsts::SC_NODE_ROLE_RELATION_VAR_TEMP, "node/var/temp/role" },
+        { SCgConsts::SC_NODE_NOROLE_RELATION_VAR_TEMP, "node/var/temp/relation" },
+        { SCgConsts::SC_NODE_CLASS_VAR_TEMP, "node/var/temp/group" },
+        { SCgConsts::SC_NODE_SUPER_GROUP_VAR_TEMP, "node/var/temp/super_group" },
 
         //! meta temp
         { SCgConsts::SC_NODE_TUPLE_META_TEMP, "node/meta/temp/general" },
