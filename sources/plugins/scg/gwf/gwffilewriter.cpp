@@ -32,13 +32,14 @@ bool GWFFileWriter::save(QString file_name, QObject *input)
     SCgScene *scene = qobject_cast<SCgScene*>(input);
 
         QFile fileOut(file_name);
-        if (!fileOut.open(QFile::WriteOnly | QFile::Text)) {
+        if (!fileOut.open(QFile::WriteOnly | QFile::Text))
+        {
                  QMessageBox::warning(0, qAppName(),
                                       QObject::tr("File saving error.\nCannot write file %1:\n%2.")
                                       .arg(file_name)
                                       .arg(fileOut.errorString()));
                  return false;
-             }
+        }
         stream.setDevice(&fileOut);
         stream.startWriting("UTF-8");
 

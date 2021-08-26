@@ -71,6 +71,7 @@ private:
     QString mContentFilename;
     QVariant mContentData;
     int mIdtfPos;
+    QString scsId;
 };
 
 
@@ -94,6 +95,7 @@ private:
     QString mEndObjectId;
     double mBeginDot;
     double mEndDot;
+    QString scsId;
 };
 
 

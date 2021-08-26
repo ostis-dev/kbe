@@ -92,6 +92,7 @@ public:
     const QString& contentFilename() const;
     const QVariant& contentData() const;
     int idtfPos() const;
+    QString scsId() const;
     /**@}*/
 
     /**
@@ -107,6 +108,7 @@ public:
     QString& contentFilenameRef();
     QVariant& contentDataRef();
     int& idtfPosRef();
+    QString& scsIdRef();
     /**@}*/
 
 private:
@@ -136,6 +138,7 @@ public:
     const QString& endObjectId() const;
     double beginDot() const;
     double endDot() const;
+    QString scsId() const;
     /**@}*/
 
     /**
@@ -148,6 +151,7 @@ public:
     QString& endObjectIdRef();
     double& beginDotRef();
     double& endDotRef();
+    QString& scsIdRef();
     /**@}*/
 
 private:

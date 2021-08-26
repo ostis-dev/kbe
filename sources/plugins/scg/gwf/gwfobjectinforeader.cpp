@@ -120,9 +120,9 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["pair/-/-/-/orient"] = "pair/-/-/-/orient";
 
     //const
-    mGWFType2TypeAlias["pair/const/-/perm/noorien"] = "pair/const/-/perm/noorien";
+    mGWFType2TypeAlias["pair/const/-/perm/noorient"] = "pair/const/-/perm/noorient";
     mGWFType2TypeAlias["pair/const/-/perm/orient"] = "pair/const/-/perm/orient";
-    mGWFType2TypeAlias["pair/const/-/temp/noorien"] = "pair/const/-/temp/noorien";
+    mGWFType2TypeAlias["pair/const/-/temp/noorient"] = "pair/const/-/temp/noorient";
     mGWFType2TypeAlias["pair/const/-/temp/orient"] = "pair/const/-/temp/orient";
     mGWFType2TypeAlias["pair/const/pos/perm/orient/membership"] = "pair/const/pos/perm/orient/membership";
     mGWFType2TypeAlias["pair/const/neg/perm/orient/membership"] = "pair/const/neg/perm/orient/membership";
@@ -132,9 +132,9 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["pair/const/fuz/temp/orient/membership"] = "pair/const/fuz/temp/orient/membership";
 
     //var
-    mGWFType2TypeAlias["pair/var/-/perm/noorien"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/var/-/perm/noorient"] = "pair/var/-/perm/noorient";
     mGWFType2TypeAlias["pair/var/-/perm/orient"] = "pair/var/-/perm/orient";
-    mGWFType2TypeAlias["pair/var/-/temp/noorien"] = "pair/var/-/temp/noorien";
+    mGWFType2TypeAlias["pair/var/-/temp/noorient"] = "pair/var/-/temp/noorient";
     mGWFType2TypeAlias["pair/var/-/temp/orient"] = "pair/var/-/temp/orient";
     mGWFType2TypeAlias["pair/var/pos/perm/orient/membership"] = "pair/var/pos/perm/orient/membership";
     mGWFType2TypeAlias["pair/var/neg/perm/orient/membership"] = "pair/var/neg/perm/orient/membership";
@@ -144,9 +144,9 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["pair/var/fuz/temp/orient/membership"] = "pair/var/fuz/temp/orient/membership";
 
     //meta
-    mGWFType2TypeAlias["pair/meta/-/perm/noorien"] = "pair/meta/-/perm/noorien";
+    mGWFType2TypeAlias["pair/meta/-/perm/noorient"] = "pair/meta/-/perm/noorient";
     mGWFType2TypeAlias["pair/meta/-/perm/orient"] = "pair/meta/-/perm/orient";
-    mGWFType2TypeAlias["pair/meta/-/temp/noorien"] = "pair/meta/-/temp/noorien";
+    mGWFType2TypeAlias["pair/meta/-/temp/noorient"] = "pair/meta/-/temp/noorient";
     mGWFType2TypeAlias["pair/meta/-/temp/orient"] = "pair/meta/-/temp/orient";
     mGWFType2TypeAlias["pair/meta/pos/perm/orient/membership"] = "pair/meta/pos/perm/orient/membership";
     mGWFType2TypeAlias["pair/meta/neg/perm/orient/membership"] = "pair/meta/neg/perm/orient/membership";
@@ -229,17 +229,17 @@ void GwfObjectInfoReader::createTypesMap()
     mGWFType2TypeAlias["arc/var/fuz/temp"] = "pair/var/fuz/temp/orient/membership";
     mGWFType2TypeAlias["arc/meta/fuz/temp"] = "pair/var/fuz/temp/orient/membership";
 
-    mGWFType2TypeAlias["pair/const/synonym"] = "pair/const/-/perm/noorien";
-    mGWFType2TypeAlias["pair/var/noorient"] = "pair/var/-/perm/noorien";
-    mGWFType2TypeAlias["pair/meta/noorient"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/const/synonym"] = "pair/const/-/perm/noorient";
+    mGWFType2TypeAlias["pair/var/noorient"] = "pair/var/-/perm/noorient";
+    mGWFType2TypeAlias["pair/meta/noorient"] = "pair/var/-/perm/noorient";
 
     mGWFType2TypeAlias["pair/const/orient"] = "pair/const/-/perm/orient";
     mGWFType2TypeAlias["pair/var/orient"] = "pair/var/-/perm/orient";
     mGWFType2TypeAlias["pair/meta/orient"] = "pair/var/-/perm/orient";
 
-    mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/rail/noorient"] = "pair/var/-/perm/noorient";
     mGWFType2TypeAlias["pair/rail/orient"] = "pair/var/-/perm/orient";
-    mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/var/-/perm/noorien";
+    mGWFType2TypeAlias["pair/rail2/noorient"] = "pair/var/-/perm/noorient";
     mGWFType2TypeAlias["pair/rail2/orient"] = "pair/var/-/perm/orient";
 }
 

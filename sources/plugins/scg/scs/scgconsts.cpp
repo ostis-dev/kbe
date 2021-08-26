@@ -1,0 +1,71 @@
+#include "scgconsts.h"
+
+const QString SCgConsts::CONCEPT_SCG_CONTOUR = "concept_scg_contour";
+const QString SCgConsts::NREL_SCG_REPRESENTATION = "nrel_scg_representation";
+const QString SCgConsts::NREL_INCLUDING = "nrel_including";
+const QString SCgConsts::CONCEPT_SCG_BUS = "concept_scg_bus";
+const QString SCgConsts::NREL_X = "nrel_x";
+const QString SCgConsts::NREL_Y = "nrel_y";
+const QString SCgConsts::NREL_IDTF_POS = "nrel_idtf_pos";
+const QString SCgConsts::NREL_CONTENT_TYPE = "nrel_content_type";
+const QString SCgConsts::NREL_CONTENT_MIME_TYPE = "nrel_content_mime_type";
+const QString SCgConsts::NREL_CONTENT_VISIBLE = "nrel_content_visible";
+const QString SCgConsts::NREL_CONTENT_FILENAME = "nrel_content_filename";
+const QString SCgConsts::NREL_START_RATIO = "nrel_start_ratio";
+const QString SCgConsts::NREL_END_RATIO = "nrel_end_ratio";
+const QString SCgConsts::NREL_DECOMPOSITION = "nrel_decomposition";
+const QString SCgConsts::NREL_OWNER = "nrel_owner";
+const QString SCgConsts::NREL_BASIC_SEQUENCE = "nrel_basic_sequence";
+
+//nodes
+const QString SCgConsts::SC_NODE_NOT_DEFINE = "sc_node_not_define";
+const QString SCgConsts::SC_NODE_SUPER_GROUP = "sc_node_super_group";
+const QString SCgConsts::SC_NODE_SUPER_GROUP_VAR = "sc_node_super_group_var";
+const QString SCgConsts::SC_NODE_META = "sc_node_meta";
+const QString SCgConsts::SC_NODE_ABSTRACT_META = "sc_node_abstract_meta";
+const QString SCgConsts::SC_NODE_STRUCT_META = "sc_node_struct_meta";
+const QString SCgConsts::SC_NODE_TUPLE_META = "sc_node_tuple_meta";
+const QString SCgConsts::SC_NODE_ROLE_RELATION_META = "sc_node_role_relation_meta";
+const QString SCgConsts::SC_NODE_NOROLE_RELATION_META = "sc_node_norole_relation_meta";
+const QString SCgConsts::SC_NODE_CLASS_META = "sc_node_class_meta";
+const QString SCgConsts::SC_NODE_SUPER_GROUP_META = "sc_node_super_group_meta";
+const QString SCgConsts::SC_NODE_TEMP = "sc_node_temp";
+const QString SCgConsts::SC_NODE_ABSTRACT_TEMP = "sc_node_abstract_temp";
+const QString SCgConsts::SC_NODE_STRUCT_TEMP = "sc_node_struct_temp";
+const QString SCgConsts::SC_NODE_TUPLE_TEMP = "sc_node_tuple_temp";
+const QString SCgConsts::SC_NODE_ROLE_RELATION_TEMP = "sc_node_role_relation_temp";
+const QString SCgConsts::SC_NODE_NOROLE_RELATION_TEMP = "sc_node_norole_relation_temp";
+const QString SCgConsts::SC_NODE_CLASS_TEMP = "sc_node_class_temp";
+const QString SCgConsts::SC_NODE_SUPER_GROUP_TEMP = "sc_node_super_group_temp";
+const QString SCgConsts::SC_NODE_VAR_TEMP = "sc_node_var_temp";
+const QString SCgConsts::SC_NODE_ABSTRACT_VAR_TEMP = "sc_node_abstract_var_temp";
+const QString SCgConsts::SC_NODE_STRUCT_VAR_TEMP = "sc_node_struct_var_temp";
+const QString SCgConsts::SC_NODE_TUPLE_VAR_TEMP = "sc_node_tuple_var_temp";
+const QString SCgConsts::SC_NODE_ROLE_RELATION_VAR_TEMP = "sc_node_role_relation_var_temp";
+const QString SCgConsts::SC_NODE_NOROLE_RELATION_VAR_TEMP = "sc_node_norole_relation_var_temp";
+const QString SCgConsts::SC_NODE_CLASS_VAR_TEMP = "sc_node_class_var_temp";
+const QString SCgConsts::SC_NODE_SUPER_GROUP_VAR_TEMP = "sc_node_super_group_var_temp";
+const QString SCgConsts::SC_NODE_META_TEMP = "sc_node_meta_temp";
+const QString SCgConsts::SC_NODE_ABSTRACT_META_TEMP = "sc_node_abstract_meta_temp";
+const QString SCgConsts::SC_NODE_STRUCT_META_TEMP = "sc_node_struct_meta_temp";
+const QString SCgConsts::SC_NODE_TUPLE_META_TEMP = "sc_node_tuple_meta_temp";
+const QString SCgConsts::SC_NODE_ROLE_RELATION_META_TEMP = "sc_node_role_relation_meta_temp";
+const QString SCgConsts::SC_NODE_NOROLE_RELATION_META_TEMP = "sc_node_norole_relation_meta_temp";
+const QString SCgConsts::SC_NODE_CLASS_META_TEMP = "sc_node_class_meta_temp";
+const QString SCgConsts::SC_NODE_SUPER_GROUP_META_TEMP = "sc_node_super_group_meta_temp";
+
+//pairs
+const QString SCgConsts::SC_PAIR_CONST_TEMP_NOORIENT = "sc_pair_const_temp_noorient";
+const QString SCgConsts::SC_PAIR_CONST_TEMP_ORIENT = "sc_pair_const_temp_orient";
+const QString SCgConsts::SC_PAIR_VAR_TEMP_NOORIENT = "sc_pair_var_temp_noorient";
+const QString SCgConsts::SC_PAIR_VAR_TEMP_ORIENT= "sc_pair_var_temp_orient";
+const QString SCgConsts::SC_PAIR_META_PERM_NOORIENT = "sc_pair_meta_perm_noorient";
+const QString SCgConsts::SC_PAIR_META_PERM_ORIENT = "sc_pair_meta_perm_orient";
+const QString SCgConsts::SC_PAIR_META_TEMP_NOORIENT = "sc_pair_meta_temp_noorient";
+const QString SCgConsts::SC_PAIR_META_TEMP_ORIENT = "sc_pair_meta_temp_orient";
+const QString SCgConsts::SC_PAIR_META_POS_PERM_MEMBERSHIP = "sc_pair_meta_pos_perm_orient_membership";
+const QString SCgConsts::SC_PAIR_META_POS_TEMP_MEMBERSHIP = "sc_pair_meta_pos_temp_orient_membership";
+const QString SCgConsts::SC_PAIR_META_NEG_PERM_MEMBERSHIP = "sc_pair_meta_neg_perm_orient_membership";
+const QString SCgConsts::SC_PAIR_META_NEG_TEMP_MEMBERSHIP = "sc_pair_meta_neg_temp_orient_membership";
+const QString SCgConsts::SC_PAIR_META_FUZ_PERM_MEMBERSHIP = "sc_pair_meta_fuz_perm_orient_membership";
+const QString SCgConsts::SC_PAIR_META_FUZ_TEMP_MEMBERSHIP = "sc_pair_meta_fuz_temp_orient_membership";

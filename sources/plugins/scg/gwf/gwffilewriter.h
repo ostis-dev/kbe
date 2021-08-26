@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "filewriter.h"
 #include "gwfstreamwriter.h"
 
 //! TODO: add error messages
@@ -13,7 +14,7 @@
 class SCgObject;
 class SCgNode;
 
-class GWFFileWriter
+class GWFFileWriter : public FileWriter
 {
 public:
     GWFFileWriter();
