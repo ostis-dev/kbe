@@ -1,5 +1,4 @@
-QT += xml widgets concurrent
-
+QT += xml widgets concurrent core5compat
 TARGET        = $$qtLibraryTarget(scg)
 TEMPLATE      = lib
 INCLUDEPATH  += ../../kbe \

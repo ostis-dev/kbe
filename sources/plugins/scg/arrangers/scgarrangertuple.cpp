@@ -222,7 +222,7 @@ bool SCgTupleArranger::findArrangeItems()
     mArrangeItems.append(bus);
 
     // order pairs
-    qSort(unorderedPairs);
+    std::sort(unorderedPairs.begin(), unorderedPairs.end());
     QPair<qreal, SCgPair*> pairInfo;
     foreach (pairInfo, unorderedPairs)
         mBusPairs.append(pairInfo.second);

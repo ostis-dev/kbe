@@ -109,7 +109,7 @@ QPainterPath SCgNode::shape() const
         path.addRect(boundRect);
     }else
     {
-        QMatrix matrix;
+        QTransform matrix;
         switch (mConstType)
         {
         case SCgAlphabet::Const:
@@ -202,7 +202,7 @@ QPointF SCgNode::cross(const QPointF &from, float dot) const
         {
             p2 = polygon.at(i);
             line = QLineF(p1, p2);
-            QLineF::IntersectType intersectType = line.intersect(pair, &intersectPoint);
+            QLineF::IntersectType intersectType = line.intersects(pair, &intersectPoint);
             if (intersectType == QLineF::BoundedIntersection)
             {
                 haveItersect = true;

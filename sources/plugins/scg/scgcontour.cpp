@@ -262,7 +262,7 @@ QPointF SCgContour::cross(const QPointF &from, float dot) const
     {
         p2 = mPoints[i];
         line.setPoints(p1,p2);
-        QLineF::IntersectType intersectType = line.intersect(pair, &intersectPoint);
+        QLineF::IntersectType intersectType = line.intersects(pair, &intersectPoint);
         if (intersectType == QLineF::BoundedIntersection)
         {
             pair.setP2(intersectPoint);

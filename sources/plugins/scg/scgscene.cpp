@@ -332,7 +332,7 @@ SCgBaseCommand* SCgScene::deleteSelObjectsCommand(SCgBaseCommand* parentCmd, boo
         {
             // Sort list in back order. Because after erasing item from vector, indexes
             // can be wrong. So we should delete in back order.
-            qSort(delIndexes.begin(), delIndexes.end(), qGreater<int>());
+            std::sort(delIndexes.begin(), delIndexes.end(), std::greater<int>());
 
             foreach(const int& index, delIndexes)
             {
@@ -819,7 +819,7 @@ SCgObject* SCgScene::find(const QString &ttf, FindFlags flg)
 
     //for providing the same order in different calls of this function
     //we sort itemList by scene positions of items.
-    qSort(list.begin(), list.end(), topToBottomleftToRightSortingPredicate);
+    std::sort(list.begin(), list.end(), topToBottomleftToRightSortingPredicate);
     QList<SCgObject*>::const_iterator beginIt = list.begin();
 
     //Finds item (rather iterator), that lies closer to mCursor. From this position find process begins.

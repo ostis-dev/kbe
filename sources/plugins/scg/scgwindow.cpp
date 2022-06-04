@@ -598,8 +598,8 @@ void SCgWindow::activate(QMainWindow *window)
     EditorInterface::activate(window);
 
     createMenu();
-    QList<QAction*> allMenus = window->menuBar()->actions();
-    window->menuBar()->insertMenu(allMenus.at(1), mEditMenu);
+    //QList<QAction*> allMenus = window->menuBar()->actions();
+    //window->menuBar()->insertMenu(allMenus.at(1), mEditMenu);
 
     QToolBar *tool_bar = toolBar();
     if (tool_bar != 0)

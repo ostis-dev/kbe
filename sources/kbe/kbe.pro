@@ -4,9 +4,14 @@
 
 DESTDIR = ../bin
 
-QT      += xml widgets
-
+QT      += xml widgets \
+           core5compat
+macx: {
+CONFIG += app_bundle
+ICON = kbe_mac.icns
 TEMPLATE = app
+}
+
 
 SOURCES += \
     mainwindow.cpp \

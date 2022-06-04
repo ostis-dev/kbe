@@ -314,7 +314,7 @@ void SCgView::keyReleaseEvent(QKeyEvent *event)
 
 void SCgView::mouseMoveEvent (QMouseEvent * event)
 {
-    if(event->buttons() & Qt::MidButton)
+    if(event->buttons() & Qt::MiddleButton)
     {
         viewport()->setCursor(Qt::ClosedHandCursor);
         QScrollBar *hBar = horizontalScrollBar();
@@ -331,7 +331,7 @@ void SCgView::mouseMoveEvent (QMouseEvent * event)
 
 void SCgView::mousePressEvent (QMouseEvent * event)
 {
-    if(event->button() == Qt::MidButton)
+    if(event->button() == Qt::MiddleButton)
     {
         viewport()->setCursor(Qt::OpenHandCursor);
         mPrevMousePos = event->pos();
@@ -342,7 +342,7 @@ void SCgView::mousePressEvent (QMouseEvent * event)
 
 void SCgView::mouseReleaseEvent (QMouseEvent * event)
 {
-    if(event->button() == Qt::MidButton)
+    if(event->button() == Qt::MiddleButton)
     {
         viewport()->setCursor(Qt::ArrowCursor);
         mPrevMousePos = event->pos();
@@ -376,7 +376,7 @@ void SCgView::dropEvent(QDropEvent *event)
 void SCgView::wheelEvent(QWheelEvent *event)
 {
     if(event->modifiers() == Qt::ControlModifier)
-        setScale(pow(2.0, event->delta() / 280.0));
+        setScale(pow(2.0, event->angleDelta().y() / 280.0));
     else
         QGraphicsView::wheelEvent(event);
 }

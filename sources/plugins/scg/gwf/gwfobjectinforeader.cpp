@@ -361,7 +361,7 @@ bool GwfObjectInfoReader::parseObject(const QDomElement &element, SCgObjectInfo*
 
 bool GwfObjectInfoReader::parseNode(const QDomElement &element)
 {
-    std::auto_ptr<SCgNodeInfo> nodeInfo(new SCgNodeInfo());
+    std::unique_ptr<SCgNodeInfo> nodeInfo(new SCgNodeInfo());
 
     if(!parseObject(element, nodeInfo.get()))
         return false;
@@ -427,7 +427,7 @@ bool GwfObjectInfoReader::parseNode(const QDomElement &element)
 
 bool GwfObjectInfoReader::parsePair(const QDomElement &element)
 {
-    std::auto_ptr<SCgPairInfo> pairInfo(new SCgPairInfo());
+    std::unique_ptr<SCgPairInfo> pairInfo(new SCgPairInfo());
 
     if(!parseObject(element,pairInfo.get()))
         return false;
@@ -451,7 +451,7 @@ bool GwfObjectInfoReader::parsePair(const QDomElement &element)
 
 bool GwfObjectInfoReader::parseBus(const QDomElement &element)
 {
-    std::auto_ptr<SCgBusInfo> busInfo(new SCgBusInfo());
+    std::unique_ptr<SCgBusInfo> busInfo(new SCgBusInfo());
 
     if(!parseObject(element,busInfo.get()))
         return false;
@@ -479,7 +479,7 @@ bool GwfObjectInfoReader::parseBus(const QDomElement &element)
 
 bool GwfObjectInfoReader::parseContour(const QDomElement &element)
 {
-    std::auto_ptr<SCgContourInfo> contourInfo(new SCgContourInfo());
+    std::unique_ptr<SCgContourInfo> contourInfo(new SCgContourInfo());
 
     if(!parseObject(element, contourInfo.get()))
         return false;

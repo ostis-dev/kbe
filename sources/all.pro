@@ -1,4 +1,3 @@
-
 QT       += core
 
 TEMPLATE = subdirs
