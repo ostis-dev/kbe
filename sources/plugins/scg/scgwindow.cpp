@@ -43,6 +43,7 @@
 #include "scgtemplateobjectbuilder.h"
 #include "config.h"
 #include "scgundoview.h"
+#include "scgactionwithvideotooltip.h"
 
 
 const QString SCgWindow::SupportedPasteMimeType = "text/KBE-gwf";
@@ -167,7 +168,7 @@ void SCgWindow::createToolBar()
     QActionGroup* group = new QActionGroup(mToolBar);
 
     // Select mode
-    QAction *action = new QAction(findIcon("tool-select.png"), tr("Selection mode"), mToolBar);
+    QAction *action = new QAction(findIcon("tool-select.png"), tr(""), mToolBar);
     action->setCheckable(true);
     action->setChecked(true);
     action->setShortcut(QKeySequence(tr("1", "Selection mode")));
@@ -175,33 +176,53 @@ void SCgWindow::createToolBar()
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Select] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onSelectMode()));
+    //remove default tooltip
+    action->setToolTip("");
+    //creating custom tooltip
+    QString path = QString(":/scg/media/video/selection_mode.gif");
+    ActionWithVideoTooTip *select_tip = new ActionWithVideoTooTip(tr("Selection mode"), path, mToolBar->widgetForAction(action));
 
     //Pair creation mode
-    action = new QAction(findIcon("tool-pair.png"), tr("Pair creation mode"), mToolBar);
+    action = new QAction(findIcon("tool-pair.png"), tr(""), mToolBar);
     action->setCheckable(true);
     action->setShortcut(QKeySequence(tr("2", "Pair creation mode")));
     group->addAction(action);
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Pair] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onPairMode()));
+    //remove default tooltip
+    action->setToolTip("");
+    //creating custom tooltip
+    path = QString(":/scg/media/video/arc_mode.gif");
+    ActionWithVideoTooTip *arc_tip = new ActionWithVideoTooTip("Pair creation mode", path, mToolBar->widgetForAction(action));
 
     //Bus creation mode
-    action = new QAction(findIcon("tool-bus.png"), tr("Bus creation mode"), mToolBar);
+    action = new QAction(findIcon("tool-bus.png"), tr(""), mToolBar);
     action->setCheckable(true);
     action->setShortcut(QKeySequence(tr("3", "Bus creation mode")));
     group->addAction(action);
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Bus] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onBusMode()));
+    //remove default tooltip
+    action->setToolTip("");
+    //creating custom tooltip
+    path = QString(":/scg/media/video/bus_mode.gif");
+    ActionWithVideoTooTip *bus_tip = new ActionWithVideoTooTip("Bus creation mode", path, mToolBar->widgetForAction(action));
 
     //Contour creation mode
-    action = new QAction(findIcon("tool-contour.png"), tr("Contour creation mode"), mToolBar);
+    action = new QAction(findIcon("tool-contour.png"), tr(""), mToolBar);
     action->setCheckable(true);
     action->setShortcut(QKeySequence(tr("4", "Contour creation mode")));
     group->addAction(action);
     mToolBar->addAction(action);
     mMode2Action[SCgScene::Mode_Contour] = action;
     connect(action, SIGNAL(triggered()), this, SLOT(onContourMode()));
+    //remove default tooltip
+    action->setToolTip("");
+    //creating custom tooltip
+    path = QString(":/scg/media/video/contour_mode.gif");
+    ActionWithVideoTooTip *contour_tip = new ActionWithVideoTooTip("Contour creation mode", path, mToolBar->widgetForAction(action));
     //
     mToolBar->addSeparator();
     //

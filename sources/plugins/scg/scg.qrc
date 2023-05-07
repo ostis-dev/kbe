@@ -31,5 +31,9 @@
         <file>media/icons/tool-select-subgraph.png</file>
         <file>media/translations/scg_en_EN.qm</file>
         <file>media/translations/scg_ru_RU.qm</file>
+        <file>media/video/arc_mode.gif</file>
+        <file>media/video/bus_mode.gif</file>
+        <file>media/video/contour_mode.gif</file>
+        <file>media/video/selection_mode.gif</file>
     </qresource>
 </RCC>

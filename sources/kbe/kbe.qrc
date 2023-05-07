@@ -25,5 +25,6 @@
         <file>media/icons/pm-collapse.png</file>
         <file>media/icons/pm-expand.png</file>
         <file>media/icons/pm-add.png</file>
+        <file>media/stylesheets/tooltipstyle.css</file>
     </qresource>
 </RCC>

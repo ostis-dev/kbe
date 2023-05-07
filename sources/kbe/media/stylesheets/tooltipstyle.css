@@ -1,0 +1,6 @@
+QToolTip {
+    background-color: black;
+    color: white;
+    opacity: 200%;
+    padding: 3px;
+}

@@ -19,6 +19,7 @@ win32 {
 }
 
 HEADERS += \
+    scgactionwithvideotooltip.h \
     scgwindow.h \
     scgview.h \
     scgtemplateobjectbuilder.h \
@@ -98,6 +99,7 @@ HEADERS += \
     scgtypedialog.h
 
 SOURCES += \
+    scgactionwithvideotooltip.cpp \
     scgwindow.cpp \
     scgview.cpp \
     scgtemplateobjectbuilder.cpp \
