@@ -52,3 +52,6 @@ MOC_DIR = moc
 
 OTHER_FILES += \
     media/stylesheets/projectmanager.qss
+
+DISTFILES += \
+    media/stylesheets/tooltipstyle.css

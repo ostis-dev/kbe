@@ -33,6 +33,12 @@ int main(int argc, char *argv[])
 
     a.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
+    /*Set tooltip style*/
+    QFile styleFile(":/media/stylesheets/tooltipstyle.css");
+    styleFile.open(QFile::ReadOnly);
+    QString styleSheet = QLatin1String(styleFile.readAll());
+    a.setStyleSheet(styleSheet);
+
     QDir binPath(QCoreApplication::applicationDirPath());
 
     /* Set working directory */
