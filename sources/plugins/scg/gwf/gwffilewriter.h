@@ -5,7 +5,7 @@
  */
 
 #pragma once
-
+#include <QGraphicsItem>
 #include "gwfstreamwriter.h"
 
 //! TODO: add error messages
@@ -26,6 +26,7 @@ public:
       @return If file saved, then return true, else - false.
       */
     bool save(QString file_name, QObject *input);
+    bool saveTemp(QString file_name,QList<QGraphicsItem*> items);
 
 private:
 
