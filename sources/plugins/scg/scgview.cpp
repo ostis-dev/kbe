@@ -12,7 +12,7 @@
 #include "scgcontentchangedialog.h"
 #include "scgwindow.h"
 #include "scgtypedialog.h"
-
+#include<QSettings>
 #include <math.h>
 #include <QUrl>
 #include <QContextMenuEvent>
@@ -45,6 +45,7 @@ SCgView::SCgView(QWidget *parent, SCgWindow *window) :
     mActionSelectAll(0),
     mContextMenu(0),
     mContextObject(0),
+    mActionSaveTemp(0),
     mWindow(window),
     isSceneRectControlled(false)
 {
@@ -71,6 +72,10 @@ void SCgView::createActions()
     QAction* sep = new QAction(this);
     sep->setSeparator(true);
     mActionsList.append(sep);
+
+    mActionSaveTemp = new QAction(tr("Save as template"), mWindow);
+    mWindow->addAction(mActionSaveTemp);
+    connect(mActionSaveTemp, SIGNAL(triggered(bool)), this, SLOT(showSaveTempDialog()));
 
     mActionChangeType = new QAction(tr("Select type"), mWindow);
     mActionChangeType->setShortcut(QKeySequence( tr("T") ));
@@ -145,6 +150,7 @@ void SCgView::createActions()
     mActionsList.append(mActionShowAllContent);
     mActionsList.append(mActionHideAllContent);
     mActionsList.append(mActionDeleteContent);
+    mActionsList.append(mActionSaveTemp);
 
     sep = new QAction(this);
     sep->setSeparator(true);
@@ -225,13 +231,13 @@ void SCgView::updateActionsState(int idx)
     mActionSwapPairOrient->setEnabled(pairType);
     mActionSwapPairOrient->setVisible(pairType);
 
-    mActionChangeType->setEnabled(nodeType || pairType);
-    mActionChangeType->setVisible(nodeType || pairType);
-
     mActionChangeIdtf->setEnabled(mContextObject);
     mActionChangeIdtf->setVisible(mContextObject);
 
     bool const contourType = (mContextObject) && (mContextObject->type() == SCgContour::Type);
+
+    mActionChangeType->setEnabled(nodeType || pairType || contourType);
+    mActionChangeType->setVisible(nodeType || pairType || contourType);
 
     mActionContourDelete->setEnabled(contourType);
     mActionContourDelete->setVisible(contourType);
@@ -240,6 +246,7 @@ void SCgView::updateActionsState(int idx)
     mActionDelete->setEnabled(isAnySelected);
     mActionCut->setEnabled(isAnySelected);
     mActionCopy->setEnabled(isAnySelected);
+    mActionSaveTemp->setEnabled(isAnySelected);
 
     //check for showed/hidden contents
     items = scene()->items();
@@ -301,6 +308,7 @@ void SCgView::selectAllCommand() const
     for(; it != list.end(); ++it)
         (*it)->setSelected(true);
 }
+
 
 void SCgView::keyPressEvent(QKeyEvent *event)
 {
@@ -400,6 +408,34 @@ void SCgView::swapPairOrient()
 
     SCgPair *pair = static_cast<SCgPair*>(mContextObject);
     static_cast<SCgScene*>(scene())->swapPairOrientCommand(pair);
+}
+
+void SCgView::showSaveTempDialog()
+{
+    QDialog dialog(this);
+    dialog.setWindowTitle(tr("Save template"));
+    QLineEdit* lineEdit = new QLineEdit(&dialog);
+    QLabel* label = new QLabel(tr("File name:"),&dialog);
+
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                                       | QDialogButtonBox::Cancel);
+    buttonBox->setParent(&dialog);
+
+    connect(buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(label);
+    layout->addWidget(lineEdit);
+    layout->addWidget(buttonBox);
+    dialog.setLayout(layout);
+    QSettings set;
+    QString fileName ;
+    if(dialog.exec() == QDialog::Accepted)
+    {
+        fileName = set.value("templateStorage").toString() + lineEdit->text() + ".gwf";
+        mWindow->saveTempToFile(fileName);
+    }
 }
 
 void SCgView::changeIdentifier()

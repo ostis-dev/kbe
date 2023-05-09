@@ -11,6 +11,8 @@
 
 #include <QToolBox>
 #include <QMap>
+#include <QComboBox>
+
 
 class SCgMinimap;
 class SCgView;
@@ -43,6 +45,7 @@ public:
 
     //! @copydoc EditorInterface::saveToFile
     bool saveToFile(const QString &fileName);
+    bool saveTempToFile(const QString &fileName);
 
     /*! Update window immediately
       */
@@ -139,8 +142,6 @@ private:
      * \defgroup menu Menu
      * @{
      */
-//    //! View menu
-//    QMenu* mViewMenu;
     //!Edit menu
     QMenu* mEditMenu;
     //! undo action
@@ -149,9 +150,6 @@ private:
     QAction* mActionRedo;
     //! Find by identifier action;
     QAction* mActionFind;
-
-//    //! Show/hide minmap;
-//    QAction* mActionMinMap;
 
     /*! Creates all actions, handled by this window.
      * @see createMenu() for adding actions in menu.
@@ -184,6 +182,8 @@ private slots:
     void onVerticalAlignment();
     //! Slot to handle a horizontal alignment action
     void onHorizontalAlignment();
+    //!  Slot to handle a template creation action
+    void onTemplateTool();
     //! Slot to handle select input/output action
     void onSelectInputOutput();
     //! Slot to handle select subgraph action
@@ -196,7 +196,6 @@ private slots:
     void onZoomOut();
     //! Slot to set zoom factor value.
     void onViewScaleChanged(qreal newScaleValue);
-
     //! Handle find next button pressed event
     void findNext();
 
