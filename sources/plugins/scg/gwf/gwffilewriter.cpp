@@ -58,3 +58,31 @@ bool GWFFileWriter::save(QString file_name, QObject *input)
         fileOut.close();
         return true;
 }
+bool GWFFileWriter::saveTemp(QString file_name, QList<QGraphicsItem *> items)
+{
+
+        QFile fileOut(file_name);
+        if (!fileOut.open(QFile::WriteOnly | QFile::Text)) {
+                 QMessageBox::warning(0, qAppName(),
+                                      QObject::tr("File saving error.\nCannot write file %1:\n%2.")
+                                      .arg(file_name)
+                                      .arg(fileOut.errorString()));
+                 return false;
+             }
+        stream.setDevice(&fileOut);
+        stream.startWriting("UTF-8");
+        QGraphicsItem * item;
+        foreach (item, items)
+        {
+            if(SCgObject::isSCgObjectType(item->type()) )
+            {
+                SCgObject *obj = static_cast<SCgObject*>(item);
+                stream.writeObject(obj);
+            }
+        }
+
+        stream.finishWriting();
+
+        fileOut.close();
+        return true;
+}

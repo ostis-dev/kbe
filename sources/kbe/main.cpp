@@ -9,13 +9,13 @@
 #include "platform.h"
 #include "mainwindow.h"
 #include "guidedialog.h"
-
 #include <QApplication>
 #include <QTranslator>
 #include <QLocale>
 #include <QTextCodec>
 #include <QFileInfo>
 #include <QDir>
+#include <QDebug>
 #include <QFile>
 #include <QSplashScreen>
 #include <QMessageBox>
@@ -75,8 +75,10 @@ int main(int argc, char *argv[])
         QString arg = a.arguments().at(i);
         MainWindow::getInstance()->load(arg);
     }
-
+    QDir dir(QCoreApplication::applicationDirPath( ));
+    dir.mkdir("templates");
     QSettings settings;
+    settings.setValue("templateStorage", dir.absolutePath()+"/templates/");
     // check if startup dialog property exist
     if (!settings.contains(Config::settingsShowStartupDialog))
         settings.setValue(Config::settingsShowStartupDialog, QVariant(true));

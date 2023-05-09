@@ -51,6 +51,7 @@ private:
      * \defgroup menu Actions
      * @{
      */
+    QAction* mActionSaveTemp;
     QAction* mActionChangeType;
     QAction* mActionChangeContent;
     QAction* mActionShowContent;
@@ -112,6 +113,8 @@ public slots:
     void setScene(SCgScene* scene);
 
 private slots:
+    void showSaveTempDialog();
+
     //! Delete selected sc.g-elements
     void deleteSelected();
 
